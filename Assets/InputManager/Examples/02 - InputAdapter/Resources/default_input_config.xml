@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Input defaultConfiguration="KeyboardAndMouse">
+  <InputConfiguration name="KeyboardAndMouse">
+    <AxisConfiguration name="MoveHorizontal">
+      <description />
+      <positive>D</positive>
+      <altPositive>RightArrow</altPositive>
+      <negative>A</negative>
+      <altNegative>LeftArrow</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>3</gravity>
+      <sensitivity>3</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>DigitalAxis</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="MoveVertical">
+      <description />
+      <positive>W</positive>
+      <altPositive>UpArrow</altPositive>
+      <negative>S</negative>
+      <altNegative>DownArrow</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>3</gravity>
+      <sensitivity>3</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>DigitalAxis</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Jump">
+      <description />
+      <positive>Space</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Sprint">
+      <description />
+      <positive>LeftShift</positive>
+      <altPositive>RightShift</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_1">
+      <description />
+      <positive>Alpha1</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_2">
+      <description />
+      <positive>Alpha2</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_3">
+      <description />
+      <positive>Alpha3</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Use">
+      <description />
+      <positive>E</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+  </InputConfiguration>
+  <InputConfiguration name="Windows_Gamepad">
+    <AxisConfiguration name="MoveHorizontal">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0.2</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="MoveVertical">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0.2</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1</sensitivity>
+      <snap>false</snap>
+      <invert>true</invert>
+      <type>AnalogAxis</type>
+      <axis>1</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Jump">
+      <description />
+      <positive>Joystick1Button0</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Sprint">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_1">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_2">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_3">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Use">
+      <description />
+      <positive>Joystick1Button2</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="DPADHorizontal">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1000</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>5</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="DPADVertical">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1000</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>6</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="RightTrigger">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1000</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>9</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="LeftTrigger">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1000</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>8</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+  </InputConfiguration>
+  <InputConfiguration name="OSX_Gamepad">
+    <AxisConfiguration name="MoveHorizontal">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0.2</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="MoveVertical">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0.2</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1</sensitivity>
+      <snap>false</snap>
+      <invert>true</invert>
+      <type>AnalogAxis</type>
+      <axis>1</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Jump">
+      <description />
+      <positive>Joystick1Button16</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Sprint">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_1">
+      <description />
+      <positive>Joystick1Button7</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_2">
+      <description />
+      <positive>Joystick1Button5</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Quickslot_3">
+      <description />
+      <positive>Joystick1Button8</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="Use">
+      <description />
+      <positive>Joystick1Button18</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="DPADHorizontal">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="DPADVertical">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>0</sensitivity>
+      <snap>false</snap>
+      <invert>false</invert>
+      <type>Button</type>
+      <axis>0</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="RightTrigger">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1000</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>5</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+    <AxisConfiguration name="LeftTrigger">
+      <description />
+      <positive>None</positive>
+      <altPositive>None</altPositive>
+      <negative>None</negative>
+      <altNegative>None</altNegative>
+      <deadZone>0</deadZone>
+      <gravity>0</gravity>
+      <sensitivity>1000</sensitivity>
+      <snap>true</snap>
+      <invert>false</invert>
+      <type>AnalogAxis</type>
+      <axis>4</axis>
+      <joystick>0</joystick>
+    </AxisConfiguration>
+  </InputConfiguration>
+</Input>

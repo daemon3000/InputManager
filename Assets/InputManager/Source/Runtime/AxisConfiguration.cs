@@ -238,6 +238,25 @@ namespace TeamUtility.IO
 			_value = Neutral;
 		}
 		
+		public void SetMouseAxis(int axis)
+		{
+			if(type == InputType.MouseAxis)
+			{
+				this.axis = axis;
+				_rawAxisName = GetRawAxisName();
+			}
+		}
+		
+		public void SetAnalogAxis(int joystick, int axis)
+		{
+			if(type == InputType.AnalogAxis)
+			{
+				this.joystick = joystick;
+				this.axis = axis;
+				_rawAxisName = GetRawAxisName();
+			}
+		}
+		
 		private string GetRawAxisName()
 		{
 			if(type == InputType.MouseAxis)

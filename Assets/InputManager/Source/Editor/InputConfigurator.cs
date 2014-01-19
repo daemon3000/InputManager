@@ -217,8 +217,6 @@ namespace TeamUtility.Editor
 		{
 			InputLoaderXML inputLoader = new InputLoaderXML(_snapshotFile);
 			inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
-			
-			System.IO.File.Delete(_snapshotFile);
 		}
 		
 		private void OpenAboutDialog()

@@ -40,6 +40,9 @@ The *InputManager* class provides the following methods and variables, in additi
 - **Save** - Saves the input configurations to a file(XML by default). Create a class that implements *IInputSaver* for custom formats
 - **Load** - Loads input configurations from a file(XML by default). Create a class that implements *IInputLoader* for custom formats
 
+## Addons ##
+- **InputAdapter** - Manages keyboard and XBox controller input and features seamless transition between one and the other during play time
+
 ## Platforms ##
 Tested on Linux, Windows, Mac OSX and WebPlayer. Only for Unity 4.
 
