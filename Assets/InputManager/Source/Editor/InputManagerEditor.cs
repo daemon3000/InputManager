@@ -32,18 +32,8 @@ namespace TeamUtility.Editor
 	[CustomEditor(typeof(InputManager))]
 	public sealed class InputManagerEditor : UnityEditor.Editor 
 	{
-		private bool _isPersistent;
-		
-		private void OnEnable()
-		{
-			_isPersistent = EditorUtility.IsPersistent(target);
-		}
-		
 		public override void OnInspectorGUI()
 		{
-			if(_isPersistent)
-				return;
-			
 			serializedObject.Update();
 			GUILayout.Space(5.0f);
 			Rect position  = GUILayoutUtility.GetRect(0, 0, GUILayout.ExpandWidth(true), GUILayout.Height(22.0f));
@@ -60,7 +50,7 @@ namespace TeamUtility.Editor
 			{
 				if(GUI.Button(position, "Advanced Editor"))
 				{
-					InputConfigurator.OpenWindow();
+					InputConfigurator.OpenWindow(target as InputManager);
 				}
 			}
 			GUILayout.Space(5.0f);

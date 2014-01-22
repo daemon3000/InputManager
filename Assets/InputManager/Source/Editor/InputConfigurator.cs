@@ -23,6 +23,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Collections;
@@ -89,6 +90,7 @@ namespace TeamUtility.Editor
 		
 		private void OnEnable()
 		{
+			ShowStartupWarning();
 			CreateGUIStyles();
 			IsOpen = true;
 			
@@ -114,6 +116,50 @@ namespace TeamUtility.Editor
 				_searchResults = new List<SearchResult>();
 			}
 			_snapshotFile =  System.IO.Path.Combine(Application.temporaryCachePath, "input_config.xml");
+		}
+		
+		private void ShowStartupWarning()
+		{
+			string key = string.Concat(PlayerSettings.productName, ".InputManager.StartupWarning");
+			
+			if(!EditorPrefs.GetBool(key, false))
+			{
+				string message = "In order to use InputManager you need to overwrite your project's input settings.\n\nDo you want to overwrite the input settings now?\nYou can always do it from the File menu.";
+				if(EditorUtility.DisplayDialog("Warning", message, "Yes", "No"))
+				{
+					OverwriteInputSettings();
+				}
+				EditorPrefs.SetBool(key, true);
+			}
+		}
+		
+		private void OverwriteInputSettings()
+		{
+			TextAsset textAsset = Resources.Load("InputManager") as TextAsset;
+			if(textAsset == null)
+			{
+				EditorUtility.DisplayDialog("Error", "Unable to load input settings from the Resources folder.", "OK");
+				return;
+			}
+			
+			int length = Application.dataPath.LastIndexOf('/');
+			string projectSettingsFolder = string.Concat(Application.dataPath.Substring(0, length), "/ProjectSettings");
+			if(!Directory.Exists(projectSettingsFolder))
+			{
+				Resources.UnloadAsset(textAsset);
+				EditorUtility.DisplayDialog("Error", "Unable to get the correct path to the ProjectSetting folder.", "OK");
+				return;
+			}
+			
+			string inputManagerPath = string.Concat(projectSettingsFolder, "/InputManager.asset");
+			File.Delete(inputManagerPath);
+			using(StreamWriter writer = File.CreateText(inputManagerPath))
+			{
+				writer.Write(textAsset.text);
+			}
+			EditorUtility.DisplayDialog("Success", "The input settings have been successfully replaced.\nYou might need to minimize and restore Unity to reimport the new settings.", "OK");
+			
+			Resources.UnloadAsset(textAsset);
 		}
 		
 		private void UpdateFoldouts()
@@ -178,12 +224,13 @@ namespace TeamUtility.Editor
 			{
 				fileMenu.AddDisabledItem(new GUIContent("Load Snapshot"));
 			}
+			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, 2);
 			fileMenu.AddSeparator("");
 			
-			fileMenu.AddItem(new GUIContent("Commit"), false, HandleFileMenuOption, 2);
+			fileMenu.AddItem(new GUIContent("Close"), false, HandleFileMenuOption, 3);
 			fileMenu.AddSeparator("");
 			
-			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 3);
+			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 4);
 			fileMenu.DropDown(position);
 		}
 		
@@ -199,9 +246,12 @@ namespace TeamUtility.Editor
 				LoadSnapshot();
 				break;
 			case 2:
-				Close();
+				OverwriteInputSettings();
 				break;
 			case 3:
+				Close();
+				break;
+			case 4:
 				OpenAboutDialog();
 				break;
 			}
@@ -221,7 +271,7 @@ namespace TeamUtility.Editor
 		
 		private void OpenAboutDialog()
 		{
-			string message = "InputManager v1.0, MIT licensed\nCopyright 2014 Cristian Alexandru Geambasu";
+			string message = "InputManager v1.2, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 		
@@ -257,7 +307,8 @@ namespace TeamUtility.Editor
 			}
 			editMenu.AddSeparator("");
 			
-			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 4);
+			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 4);
+			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 5);
 			editMenu.DropDown(position);
 		}
 		
@@ -266,19 +317,22 @@ namespace TeamUtility.Editor
 			int option = (int)arg;
 			switch(option)
 			{
-			case 0:		//	New Configuration
+			case 0:
 				CreateNewInputConfiguration();
 				break;
-			case 1:		//	New Axis
+			case 1:
 				CreateNewAxisConfiguration();
 				break;
-			case 2:		//	Duplicate
+			case 2:
 				Duplicate();
 				break;
-			case 3:		//	Delete
+			case 3:
 				Delete();
 				break;
 			case 4:
+				Selection.activeGameObject = _inputManager.gameObject;
+				break;
+			case 5:
 				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
 				break;
 			}
@@ -373,6 +427,8 @@ namespace TeamUtility.Editor
 			}
 			_selectionPath.Clear();
 		}
+		
+		
 		
 		private void UpdateSearchResults()
 		{
@@ -840,6 +896,15 @@ namespace TeamUtility.Editor
 					gameObject.AddComponent<InputManager>();
 				}
 				EditorWindow.GetWindow<InputConfigurator>("Input");
+			}
+		}
+		
+		public static void OpenWindow(InputManager target)
+		{
+			if(!IsOpen)
+			{
+				var window = EditorWindow.GetWindow<InputConfigurator>("Input");
+				window._inputManager = target;
 			}
 		}
 		

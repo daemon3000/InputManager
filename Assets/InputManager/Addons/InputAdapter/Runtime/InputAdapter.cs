@@ -471,7 +471,9 @@ namespace TeamUtility.IO
 				_joystickCount = InputManager.GetJoystickNames().Length;
 				if(_inputDevice == InputDevice.Joystick && _joystickCount == 0)
 				{
-					Debug.Log("Lost connection with joystick. Switching to keyboard and mouse input.");
+#if UNITY_EDITOR
+					Debug.LogWarning("Lost connection with joystick. Switching to keyboard and mouse input.");
+#endif
 					SetInputDevice(InputDevice.KeyboardAndMouse);
 				}
 				yield return new WaitForSeconds(updateJoystickCountInterval);
@@ -552,13 +554,17 @@ namespace TeamUtility.IO
 			{
 				Screen.showCursor = false;
 				InputManager.SetConfiguration(_joystickConfiguration);
+#if UNITY_EDITOR
 				Debug.Log("Current Input Device: Joystick");
+#endif
 			}
 			else
 			{
 				Screen.showCursor = true;
 				InputManager.SetConfiguration(_keyboardConfiguration);
+#if UNITY_EDITOR
 				Debug.Log("Current Input Device: KeyboardAndMouse");
+#endif
 			}
 			InputManager.ResetInputAxes();
 			RaiseInputDeviceChangedEvent();
@@ -581,7 +587,9 @@ namespace TeamUtility.IO
 				break;
 			default:
 				_joystickConfiguration = windowsJoystickConfiguration;
-				Debug.Log("Unsupported XBOX 360 Controller driver. Defaulting to Windows driver configuration.");
+#if UNITY_EDITOR
+				Debug.LogWarning("Unsupported XBOX 360 Controller driver. Defaulting to Windows driver configuration.");
+#endif
 				break;
 			}
 		}
