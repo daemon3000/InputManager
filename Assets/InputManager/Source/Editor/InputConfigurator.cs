@@ -23,12 +23,11 @@
 using UnityEngine;
 using UnityEditor;
 using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using TeamUtility.IO;
+using TeamUtility.Editor.IO.InputManager;
 
 namespace TeamUtility.Editor
 {
@@ -65,10 +64,7 @@ namespace TeamUtility.Editor
 		[SerializeField] private float _hierarchyPanelWidth = _menuWidth * 2;
 		[SerializeField] private Texture2D _highlightTexture;
 		[SerializeField] private string _searchString = "";
-		[SerializeField] private string _positiveKey = string.Empty;
-		[SerializeField] private string _altPositiveKey = string.Empty;
-		[SerializeField] private string _negativeKey = string.Empty;
-		[SerializeField] private string _altNegativeKey = string.Empty;
+		[SerializeField] private string _keyString = string.Empty;
 		
 		private GUIStyle _whiteLabel;
 		private GUIStyle _whiteFoldout;
@@ -80,7 +76,6 @@ namespace TeamUtility.Editor
 		private bool _editingAltPositiveKey = false;
 		private bool _editingNegativeKey = false;
 		private bool _editingAltNegativeKey = false;
-		private string _snapshotFile;
 		private string[] _axisOptions = new string[] { "X", "Y", "3rd(Scrollwheel)", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 		private string[] _joystickOptions = new string[] { "Joystick 1", "Joystick 2", "Joystick 3", "Joystick 4" };
 		
@@ -90,7 +85,7 @@ namespace TeamUtility.Editor
 		
 		private void OnEnable()
 		{
-			ShowStartupWarning();
+			EditorToolbox.ShowStartupWarning();
 			CreateGUIStyles();
 			IsOpen = true;
 			
@@ -115,52 +110,9 @@ namespace TeamUtility.Editor
 			{
 				_searchResults = new List<SearchResult>();
 			}
-			_snapshotFile =  System.IO.Path.Combine(Application.temporaryCachePath, "input_config.xml");
 		}
 		
-		private void ShowStartupWarning()
-		{
-			string key = string.Concat(PlayerSettings.productName, ".InputManager.StartupWarning");
-			
-			if(!EditorPrefs.GetBool(key, false))
-			{
-				string message = "In order to use InputManager you need to overwrite your project's input settings.\n\nDo you want to overwrite the input settings now?\nYou can always do it from the File menu.";
-				if(EditorUtility.DisplayDialog("Warning", message, "Yes", "No"))
-				{
-					OverwriteInputSettings();
-				}
-				EditorPrefs.SetBool(key, true);
-			}
-		}
 		
-		private void OverwriteInputSettings()
-		{
-			TextAsset textAsset = Resources.Load("InputManager") as TextAsset;
-			if(textAsset == null)
-			{
-				EditorUtility.DisplayDialog("Error", "Unable to load input settings from the Resources folder.", "OK");
-				return;
-			}
-			
-			int length = Application.dataPath.LastIndexOf('/');
-			string projectSettingsFolder = string.Concat(Application.dataPath.Substring(0, length), "/ProjectSettings");
-			if(!Directory.Exists(projectSettingsFolder))
-			{
-				Resources.UnloadAsset(textAsset);
-				EditorUtility.DisplayDialog("Error", "Unable to get the correct path to the ProjectSetting folder.", "OK");
-				return;
-			}
-			
-			string inputManagerPath = string.Concat(projectSettingsFolder, "/InputManager.asset");
-			File.Delete(inputManagerPath);
-			using(StreamWriter writer = File.CreateText(inputManagerPath))
-			{
-				writer.Write(textAsset.text);
-			}
-			EditorUtility.DisplayDialog("Success", "The input settings have been successfully replaced.\nYou might need to minimize and restore Unity to reimport the new settings.", "OK");
-			
-			Resources.UnloadAsset(textAsset);
-		}
 		
 		private void UpdateFoldouts()
 		{
@@ -204,32 +156,31 @@ namespace TeamUtility.Editor
 			_highlightTexture = null;
 		}
 		
-		#region [Menu]
+		#region [Menus]
 		private void CreateFileMenu(Rect position)
 		{
 			GenericMenu fileMenu = new GenericMenu();
+			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, 0);
+			fileMenu.AddSeparator("");
 			if(_inputManager.inputConfigurations.Count > 0)
 			{
-				fileMenu.AddItem(new GUIContent("Create Snapshot"), false, HandleFileMenuOption, 0);
+				fileMenu.AddItem(new GUIContent("Create Snapshot"), false, HandleFileMenuOption, 1);
 			}
 			else
 			{
 				fileMenu.AddDisabledItem(new GUIContent("Create Snapshot"));
 			}
-			if(System.IO.File.Exists(_snapshotFile))
+			if(EditorToolbox.CanLoadSnapshot())
 			{
-				fileMenu.AddItem(new GUIContent("Load Snapshot"), false, HandleFileMenuOption, 1);
+				fileMenu.AddItem(new GUIContent("Load Snapshot"), false, HandleFileMenuOption, 2);
 			}
 			else
 			{
 				fileMenu.AddDisabledItem(new GUIContent("Load Snapshot"));
 			}
-			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, 2);
 			fileMenu.AddSeparator("");
 			
-			fileMenu.AddItem(new GUIContent("Close"), false, HandleFileMenuOption, 3);
-			fileMenu.AddSeparator("");
-			
+			fileMenu.AddItem(new GUIContent("Forum"), false, HandleFileMenuOption, 3);
 			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 4);
 			fileMenu.DropDown(position);
 		}
@@ -240,16 +191,16 @@ namespace TeamUtility.Editor
 			switch(option)
 			{
 			case 0:
-				CreateSnapshot();
+				EditorToolbox.OverwriteInputSettings();
 				break;
 			case 1:
-				LoadSnapshot();
+				EditorToolbox.CreateSnapshot(_inputManager);
 				break;
 			case 2:
-				OverwriteInputSettings();
+				EditorToolbox.LoadSnapshot(_inputManager);
 				break;
 			case 3:
-				Close();
+				OpenForumPage();
 				break;
 			case 4:
 				OpenAboutDialog();
@@ -257,21 +208,14 @@ namespace TeamUtility.Editor
 			}
 		}
 		
-		private void CreateSnapshot()
+		private void OpenForumPage()
 		{
-			InputSaverXML inputSaver = new InputSaverXML(_snapshotFile);
-			inputSaver.Save(_inputManager.inputConfigurations, _inputManager.defaultConfiguration);
-		}
-		
-		private void LoadSnapshot()
-		{
-			InputLoaderXML inputLoader = new InputLoaderXML(_snapshotFile);
-			inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
 		}
 		
 		private void OpenAboutDialog()
 		{
-			string message = "InputManager v1.2, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
+			string message = string.Format("InputManager {0}, MIT Licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", InputManager.VERSION);
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 		
@@ -490,7 +434,7 @@ namespace TeamUtility.Editor
 			EditorGUI.LabelField(paddingLabelRect, "", EditorStyles.toolbarButton);
 			
 			GUILayout.BeginArea(searchFieldRect);
-			_searchString = SearchField(_searchString);
+			_searchString = EditorToolbox.SearchField(_searchString);
 			GUILayout.EndArea();
 			
 			GUI.EndGroup();
@@ -585,23 +529,24 @@ namespace TeamUtility.Editor
 		
 		private void DisplaySearchResults()
 		{
-			if(_searchResults.Count == 0)
-				return;
-			
 			Rect screenRect = new Rect(0.0f, _toolbarHeight - 5.0f, _hierarchyPanelWidth, position.height - _toolbarHeight + 10.0f);
-			Rect scrollView = new Rect(screenRect.x, screenRect.y + 5.0f, screenRect.width, position.height - screenRect.y);
-			
 			GUI.Box(screenRect, "");
-			GUILayout.BeginArea(scrollView);
-			_hierarchiScrollPos = EditorGUILayout.BeginScrollView(_hierarchiScrollPos);
-			GUILayout.Space(5.0f);
-			for(int i = 0; i < _searchResults.Count; i++)
+			
+			if(_searchResults.Count > 0)
 			{
-				DisplaySearchResult(screenRect, _searchResults[i]);
+				Rect scrollView = new Rect(screenRect.x, screenRect.y + 5.0f, screenRect.width, position.height - screenRect.y);
+			
+				GUILayout.BeginArea(scrollView);
+				_hierarchiScrollPos = EditorGUILayout.BeginScrollView(_hierarchiScrollPos);
+				GUILayout.Space(5.0f);
+				for(int i = 0; i < _searchResults.Count; i++)
+				{
+					DisplaySearchResult(screenRect, _searchResults[i]);
+				}
+				GUILayout.Space(5.0f);
+				EditorGUILayout.EndScrollView();
+				GUILayout.EndArea();
 			}
-			GUILayout.Space(5.0f);
-			EditorGUILayout.EndScrollView();
-			GUILayout.EndArea();
 		}
 		
 		private void DisplaySearchResult(Rect screenRect, SearchResult result)
@@ -684,7 +629,11 @@ namespace TeamUtility.Editor
 			{
 				if(configPos.Contains(Event.current.mousePosition))
 				{
-					SetKeyNames(inputConfigIndex, index);
+					_editingPositiveKey = false;
+					_editingPositiveKey = false;
+					_editingAltPositiveKey = false;
+					_editingAltNegativeKey = false;
+					_keyString = string.Empty;
 					_selectionPath.Clear();
 					_selectionPath.Add(inputConfigIndex);
 					_selectionPath.Add(index);
@@ -714,15 +663,6 @@ namespace TeamUtility.Editor
 				configPos.x += 20.0f;
 				EditorGUI.LabelField(configPos, name);
 			} 
-		}
-		
-		private void SetKeyNames(int inputConfigIndex, int axisConfigIndex)
-		{
-			AxisConfiguration axisConfig = _inputManager.inputConfigurations[inputConfigIndex].axes[axisConfigIndex];
-			_positiveKey = axisConfig.positive != KeyCode.None ? axisConfig.positive.ToString() : string.Empty;
-			_negativeKey = axisConfig.negative != KeyCode.None ? axisConfig.negative.ToString() : string.Empty;
-			_altPositiveKey = axisConfig.altPositive != KeyCode.None ? axisConfig.altPositive.ToString() : string.Empty;
-			_altNegativeKey = axisConfig.altNegative != KeyCode.None ? axisConfig.altNegative.ToString() : string.Empty;
 		}
 		
 		private void DisplayMainPanel()
@@ -779,27 +719,22 @@ namespace TeamUtility.Editor
 			axisConfig.name = EditorGUILayout.TextField("Name", axisConfig.name);
 			axisConfig.description = EditorGUILayout.TextField("Description", axisConfig.description);
 			
-			ProcessKeyStrings(axisConfig);
-			GUI.SetNextControlName("positive_key");
-			_editingPositiveKey = GUI.GetNameOfFocusedControl() == "positive_key";
-			_positiveKey = EditorGUILayout.TextField("Positive", _positiveKey);
-			
-			ProcessKeyStrings(axisConfig);
-			GUI.SetNextControlName("alt_positive_key");
-			_editingAltPositiveKey = GUI.GetNameOfFocusedControl() == "alt_positive_key";
-			_altPositiveKey = EditorGUILayout.TextField("Alt Positive", _altPositiveKey);
-			
-			ProcessKeyStrings(axisConfig);
-			GUI.SetNextControlName("negative_key");
-			_editingNegativeKey = GUI.GetNameOfFocusedControl() == "negative_key";
-			_negativeKey = EditorGUILayout.TextField("Negative", _negativeKey);
-			
-			ProcessKeyStrings(axisConfig);
-			GUI.SetNextControlName("alt_negative_key");
-			_editingAltNegativeKey = GUI.GetNameOfFocusedControl() == "alt_negative_key";
-			_altNegativeKey = EditorGUILayout.TextField("Alt Negative", _altNegativeKey);
-			
-			ProcessKeyStrings(axisConfig);
+			//	Positive Key
+			EditorToolbox.KeyCodeField(ref _keyString, ref _editingPositiveKey, "Positive", 
+									   "positive_key", axisConfig.positive);
+			ProcessKeyString(ref axisConfig.positive, ref _editingPositiveKey, "positive_key");
+			//	Negative Key
+			EditorToolbox.KeyCodeField(ref _keyString, ref _editingNegativeKey, "Negative", 
+									   "negative_key", axisConfig.negative);
+			ProcessKeyString(ref axisConfig.negative, ref _editingNegativeKey, "negative_key");
+			//	Alt Positive Key
+			EditorToolbox.KeyCodeField(ref _keyString, ref _editingAltPositiveKey, "Alt Positive", 
+									   "alt_positive_key", axisConfig.altPositive);
+			ProcessKeyString(ref axisConfig.altPositive, ref _editingAltPositiveKey, "alt_positive_key");
+			//	Alt Negative key
+			EditorToolbox.KeyCodeField(ref _keyString, ref _editingAltNegativeKey, "Alt Negative", 
+									   "alt_negative_key", axisConfig.altNegative);
+			ProcessKeyString(ref axisConfig.altNegative, ref _editingAltNegativeKey, "alt_negative_key");
 			
 			axisConfig.gravity = EditorGUILayout.FloatField(gravityInfo, axisConfig.gravity);
 			axisConfig.deadZone = EditorGUILayout.FloatField(deadZoneInfo, axisConfig.deadZone);
@@ -814,72 +749,18 @@ namespace TeamUtility.Editor
 			GUILayout.EndArea();
 		}
 		
-		private void ProcessKeyStrings(AxisConfiguration axisConfig)
+		private void ProcessKeyString(ref KeyCode key, ref bool isEditing, string controlName)
 		{
-			if(_editingPositiveKey && GUI.GetNameOfFocusedControl() != "positive_key") 
+			bool hasFocus = GUI.GetNameOfFocusedControl() == controlName;
+			if(isEditing && !hasFocus)
 			{
-				axisConfig.positive = AxisConfiguration.StringToKey(_positiveKey);
-				if(axisConfig.positive == KeyCode.None)
-					_positiveKey = string.Empty;
-				_editingPositiveKey = false;
-			}
-			if(_editingNegativeKey && GUI.GetNameOfFocusedControl() != "negative_key") 
-			{
-				axisConfig.negative = AxisConfiguration.StringToKey(_negativeKey);
-				if(axisConfig.negative == KeyCode.None)
-					_negativeKey = string.Empty;
-				_editingNegativeKey = false;
-			}
-			if(_editingAltPositiveKey && GUI.GetNameOfFocusedControl() != "alt_positive_key") 
-			{
-				axisConfig.altPositive = AxisConfiguration.StringToKey(_altPositiveKey);
-				if(axisConfig.altPositive == KeyCode.None)
-					_altPositiveKey = string.Empty;
-				_editingAltPositiveKey = false;
-			}
-			if(_editingAltNegativeKey && GUI.GetNameOfFocusedControl() != "alt_negative_key") 
-			{
-				axisConfig.altNegative = AxisConfiguration.StringToKey(_altNegativeKey);
-				if(axisConfig.altNegative == KeyCode.None)
-					_altNegativeKey = string.Empty;
-				_editingAltNegativeKey = false;
+				key = AxisConfiguration.StringToKey(_keyString);
+				if(key == KeyCode.None)
+					_keyString = string.Empty;
+				isEditing = false;
 			}
 		}
 		
-		/// <summary>
-		/// Used to get access to the hidden toolbar search field.
-		/// Credits go to the user TowerOfBricks for finding the way to do it.
-		/// </summary>
-		private string SearchField(string searchString, params GUILayoutOption[] layoutOptions)
-		{
-			Type type = typeof(EditorGUILayout);
-			string methodName = "ToolbarSearchField";
-			System.Object[] parameters = new System.Object[] { searchString, layoutOptions };
-			string result = null;
-			
-			Type[] types = new Type[parameters.Length];
-			for(int i = 0; i < types.Length; i++)
-			{
-				types[i] = parameters[i].GetType();
-			}
-			MethodInfo method = type.GetMethod(methodName, (BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public),
-												null, types, null);
-			
-			if(method.IsStatic)
-			{
-				result = (string)method.Invoke(null, parameters);
-			}
-			else
-			{
-				var bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic |
-									BindingFlags.Instance | BindingFlags.CreateInstance;
-				System.Object obj = type.InvokeMember(null, bindingFlags, null, null, new System.Object[0]);
-				
-				result = (string)method.Invoke(obj, parameters);
-			}
-			
-			return (result != null) ? result : "";
-		}
 		#endregion
 		
 		#region [Static Interface]

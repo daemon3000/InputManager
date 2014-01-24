@@ -29,6 +29,7 @@ namespace TeamUtility.IO
 	[Serializable]
 	public sealed class AxisConfiguration
 	{
+		#region [Constants]
 		public const float Neutral = 0.0f;
 		public const float Positive = 1.0f;
 		public const float Negative = -1.0f;
@@ -36,6 +37,9 @@ namespace TeamUtility.IO
 		public const int MaxJoystickAxes = 10;
 		public const int MaxJoysticks = 4;
 		
+		#endregion
+		
+		#region [Settings]
 		public string name;
 		public string description;
 		public KeyCode positive;
@@ -55,8 +59,13 @@ namespace TeamUtility.IO
 		public int axis;
 		public int joystick;
 		
+		#endregion
+		
 		private string _rawAxisName;
 		private float _value;
+		private int _lastAxis;
+		private int _lastJoystick;
+		private InputType _lastType;
 		
 		public bool AnyInput
 		{
@@ -89,15 +98,30 @@ namespace TeamUtility.IO
 		
 		public void Initialize()
 		{
-			_rawAxisName = GetRawAxisName();
+			UpdateRawAxisName();
 			_value = Neutral;
 		}
 		
 		public void Update()
 		{
-			if(type != InputType.DigitalAxis || PositiveAndNegativeDown())
-				return;
-			
+			if(_lastType != type || _lastAxis != axis || _lastJoystick != joystick)
+			{
+				if(_lastType != InputType.DigitalAxis)
+					_value = Neutral;
+				
+				UpdateRawAxisName();
+				_lastType = type;
+				_lastAxis = axis;
+				_lastJoystick = joystick;
+			}
+			if(type == InputType.DigitalAxis && !PositiveAndNegativeDown())
+			{
+				UpdateDigitalAxisValue();
+			}
+		}
+		
+		private void UpdateDigitalAxisValue()
+		{
 			if(Input.GetKey(positive) || Input.GetKey(altPositive))
 			{
 				if(_value < Neutral && snap) {
@@ -243,7 +267,8 @@ namespace TeamUtility.IO
 			if(type == InputType.MouseAxis)
 			{
 				this.axis = axis;
-				_rawAxisName = GetRawAxisName();
+				_lastAxis = axis;
+				UpdateRawAxisName();
 			}
 		}
 		
@@ -253,28 +278,49 @@ namespace TeamUtility.IO
 			{
 				this.joystick = joystick;
 				this.axis = axis;
-				_rawAxisName = GetRawAxisName();
+				_lastAxis = axis;
+				_lastJoystick = joystick;
+				UpdateRawAxisName();
 			}
 		}
 		
-		private string GetRawAxisName()
+		private void UpdateRawAxisName()
 		{
 			if(type == InputType.MouseAxis)
 			{
-				if(axis < MaxMouseAxes) 
+#if UNITY_EDITOR
+				if(axis >= MaxMouseAxes) 
 				{
-					return string.Concat("mouse_axis_", axis);
+					string message = string.Format("Desired mouse axis is {0}. Max mouse axis is {1}. Mouse axis has been clamped to {1}.",
+													axis, MaxMouseAxes - 1);
+					Debug.LogWarning(message);
 				}
+#endif
+				_rawAxisName = string.Concat("mouse_axis_", Mathf.Clamp(axis, 0, MaxMouseAxes));
 			}
 			else if(type == InputType.AnalogAxis)
 			{
-				if(joystick < MaxJoysticks && axis < MaxJoystickAxes) 
+#if UNITY_EDITOR
+				if(joystick >= MaxJoysticks)
 				{
-					return string.Concat("joy_", joystick, "_axis_", axis);
+					string message = string.Format("Desired joystick is {0}. Max joystick is {1}. Joystick has been clamped to {1}.",
+													joystick, MaxJoysticks - 1);
+					Debug.LogWarning(message);
 				}
+				if(axis >= MaxJoystickAxes)
+				{
+					string message = string.Format("Desired joystick axis is {0}. Max joystick axis is {1}. Joystick axis has been clamped to {1}.",
+													axis, MaxJoystickAxes - 1);
+					Debug.LogWarning(message);
+				}
+#endif
+				_rawAxisName = string.Concat("joy_", Mathf.Clamp(joystick, 0, MaxJoysticks), 
+											 "_axis_", Mathf.Clamp(axis, 0, MaxJoystickAxes));
 			}
-			
-			return null;
+			else
+			{
+				_rawAxisName = string.Empty;
+			}
 		}
 		
 		public static KeyCode StringToKey(string value)

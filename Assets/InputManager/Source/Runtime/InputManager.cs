@@ -43,6 +43,8 @@ namespace TeamUtility.IO
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
+		public const string VERSION = "1.3";
+		
 		public enum ScanType
 		{
 			None, Key, MouseAxis, JoystickAxis

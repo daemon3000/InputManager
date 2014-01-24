@@ -6,9 +6,9 @@ The *InputManager* can have one or more input configurations(e.g. one for keyboa
 ## Getting Started ##
 ### Setup ###
 1. Open the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. You don't need to export the "Examples" folder if you don't want to.
-2. Unzip "InputManager.zip" and replace "YourProject/ProjectSettings/InputManager.asset".
+2. Unzip "InputManager.zip" and replace "YourProject/ProjectSettings/InputManager.asset". You can also do it from the *File* menu of the *Advanced Editor*.
 3. Create a new game object and add the "InputManager" component.
-4. In the *Inspector* press the *Advanced Editor* button which will open a new window where you can configure the axes.
+4. In the *Inspector* press the *Advanced Editor* button which will open a new window where you can configure the axes(although you can do it in the *Inspector* as well, I recommend the *Advanced Editor* because it has more options).
 5. If this isn't a new project open it in MonoDevelop(or any IDE you use) and replace all calls to the *Input* class with calls to the *InputManager* class. *InputManager* provides the same public methods and variables so it should be as simple as doing a *Find and Replace*.
 
 ### Advanced Editor ###
@@ -34,8 +34,8 @@ The *InputManager* class provides the following methods and variables, in additi
 - **GetConfigurationNames** - Returns an array with the names of all input configurations. A new array is created every time you call this method
 - **GetAxisConfiguration** - Gets a reference to an axis configuration
 - **StartKeyScan** - Calls the scan handler when a key is pressed. Use this to remap digital axes
-- **StartMouseAxisScan**
-- **StartJoystickAxisScan**
+- **StartMouseAxisScan** - To change a mouse axis when you get the result from *StartMouseAxisScan* use *AxisConfiguraton.SetMouseAxis*
+- **StartJoystickAxisScan** - To change a joystick axis when you get the result from *StartJoystickAxisScan* use *AxisConfiguration.SetAnalogAxis*
 - **CancelScan**
 - **Save** - Saves the input configurations to a file(XML by default). Create a class that implements *IInputSaver* for custom formats
 - **Load** - Loads input configurations from a file(XML by default). Create a class that implements *IInputLoader* for custom formats
