@@ -166,20 +166,20 @@ namespace TeamUtility.Editor
 			EditorGUILayout.PropertyField(description);
 			//	Positive Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingPositiveKey, "Positive", 
-									   "positive_key", PropertyToKeyCode(positive));
-			ProcessKeyString(ref _editingPositiveKey, "positive_key", positive);
+									   "inspector_positive_key", PropertyToKeyCode(positive));
+			ProcessKeyString(ref _editingPositiveKey, positive);
 			//	Negative Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingNegativeKey, "Negative", 
-									   "negative_key", PropertyToKeyCode(negative));
-			ProcessKeyString(ref _editingNegativeKey, "negative_key", negative);
+									   "inspector_negative_key", PropertyToKeyCode(negative));
+			ProcessKeyString(ref _editingNegativeKey, negative);
 			//	Alt Positive Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingAltPositiveKey, "Alt Positive", 
-									   "alt_positive_key", PropertyToKeyCode(altPositive));
-			ProcessKeyString(ref _editingAltPositiveKey, "alt_positive_key", altPositive);
+									   "inspector_alt_positive_key", PropertyToKeyCode(altPositive));
+			ProcessKeyString(ref _editingAltPositiveKey, altPositive);
 			//	Alt Negative Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingAltNegativeKey, "Alt Negative", 
-									   "alt_negative_key", PropertyToKeyCode(altNegative));
-			ProcessKeyString(ref _editingAltNegativeKey, "alt_negative_key", altNegative);
+									   "inspector_alt_negative_key", PropertyToKeyCode(altNegative));
+			ProcessKeyString(ref _editingAltNegativeKey, altNegative);
 			
 			EditorGUILayout.PropertyField(gravity, _gravityInfo);
 			EditorGUILayout.PropertyField(deadZone, _deadZoneInfo);
@@ -197,10 +197,9 @@ namespace TeamUtility.Editor
 			return AxisConfiguration.StringToKey(key.enumNames[key.enumValueIndex]);
 		}
 		
-		private void ProcessKeyString(ref bool isEditing, string controlName, SerializedProperty key)
+		private void ProcessKeyString(ref bool isEditing, SerializedProperty key)
 		{
-			bool hasFocus = GUI.GetNameOfFocusedControl() == controlName;
-			if(isEditing && !hasFocus)
+			if(isEditing && Event.current.type == EventType.KeyUp)
 			{
 				KeyCode keyCode = AxisConfiguration.StringToKey(_keyString);
 				if(keyCode == KeyCode.None)
@@ -211,6 +210,7 @@ namespace TeamUtility.Editor
 				else
 				{
 					key.enumValueIndex = IndexOfKeyName(key.enumNames, _keyString);
+					_keyString = keyCode.ToString();
 				}
 			}
 		}

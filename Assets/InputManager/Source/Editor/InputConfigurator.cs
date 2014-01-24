@@ -403,6 +403,12 @@ namespace TeamUtility.Editor
 				UpdateFoldouts();
 			}
 			
+#if UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
+			Undo.SetSnapshotTarget(_inputManager, "InputManager");
+			Undo.CreateSnapshot();
+#else
+			Undo.RecordObject(_inputManager, "InputManager");
+#endif
 			UpdateHierarchyPanelWidth();
 			if(_searchString.Length > 0)
 			{
@@ -417,6 +423,20 @@ namespace TeamUtility.Editor
 				DisplayMainPanel();
 			}
 			DisplayMainToolbar();
+#if UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
+			if(GUI.changed)
+			{
+				Undo.RegisterSnapshot();
+				EditorUtility.SetDirty(_inputManager);
+			}
+			Undo.ClearSnapshotTarget();
+#else
+			if(GUI.changed)
+			{
+				EditorUtility.SetDirty(_inputManager);
+			}
+#endif
+			Repaint();
 		}
 		
 		private void DisplayMainToolbar()
@@ -721,20 +741,20 @@ namespace TeamUtility.Editor
 			
 			//	Positive Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingPositiveKey, "Positive", 
-									   "positive_key", axisConfig.positive);
-			ProcessKeyString(ref axisConfig.positive, ref _editingPositiveKey, "positive_key");
+									   "editor_positive_key", axisConfig.positive);
+			ProcessKeyString(ref axisConfig.positive, ref _editingPositiveKey);
 			//	Negative Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingNegativeKey, "Negative", 
-									   "negative_key", axisConfig.negative);
-			ProcessKeyString(ref axisConfig.negative, ref _editingNegativeKey, "negative_key");
+									   "editor_negative_key", axisConfig.negative);
+			ProcessKeyString(ref axisConfig.negative, ref _editingNegativeKey);
 			//	Alt Positive Key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingAltPositiveKey, "Alt Positive", 
-									   "alt_positive_key", axisConfig.altPositive);
-			ProcessKeyString(ref axisConfig.altPositive, ref _editingAltPositiveKey, "alt_positive_key");
+									   "editor_alt_positive_key", axisConfig.altPositive);
+			ProcessKeyString(ref axisConfig.altPositive, ref _editingAltPositiveKey);
 			//	Alt Negative key
 			EditorToolbox.KeyCodeField(ref _keyString, ref _editingAltNegativeKey, "Alt Negative", 
-									   "alt_negative_key", axisConfig.altNegative);
-			ProcessKeyString(ref axisConfig.altNegative, ref _editingAltNegativeKey, "alt_negative_key");
+									   "editor_alt_negative_key", axisConfig.altNegative);
+			ProcessKeyString(ref axisConfig.altNegative, ref _editingAltNegativeKey);
 			
 			axisConfig.gravity = EditorGUILayout.FloatField(gravityInfo, axisConfig.gravity);
 			axisConfig.deadZone = EditorGUILayout.FloatField(deadZoneInfo, axisConfig.deadZone);
@@ -749,14 +769,19 @@ namespace TeamUtility.Editor
 			GUILayout.EndArea();
 		}
 		
-		private void ProcessKeyString(ref KeyCode key, ref bool isEditing, string controlName)
+		private void ProcessKeyString(ref KeyCode key, ref bool isEditing)
 		{
-			bool hasFocus = GUI.GetNameOfFocusedControl() == controlName;
-			if(isEditing && !hasFocus)
+			if(isEditing && Event.current.type == EventType.KeyUp)
 			{
 				key = AxisConfiguration.StringToKey(_keyString);
 				if(key == KeyCode.None)
+				{
 					_keyString = string.Empty;
+				}
+				else
+				{
+					_keyString = key.ToString();
+				}
 				isEditing = false;
 			}
 		}
