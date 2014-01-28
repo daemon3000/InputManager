@@ -28,10 +28,18 @@ The *InputManager* class provides the following methods and variables, in additi
 - **CurrentConfiguration** - A reference to the current input configuration used by the InputManager
 - **InputConfigurations** - A list of all the input configurations
 - **AnyInput** - Returns *true* if any button or axis is used
-- **Reinitialize** - Call this if you create or delete input configurations or axes at runtime
+- **Reinitialize**
+- **CreateInputConfiguration** - Allows you to create input configurations at runtime
+- **DeleteInputConfiguration** - Allows you to delete input configurations at runtime
 - **SetConfiguration** - Switch to another input configuration
 - **GetConfiguration** - Gets a reference to an input configuration
 - **GetConfigurationNames** - Returns an array with the names of all input configurations. A new array is created every time you call this method
+- **CreateButton** - Allows you to create axis configurations at runtime
+- **CreateDigitalAxis** - Allows you to create axis configurations at runtime
+- **CreateMouseAxis** - Allows you to create axis configurations at runtime
+- **CreateAnalogAxis** - Allows you to create axis configurations at runtime
+- **CreateEmptyAxis** - Allows you to create axis configurations at runtime
+- **DeleteAxisConfiguration** - Allows you to delete axis configurations at runtime
 - **GetAxisConfiguration** - Gets a reference to an axis configuration
 - **StartKeyScan** - Calls the scan handler when a key is pressed. Use this to remap digital axes
 - **StartMouseAxisScan** - To change a mouse axis when you get the result from *StartMouseAxisScan* use *AxisConfiguraton.SetMouseAxis*

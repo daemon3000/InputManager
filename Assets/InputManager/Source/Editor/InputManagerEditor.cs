@@ -65,7 +65,6 @@ namespace TeamUtility.Editor
 			GUILayout.Space(5.0f);
 			
 			GUILayout.BeginHorizontal();
-			GUILayout.Space(5.0f);
 			GUI.enabled = !InputConfigurator.IsOpen;
 			if(GUILayout.Button("Advanced\nEditor", GUILayout.Height(40.0f)))
 			{

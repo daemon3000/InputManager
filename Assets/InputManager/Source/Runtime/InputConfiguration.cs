@@ -33,9 +33,12 @@ namespace TeamUtility.IO
 		public string name;
 		public List<AxisConfiguration> axes;
 		
-		public InputConfiguration()
+		public InputConfiguration() :
+			this("New Configuration") { }
+		
+		public InputConfiguration(string name)
 		{
-			name = "Configuration";
+			this.name = name;
 			axes = new List<AxisConfiguration>();
 		}
 		

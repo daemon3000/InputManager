@@ -86,14 +86,18 @@ namespace TeamUtility.IO
 			}
 		}
 		
-		public AxisConfiguration()
+		public AxisConfiguration() :
+			this("New Axis") { }
+		
+		public AxisConfiguration(string name)
 		{
-			name = "Axis";
+			this.name = name;
 			description = string.Empty;
 			positive = KeyCode.None;
 			altPositive = KeyCode.None;
 			negative = KeyCode.None;
 			altNegative = KeyCode.None;
+			type = InputType.Button;
 		}
 		
 		public void Initialize()
