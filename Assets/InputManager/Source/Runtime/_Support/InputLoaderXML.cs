@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2012-2013 Cristian Alexandru Geambasu]
+﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License

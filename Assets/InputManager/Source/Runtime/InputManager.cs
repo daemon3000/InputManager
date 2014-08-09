@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2012-2013 Cristian Alexandru Geambasu]
+﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -43,7 +43,7 @@ namespace TeamUtility.IO
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
-		public const string VERSION = "1.4";
+		public const string VERSION = "1.5.0.0";
 		
 		public enum ScanType
 		{

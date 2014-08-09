@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2012-2013 Cristian Alexandru Geambasu]
+﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -111,9 +111,7 @@ namespace TeamUtility.Editor
 				_searchResults = new List<SearchResult>();
 			}
 		}
-		
-		
-		
+
 		private void UpdateFoldouts()
 		{
 			_configurationFoldouts.Clear();
@@ -791,7 +789,7 @@ namespace TeamUtility.Editor
 		#region [Static Interface]
 		public static bool IsOpen { get; private set; }
 		
-		[MenuItem("Window/Input Manager")]
+		[MenuItem("Team Utility/Input Manager/Open Advanced Editor", false, 0)]
 		public static void OpenWindow()
 		{
 			if(!IsOpen)

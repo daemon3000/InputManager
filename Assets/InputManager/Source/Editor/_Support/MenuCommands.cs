@@ -21,16 +21,18 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
-using System;
+using UnityEditor;
 using System.Collections;
 
-namespace TeamUtility.IO
+namespace TeamUtility.Editor.IO.InputManager
 {
-	public enum InputType
+	public static class MenuCommands
 	{
-		Button, 
-		MouseAxis, 
-		DigitalAxis, 
-		AnalogAxis
+		[MenuItem("Team Utility/Input Manager/About", false, 200)]
+		private static void About()
+		{
+			string message = string.Format("Input Manager v{0}, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", TeamUtility.IO.InputManager.VERSION);
+			EditorUtility.DisplayDialog("About", message, "OK");
+		}
 	}
 }
