@@ -198,23 +198,12 @@ namespace TeamUtility.Editor
 				EditorToolbox.LoadSnapshot(_inputManager);
 				break;
 			case 3:
-				OpenForumPage();
+				MenuCommands.OpenForumPage();
 				break;
 			case 4:
-				OpenAboutDialog();
+				MenuCommands.OpenAboutDialog();
 				break;
 			}
-		}
-		
-		private void OpenForumPage()
-		{
-			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
-		}
-		
-		private void OpenAboutDialog()
-		{
-			string message = string.Format("InputManager {0}, MIT Licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", InputManager.VERSION);
-			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 		
 		private void CreateEditMenu(Rect position)

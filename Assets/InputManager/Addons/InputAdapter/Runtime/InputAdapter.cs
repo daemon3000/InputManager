@@ -38,7 +38,10 @@ namespace TeamUtility.IO
 	public sealed class InputAdapter : MonoBehaviour
 	{
 		public event Action<InputDevice> InputDeviceChanged;
-		
+
+		[SerializeField]
+		private bool dontDestroyOnLoad = false;
+
 		[SerializeField]
 		private bool allowRealtimeInputDeviceSwitch = false;
 		
@@ -421,6 +424,11 @@ namespace TeamUtility.IO
 				
 				_instance = this;
 				_joystickCount = InputManager.GetJoystickNames().Length;
+
+				if(dontDestroyOnLoad)
+				{
+					DontDestroyOnLoad(gameObject);
+				}
 			}
 		}
 		
@@ -607,5 +615,16 @@ namespace TeamUtility.IO
 			Screen.showCursor = true;
 			StopAllCoroutines();
 		}
+
+#if UNITY_EDITOR
+		[UnityEditor.MenuItem("Team Utility/Input Manager/Create Input Adapter", false, 2)]
+		private static void Create()
+		{
+			GameObject gameObject = new GameObject("Input Adapter");
+			gameObject.AddComponent<InputAdapter>();
+
+			UnityEditor.Selection.activeGameObject = gameObject;
+		}
+#endif
 	}
 }

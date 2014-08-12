@@ -1,17 +1,19 @@
-## Introduction ##
+## Introduction
 *InputManager* is a custom input manager for Unity. It does everything Unity's input manager does and it allows you remap keys at runtime.
 
 The *InputManager* can have one or more input configurations(e.g. one for keyboard and mouse and one for a Xbox controller), each one with its own set of axes(like the ones provided by Unity's input manager).
 
-## Getting Started ##
-### Setup ###
+## Getting Started
+### Setup
 1. Open the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. You don't need to export the "Examples" folder if you don't want to.
-2. Unzip "InputManager.zip" and replace "YourProject/ProjectSettings/InputManager.asset". You can also do it from the *File* menu of the *Advanced Editor*.
-3. Create a new game object and add the "InputManager" component.
-4. In the *Inspector* press the *Advanced Editor* button which will open a new window where you can configure the axes(although you can do it in the *Inspector* as well, I recommend the *Advanced Editor* because it has more options).
+2. Create a new *Input Manager* by going to *Team Utility/Input Manager* and selecting *Create Input Manager*.
+3. Open the *Advanced Editor* by going to *Team Utility/Input Manager* and selection *Open Advanced Editor*. The first time you open the *Advanced Editor* you will be prompted to overwrite your project's input settings. You can also do it from the *File* menu of the *Advanced Editor* at a later time.
+4. Use the *Advanced Editor* to create new input configurations, buttons and axes.
 5. If this isn't a new project open it in MonoDevelop(or any IDE you use) and replace all calls to the *Input* class with calls to the *InputManager* class. *InputManager* provides the same public methods and variables so it should be as simple as doing a *Find and Replace*.
 
-### Advanced Editor ###
+**It is recommended that you have only one *Input Manager* in your game. Add it in the first scene and enable *Dont Destroy On Load* in the inspector.** 
+
+### Advanced Editor
 Use the editor to create input configurations and axes. 
 
 The *Edit* menu contains options to create, delete and duplicate input configurations or individual axes.
@@ -21,7 +23,7 @@ The *File* menu allows you to create snapshots of the *InputManager* and restore
 Note: The names you'll use for the *(Alt)Positive* and *(Alt)Negative* keys are not the same as the ones you use with the default input manager; they are the names of the [KeyCode](https://docs.unity3d.com/Documentation/ScriptReference/KeyCode.html) values. The names are case insensitive.
 For example, instead of "left shift" you would use "LeftShift".
 
-### API ##
+### API
 The *InputManager* class provides the following methods and variables, in addition to the ones provided by Unity's *Input* class:
 
 - **Instance** - Use it to check if a InputManager instance exists in the scene or to subscribe to the event handlers
@@ -48,14 +50,19 @@ The *InputManager* class provides the following methods and variables, in additi
 - **Save** - Saves the input configurations to a file(XML by default). Create a class that implements *IInputSaver* for custom formats
 - **Load** - Loads input configurations from a file(XML by default). Create a class that implements *IInputLoader* for custom formats
 
-## Addons ##
-- **InputAdapter** - Manages keyboard and XBox controller input and features seamless transition between one and the other during play time
+**Visit the Wiki for more scripting tutorials.**
 
-## Platforms ##
+## Addons
+### Input Adapter
+This addon manages keyboard and XBox controller input and features seamless transition between one and the other during play time.
+
+**For more information about the *Input Adapter* addon visit the Wiki.**
+
+## Platforms
 Tested on Linux, Windows, Mac OSX and WebPlayer. Only for Unity 4.
 
-## License ##
+## License
 This software is released under the [MIT license](http://opensource.org/licenses/MIT). You can find a copy of the license in the LICENSE file included in the *InputManager* source distribution.
 
-## Donate ##
+## Donate
 [Click to donate if you find my work useful!](https://www.paypal.com/cgi-bin/webscr?business=geambasu.cristian@yahoo.ro&cmd=_donations&currency_code=EUR&item_name=Custom+input+manager+for+Unity)

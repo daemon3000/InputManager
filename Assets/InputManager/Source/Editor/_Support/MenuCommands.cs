@@ -28,8 +28,23 @@ namespace TeamUtility.Editor.IO.InputManager
 {
 	public static class MenuCommands
 	{
-		[MenuItem("Team Utility/Input Manager/About", false, 200)]
-		private static void About()
+		[MenuItem("Team Utility/Input Manager/Create Input Manager", false, 1)]
+		private static void CreateInputManager()
+		{
+			GameObject gameObject = new GameObject("Input Manager");
+			gameObject.AddComponent<TeamUtility.IO.InputManager>();
+			
+			Selection.activeGameObject = gameObject;
+		}
+
+		[MenuItem("Team Utility/Input Manager/Forum", false, 200)]
+		public static void OpenForumPage()
+		{
+			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
+		}
+
+		[MenuItem("Team Utility/Input Manager/About", false, 201)]
+		public static void OpenAboutDialog()
 		{
 			string message = string.Format("Input Manager v{0}, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", TeamUtility.IO.InputManager.VERSION);
 			EditorUtility.DisplayDialog("About", message, "OK");
