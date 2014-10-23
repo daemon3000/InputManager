@@ -30,15 +30,17 @@ namespace TeamUtility.IO
 {
 	/// <summary>
 	/// Encapsulates a method that takes one parameter(the key) and returns 'true' if
-	/// the key is acce[ted or 'false' if it isn't.
+	/// the key is accepted or 'false' if it isn't.
+	/// The 'args' parameter is used to send additional user data.
 	/// </summary>
-	public delegate bool KeyScanHandler(KeyCode key, params object[] args);
+	public delegate bool KeyScanHandler(KeyCode key, object[] args);
 	
 	/// <summary>
 	/// Encapsulates a method that takes one parameter(the axis) and returns 'true' if
 	/// the axis is accepted or 'false' if it isn't.
+	/// The 'args' parameter is used to send additional user data.
 	/// </summary>
-	public delegate bool AxisScanHandler(int axis, params object[] args);
+	public delegate bool AxisScanHandler(int axis, object[] args);
 	
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 

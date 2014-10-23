@@ -156,7 +156,7 @@ public sealed class ControlsMenu : MonoBehaviour
 	}
 	#endregion
 
-	private bool HandleKeyScanResult(KeyCode key, params object[] args)
+	private bool HandleKeyScanResult(KeyCode key, object[] args)
 	{
 		if(!IsValidKeyboardKey(key))
 			return false;
