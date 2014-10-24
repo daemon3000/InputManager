@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Mappings>
+	<Item name="XBox 360 Windows" path="joystick_mappings/xbox_360_windows" />
+	<Item name="XBox 360 Linux" path="joystick_mappings/xbox_360_linux" />
+	<Item name="XBox 360 Linux Wireless" path="joystick_mappings/xbox_360_linux_wireless" />
+	<Item name="XBox 360 OSX" path="joystick_mappings/xbox_360_osx" />
+	<Item name="Playstation 3" path="joystick_mappings/playstation_3" />
+</Mappings>

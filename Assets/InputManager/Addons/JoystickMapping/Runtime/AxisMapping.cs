@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -21,33 +21,37 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
-using UnityEditor;
 using System.Collections;
 
-namespace TeamUtility.Editor.IO.InputManager
+namespace TeamUtility.IO
 {
-	public static class MenuCommands
+	[System.Serializable]
+	public class AxisMapping
 	{
-		[MenuItem("Team Utility/Input Manager/Create Input Manager", false, 2)]
-		private static void CreateInputManager()
+		private string _name;
+		private KeyCode _key;
+		private int _joystickAxis;
+		private MappingWizard.ScanType _scanType;
+
+		public string Name { get { return _name; } }
+		public KeyCode Key { get { return _key; } }
+		public int JoystickAxis { get { return _joystickAxis; } }
+		public MappingWizard.ScanType ScanType { get { return _scanType; } }
+
+		public AxisMapping(string name, KeyCode key)
 		{
-			GameObject gameObject = new GameObject("Input Manager");
-			gameObject.AddComponent<TeamUtility.IO.InputManager>();
-			
-			Selection.activeGameObject = gameObject;
+			_name = name;
+			_key = key;
+			_joystickAxis = -1;
+			_scanType = MappingWizard.ScanType.Button;
 		}
 
-		[MenuItem("Team Utility/Input Manager/Forum", false, 200)]
-		public static void OpenForumPage()
+		public AxisMapping(string name, int joystickAxis)
 		{
-			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
-		}
-
-		[MenuItem("Team Utility/Input Manager/About", false, 201)]
-		public static void OpenAboutDialog()
-		{
-			string message = string.Format("Input Manager v{0}, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", TeamUtility.IO.InputManager.VERSION);
-			EditorUtility.DisplayDialog("About", message, "OK");
+			_name = name;
+			_joystickAxis = joystickAxis;
+			_key = KeyCode.None;
+			_scanType = MappingWizard.ScanType.Axis;
 		}
 	}
 }

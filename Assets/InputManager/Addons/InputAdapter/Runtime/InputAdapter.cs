@@ -617,7 +617,7 @@ namespace TeamUtility.IO
 		}
 
 #if UNITY_EDITOR
-		[UnityEditor.MenuItem("Team Utility/Input Manager/Create Input Adapter", false, 2)]
+		[UnityEditor.MenuItem("Team Utility/Input Manager/Create Input Adapter", false, 3)]
 		private static void Create()
 		{
 			GameObject gameObject = new GameObject("Input Adapter");

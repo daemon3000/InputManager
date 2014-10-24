@@ -59,7 +59,7 @@ namespace TeamUtility.Editor
 		[SerializeField] private List<SearchResult> _searchResults;
 		[SerializeField] private List<bool> _configurationFoldouts;
 		[SerializeField] private List<int> _selectionPath;
-		[SerializeField] private Vector2 _hierarchiScrollPos = Vector2.zero;
+		[SerializeField] private Vector2 _hierarchyScrollPos = Vector2.zero;
 		[SerializeField] private Vector2 _mainPanelScrollPos = Vector2.zero;
 		[SerializeField] private float _hierarchyPanelWidth = _menuWidth * 2;
 		[SerializeField] private Texture2D _highlightTexture;
@@ -71,7 +71,7 @@ namespace TeamUtility.Editor
 		private float _minCursorRectWidth = 10.0f;
 		private float _maxCursorRectWidth = 50.0f;
 		private float _toolbarHeight = 18.0f;
-		private bool _isResizingHierarchy;
+		private bool _isResizingHierarchy = false;
 		private bool _editingPositiveKey = false;
 		private bool _editingAltPositiveKey = false;
 		private bool _editingNegativeKey = false;
@@ -150,7 +150,7 @@ namespace TeamUtility.Editor
 		private void OnDestroy()
 		{
 			IsOpen = false;
-			UnityEngine.Object.DestroyImmediate(_highlightTexture);
+			Texture2D.DestroyImmediate(_highlightTexture);
 			_highlightTexture = null;
 		}
 		
@@ -544,7 +544,7 @@ namespace TeamUtility.Editor
 				Rect scrollView = new Rect(screenRect.x, screenRect.y + 5.0f, screenRect.width, position.height - screenRect.y);
 			
 				GUILayout.BeginArea(scrollView);
-				_hierarchiScrollPos = EditorGUILayout.BeginScrollView(_hierarchiScrollPos);
+				_hierarchyScrollPos = EditorGUILayout.BeginScrollView(_hierarchyScrollPos);
 				GUILayout.Space(5.0f);
 				for(int i = 0; i < _searchResults.Count; i++)
 				{
@@ -578,7 +578,7 @@ namespace TeamUtility.Editor
 			
 			GUI.Box(screenRect, "");
 			GUILayout.BeginArea(scrollView);
-			_hierarchiScrollPos = EditorGUILayout.BeginScrollView(_hierarchiScrollPos);
+			_hierarchyScrollPos = EditorGUILayout.BeginScrollView(_hierarchyScrollPos);
 			GUILayout.Space(5.0f);
 			for(int i = 0; i < _inputManager.inputConfigurations.Count; i++)
 			{

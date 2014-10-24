@@ -56,7 +56,10 @@ The *InputManager* class provides the following methods and variables, in additi
 ### Input Adapter
 This addon manages keyboard and XBox controller input and features seamless transition between one and the other during play time.
 
-**For more information about the *Input Adapter* addon visit the Wiki.**
+### Joystick Mapping
+This addon allows you to map joystick buttons to key codes and axes.
+
+**For more information about the addons visit the Wiki.**
 
 ## Platforms
 Tested on Linux, Windows, Mac OSX and WebPlayer. Only for Unity 4.

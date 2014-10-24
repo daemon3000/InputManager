@@ -3,6 +3,7 @@ Library/*
 Temp/*
 Assets/Tests/*
 Assets/Tests*
+JoystickMappings/*
 
 #Junk files
 Assets/Tests.meta

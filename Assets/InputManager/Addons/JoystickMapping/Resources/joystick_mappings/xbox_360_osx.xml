@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Mapping name="XBox 360 OSX">
+	<Axis name="Button A" key="JoystickButton16" joystickAxis="-1" scanType="Button" />
+	<Axis name="Button B" key="JoystickButton17" joystickAxis="-1" scanType="Button" />
+	<Axis name="Button X" key="JoystickButton18" joystickAxis="-1" scanType="Button" />
+	<Axis name="Button Y" key="JoystickButton19" joystickAxis="-1" scanType="Button" />
+	<Axis name="Left Bumper" key="JoystickButton13" joystickAxis="-1" scanType="Button" />
+	<Axis name="Right Bumper" key="JoystickButton14" joystickAxis="-1" scanType="Button" />
+	<Axis name="Back" key="JoystickButton10" joystickAxis="-1" scanType="Button" />
+	<Axis name="Start" key="JoystickButton9" joystickAxis="-1" scanType="Button" />
+	<Axis name="Left Stick Button" key="JoystickButton11" joystickAxis="-1" scanType="Button" />
+	<Axis name="Right Stick Button" key="JoystickButton12" joystickAxis="-1" scanType="Button" />
+	<Axis name="DPAD Up" key="JoystickButton5" joystickAxis="-1" scanType="Button" />
+	<Axis name="DPAD Down" key="JoystickButton6" joystickAxis="-1" scanType="Button" />
+	<Axis name="DPAD Left" key="JoystickButton7" joystickAxis="-1" scanType="Button" />
+	<Axis name="DPAD Right" key="JoystickButton8" joystickAxis="-1" scanType="Button" />
+	<Axis name="Left Stick Vertical" key="None" joystickAxis="1" scanType="Axis" />
+	<Axis name="Left Stick Horizontal" key="None" joystickAxis="0" scanType="Axis" />
+	<Axis name="Right Stick Vertical" key="None" joystickAxis="3" scanType="Axis" />
+	<Axis name="Right Stick Horizontal" key="None" joystickAxis="2" scanType="Axis" />
+	<Axis name="Left Trigger" key="None" joystickAxis="4" scanType="Axis" />
+	<Axis name="Right Trigger" key="None" joystickAxis="5" scanType="Axis" />
+</Mapping>

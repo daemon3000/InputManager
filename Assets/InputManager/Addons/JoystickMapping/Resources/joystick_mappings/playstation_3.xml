@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Mapping name="Playstation 3">
+	<Axis name="Triangle" key="JoystickButton0" joystickAxis="-1" scanType="Button" />
+	<Axis name="Circle" key="JoystickButton1" joystickAxis="-1" scanType="Button" />
+	<Axis name="X" key="JoystickButton2" joystickAxis="-1" scanType="Button" />
+	<Axis name="Square" key="JoystickButton3" joystickAxis="-1" scanType="Button" />
+	<Axis name="L1" key="JoystickButton6" joystickAxis="-1" scanType="Button" />
+	<Axis name="L2" key="JoystickButton4" joystickAxis="-1" scanType="Button" />
+	<Axis name="L3" key="JoystickButton10" joystickAxis="-1" scanType="Button" />
+	<Axis name="R1" key="JoystickButton7" joystickAxis="-1" scanType="Button" />
+	<Axis name="R2" key="JoystickButton5" joystickAxis="-1" scanType="Button" />
+	<Axis name="R3" key="JoystickButton11" joystickAxis="-1" scanType="Button" />
+	<Axis name="Select" key="JoystickButton8" joystickAxis="-1" scanType="Button" />
+	<Axis name="Start" key="JoystickButton9" joystickAxis="-1" scanType="Button" />
+	<Axis name="Left Stick Vertical" key="None" joystickAxis="0" scanType="Axis" />
+	<Axis name="Left Stick Horizontal" key="None" joystickAxis="1" scanType="Axis" />
+	<Axis name="Right Stick Vertical" key="None" joystickAxis="4" scanType="Axis" />
+	<Axis name="Right Stick Horizontal" key="None" joystickAxis="2" scanType="Axis" />
+	<Axis name="DPAD Vertical" key="None" joystickAxis="6" scanType="Axis" />
+	<Axis name="DPAD Horizontal" key="None" joystickAxis="5" scanType="Axis" />
+</Mapping>
