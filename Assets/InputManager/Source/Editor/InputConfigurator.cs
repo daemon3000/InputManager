@@ -177,9 +177,19 @@ namespace TeamUtility.Editor
 				fileMenu.AddDisabledItem(new GUIContent("Load Snapshot"));
 			}
 			fileMenu.AddSeparator("");
+			if(_inputManager.inputConfigurations.Count > 0)
+			{
+				fileMenu.AddItem(new GUIContent("Export"), false, HandleFileMenuOption, 3);
+			}
+			else
+			{
+				fileMenu.AddDisabledItem(new GUIContent("Export"));
+			}
+			fileMenu.AddItem(new GUIContent("Import"), false, HandleFileMenuOption, 4);
+			fileMenu.AddSeparator("");
 			
-			fileMenu.AddItem(new GUIContent("Forum"), false, HandleFileMenuOption, 3);
-			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 4);
+			fileMenu.AddItem(new GUIContent("Forum"), false, HandleFileMenuOption, 5);
+			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 6);
 			fileMenu.DropDown(position);
 		}
 		
@@ -198,9 +208,15 @@ namespace TeamUtility.Editor
 				EditorToolbox.LoadSnapshot(_inputManager);
 				break;
 			case 3:
-				MenuCommands.OpenForumPage();
+				ExportInputConfigurations();
 				break;
 			case 4:
+				ImportInputConfigurations();
+				break;
+			case 5:
+				MenuCommands.OpenForumPage();
+				break;
+			case 6:
 				MenuCommands.OpenAboutDialog();
 				break;
 			}
@@ -771,6 +787,26 @@ namespace TeamUtility.Editor
 				}
 				isEditing = false;
 			}
+		}
+
+		private void ExportInputConfigurations()
+		{
+			string file = EditorUtility.SaveFilePanel("Export input profile", "", "profile.xml", "xml");
+			if(string.IsNullOrEmpty(file))
+				return;
+
+			InputSaverXML inputSaver = new InputSaverXML(file);
+			inputSaver.Save(_inputManager.inputConfigurations, _inputManager.defaultConfiguration);
+		}
+
+		private void ImportInputConfigurations()
+		{
+			string file = EditorUtility.OpenFilePanel("Import input profile", "", "xml");
+			if(string.IsNullOrEmpty(file))
+				return;
+
+			InputLoaderXML inputLoader = new InputLoaderXML(file);
+			inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
 		}
 		
 		#endregion
