@@ -36,6 +36,7 @@ namespace TeamUtility.Editor
 	{
 		private SerializedProperty _intputConfigurations;
 		private SerializedProperty _dontDestroyOnLoad;
+		private SerializedProperty _ignoreTimescale;
 		private SerializedProperty _defaultConfiguration;
 		private GUIContent _gravityInfo = new GUIContent("Gravity", "The speed(in units/sec) at which a digital axis falls towards neutral.");
 		private GUIContent _sensitivityInfo = new GUIContent("Sensitivity", "The speed(in units/sec) at which an axis moves towards the target value.");
@@ -54,6 +55,7 @@ namespace TeamUtility.Editor
 			EditorToolbox.ShowStartupWarning();
 			_intputConfigurations = serializedObject.FindProperty("inputConfigurations");
 			_dontDestroyOnLoad = serializedObject.FindProperty("dontDestroyOnLoad");
+			_ignoreTimescale = serializedObject.FindProperty("ignoreTimescale");
 			_defaultConfiguration = serializedObject.FindProperty("defaultConfiguration");
 		}
 		
@@ -86,6 +88,7 @@ namespace TeamUtility.Editor
 			GUILayout.Space(5.0f);
 			EditorGUILayout.PropertyField(_defaultConfiguration);
 			EditorGUILayout.PropertyField(_dontDestroyOnLoad);
+			EditorGUILayout.PropertyField(_ignoreTimescale);
 			EditorGUILayout.PropertyField(_intputConfigurations);
 			if(_intputConfigurations.isExpanded)
 			{

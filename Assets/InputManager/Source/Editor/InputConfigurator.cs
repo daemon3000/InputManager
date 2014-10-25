@@ -256,6 +256,7 @@ namespace TeamUtility.Editor
 			
 			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 4);
 			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 5);
+			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 6);
 			editMenu.DropDown(position);
 		}
 		
@@ -281,6 +282,9 @@ namespace TeamUtility.Editor
 				break;
 			case 5:
 				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
+				break;
+			case 6:
+				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
 				break;
 			}
 		}

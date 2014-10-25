@@ -45,7 +45,7 @@ namespace TeamUtility.IO
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
-		public const string VERSION = "1.6.0.0";
+		public const string VERSION = "1.6.1.0";
 		
 		public enum ScanType
 		{
@@ -60,6 +60,7 @@ namespace TeamUtility.IO
 		public List<InputConfiguration> inputConfigurations;
 		public string defaultConfiguration;
 		public bool dontDestroyOnLoad;
+		public bool ignoreTimescale;
 		
 		private static InputManager _instance;
 		private float _scanTimeout;
@@ -234,7 +235,14 @@ namespace TeamUtility.IO
 			}
 			if(_scanType != ScanType.None)
 			{
-				_scanTimeout -= Time.deltaTime;
+				if(ignoreTimescale)
+				{
+					_scanTimeout -= Time.unscaledDeltaTime;
+				}
+				else
+				{
+					_scanTimeout -= Time.deltaTime;
+				}
 				switch(_scanType)
 				{
 				case ScanType.Key:
@@ -372,7 +380,15 @@ namespace TeamUtility.IO
 				return _instance;
 			}
 		}
-		
+
+		public static bool IgnoreTimescale
+		{
+			get
+			{
+				return _instance.ignoreTimescale;
+			}
+		}
+
 		public static bool IsScanning
 		{
 			get

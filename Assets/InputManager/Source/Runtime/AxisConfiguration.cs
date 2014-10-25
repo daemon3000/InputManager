@@ -126,13 +126,15 @@ namespace TeamUtility.IO
 		
 		private void UpdateDigitalAxisValue()
 		{
+			float deltaTime = InputManager.IgnoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
+
 			if(Input.GetKey(positive) || Input.GetKey(altPositive))
 			{
 				if(_value < Neutral && snap) {
 					_value = Neutral;
 				}
-				
-				_value += sensitivity * Time.deltaTime;
+
+				_value += sensitivity * deltaTime;
 				if(_value > Positive)
 				{
 					_value = Positive;
@@ -144,7 +146,7 @@ namespace TeamUtility.IO
 					_value = Neutral;
 				}
 				
-				_value -= sensitivity * Time.deltaTime;
+				_value -= sensitivity * deltaTime;
 				if(_value < Negative)
 				{
 					_value = Negative;
@@ -154,7 +156,7 @@ namespace TeamUtility.IO
 			{
 				if(_value < Neutral)
 				{
-					_value += gravity * Time.deltaTime;
+					_value += gravity * deltaTime;
 					if(_value > Neutral)
 					{
 						_value = Neutral;
@@ -162,7 +164,7 @@ namespace TeamUtility.IO
 				}
 				else if( _value > Neutral)
 				{
-					_value -= gravity * Time.deltaTime;
+					_value -= gravity * deltaTime;
 					if(_value < Neutral)
 					{
 						_value = Neutral;
