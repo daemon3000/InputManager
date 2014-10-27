@@ -32,14 +32,16 @@ namespace TeamUtility.IO
 	{
 		public string name;
 		public List<AxisConfiguration> axes;
+		public bool isExpanded;
 		
 		public InputConfiguration() :
 			this("New Configuration") { }
 		
 		public InputConfiguration(string name)
 		{
-			this.name = name;
 			axes = new List<AxisConfiguration>();
+			this.name = name;
+			isExpanded = false;
 		}
 		
 		public static InputConfiguration Duplicate(InputConfiguration source)

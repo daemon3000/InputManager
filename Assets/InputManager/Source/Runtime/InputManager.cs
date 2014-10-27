@@ -45,7 +45,7 @@ namespace TeamUtility.IO
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
-		public const string VERSION = "1.6.2.0";
+		public const string VERSION = "1.6.3.0";
 		
 		public enum ScanType
 		{

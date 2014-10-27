@@ -57,7 +57,6 @@ namespace TeamUtility.Editor
 		#region [Fields]
 		[SerializeField] private InputManager _inputManager;
 		[SerializeField] private List<SearchResult> _searchResults;
-		[SerializeField] private List<bool> _configurationFoldouts;
 		[SerializeField] private List<int> _selectionPath;
 		[SerializeField] private Vector2 _hierarchyScrollPos = Vector2.zero;
 		[SerializeField] private Vector2 _mainPanelScrollPos = Vector2.zero;
@@ -93,11 +92,6 @@ namespace TeamUtility.Editor
 			{
 				_inputManager = UnityEngine.Object.FindObjectOfType(typeof(InputManager)) as InputManager;
 			}
-			if(_configurationFoldouts == null)
-			{
-				_configurationFoldouts = new List<bool>();
-				UpdateFoldouts();
-			}
 			if(_selectionPath == null)
 			{
 				_selectionPath = new List<int>();
@@ -112,15 +106,6 @@ namespace TeamUtility.Editor
 			}
 		}
 
-		private void UpdateFoldouts()
-		{
-			_configurationFoldouts.Clear();
-			for(int i = 0; i < _inputManager.inputConfigurations.Count; i++)
-			{
-				_configurationFoldouts.Add(false);
-			}
-		}
-		
 		private void CreateHighlightTexture()
 		{
 			_highlightTexture = new Texture2D(1, 1);
@@ -156,8 +141,8 @@ namespace TeamUtility.Editor
 
 		public void AddInputConfiguration(InputConfiguration configuration)
 		{
+			configuration.isExpanded = true;
 			_inputManager.inputConfigurations.Add(configuration);
-			_configurationFoldouts.Add(false);
 			_selectionPath.Clear();
 			_selectionPath.Add(_inputManager.inputConfigurations.Count - 1);
 			Repaint();
@@ -268,11 +253,12 @@ namespace TeamUtility.Editor
 			{
 				editMenu.AddDisabledItem(new GUIContent("Delete                Del"));
 			}
+			editMenu.AddItem(new GUIContent("Delete All"), false, HandleEditMenuOption, 4);
 			editMenu.AddSeparator("");
 			
-			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 4);
-			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 5);
-			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 6);
+			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 5);
+			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 6);
+			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 7);
 			editMenu.DropDown(position);
 		}
 		
@@ -294,12 +280,15 @@ namespace TeamUtility.Editor
 				Delete();
 				break;
 			case 4:
-				Selection.activeGameObject = _inputManager.gameObject;
+				DeleteAll();
 				break;
 			case 5:
-				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
+				Selection.activeGameObject = _inputManager.gameObject;
 				break;
 			case 6:
+				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
+				break;
+			case 7:
 				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
 				break;
 			}
@@ -308,7 +297,6 @@ namespace TeamUtility.Editor
 		private void CreateNewInputConfiguration()
 		{
 			_inputManager.inputConfigurations.Add(new InputConfiguration());
-			_configurationFoldouts.Add(false);
 			_selectionPath.Clear();
 			_selectionPath.Add(_inputManager.inputConfigurations.Count - 1);
 			Repaint();
@@ -320,7 +308,7 @@ namespace TeamUtility.Editor
 			{
 				InputConfiguration inputConfig = _inputManager.inputConfigurations[_selectionPath[0]];
 				inputConfig.axes.Add(new AxisConfiguration());
-				_configurationFoldouts[_selectionPath[0]] = true;
+				inputConfig.isExpanded = true;
 				if(_selectionPath.Count == 2) {
 					_selectionPath[1] = inputConfig.axes.Count - 1;
 				}
@@ -366,14 +354,12 @@ namespace TeamUtility.Editor
 			if(_selectionPath[0] < _inputManager.inputConfigurations.Count - 1)
 			{
 				_inputManager.inputConfigurations.Insert(_selectionPath[0] + 1, inputConfig);
-			_configurationFoldouts.Insert(_selectionPath[0] + 1, false);
 				
 				_selectionPath[0]++;
 			}
 			else
 			{
 				_inputManager.inputConfigurations.Add(inputConfig);
-				_configurationFoldouts.Add(false);
 				_selectionPath[0] = _inputManager.inputConfigurations.Count - 1;
 			}
 			Repaint();
@@ -384,7 +370,6 @@ namespace TeamUtility.Editor
 			if(_selectionPath.Count == 1)
 			{
 				_inputManager.inputConfigurations.RemoveAt(_selectionPath[0]);
-				_configurationFoldouts.RemoveAt(_selectionPath[0]);
 				Repaint();
 			}
 			else if(_selectionPath.Count == 2)
@@ -392,10 +377,20 @@ namespace TeamUtility.Editor
 				_inputManager.inputConfigurations[_selectionPath[0]].axes.RemoveAt(_selectionPath[1]);
 				Repaint();
 			}
+			if(_inputManager.inputConfigurations.Count == 0)
+			{
+				_inputManager.defaultConfiguration = string.Empty;
+			}
 			_selectionPath.Clear();
 		}
 		
-		
+		private void DeleteAll()
+		{
+			_inputManager.inputConfigurations.Clear();
+			_inputManager.defaultConfiguration = string.Empty;
+			_selectionPath.Clear();
+			Repaint();
+		}
 		
 		private void UpdateSearchResults()
 		{
@@ -420,11 +415,6 @@ namespace TeamUtility.Editor
 		{
 			if(_inputManager == null)
 				return;
-			
-			if(_configurationFoldouts.Count != _inputManager.inputConfigurations.Count)
-			{
-				UpdateFoldouts();
-			}
 			
 #if UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
 			Undo.SetSnapshotTarget(_inputManager, "InputManager");
@@ -597,7 +587,7 @@ namespace TeamUtility.Editor
 			DisplayHierarchyInputConfigItem(screenRect, result.configuration, 
 											_inputManager.inputConfigurations[result.configuration].name);
 				
-			if(_configurationFoldouts[result.configuration])
+			if(_inputManager.inputConfigurations[result.configuration].isExpanded)
 			{
 				for(int i = 0; i < result.axes.Count; i++)
 				{
@@ -620,7 +610,7 @@ namespace TeamUtility.Editor
 			{
 				DisplayHierarchyInputConfigItem(screenRect, i, _inputManager.inputConfigurations[i].name);
 				
-				if(_configurationFoldouts[i])
+				if(_inputManager.inputConfigurations[i].isExpanded)
 				{
 					for(int j = 0; j < _inputManager.inputConfigurations[i].axes.Count; j++)
 					{
@@ -657,11 +647,11 @@ namespace TeamUtility.Editor
 					CreateHighlightTexture();
 				}
 				GUI.DrawTexture(configPos, _highlightTexture, ScaleMode.StretchToFill);
-				_configurationFoldouts[index] = EditorGUI.Foldout(configPos, _configurationFoldouts[index], name, _whiteFoldout);
+				_inputManager.inputConfigurations[index].isExpanded = EditorGUI.Foldout(configPos, _inputManager.inputConfigurations[index].isExpanded, name, _whiteFoldout);
 			}
 			else
 			{
-				_configurationFoldouts[index] = EditorGUI.Foldout(configPos, _configurationFoldouts[index], name);
+				_inputManager.inputConfigurations[index].isExpanded = EditorGUI.Foldout(configPos, _inputManager.inputConfigurations[index].isExpanded, name);
 			}
 		}
 		
