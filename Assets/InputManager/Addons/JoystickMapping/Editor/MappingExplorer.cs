@@ -164,14 +164,7 @@ namespace TeamUtility.Editor.IO
 
 			UpdateMappingListWidth();
 			DisplaySelectedMappingContent(mappingContentsPosition);
-			if(_searchString.Length > 0)
-			{
-				DisplaySearchResults(mappingListPosition);
-			}
-			else
-			{
-				DisplayMappingList(mappingListPosition);
-			}
+			DisplayMappingList(mappingListPosition);
 			DisplayToolbar(toolbarPosition);
 		}
 
@@ -230,40 +223,28 @@ namespace TeamUtility.Editor.IO
 			}
 		}
 
-		private void DisplaySearchResults(Rect screenRect)
-		{
-			Rect bgPosition = new Rect(0.0f, _toolbarHeight - 5.0f, _mappingListWidth, position.height - _toolbarHeight + 10.0f);
-			GUI.Box(bgPosition, "");
-
-			if(_searchResults.Count > 0)
-			{
-				Rect scrollView = new Rect(screenRect.x, screenRect.y + 5.0f, screenRect.width, position.height - screenRect.y);
-				
-				GUILayout.BeginArea(scrollView);
-				_mappingListScrollPos = EditorGUILayout.BeginScrollView(_mappingListScrollPos);
-				GUILayout.Space(5.0f);
-				for(int i = 0; i < _searchResults.Count; i++)
-				{
-					DisplayMapping(screenRect, _searchResults[i]);
-				}
-				GUILayout.Space(5.0f);
-				EditorGUILayout.EndScrollView();
-				GUILayout.EndArea();
-			}
-		}
-
 		private void DisplayMappingList(Rect screenRect)
 		{
 			Rect bgPosition = new Rect(0.0f, _toolbarHeight - 5.0f, _mappingListWidth, position.height - _toolbarHeight + 10.0f);
 			GUI.Box(bgPosition, "");
 
-			Rect scrollView = new Rect(screenRect.x, screenRect.y + 5.0f, screenRect.width, position.height - screenRect.y);
+			Rect scrollView = new Rect(screenRect.x, screenRect.y, screenRect.width, position.height - screenRect.y);
 			GUILayout.BeginArea(scrollView);
 			_mappingListScrollPos = EditorGUILayout.BeginScrollView(_mappingListScrollPos);
 			GUILayout.Space(5.0f);
-			for(int i = 0; i < _mappings.Count; i++)
+			if(_searchString.Length > 0)
 			{
-				DisplayMapping(screenRect, i);
+				for(int i = 0; i < _searchResults.Count; i++)
+				{
+					DisplayMapping(screenRect, _searchResults[i]);
+				}
+			}
+			else
+			{
+				for(int i = 0; i < _mappings.Count; i++)
+				{
+					DisplayMapping(screenRect, i);
+				}
 			}
 			GUILayout.Space(5.0f);
 			EditorGUILayout.EndScrollView();
@@ -279,7 +260,6 @@ namespace TeamUtility.Editor.IO
 				{
 					_selection = index;
 					_mappingContentsScrollPos = Vector2.zero;
-					_mappingListScrollPos = Vector2.zero;
 					Repaint();
 				}
 			}

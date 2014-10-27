@@ -153,6 +153,15 @@ namespace TeamUtility.Editor
 			Texture2D.DestroyImmediate(_highlightTexture);
 			_highlightTexture = null;
 		}
+
+		public void AddInputConfiguration(InputConfiguration configuration)
+		{
+			_inputManager.inputConfigurations.Add(configuration);
+			_configurationFoldouts.Add(false);
+			_selectionPath.Clear();
+			_selectionPath.Add(_inputManager.inputConfigurations.Count - 1);
+			Repaint();
+		}
 		
 		#region [Menus]
 		private void CreateFileMenu(Rect position)
@@ -179,17 +188,21 @@ namespace TeamUtility.Editor
 			fileMenu.AddSeparator("");
 			if(_inputManager.inputConfigurations.Count > 0)
 			{
-				fileMenu.AddItem(new GUIContent("Export"), false, HandleFileMenuOption, 3);
+				fileMenu.AddItem(new GUIContent("Export Input Configurations"), false, HandleFileMenuOption, 3);
 			}
 			else
 			{
-				fileMenu.AddDisabledItem(new GUIContent("Export"));
+				fileMenu.AddDisabledItem(new GUIContent("Export Input Configurations"));
 			}
-			fileMenu.AddItem(new GUIContent("Import"), false, HandleFileMenuOption, 4);
+			fileMenu.AddItem(new GUIContent("Import Input Configurations"), false, HandleFileMenuOption, 4);
+			if(EditorToolbox.HasJoystickMappingAddon())
+			{
+				fileMenu.AddItem(new GUIContent("Import Joystick Mapping"), false, HandleFileMenuOption, 5);
+			}
 			fileMenu.AddSeparator("");
 			
-			fileMenu.AddItem(new GUIContent("Forum"), false, HandleFileMenuOption, 5);
-			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 6);
+			fileMenu.AddItem(new GUIContent("Forum"), false, HandleFileMenuOption, 6);
+			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 7);
 			fileMenu.DropDown(position);
 		}
 		
@@ -214,9 +227,12 @@ namespace TeamUtility.Editor
 				ImportInputConfigurations();
 				break;
 			case 5:
-				MenuCommands.OpenForumPage();
+				EditorToolbox.OpenImportJoystickMappingWindow(this);
 				break;
 			case 6:
+				MenuCommands.OpenForumPage();
+				break;
+			case 7:
 				MenuCommands.OpenAboutDialog();
 				break;
 			}
@@ -255,8 +271,8 @@ namespace TeamUtility.Editor
 			editMenu.AddSeparator("");
 			
 			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 4);
-			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 5);
-			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 6);
+			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 5);
+			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 6);
 			editMenu.DropDown(position);
 		}
 		
@@ -281,10 +297,10 @@ namespace TeamUtility.Editor
 				Selection.activeGameObject = _inputManager.gameObject;
 				break;
 			case 5:
-				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
+				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
 				break;
 			case 6:
-				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
+				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
 				break;
 			}
 		}
@@ -812,7 +828,6 @@ namespace TeamUtility.Editor
 			InputLoaderXML inputLoader = new InputLoaderXML(file);
 			inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
 		}
-		
 		#endregion
 		
 		#region [Static Interface]

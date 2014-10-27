@@ -24,6 +24,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Collections;
 using TeamUtility.IO;
@@ -33,7 +34,7 @@ namespace TeamUtility.Editor.IO.InputManager
 	public static class EditorToolbox
 	{
 		private static string _snapshotFile;
-		
+
 		public static bool CanLoadSnapshot()
 		{
 			if(_snapshotFile == null)
@@ -126,6 +127,32 @@ namespace TeamUtility.Editor.IO.InputManager
 			{
 				EditorGUILayout.TextField(label, currentKey == KeyCode.None ? string.Empty : currentKey.ToString());
 			}
+		}
+
+		public static bool HasJoystickMappingAddon()
+		{
+			return GetMappingImporterWindowType() != null;
+		}
+
+		public static void OpenImportJoystickMappingWindow(InputConfigurator configurator)
+		{
+			Type type = GetMappingImporterWindowType();
+			if(type == null)
+				return;
+
+			MethodInfo methodInfo = type.GetMethod("Open", BindingFlags.Static | BindingFlags.Public);
+			if(methodInfo == null)
+			{
+				Debug.LogError("Unable to open joystick mapping import window");
+			}
+
+			methodInfo.Invoke(null, new object[] { configurator });
+		}
+
+		private static Type GetMappingImporterWindowType()
+		{
+			Assembly assembly = Assembly.GetExecutingAssembly();
+			return Array.Find<Type>(assembly.GetTypes(), (type) => { return type.Name == "MappingImportWindow"; });
 		}
 		
 		/// <summary>
