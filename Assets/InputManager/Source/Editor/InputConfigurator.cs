@@ -141,7 +141,6 @@ namespace TeamUtility.Editor
 
 		public void AddInputConfiguration(InputConfiguration configuration)
 		{
-			configuration.isExpanded = true;
 			_inputManager.inputConfigurations.Add(configuration);
 			_selectionPath.Clear();
 			_selectionPath.Add(_inputManager.inputConfigurations.Count - 1);
@@ -344,6 +343,10 @@ namespace TeamUtility.Editor
 				inputConfig.axes.Add(axisConfig);
 				_selectionPath[1] = inputConfig.axes.Count - 1;
 			}
+			if(_searchString.Length > 0)
+			{
+				UpdateSearchResults();
+			}
 			Repaint();
 		}
 		
@@ -361,6 +364,10 @@ namespace TeamUtility.Editor
 			{
 				_inputManager.inputConfigurations.Add(inputConfig);
 				_selectionPath[0] = _inputManager.inputConfigurations.Count - 1;
+			}
+			if(_searchString.Length > 0)
+			{
+				UpdateSearchResults();
 			}
 			Repaint();
 		}
@@ -382,6 +389,10 @@ namespace TeamUtility.Editor
 				_inputManager.defaultConfiguration = string.Empty;
 			}
 			_selectionPath.Clear();
+			if(_searchString.Length > 0)
+			{
+				UpdateSearchResults();
+			}
 		}
 		
 		private void DeleteAll()
@@ -389,6 +400,10 @@ namespace TeamUtility.Editor
 			_inputManager.inputConfigurations.Clear();
 			_inputManager.defaultConfiguration = string.Empty;
 			_selectionPath.Clear();
+			if(_searchString.Length > 0)
+			{
+				UpdateSearchResults();
+			}
 			Repaint();
 		}
 		
@@ -399,7 +414,7 @@ namespace TeamUtility.Editor
 			for(int i = 0; i < _inputManager.inputConfigurations.Count; i++)
 			{
 				IEnumerable<int> axes = from a in _inputManager.inputConfigurations[i].axes
-										where a.name.StartsWith(_searchString, StringComparison.InvariantCultureIgnoreCase)
+										where (a.name.IndexOf(_searchString, System.StringComparison.InvariantCultureIgnoreCase) >= 0)
 										select _inputManager.inputConfigurations[i].axes.IndexOf(a);
 				
 				if(axes.Count() > 0)
@@ -815,8 +830,35 @@ namespace TeamUtility.Editor
 			if(string.IsNullOrEmpty(file))
 				return;
 
-			InputLoaderXML inputLoader = new InputLoaderXML(file);
-			inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+			bool replace = EditorUtility.DisplayDialog("Replace or Append", "Do you want to replace the current input configrations?", "Replace", "Append");
+			if(replace)
+			{
+				InputLoaderXML inputLoader = new InputLoaderXML(file);
+				inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+				_selectionPath.Clear();
+			}
+			else
+			{
+				List<InputConfiguration> configurations;
+				string defaultConfig;
+
+				InputLoaderXML inputLoader = new InputLoaderXML(file);
+				inputLoader.Load(out configurations, out defaultConfig);
+				if(configurations != null && configurations.Count > 0)
+				{
+					foreach(var config in configurations)
+					{
+						_inputManager.inputConfigurations.Add(config);
+					}
+
+				}
+			}
+
+			if(_searchString.Length > 0)
+			{
+				UpdateSearchResults();
+			}
+			Repaint();
 		}
 		#endregion
 		
