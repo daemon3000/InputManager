@@ -62,7 +62,7 @@ This addon allows you to map joystick buttons to key codes and axes.
 **For more information about the addons visit the Wiki.**
 
 ## Platforms
-Tested on Linux, Windows, Mac OSX and WebPlayer. Only for Unity 4.
+Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX and WebPlayer. Only for Unity 4.
 
 ## License
 This software is released under the [MIT license](http://opensource.org/licenses/MIT). You can find a copy of the license in the LICENSE file included in the *InputManager* source distribution.

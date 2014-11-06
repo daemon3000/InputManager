@@ -148,7 +148,10 @@ PlayerSettings:
   psp2PackagedResourcesPath: 
   flashStrippingLevel: 2
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: 
+    2: 
+    14: 
   metroPackageName: InputManager
   metroPackageLogo: 
   metroPackageLogo140: 

@@ -21,6 +21,7 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
+using System.IO;
 using System.Xml;
 using System.Collections.Generic;
 
@@ -33,8 +34,8 @@ namespace TeamUtility.IO
 			Button, Axis
 		}
 
-		[SerializeField] private TextAsset _testDefinition;
-		[SerializeField] private GUISkin _guiSkin;
+		[SerializeField] private TextAsset _testDefinition = null;
+		[SerializeField] private GUISkin _guiSkin = null;
 
 		[SerializeField] 
 		[Range(0.1f, 1.0f)]
@@ -221,30 +222,59 @@ namespace TeamUtility.IO
 			XmlWriterSettings settings = new XmlWriterSettings();
 			settings.Encoding = System.Text.Encoding.UTF8;
 			settings.Indent = true;
-			
-			using(XmlWriter writer = CreateXmlWriter(settings))
+
+#if UNITY_WINRT && !UNITY_EDITOR
+			MemoryStream outputStream;
+			string outputFile;
+			XmlWriter writer = CreateXmlWriter(settings, out outputStream, out outputFile);
+#else
+			XmlWriter writer = CreateXmlWriter(settings);
+#endif
+
+			writer.WriteStartDocument(true);
+			writer.WriteStartElement("Mapping");
+			writer.WriteAttributeString("name", _mappingName);
+			for(int i = 0; i < _results.Length; i++)
 			{
-				writer.WriteStartDocument(true);
-				writer.WriteStartElement("Mapping");
-				writer.WriteAttributeString("name", _mappingName);
-				for(int i = 0; i < _results.Length; i++)
-				{
-					WriteMappingResult(_results[i], writer);
-				}
-				
-				writer.WriteEndElement();
-				writer.WriteEndDocument();
+				WriteMappingResult(_results[i], writer);
 			}
+			
+			writer.WriteEndElement();
+			writer.WriteEndDocument();
+
+#if UNITY_WINRT && !UNITY_EDITOR
+			UnityEngine.Windows.File.WriteAllBytes(outputFile, outputStream.ToArray());
+			outputStream.Dispose();
+			writer.Dispose();
+#else
+			writer.Close();
+#endif
 		}
 
+#if UNITY_WINRT && !UNITY_EDITOR
+		private XmlWriter CreateXmlWriter(XmlWriterSettings settings, out MemoryStream stream, out string filename)
+		{
+			string folder = Application.dataPath.Substring(0, Application.dataPath.Length - 6) + "JoystickMappings/";
+			filename = folder + _mappingName.ToLower().Replace(' ', '_') + ".xml";
+			stream = new MemoryStream();
+
+			if(!UnityEngine.Windows.Directory.Exists(folder))
+				UnityEngine.Windows.Directory.CreateDirectory(folder);
+
+			return XmlWriter.Create(stream);
+		}
+#else
 		private XmlWriter CreateXmlWriter(XmlWriterSettings settings)
 		{
 			string folder = Application.dataPath.Substring(0, Application.dataPath.Length - 6) + "JoystickMappings/";
-			if(!System.IO.Directory.Exists(folder))
-				System.IO.Directory.CreateDirectory(folder);
+			string file = folder + _mappingName.ToLower().Replace(' ', '_') + ".xml";
 
-			return XmlWriter.Create(folder + _mappingName.ToLower().Replace(' ', '_') + ".xml", settings);
+			if(!Directory.Exists(folder))
+				Directory.CreateDirectory(folder);
+
+			return XmlWriter.Create(file, settings);
 		}
+#endif
 
 		private void WriteMappingResult(AxisMapping result, XmlWriter writer)
 		{

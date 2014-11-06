@@ -4,6 +4,7 @@ Temp/*
 Assets/Tests/*
 Assets/Tests*
 JoystickMappings/*
+Build/*
 
 #Junk files
 Assets/Tests.meta
@@ -15,4 +16,6 @@ Assembly-Boo*
 *.usertasks
 *.orig.meta
 *.orig
+*.pfx
+*.pfx.meta
 

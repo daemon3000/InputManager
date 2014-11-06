@@ -33,7 +33,7 @@ namespace TeamUtility.IO
 		private string _filename;
 		private Stream _inputStream;
 		private TextReader _textReader;
-		
+
 		public InputLoaderXML(string filename)
 		{
 			if(filename == null)
@@ -43,7 +43,7 @@ namespace TeamUtility.IO
 			_inputStream = null;
 			_textReader = null;
 		}
-		
+
 		public InputLoaderXML(Stream stream)
 		{
 			if(stream == null)
@@ -63,7 +63,7 @@ namespace TeamUtility.IO
 			_inputStream = null;
 			_textReader = reader;
 		}
-		
+
 		public void Load(out List<InputConfiguration> inputConfigurations, out string defaultConfig)
 		{
 			using(XmlReader reader = CreateXmlReader())
@@ -98,7 +98,7 @@ namespace TeamUtility.IO
 			{
 				return XmlReader.Create(_textReader);
 			}
-			
+
 			return null;
 		}
 		

@@ -54,13 +54,13 @@ namespace TeamUtility.IO
 		private float updateJoystickCountInterval = 1.0f;
 		
 		[SerializeField]
-		private string keyboardConfiguration;
+		private string keyboardConfiguration = string.Empty;
 		
 		[SerializeField]
-		private string windowsJoystickConfiguration;
+		private string windowsJoystickConfiguration = string.Empty;
 		
 		[SerializeField]
-		private string osxJoystickConfiguration;
+		private string osxJoystickConfiguration = string.Empty;
 		
 		private Vector2 _lastDpadValues = Vector2.zero;
 		private Vector2 _currentDpadValues = Vector2.zero;

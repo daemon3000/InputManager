@@ -785,7 +785,11 @@ namespace TeamUtility.IO
 		/// </summary>
 		public static void Save()
 		{
+#if UNITY_WINRT && !UNITY_EDITOR
+			string filename = Application.persistentDataPath + "/input_config.xml";
+#else
 			string filename = System.IO.Path.Combine(Application.persistentDataPath, "input_config.xml");
+#endif
 			Save(new InputSaverXML(filename));
 		}
 		
@@ -811,11 +815,19 @@ namespace TeamUtility.IO
 		/// </summary>
 		public static void Load()
 		{
+#if UNITY_WINRT && !UNITY_EDITOR
+			string filename = Application.persistentDataPath + "/input_config.xml";
+			if(UnityEngine.Windows.File.Exists(filename))
+			{
+				Load(new InputLoaderXML(filename));
+			}
+#else
 			string filename = System.IO.Path.Combine(Application.persistentDataPath, "input_config.xml");
 			if(System.IO.File.Exists(filename))
 			{
 				Load(new InputLoaderXML(filename));
 			}
+#endif
 		}
 		
 		/// <summary>

@@ -45,13 +45,25 @@ namespace TeamUtility.IO
 
 		public void Load(string filename)
 		{
-			if(File.Exists(filename))
+#if UNITY_WINRT && !UNITY_EDITOR
+			if(UnityEngine.Windows.File.Exists(filename))
+			{
+				byte[] buffer = UnityEngine.Windows.File.ReadAllBytes(filename);
+				string xmlData = System.Text.Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+				if(!string.IsNullOrEmpty(xmlData))
+				{
+                    InternalLoad(xmlData);
+                }
+            }
+#else
+            if(File.Exists(filename))
 			{
 				using(StreamReader reader = File.OpenText(filename))
 				{
 					InternalLoad(reader.ReadToEnd());
 				}
 			}
+#endif
 		}
 
 		public void LoadFromResources(string path)

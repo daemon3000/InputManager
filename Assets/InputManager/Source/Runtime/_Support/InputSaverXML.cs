@@ -44,7 +44,7 @@ namespace TeamUtility.IO
 			_outputStream = null;
 			_output = null;
 		}
-		
+
 		public InputSaverXML(Stream stream)
 		{
 			if(stream == null)
@@ -84,13 +84,26 @@ namespace TeamUtility.IO
 				writer.WriteEndElement();
 				writer.WriteEndDocument();
 			}
+
+#if UNITY_WINRT && !UNITY_EDITOR
+			if(_filename != null && _outputStream != null && (_outputStream is MemoryStream))
+			{
+				UnityEngine.Windows.File.WriteAllBytes(_filename, ((MemoryStream)_outputStream).ToArray());
+				_outputStream.Dispose();
+			}
+#endif
 		}
 		
 		private XmlWriter CreateXmlWriter(XmlWriterSettings settings)
 		{
 			if(_filename != null)
 			{
-				return XmlWriter.Create(_filename, settings);
+#if UNITY_WINRT && !UNITY_EDITOR
+				_outputStream = new MemoryStream();
+				return XmlWriter.Create(_outputStream, settings);
+#else
+		        return XmlWriter.Create(_filename, settings);
+#endif
 			}
 			else if(_outputStream != null)
 			{
