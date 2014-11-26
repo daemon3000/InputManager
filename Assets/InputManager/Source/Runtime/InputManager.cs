@@ -988,6 +988,14 @@ namespace TeamUtility.IO
 				return Input.mousePosition;
 			}
 		}
+
+		public static bool mousePresent
+		{
+			get
+			{
+				return Input.mousePresent;
+			}
+		}
 		
 		public static bool multiTouchEnabled
 		{

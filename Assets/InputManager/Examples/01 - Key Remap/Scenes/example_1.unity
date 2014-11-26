@@ -4,13 +4,12 @@
 SceneSettings:
   m_ObjectHideFlags: 0
   m_PVSData: 
-  m_QueryMode: 1
   m_PVSObjectsArray: []
   m_PVSPortalsArray: []
   m_OcclusionBakeSettings:
-    viewCellSize: 1
-    bakeMode: 2
-    memoryUsage: 10485760
+    smallestOccluder: 5
+    smallestHole: .25
+    backfaceThreshold: 100
 --- !u!104 &2
 RenderSettings:
   m_Fog: 0
@@ -23,6 +22,7 @@ RenderSettings:
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: .5
   m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 0}
   m_ObjectHideFlags: 0
@@ -87,7 +87,7 @@ GameObject:
   - 124: {fileID: 341763443}
   - 81: {fileID: 341763442}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: camera_main
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +141,11 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
   m_HDR: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
 --- !u!4 &341763446
 Transform:
   m_ObjectHideFlags: 0
@@ -153,6 +157,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &418129356
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +168,7 @@ GameObject:
   - 4: {fileID: 418129357}
   - 132: {fileID: 418129358}
   m_Layer: 0
-  m_Name: GUI
+  m_Name: gui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,6 +185,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 1
 --- !u!132 &418129358
 GUIText:
   m_ObjectHideFlags: 0
@@ -213,7 +219,7 @@ GameObject:
   - 4: {fileID: 599007533}
   - 114: {fileID: 599007532}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: input_manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -289,8 +295,10 @@ MonoBehaviour:
       type: 0
       axis: 0
       joystick: 0
+    isExpanded: 0
   defaultConfiguration: Keyboard
   dontDestroyOnLoad: 0
+  ignoreTimescale: 0
 --- !u!4 &599007533
 Transform:
   m_ObjectHideFlags: 0
@@ -302,6 +310,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 2
 --- !u!1 &1377191281
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +322,7 @@ GameObject:
   - 132: {fileID: 1377191283}
   - 114: {fileID: 1377191284}
   m_Layer: 0
-  m_Name: ControlsMenu
+  m_Name: controls_menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,6 +339,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!132 &1377191283
 GUIText:
   m_ObjectHideFlags: 0

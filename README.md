@@ -7,7 +7,7 @@ The *InputManager* can have one or more input configurations(e.g. one for keyboa
 ### Setup
 1. Open the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. You don't need to export the "Examples" folder if you don't want to.
 2. Create a new *Input Manager* by going to *Team Utility/Input Manager* and selecting *Create Input Manager*.
-3. Open the *Advanced Editor* by going to *Team Utility/Input Manager* and selection *Open Advanced Editor*. The first time you open the *Advanced Editor* you will be prompted to overwrite your project's input settings. You can also do it from the *File* menu of the *Advanced Editor* at a later time.
+3. Open the *Advanced Editor* by going to *Team Utility/Input Manager* and selecting *Open Advanced Editor*. The first time you open the *Advanced Editor* you will be prompted to overwrite your project's input settings. You can also do it from the *File* menu of the *Advanced Editor* at a later time.
 4. Use the *Advanced Editor* to create new input configurations, buttons and axes.
 5. If this isn't a new project open it in MonoDevelop(or any IDE you use) and replace all calls to the *Input* class with calls to the *InputManager* class. *InputManager* provides the same public methods and variables so it should be as simple as doing a *Find and Replace*.
 
@@ -59,10 +59,13 @@ This addon manages keyboard and XBox controller input and features seamless tran
 ### Joystick Mapping
 This addon allows you to map joystick buttons to key codes and axes.
 
+### UI Input Modules
+Custom standalone input module for the new UI system in Unity 4.6.
+
 **For more information about the addons visit the Wiki.**
 
 ## Platforms
-Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX and WebPlayer. Only for Unity 4.
+Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX and WebPlayer. Requires the latest version of Unity.
 
 ## License
 This software is released under the [MIT license](http://opensource.org/licenses/MIT). You can find a copy of the license in the LICENSE file included in the *InputManager* source distribution.

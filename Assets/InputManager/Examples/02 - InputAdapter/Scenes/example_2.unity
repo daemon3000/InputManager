@@ -4,13 +4,12 @@
 SceneSettings:
   m_ObjectHideFlags: 0
   m_PVSData: 
-  m_QueryMode: 1
   m_PVSObjectsArray: []
   m_PVSPortalsArray: []
   m_OcclusionBakeSettings:
-    viewCellSize: 1
-    bakeMode: 2
-    memoryUsage: 10485760
+    smallestOccluder: 5
+    smallestHole: .25
+    backfaceThreshold: 100
 --- !u!104 &2
 RenderSettings:
   m_Fog: 0
@@ -23,6 +22,7 @@ RenderSettings:
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: .5
   m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 0}
   m_ObjectHideFlags: 0
@@ -101,6 +101,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1377294462}
+  m_RootOrder: 2
 --- !u!132 &227744077
 GUIText:
   m_ObjectHideFlags: 0
@@ -151,6 +152,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1377294462}
+  m_RootOrder: 3
 --- !u!132 &264470875
 GUIText:
   m_ObjectHideFlags: 0
@@ -187,7 +189,7 @@ GameObject:
   - 124: {fileID: 395967270}
   - 81: {fileID: 395967269}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: camera_main
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,7 +243,11 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
   m_HDR: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
 --- !u!4 &395967273
 Transform:
   m_ObjectHideFlags: 0
@@ -253,6 +259,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 2
 --- !u!1 &446832544
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +287,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1377294462}
+  m_RootOrder: 1
 --- !u!132 &446832546
 GUIText:
   m_ObjectHideFlags: 0
@@ -330,6 +338,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1377294462}
+  m_RootOrder: 0
 --- !u!132 &1149396674
 GUIText:
   m_ObjectHideFlags: 0
@@ -380,6 +389,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1377294462}
+  m_RootOrder: 4
 --- !u!132 &1277897724
 GUIText:
   m_ObjectHideFlags: 0
@@ -413,7 +423,7 @@ GameObject:
   - 4: {fileID: 1377294462}
   - 114: {fileID: 1377294463}
   m_Layer: 0
-  m_Name: InputAdapterTest
+  m_Name: input_adapter_test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,6 +445,7 @@ Transform:
   - {fileID: 264470874}
   - {fileID: 1277897723}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!114 &1377294463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,7 +469,7 @@ GameObject:
   - 114: {fileID: 1414029993}
   - 114: {fileID: 1414029995}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: input_manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -590,6 +601,7 @@ MonoBehaviour:
       type: 0
       axis: 0
       joystick: 0
+    isExpanded: 0
   - name: Windows_Gamepad
     axes:
     - name: MoveHorizontal
@@ -760,6 +772,7 @@ MonoBehaviour:
       type: 3
       axis: 8
       joystick: 0
+    isExpanded: 0
   - name: OSX_Gamepad
     axes:
     - name: MoveHorizontal
@@ -930,8 +943,10 @@ MonoBehaviour:
       type: 3
       axis: 4
       joystick: 0
+    isExpanded: 0
   defaultConfiguration: KeyboardAndMouse
   dontDestroyOnLoad: 0
+  ignoreTimescale: 0
 --- !u!4 &1414029994
 Transform:
   m_ObjectHideFlags: 0
@@ -943,6 +958,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 1
 --- !u!114 &1414029995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,6 +970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e63496cd80558db4aa847b75970a8728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
   allowRealtimeInputDeviceSwitch: 1
   updateInputDeviceInterval: .100000001
   updateJoystickCountInterval: 1

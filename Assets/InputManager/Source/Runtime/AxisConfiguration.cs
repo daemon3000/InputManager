@@ -48,9 +48,9 @@ namespace TeamUtility.IO
 		public KeyCode altNegative;
 		public float deadZone;
 		//	The speed(in units/sec) at which a digital axis falls towards neutral.
-		public float gravity;
+		public float gravity = 1.0f;
 		//	The speed(in units/sec) at which a digital axis moves towards the target value.
-		public float sensitivity;
+		public float sensitivity = 1.0f;
 		//	If input switches direction, do we snap to neutral and continue from there?
 		//	Only for digital axes.
 		public bool snap;
