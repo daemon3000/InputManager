@@ -6,6 +6,7 @@ The *InputManager* can have one or more input configurations(e.g. one for keyboa
 ## Getting Started
 ### Setup
 1. Open the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. You don't need to export the "Examples" folder if you don't want to.
+**If you are using a Unity version lower than 4.6 skip the UIInputModules addon and the associated example.**
 2. Create a new *Input Manager* by going to *Team Utility/Input Manager* and selecting *Create Input Manager*.
 3. Open the *Advanced Editor* by going to *Team Utility/Input Manager* and selecting *Open Advanced Editor*. The first time you open the *Advanced Editor* you will be prompted to overwrite your project's input settings. You can also do it from the *File* menu of the *Advanced Editor* at a later time.
 4. Use the *Advanced Editor* to create new input configurations, buttons and axes.
@@ -61,6 +62,7 @@ This addon allows you to map joystick buttons to key codes and axes.
 
 ### UI Input Modules
 Custom standalone input module for the new UI system in Unity 4.6.
+**If you are using a Unity version lower than 4.6 don't import this addon or the associated example.**
 
 **For more information about the addons visit the Wiki.**
 

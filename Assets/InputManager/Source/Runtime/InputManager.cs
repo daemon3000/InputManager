@@ -45,7 +45,7 @@ namespace TeamUtility.IO
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
-		public const string VERSION = "1.6.4.0";
+		public const string VERSION = "1.6.5.0";
 		
 		public enum ScanType
 		{
@@ -64,6 +64,7 @@ namespace TeamUtility.IO
 		
 		private static InputManager _instance;
 		private float _scanTimeout;
+		private float _lastUpdateTime;
 		private int _joystickToScan;
 		private string _cancelScanButton;
 		private object[] _optionalParameters;
@@ -107,6 +108,7 @@ namespace TeamUtility.IO
 				}
 				
 				_instance = this;
+				_lastUpdateTime = Time.realtimeSinceStartup;
 				_stringToKeyTable = new Dictionary<string, KeyCode>();
 				_configurationTable = new Dictionary<string, InputConfiguration>();
 				_axesTable = new Dictionary<string, Dictionary<string, AxisConfiguration>>();
@@ -220,7 +222,10 @@ namespace TeamUtility.IO
 			if(!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
-			
+
+			float deltaTime = ignoreTimescale ? (Time.realtimeSinceStartup - _lastUpdateTime) : Time.deltaTime;
+			_lastUpdateTime = Time.realtimeSinceStartup;
+
 			if(_currentConfiguration == null)
 			{
 				if(_scanType != ScanType.None)
@@ -235,14 +240,7 @@ namespace TeamUtility.IO
 			}
 			if(_scanType != ScanType.None)
 			{
-				if(ignoreTimescale)
-				{
-					_scanTimeout -= Time.unscaledDeltaTime;
-				}
-				else
-				{
-					_scanTimeout -= Time.deltaTime;
-				}
+				_scanTimeout -= deltaTime;
 				switch(_scanType)
 				{
 				case ScanType.Key:

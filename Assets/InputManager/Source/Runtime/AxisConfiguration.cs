@@ -66,6 +66,8 @@ namespace TeamUtility.IO
 		private int _lastAxis;
 		private int _lastJoystick;
 		private InputType _lastType;
+		private float _lastUpdateTime;
+		private float _deltaTime;
 		
 		public bool AnyInput
 		{
@@ -104,10 +106,14 @@ namespace TeamUtility.IO
 		{
 			UpdateRawAxisName();
 			_value = Neutral;
+			_lastUpdateTime = Time.realtimeSinceStartup;
 		}
 		
 		public void Update()
 		{
+			_deltaTime = InputManager.IgnoreTimescale ? (Time.realtimeSinceStartup - _lastUpdateTime) : Time.deltaTime;
+			_lastUpdateTime = Time.realtimeSinceStartup;
+
 			if(_lastType != type || _lastAxis != axis || _lastJoystick != joystick)
 			{
 				if(_lastType != InputType.DigitalAxis)
@@ -126,15 +132,13 @@ namespace TeamUtility.IO
 		
 		private void UpdateDigitalAxisValue()
 		{
-			float deltaTime = InputManager.IgnoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
-
 			if(Input.GetKey(positive) || Input.GetKey(altPositive))
 			{
 				if(_value < Neutral && snap) {
 					_value = Neutral;
 				}
 
-				_value += sensitivity * deltaTime;
+				_value += sensitivity * _deltaTime;
 				if(_value > Positive)
 				{
 					_value = Positive;
@@ -146,7 +150,7 @@ namespace TeamUtility.IO
 					_value = Neutral;
 				}
 				
-				_value -= sensitivity * deltaTime;
+				_value -= sensitivity * _deltaTime;
 				if(_value < Negative)
 				{
 					_value = Negative;
@@ -156,7 +160,7 @@ namespace TeamUtility.IO
 			{
 				if(_value < Neutral)
 				{
-					_value += gravity * deltaTime;
+					_value += gravity * _deltaTime;
 					if(_value > Neutral)
 					{
 						_value = Neutral;
@@ -164,7 +168,7 @@ namespace TeamUtility.IO
 				}
 				else if( _value > Neutral)
 				{
-					_value -= gravity * deltaTime;
+					_value -= gravity * _deltaTime;
 					if(_value < Neutral)
 					{
 						_value = Neutral;

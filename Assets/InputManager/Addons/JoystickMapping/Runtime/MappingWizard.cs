@@ -39,7 +39,9 @@ namespace TeamUtility.IO
 
 		[SerializeField] 
 		[Range(0.1f, 1.0f)]
+#if UNITY_4_5 || UNITY_4_6 || UNITY_4_8 || UNITY_4_9 || UNITY_5_0
 		[Tooltip("Absolute minimum value to register joystick axis movement")]
+#endif
 		private float _axisDetectTreshold = 0.9f;
 
 		private AxisMapping[] _results;
