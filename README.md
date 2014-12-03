@@ -31,6 +31,7 @@ The *InputManager* class provides the following methods and variables, in additi
 - **CurrentConfiguration** - A reference to the current input configuration used by the InputManager
 - **InputConfigurations** - A list of all the input configurations
 - **AnyInput** - Returns *true* if any button or axis is used
+- **SetManualAxisValue** - Allows you to manually set the value of an axis, if the respective axis is of type *ManulAxis*
 - **Reinitialize**
 - **CreateInputConfiguration** - Allows you to create input configurations at runtime
 - **DeleteInputConfiguration** - Allows you to delete input configurations at runtime

@@ -116,7 +116,7 @@ namespace TeamUtility.IO
 
 			if(_lastType != type || _lastAxis != axis || _lastJoystick != joystick)
 			{
-				if(_lastType != InputType.DigitalAxis)
+				if(_lastType != type && (type == InputType.DigitalAxis || type == InputType.ManualAxis))
 					_value = Neutral;
 				
 				UpdateRawAxisName();
@@ -186,7 +186,7 @@ namespace TeamUtility.IO
 		public float GetAxis()
 		{
 			float axis = Neutral;
-			if(type == InputType.DigitalAxis)
+			if(type == InputType.DigitalAxis || type == InputType.ManualAxis)
 			{
 				axis = _value;
 			}
@@ -211,12 +211,15 @@ namespace TeamUtility.IO
 			
 			return invert ? -axis : axis;
 		}
-		
-		//	Raw Input - no sensitivity applyed.
-		//	Button - 0
-		//	Mouse Axis - default
-		//	Digital Axis - -1, 0, 1
-		//	Analog Axis - default
+
+		///<summary>
+		///	Raw Input - no sensitivity or smoothing applyed.
+		///	Button - 0
+		///	Mouse Axis - default
+		///	Digital Axis - -1, 0, 1
+		///	Analog Axis - default
+		///	Manual Axis - 0
+		/// </summary>
 		public float GetAxisRaw()
 		{
 			float axis = Neutral;
@@ -292,6 +295,19 @@ namespace TeamUtility.IO
 				_lastJoystick = joystick;
 				UpdateRawAxisName();
 			}
+		}
+
+		/// <summary>
+		/// If the axis' input type is set to "ManualAxis" the axis value will be changed, else nothing will happen.
+		/// </summary>
+		public void SetAxisValueManually(float value)
+		{
+			if(type == InputType.ManualAxis)
+				_value = value;
+#if UNITY_EDITOR
+			else
+				Debug.LogWarning(string.Format("You are trying to manually change the value of axis \'{0}\' which is of type \'{1}\'", name, type));
+#endif
 		}
 		
 		private void UpdateRawAxisName()

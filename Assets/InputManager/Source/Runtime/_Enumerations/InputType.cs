@@ -31,6 +31,7 @@ namespace TeamUtility.IO
 		Button, 
 		MouseAxis, 
 		DigitalAxis, 
-		AnalogAxis
+		AnalogAxis,
+		ManualAxis
 	}
 }

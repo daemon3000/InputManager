@@ -56,6 +56,7 @@ namespace TeamUtility.IO
 		public event Action<string> ConfigurationChanged;
 		public event Action Loaded;
 		public event Action Saved;
+		public event Action ManualUpdate;
 		
 		public List<InputConfiguration> inputConfigurations;
 		public string defaultConfiguration;
@@ -238,6 +239,9 @@ namespace TeamUtility.IO
 			{
 				_currentConfiguration.axes[i].Update();
 			}
+			if(ManualUpdate != null)
+				ManualUpdate();
+
 			if(_scanType != ScanType.None)
 			{
 				_scanTimeout -= deltaTime;
@@ -445,6 +449,45 @@ namespace TeamUtility.IO
 			
 			return false;
 		}
+
+		/// <summary>
+		/// If an axis with the requested name exists, and it is of type 'ManualAxis', the axis' value will be changed.
+		/// </summary>
+		public static void SetManualAxisValue(string axisName, float value)
+		{
+			SetManualAxisValue(_instance._currentConfiguration, axisName, value);
+		}
+
+		/// <summary>
+		/// If an axis with the requested name exists, and it is of type 'ManualAxis', the axis' value will be changed.
+		/// </summary>
+		public static void SetManualAxisValue(string inputConfigName, string axisName, float value)
+		{
+			if(inputConfigName == null)
+				throw new ArgumentNullException("inputConfigName");
+
+			InputConfiguration inputConfig = null;
+			if(_instance._configurationTable.TryGetValue(inputConfigName, out inputConfig))
+				SetManualAxisValue(inputConfig, axisName, value);
+			else
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
+		}
+
+		private static void SetManualAxisValue(InputConfiguration inputConfig, string axisName, float value)
+		{
+			if(inputConfig == null)
+				throw new ArgumentNullException("inputConfig");
+			else if(axisName == null)
+				throw new ArgumentNullException("axisName");
+
+			AxisConfiguration axisConfig = GetAxisConfiguration(axisName);
+			if(axisConfig == null) 
+				throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the active input configuration", axisName));
+			else if(axisConfig.type != InputType.ManualAxis)
+				throw new ArgumentException(string.Format("The axis named \'{0}\' is not of type \'ManualAxis\'", axisName));
+
+			axisConfig.SetAxisValueManually(value);
+		}
 		
 		/// <summary>
 		/// Resets the internal state of the InputManager.
@@ -458,7 +501,7 @@ namespace TeamUtility.IO
 		{
 			if(_instance._configurationTable.ContainsKey(name))
 			{
-				throw new ArgumentException(string.Format("An input configuration with the name {0} already exists", name));
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' already exists", name));
 			}
 			
 			InputConfiguration inputConfig = new InputConfiguration(name);
@@ -504,7 +547,7 @@ namespace TeamUtility.IO
 				return;
 			
 			if(!_instance._configurationTable.ContainsKey(name)) {
-				throw new ArgumentException("Unable to find any InputConfiguration named: " + name);
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", name));
 			}
 			
 			_instance._currentConfiguration = _instance._configurationTable[name];
@@ -548,7 +591,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetConfiguration(configuration);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException("Unable to find any input configuration named " + configuration);
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", configuration));
 			}
 			if(_instance._axesTable[configuration].ContainsKey(name))
 			{
@@ -581,7 +624,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetConfiguration(configuration);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException("Unable to find any input configuration named " + configuration);
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", configuration));
 			}
 			if(_instance._axesTable[configuration].ContainsKey(name))
 			{
@@ -611,7 +654,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetConfiguration(configuration);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException("Unable to find any input configuration named " + configuration);
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", configuration));
 			}
 			if(_instance._axesTable[configuration].ContainsKey(name))
 			{
@@ -639,7 +682,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetConfiguration(configuration);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException("Unable to find any input configuration named " + configuration);
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", configuration));
 			}
 			if(_instance._axesTable[configuration].ContainsKey(name))
 			{
@@ -671,7 +714,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetConfiguration(configuration);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException("Unable to find any input configuration named " + configuration);
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", configuration));
 			}
 			if(_instance._axesTable[configuration].ContainsKey(name))
 			{
@@ -1033,7 +1076,7 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(name);
 			if(axisConfig == null) 
 			{
-				string error = "The active input configuration doesn't contain an axis named " + name;
+				string error = string.Format("An axis named \'{0}\' does not exist in the active input configuration", name);
 				throw new ArgumentException(error);
 			}
 			
@@ -1045,7 +1088,7 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(name);
 			if(axisConfig == null) 
 			{
-				string error = "The active input configuration doesn't contain an axis named " + name;
+				string error = string.Format("An axis named \'{0}\' does not exist in the active input configuration", name);
 				throw new ArgumentException(error);
 			}
 			
@@ -1057,7 +1100,7 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(name);
 			if(axisConfig == null) 
 			{
-				string error = "The active input configuration doesn't contain a button named " + name;
+				string error = string.Format("An axis named \'{0}\' does not exist in the active input configuration", name);
 				throw new ArgumentException(error);
 			}
 			
@@ -1069,7 +1112,7 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(name);
 			if(axisConfig == null) 
 			{
-				string error = "The active input configuration doesn't contain a button named " + name;
+				string error = string.Format("An axis named \'{0}\' does not exist in the active input configuration", name);
 				throw new ArgumentException(error);
 			}
 			
@@ -1081,7 +1124,7 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(name);
 			if(axisConfig == null) 
 			{
-				string error = "The active input configuration doesn't contain a button named " + name;
+				string error = string.Format("An axis named \'{0}\' does not exist in the active input configuration", name);
 				throw new ArgumentException(error);
 			}
 			
