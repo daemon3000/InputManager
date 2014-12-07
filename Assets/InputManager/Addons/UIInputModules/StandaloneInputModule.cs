@@ -22,11 +22,12 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 #endregion
+using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Reflection;
-using TeamUtility.IO;
 
-namespace UnityEngine.EventSystems
+namespace TeamUtility.IO
 {
 	[AddComponentMenu("Event/Standalone Input Module")]
 	public class StandaloneInputModule : PointerInputModule
