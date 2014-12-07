@@ -68,6 +68,8 @@ namespace TeamUtility.IO
 		private InputType _lastType;
 		private float _lastUpdateTime;
 		private float _deltaTime;
+		private bool _remoteButtonDown;
+		private bool _remoteButtonChangedThisFrame;
 		
 		public bool AnyInput
 		{
@@ -77,7 +79,11 @@ namespace TeamUtility.IO
 				{
 					return (Input.GetKey(positive) || Input.GetKey(altPositive));
 				}
-				else if(type == InputType.DigitalAxis)
+				else if(type == InputType.RemoteButton)
+				{
+					return _remoteButtonDown;
+				}
+				else if(type == InputType.DigitalAxis || type == InputType.RemoteAxis)
 				{
 					return Mathf.Abs(_value) >= 1.0f;
 				}
@@ -109,6 +115,8 @@ namespace TeamUtility.IO
 			UpdateRawAxisName();
 			_value = Neutral;
 			_lastUpdateTime = Time.realtimeSinceStartup;
+			_remoteButtonDown = false;
+			_remoteButtonChangedThisFrame = false;
 		}
 		
 		public void Update()
@@ -118,7 +126,7 @@ namespace TeamUtility.IO
 
 			if(_lastType != type || _lastAxis != axis || _lastJoystick != joystick)
 			{
-				if(_lastType != type && (type == InputType.DigitalAxis || type == InputType.ManualAxis))
+				if(_lastType != type && (type == InputType.DigitalAxis || type == InputType.RemoteAxis))
 					_value = Neutral;
 				
 				UpdateRawAxisName();
@@ -188,7 +196,7 @@ namespace TeamUtility.IO
 		public float GetAxis()
 		{
 			float axis = Neutral;
-			if(type == InputType.DigitalAxis || type == InputType.ManualAxis)
+			if(type == InputType.DigitalAxis || type == InputType.RemoteAxis)
 			{
 				axis = _value;
 			}
@@ -220,7 +228,8 @@ namespace TeamUtility.IO
 		///	Mouse Axis - default
 		///	Digital Axis - -1, 0, 1
 		///	Analog Axis - default
-		///	Manual Axis - 0
+		///	Remote Axis - 0
+		/// Remote Button - 0
 		/// </summary>
 		public float GetAxisRaw()
 		{
@@ -247,27 +256,30 @@ namespace TeamUtility.IO
 		
 		public bool GetButton()
 		{
-			if(type == InputType.Button) {
+			if(type == InputType.Button)
 				return Input.GetKey(positive) || Input.GetKey(altPositive);
-			}
+			else if(type == InputType.RemoteButton)
+				return _remoteButtonDown;
 			
 			return false;
 		}
 		
 		public bool GetButtonDown()
 		{
-			if(type == InputType.Button) {
+			if(type == InputType.Button)
 				return Input.GetKeyDown(positive) || Input.GetKeyDown(altPositive);
-			}
+			else if(type == InputType.RemoteButton)
+				return _remoteButtonDown && _remoteButtonChangedThisFrame;
 			
 			return false;
 		}
 		
 		public bool GetButtonUp()
 		{
-			if(type == InputType.Button) {
+			if(type == InputType.Button)
 				return Input.GetKeyUp(positive) || Input.GetKeyUp(altPositive);
-			}
+			else if(type == InputType.RemoteButton)
+				return !_remoteButtonDown && _remoteButtonChangedThisFrame;
 			
 			return false;
 		}
@@ -275,6 +287,8 @@ namespace TeamUtility.IO
 		public void Reset()
 		{
 			_value = Neutral;
+			_remoteButtonDown = false;
+			_remoteButtonChangedThisFrame = false;
 		}
 		
 		public void SetMouseAxis(int axis)
@@ -300,15 +314,31 @@ namespace TeamUtility.IO
 		}
 
 		/// <summary>
-		/// If the axis' input type is set to "ManualAxis" the axis value will be changed, else nothing will happen.
+		/// If the axis' input type is set to "RemoteAxis" the axis value will be changed, else nothing will happen.
 		/// </summary>
-		public void SetAxisValueManually(float value)
+		public void SetRemoteAxisValue(float value)
 		{
-			if(type == InputType.ManualAxis)
+			if(type == InputType.RemoteAxis)
 				_value = value;
 #if UNITY_EDITOR
 			else
-				Debug.LogWarning(string.Format("You are trying to manually change the value of axis \'{0}\' which is of type \'{1}\'", name, type));
+				Debug.LogWarning(string.Format("You are trying to manually change the value of axis \'{0}\' which is not of type \'RemoteAxis\'", name));
+#endif
+		}
+
+		/// <summary>
+		/// If the axis' input type is set to "RemoteButton" the axis state will be changed, else nothing will happen.
+		/// </summary>
+		public void SetRemoteButtonValue(bool down, bool changedThisFrame)
+		{
+			if(type == InputType.RemoteButton)
+			{
+				_remoteButtonDown = down;
+				_remoteButtonChangedThisFrame = changedThisFrame;
+			}
+#if UNITY_EDITOR
+			else
+				Debug.LogWarning(string.Format("You are trying to manually change the value of button \'{0}\' which is not of type \'RemoteButton\'", name));
 #endif
 		}
 		

@@ -3,6 +3,9 @@
 
 The *InputManager* can have one or more input configurations(e.g. one for keyboard and mouse and one for a Xbox controller), each one with its own set of axes(like the ones provided by Unity's input manager).
 
+## Platforms
+Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX, WebPlayer and Android(not tested on iOS but it might work). Requires the latest version of Unity.
+
 ## Getting Started
 ### Setup
 1. Open the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. You don't need to export the "Examples" folder if you don't want to.
@@ -31,7 +34,8 @@ The *InputManager* class provides the following methods and variables, in additi
 - **CurrentConfiguration** - A reference to the current input configuration used by the InputManager
 - **InputConfigurations** - A list of all the input configurations
 - **AnyInput** - Returns *true* if any button or axis is used
-- **SetManualAxisValue** - Allows you to manually set the value of an axis, if the respective axis is of type *ManulAxis*
+- **SetRemoteAxisValue** - Allows you to manually set the value of an axis, if the respective axis is of type *RemoteAxis*
+- **SetRemoteButtonValue** - Allows you to manually set the state of a button, if the respective button is of type *RemoteButton*
 - **Reinitialize**
 - **CreateInputConfiguration** - Allows you to create input configurations at runtime
 - **DeleteInputConfiguration** - Allows you to delete input configurations at runtime
@@ -66,9 +70,6 @@ Custom standalone input module for the new UI system in Unity 4.6.
 **If you are using a Unity version lower than 4.6 don't import this addon or the associated example.**
 
 **For more information about the addons visit the Wiki.**
-
-## Platforms
-Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX and WebPlayer. Requires the latest version of Unity.
 
 ## License
 This software is released under the [MIT license](http://opensource.org/licenses/MIT). You can find a copy of the license in the LICENSE file included in the *InputManager* source distribution.

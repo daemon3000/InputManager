@@ -32,6 +32,7 @@ namespace TeamUtility.IO
 		MouseAxis, 
 		DigitalAxis, 
 		AnalogAxis,
-		ManualAxis
+		RemoteAxis,
+		RemoteButton
 	}
 }

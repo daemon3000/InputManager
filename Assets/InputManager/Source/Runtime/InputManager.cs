@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -45,7 +45,7 @@ namespace TeamUtility.IO
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
-		public const string VERSION = "1.6.5.0";
+		public const string VERSION = "1.7.0.0";
 		
 		public enum ScanType
 		{
@@ -56,7 +56,7 @@ namespace TeamUtility.IO
 		public event Action<string> ConfigurationChanged;
 		public event Action Loaded;
 		public event Action Saved;
-		public event Action ManualUpdate;
+		public event Action RemoteUpdate;
 		
 		public List<InputConfiguration> inputConfigurations;
 		public string defaultConfiguration;
@@ -239,8 +239,8 @@ namespace TeamUtility.IO
 			{
 				_currentConfiguration.axes[i].Update();
 			}
-			if(ManualUpdate != null)
-				ManualUpdate();
+			if(RemoteUpdate != null)
+				RemoteUpdate();
 
 			if(_scanType != ScanType.None)
 			{
@@ -451,29 +451,32 @@ namespace TeamUtility.IO
 		}
 
 		/// <summary>
-		/// If an axis with the requested name exists, and it is of type 'ManualAxis', the axis' value will be changed.
+		/// If an axis with the requested name exists, and it is of type 'RemoteAxis', the axis' value will be changed.
 		/// </summary>
-		public static void SetManualAxisValue(string axisName, float value)
+		public static void SetRemoteAxisValue(string axisName, float value)
 		{
-			SetManualAxisValue(_instance._currentConfiguration, axisName, value);
+			SetRemoteAxisValue(_instance._currentConfiguration, axisName, value);
 		}
 
 		/// <summary>
-		/// If an axis with the requested name exists, and it is of type 'ManualAxis', the axis' value will be changed.
+		/// If an axis with the requested name exists, and it is of type 'RemoteAxis', the axis' value will be changed.
 		/// </summary>
-		public static void SetManualAxisValue(string inputConfigName, string axisName, float value)
+		public static void SetRemoteAxisValue(string inputConfigName, string axisName, float value)
 		{
 			if(inputConfigName == null)
 				throw new ArgumentNullException("inputConfigName");
 
 			InputConfiguration inputConfig = null;
 			if(_instance._configurationTable.TryGetValue(inputConfigName, out inputConfig))
-				SetManualAxisValue(inputConfig, axisName, value);
+				SetRemoteAxisValue(inputConfig, axisName, value);
 			else
 				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
 		}
 
-		private static void SetManualAxisValue(InputConfiguration inputConfig, string axisName, float value)
+		/// <summary>
+		/// If an axis with the requested name exists, and it is of type 'RemoteAxis', the axis' value will be changed.
+		/// </summary>
+		public static void SetRemoteAxisValue(InputConfiguration inputConfig, string axisName, float value)
 		{
 			if(inputConfig == null)
 				throw new ArgumentNullException("inputConfig");
@@ -483,10 +486,52 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(axisName);
 			if(axisConfig == null) 
 				throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the active input configuration", axisName));
-			else if(axisConfig.type != InputType.ManualAxis)
-				throw new ArgumentException(string.Format("The axis named \'{0}\' is not of type \'ManualAxis\'", axisName));
+			else if(axisConfig.type != InputType.RemoteAxis)
+				throw new ArgumentException(string.Format("The axis named \'{0}\' is not of type \'RemoteAxis\'", axisName));
 
-			axisConfig.SetAxisValueManually(value);
+			axisConfig.SetRemoteAxisValue(value);
+		}
+
+		/// <summary>
+		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
+		/// </summary>
+		public static void SetRemoteButtonValue(string buttonName, bool down, bool changedThisFrame)
+		{
+			SetRemoteButtonValue(_instance._currentConfiguration, buttonName, down, changedThisFrame);
+		}
+		
+		/// <summary>
+		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
+		/// </summary>
+		public static void SetRemoteButtonValue(string inputConfigName, string buttonName, bool down, bool changedThisFrame)
+		{
+			if(inputConfigName == null)
+				throw new ArgumentNullException("inputConfigName");
+			
+			InputConfiguration inputConfig = null;
+			if(_instance._configurationTable.TryGetValue(inputConfigName, out inputConfig))
+				SetRemoteButtonValue(inputConfig, buttonName, down, changedThisFrame);
+			else
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
+		}
+
+		/// <summary>
+		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
+		/// </summary>
+		private static void SetRemoteButtonValue(InputConfiguration inputConfig, string buttonName, bool down, bool changedThisFrame)
+		{
+			if(inputConfig == null)
+				throw new ArgumentNullException("inputConfig");
+			else if(buttonName == null)
+				throw new ArgumentNullException("buttonName");
+			
+			AxisConfiguration axisConfig = GetAxisConfiguration(buttonName);
+			if(axisConfig == null) 
+				throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the active input configuration", buttonName));
+			else if(axisConfig.type != InputType.RemoteAxis)
+				throw new ArgumentException(string.Format("The axis named \'{0}\' is not of type \'RemoteButton\'", buttonName));
+			
+			axisConfig.SetRemoteButtonValue(down, changedThisFrame);
 		}
 		
 		/// <summary>
