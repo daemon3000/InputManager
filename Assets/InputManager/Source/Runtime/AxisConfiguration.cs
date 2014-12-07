@@ -100,6 +100,8 @@ namespace TeamUtility.IO
 			negative = KeyCode.None;
 			altNegative = KeyCode.None;
 			type = InputType.Button;
+			gravity = 1.0f;
+			sensitivity = 1.0f;
 		}
 		
 		public void Initialize()
