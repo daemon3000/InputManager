@@ -7,7 +7,7 @@ public class CrossPlatformInput : MonoBehaviour
 {
 	public GameObject desktopUI;
 	public GameObject mobileUI;
-	private InputConfiguration m_mobileInputConfig;
+	public string mobileInputConfig;
 
 	private void Start()
 	{
@@ -15,9 +15,8 @@ public class CrossPlatformInput : MonoBehaviour
 		if(!UnityEditor.EditorApplication.isPlaying)
 			return;
 #endif
-		m_mobileInputConfig = InputManager.GetConfiguration("Mobile");
 #if UNITY_ANDROID || UNITY_IPHONE
-		InputManager.SetConfiguration("Mobile");
+		InputManager.SetConfiguration(mobileInputConfig);
 #endif
 	}
 
@@ -39,25 +38,21 @@ public class CrossPlatformInput : MonoBehaviour
 
 	public void AddVertical(float value)
 	{
-		if(m_mobileInputConfig != null)
-			InputManager.SetRemoteAxisValue("Vertical", InputManager.GetAxis("Vertical") + value);
+		InputManager.SetRemoteAxisValue("Vertical", InputManager.GetAxis("Vertical") + value);
 	}
 
 	public void AddHorizontal(float value)
 	{
-		if(m_mobileInputConfig != null)
-			InputManager.SetRemoteAxisValue("Horizontal", InputManager.GetAxis("Horizontal") + value);
+		InputManager.SetRemoteAxisValue("Horizontal", InputManager.GetAxis("Horizontal") + value);
 	}
 
 	public void SetMouseX(float value)
 	{
-		if(m_mobileInputConfig != null)
-			InputManager.SetRemoteAxisValue("Mouse X", value);
+		InputManager.SetRemoteAxisValue("Mouse X", value);
 	}
 
 	public void SetMouseY(float value)
 	{
-		if(m_mobileInputConfig != null)
-			InputManager.SetRemoteAxisValue("Mouse Y", value);
+		InputManager.SetRemoteAxisValue("Mouse Y", value);
 	}
 }

@@ -1048,6 +1048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desktopUI: {fileID: 293857440}
   mobileUI: {fileID: 438605551}
+  mobileInputConfig: Mobile
 --- !u!1 &784032198
 GameObject:
   m_ObjectHideFlags: 0
