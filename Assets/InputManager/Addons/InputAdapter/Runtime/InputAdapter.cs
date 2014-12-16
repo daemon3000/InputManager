@@ -54,13 +54,16 @@ namespace TeamUtility.IO
 		private float updateJoystickCountInterval = 1.0f;
 		
 		[SerializeField]
-		private string keyboardConfiguration = string.Empty;
+		private string keyboardConfiguration = "KeyboardAndMouse";
 		
 		[SerializeField]
-		private string windowsJoystickConfiguration = string.Empty;
+		private string windowsJoystickConfiguration = "Windows_Gamepad";
 		
 		[SerializeField]
-		private string osxJoystickConfiguration = string.Empty;
+		private string osxJoystickConfiguration = "OSX_Gamepad";
+
+		[SerializeField]
+		private string linuxJoystickConfiguration = "Linux_Gamepad";
 		
 		private Vector2 _lastDpadValues = Vector2.zero;
 		private Vector2 _currentDpadValues = Vector2.zero;
@@ -593,10 +596,13 @@ namespace TeamUtility.IO
 			case RuntimePlatform.OSXWebPlayer:
 				_joystickConfiguration = osxJoystickConfiguration;
 				break;
+			case RuntimePlatform.LinuxPlayer:
+				_joystickConfiguration = linuxJoystickConfiguration;
+				break;
 			default:
 				_joystickConfiguration = windowsJoystickConfiguration;
 #if UNITY_EDITOR
-				Debug.LogWarning("Unsupported XBOX 360 Controller driver. Defaulting to Windows driver configuration.");
+				Debug.LogWarning("Unsupported XBOX 360 Controller driver. The default Windows driver configuration has been chosen.");
 #endif
 				break;
 			}

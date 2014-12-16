@@ -154,6 +154,13 @@ namespace TeamUtility.Editor.IO.InputManager
 			Assembly assembly = Assembly.GetExecutingAssembly();
 			return Array.Find<Type>(assembly.GetTypes(), (type) => { return type.Name == "MappingImportWindow"; });
 		}
+
+		public static bool HasInputAdapterAddon()
+		{
+			Assembly assembly = typeof(InputAdapter).Assembly;
+			Type inputAdapterType = Array.Find<Type>(assembly.GetTypes(), (type) => { return type.Name == "InputAdapter"; });
+			return inputAdapterType != null;
+		}
 		
 		/// <summary>
 		/// Used to get access to the hidden toolbar search field.

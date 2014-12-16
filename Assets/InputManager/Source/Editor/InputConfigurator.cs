@@ -147,12 +147,85 @@ namespace TeamUtility.Editor
 			_selectionPath.Add(_inputManager.inputConfigurations.Count - 1);
 			Repaint();
 		}
+
+		private void ExportInputConfigurations()
+		{
+			string file = EditorUtility.SaveFilePanel("Export input profile", "", "profile.xml", "xml");
+			if(string.IsNullOrEmpty(file))
+				return;
+			
+			InputSaverXML inputSaver = new InputSaverXML(file);
+			inputSaver.Save(_inputManager.inputConfigurations, _inputManager.defaultConfiguration);
+			if(file.StartsWith(Application.dataPath))
+				AssetDatabase.Refresh();
+		}
+		
+		private void ImportInputConfigurations()
+		{
+			string file = EditorUtility.OpenFilePanel("Import input profile", "", "xml");
+			if(string.IsNullOrEmpty(file))
+				return;
+			
+			bool replace = EditorUtility.DisplayDialog("Replace or Append", "Do you want to replace the current input configrations?", "Replace", "Append");
+			if(replace)
+			{
+				InputLoaderXML inputLoader = new InputLoaderXML(file);
+				inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+				_selectionPath.Clear();
+			}
+			else
+			{
+				List<InputConfiguration> configurations;
+				string defaultConfig;
+				
+				InputLoaderXML inputLoader = new InputLoaderXML(file);
+				inputLoader.Load(out configurations, out defaultConfig);
+				if(configurations != null && configurations.Count > 0)
+				{
+					foreach(var config in configurations)
+					{
+						_inputManager.inputConfigurations.Add(config);
+					}
+					
+				}
+			}
+			
+			if(_searchString.Length > 0)
+			{
+				UpdateSearchResults();
+			}
+			Repaint();
+		}
+
+		private void ConfigureForInputAdapter()
+		{
+			bool cont = EditorUtility.DisplayDialog("Warning", "This operation will replace the current input configrations!\nDo you want to continue?", "Yes", "No");
+			if(!cont) return;
+
+			TextAsset textAsset = Resources.Load<TextAsset>("input_adapter_init");
+			if(textAsset != null)
+			{
+				using(System.IO.StringReader reader = new System.IO.StringReader(textAsset.text))
+				{
+					InputLoaderXML inputLoader = new InputLoaderXML(reader);
+					inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+					_selectionPath.Clear();
+				}
+			}
+			else
+			{
+				EditorUtility.DisplayDialog("Error", "Failed to load default configurations for Input Adapter.", "OK");
+			}
+		}
 		
 		#region [Menus]
 		private void CreateFileMenu(Rect position)
 		{
 			GenericMenu fileMenu = new GenericMenu();
 			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, 0);
+			if(EditorToolbox.HasInputAdapterAddon())
+				fileMenu.AddItem(new GUIContent("Configure For Input Adapter"), false, HandleFileMenuOption, 6);
+
 			fileMenu.AddSeparator("");
 			if(_inputManager.inputConfigurations.Count > 0)
 			{
@@ -211,6 +284,9 @@ namespace TeamUtility.Editor
 			case 5:
 				EditorToolbox.OpenImportJoystickMappingWindow(this);
 				break;
+			case 6:
+				ConfigureForInputAdapter();
+				break;
 			}
 		}
 		
@@ -246,7 +322,7 @@ namespace TeamUtility.Editor
 			}
 			editMenu.AddItem(new GUIContent("Delete All"), false, HandleEditMenuOption, 4);
 			editMenu.AddSeparator("");
-			
+
 			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 5);
 			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 6);
 			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 7);
@@ -804,55 +880,6 @@ namespace TeamUtility.Editor
 				}
 				isEditing = false;
 			}
-		}
-
-		private void ExportInputConfigurations()
-		{
-			string file = EditorUtility.SaveFilePanel("Export input profile", "", "profile.xml", "xml");
-			if(string.IsNullOrEmpty(file))
-				return;
-
-			InputSaverXML inputSaver = new InputSaverXML(file);
-			inputSaver.Save(_inputManager.inputConfigurations, _inputManager.defaultConfiguration);
-			if(file.StartsWith(Application.dataPath))
-			   AssetDatabase.Refresh();
-		}
-
-		private void ImportInputConfigurations()
-		{
-			string file = EditorUtility.OpenFilePanel("Import input profile", "", "xml");
-			if(string.IsNullOrEmpty(file))
-				return;
-
-			bool replace = EditorUtility.DisplayDialog("Replace or Append", "Do you want to replace the current input configrations?", "Replace", "Append");
-			if(replace)
-			{
-				InputLoaderXML inputLoader = new InputLoaderXML(file);
-				inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
-				_selectionPath.Clear();
-			}
-			else
-			{
-				List<InputConfiguration> configurations;
-				string defaultConfig;
-
-				InputLoaderXML inputLoader = new InputLoaderXML(file);
-				inputLoader.Load(out configurations, out defaultConfig);
-				if(configurations != null && configurations.Count > 0)
-				{
-					foreach(var config in configurations)
-					{
-						_inputManager.inputConfigurations.Add(config);
-					}
-
-				}
-			}
-
-			if(_searchString.Length > 0)
-			{
-				UpdateSearchResults();
-			}
-			Repaint();
 		}
 		#endregion
 		
