@@ -70,6 +70,7 @@ namespace TeamUtility.Editor
 		private float _minCursorRectWidth = 10.0f;
 		private float _maxCursorRectWidth = 50.0f;
 		private float _toolbarHeight = 18.0f;
+		private float _hierarchyItemHeight = 18.0f;
 		private bool _isResizingHierarchy = false;
 		private bool _editingPositiveKey = false;
 		private bool _editingAltPositiveKey = false;
@@ -172,21 +173,18 @@ namespace TeamUtility.Editor
 			fileMenu.AddSeparator("");
 			if(_inputManager.inputConfigurations.Count > 0)
 			{
-				fileMenu.AddItem(new GUIContent("Export Input Configurations"), false, HandleFileMenuOption, 3);
+				fileMenu.AddItem(new GUIContent("Export"), false, HandleFileMenuOption, 3);
 			}
 			else
 			{
-				fileMenu.AddDisabledItem(new GUIContent("Export Input Configurations"));
+				fileMenu.AddDisabledItem(new GUIContent("Export"));
 			}
-			fileMenu.AddItem(new GUIContent("Import Input Configurations"), false, HandleFileMenuOption, 4);
+			fileMenu.AddItem(new GUIContent("Import"), false, HandleFileMenuOption, 4);
 			if(EditorToolbox.HasJoystickMappingAddon())
 			{
 				fileMenu.AddItem(new GUIContent("Import Joystick Mapping"), false, HandleFileMenuOption, 5);
 			}
-			fileMenu.AddSeparator("");
-			
-			fileMenu.AddItem(new GUIContent("Forum"), false, HandleFileMenuOption, 6);
-			fileMenu.AddItem(new GUIContent("About"), false, HandleFileMenuOption, 7);
+
 			fileMenu.DropDown(position);
 		}
 		
@@ -212,12 +210,6 @@ namespace TeamUtility.Editor
 				break;
 			case 5:
 				EditorToolbox.OpenImportJoystickMappingWindow(this);
-				break;
-			case 6:
-				MenuCommands.OpenForumPage();
-				break;
-			case 7:
-				MenuCommands.OpenAboutDialog();
 				break;
 			}
 		}
@@ -640,7 +632,7 @@ namespace TeamUtility.Editor
 		
 		private void DisplayHierarchyInputConfigItem(Rect screenRect, int index, string name)
 		{
-			Rect configPos = GUILayoutUtility.GetRect(new GUIContent(name), EditorStyles.foldout, GUILayout.Height(15.0f));
+			Rect configPos = GUILayoutUtility.GetRect(new GUIContent(name), EditorStyles.foldout, GUILayout.Height(_hierarchyItemHeight));
 			if(Event.current.type == EventType.MouseDown && Event.current.button == 0)
 			{
 				if(configPos.Contains(Event.current.mousePosition))
@@ -672,7 +664,7 @@ namespace TeamUtility.Editor
 		
 		private void DisplayHierarchiAxisConfigItem(Rect screenRect, int inputConfigIndex, int index, string name)
 		{
-			Rect configPos = GUILayoutUtility.GetRect(new GUIContent(name), EditorStyles.label, GUILayout.Height(15.0f));
+			Rect configPos = GUILayoutUtility.GetRect(new GUIContent(name), EditorStyles.label, GUILayout.Height(_hierarchyItemHeight));
 			if(Event.current.type == EventType.MouseDown && Event.current.button == 0)
 			{
 				if(configPos.Contains(Event.current.mousePosition))
@@ -822,6 +814,8 @@ namespace TeamUtility.Editor
 
 			InputSaverXML inputSaver = new InputSaverXML(file);
 			inputSaver.Save(_inputManager.inputConfigurations, _inputManager.defaultConfiguration);
+			if(file.StartsWith(Application.dataPath))
+			   AssetDatabase.Refresh();
 		}
 
 		private void ImportInputConfigurations()

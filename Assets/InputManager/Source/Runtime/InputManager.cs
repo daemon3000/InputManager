@@ -190,7 +190,7 @@ namespace TeamUtility.IO
 #if UNITY_EDITOR
 				else
 				{
-					Debug.LogWarning("InputConfiguration with name: " + inputConfig.name + " already exists");
+					Debug.LogWarning("An input configuration with the name \'" + inputConfig.name + "\' already exists");
 				}
 #endif
 			}
@@ -208,7 +208,7 @@ namespace TeamUtility.IO
 #if UNITY_EDITOR
 					else
 					{
-						Debug.LogWarning("InputConfiguration: " + inputConfig.name + "already contains an axis named: " + inputConfig.name);
+						Debug.LogWarning(string.Format("Input configuration \'{0}\' already contains an axis named \'{1}\'", inputConfig.name, axisConfig.name));
 					}
 #endif
 				}
