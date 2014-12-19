@@ -1,0 +1,509 @@
+fileFormatVersion: 2
+guid: 7f77c19c1ede452418ef1d57cd07b4c9
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: grey_assets_0
+    21300002: grey_assets_1
+    21300004: grey_assets_2
+    21300006: grey_assets_3
+    21300008: grey_assets_4
+    21300010: grey_assets_5
+    21300012: grey_assets_6
+    21300014: grey_assets_7
+    21300016: grey_assets_8
+    21300018: grey_assets_9
+    21300020: grey_assets_10
+    21300022: grey_assets_11
+    21300024: grey_assets_12
+    21300026: grey_assets_13
+    21300028: grey_assets_14
+    21300030: grey_assets_15
+    21300032: grey_assets_16
+    21300034: grey_assets_17
+    21300036: grey_assets_18
+    21300038: grey_assets_19
+    21300040: grey_assets_20
+    21300042: grey_assets_21
+    21300044: grey_assets_22
+    21300046: grey_assets_23
+    21300048: grey_assets_24
+    21300050: grey_assets_25
+    21300052: grey_assets_26
+    21300054: grey_button_down_01
+    21300056: grey_assets_28
+    21300058: grey_assets_29
+    21300060: grey_assets_30
+    21300062: grey_assets_31
+    21300064: grey_assets_32
+    21300066: grey_button_up_01
+    21300068: grey_assets_34
+    21300070: grey_assets_35
+    21300072: grey_assets_36
+    21300074: grey_assets_37
+    21300076: grey_assets_38
+    21300078: grey_assets_39
+    21300080: grey_panel
+    21300082: grey_assets_41
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: grey_assets_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 503
+        width: 190
+        height: 4
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 497
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_2
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 497
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_3
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 497
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_4
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 497
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_5
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 497
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_6
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 490
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_7
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 490
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_8
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 489
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_9
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 489
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_10
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 487
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_11
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 487
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_12
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 458
+        width: 190
+        height: 24
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_13
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 458
+        width: 190
+        height: 24
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_14
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 429
+        width: 190
+        height: 24
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_15
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 422
+        width: 39
+        height: 31
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_16
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 422
+        width: 39
+        height: 31
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_17
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 417
+        width: 38
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_18
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 417
+        width: 38
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_19
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 417
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_20
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 417
+        width: 38
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_21
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 417
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_22
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 370
+        width: 28
+        height: 42
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_23
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 370
+        width: 28
+        height: 42
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_24
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 367
+        width: 190
+        height: 45
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_25
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 367
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_26
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 317
+        width: 190
+        height: 45
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_button_down_01
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 317
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 10, y: 10, z: 10, w: 10}
+    - name: grey_assets_28
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 317
+        width: 49
+        height: 45
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_29
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 317
+        width: 190
+        height: 45
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_30
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 263
+        width: 191
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_31
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 263
+        width: 190
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_32
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 209
+        width: 195
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_button_up_01
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 209
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 10, y: 12, z: 10, w: 10}
+    - name: grey_assets_34
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 209
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_35
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 209
+        width: 190
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_36
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 155
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_37
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 155
+        width: 190
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_38
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 155
+        width: 190
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_assets_39
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 155
+        width: 49
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: grey_panel
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 50
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 12, y: 12, z: 12, w: 12}
+    - name: grey_assets_41
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 50
+        width: 4
+        height: 100
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

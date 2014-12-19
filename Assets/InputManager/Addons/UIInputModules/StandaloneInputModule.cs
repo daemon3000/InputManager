@@ -54,13 +54,13 @@ namespace TeamUtility.IO
 		}
 		
 		[SerializeField]
-		private string m_HorizontalAxis = "Horizontal";
+		private string m_HorizontalAxis = "MenuHorizontal";
 		
 		/// <summary>
 		/// Name of the vertical axis for movement (if axis events are used).
 		/// </summary>
 		[SerializeField]
-		private string m_VerticalAxis = "Vertical";
+		private string m_VerticalAxis = "MenuVertical";
 		
 		/// <summary>
 		/// Name of the submit button.
@@ -456,6 +456,20 @@ namespace TeamUtility.IO
 					HandlePointerExitAndEnter(pointerEvent, currentOverGo);
 				}
 			}
+		
 		}
+
+#if UNITY_EDITOR && UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9 || UNITY_5_0
+		[UnityEditor.MenuItem("Team Utility/Input Manager/Fix Event System", false, 200)]
+		private static void FixEventSystem()
+		{
+			UnityEngine.EventSystems.StandaloneInputModule[] im = UnityEngine.Object.FindObjectsOfType<UnityEngine.EventSystems.StandaloneInputModule>();
+			for(int i = 0; i < im.Length; i++)
+			{
+				im[i].gameObject.AddComponent<TeamUtility.IO.StandaloneInputModule>();
+				UnityEngine.Object.DestroyImmediate(im[i]);
+			}
+		}
+#endif
 	}
 }

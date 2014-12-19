@@ -37,25 +37,25 @@ namespace TeamUtility.Editor.IO.InputManager
 			Selection.activeGameObject = gameObject;
 		}
 
-		[MenuItem("Team Utility/Input Manager/Documentation", false, 200)]
+		[MenuItem("Team Utility/Input Manager/Documentation", false, 400)]
 		public static void OpenDocumentationPage()
 		{
 			Application.OpenURL("https://github.com/daemon3000/InputManager/wiki");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Report Bug", false, 201)]
+		[MenuItem("Team Utility/Input Manager/Report Bug", false, 401)]
 		public static void OpenReportBugPage()
 		{
 			Application.OpenURL("https://github.com/daemon3000/InputManager/issues");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Forum", false, 202)]
+		[MenuItem("Team Utility/Input Manager/Forum", false, 402)]
 		public static void OpenForumPage()
 		{
 			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
 		}
 
-		[MenuItem("Team Utility/Input Manager/About", false, 203)]
+		[MenuItem("Team Utility/Input Manager/About", false, 403)]
 		public static void OpenAboutDialog()
 		{
 			string message = string.Format("Input Manager v{0}, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", TeamUtility.IO.InputManager.VERSION);
