@@ -43,7 +43,7 @@ namespace TeamUtility.IO
 		private bool dontDestroyOnLoad = false;
 
 		[SerializeField]
-		private bool allowRealtimeInputDeviceSwitch = false;
+		private bool allowRealtimeInputDeviceSwitch = true;
 		
 		[SerializeField]
 		[Range(0.1f, 1.0f)]
