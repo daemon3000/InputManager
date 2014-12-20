@@ -4100,7 +4100,7 @@ MonoBehaviour:
   m_controlsPage: {fileID: 1697568641}
   m_editKeyboardPage: {fileID: 1257418196}
   m_editGamepadPage: {fileID: 723584042}
-  m_openOnStart: 0
+  m_openOnStart: 1
 --- !u!1 &1103999458
 GameObject:
   m_ObjectHideFlags: 0
@@ -4756,10 +4756,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1356510410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7637ecceca7b6dd4384b7e25e1880bf9, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b10d4af0b50e8647844d1f5aa69e3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_defaultInputs: {fileID: 4900000, guid: fae568f18bc79f740958e084bdf1c92b, type: 3}
+  m_inputConfigName: KeyboardAndMouse
 --- !u!1 &1374754561
 GameObject:
   m_ObjectHideFlags: 0
@@ -5987,10 +5988,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1589655553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96f327b4eaa44264085bc684797f63a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b10d4af0b50e8647844d1f5aa69e3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_defaultInputs: {fileID: 4900000, guid: fae568f18bc79f740958e084bdf1c92b, type: 3}
+  m_inputConfigName: Gamepad
 --- !u!1 &1602445143
 GameObject:
   m_ObjectHideFlags: 0

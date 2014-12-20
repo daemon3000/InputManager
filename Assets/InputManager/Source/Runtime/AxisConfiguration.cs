@@ -284,13 +284,6 @@ namespace TeamUtility.IO
 			return false;
 		}
 		
-		public void Reset()
-		{
-			_value = Neutral;
-			_remoteButtonDown = false;
-			_remoteButtonChangedThisFrame = false;
-		}
-		
 		public void SetMouseAxis(int axis)
 		{
 			if(type == InputType.MouseAxis)
@@ -341,7 +334,32 @@ namespace TeamUtility.IO
 				Debug.LogWarning(string.Format("You are trying to manually change the value of button \'{0}\' which is not of type \'RemoteButton\'", name));
 #endif
 		}
-		
+
+		public void Copy(AxisConfiguration source)
+		{
+			name = source.name;
+			description = source.description;
+			positive = source.positive;
+			altPositive = source.altPositive;
+			negative = source.negative;
+			altNegative = source.altNegative;
+			deadZone = source.deadZone;
+			gravity = source.gravity;
+			sensitivity = source.sensitivity;
+			snap = source.snap;
+			invert = source.invert;
+			type = source.type;
+			axis = source.axis;
+			joystick = source.joystick;
+		}
+
+		public void Reset()
+		{
+			_value = Neutral;
+			_remoteButtonDown = false;
+			_remoteButtonChangedThisFrame = false;
+		}
+
 		private void UpdateRawAxisName()
 		{
 			if(type == InputType.MouseAxis)

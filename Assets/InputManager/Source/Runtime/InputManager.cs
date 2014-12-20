@@ -54,6 +54,7 @@ namespace TeamUtility.IO
 		
 		#region [Fields]
 		public event Action<string> ConfigurationChanged;
+		public event Action<InputConfiguration> ConfigurationDirty;
 		public event Action Loaded;
 		public event Action Saved;
 		public event Action RemoteUpdate;
@@ -357,6 +358,12 @@ namespace TeamUtility.IO
 				ConfigurationChanged(configuration);
 			}
 		}
+
+		private void RaiseConfigurationDirtyEvent(InputConfiguration configuration)
+		{
+			if(ConfigurationDirty != null)
+				ConfigurationDirty(configuration);
+		}
 		
 		private void RaiseLoadedEvent()
 		{
@@ -463,9 +470,6 @@ namespace TeamUtility.IO
 		/// </summary>
 		public static void SetRemoteAxisValue(InputConfiguration inputConfig, string axisName, float value)
 		{
-			if(inputConfig == null)
-				throw new ArgumentNullException("inputConfig");
-
 			SetRemoteAxisValue(inputConfig.name, axisName, value);
 		}
 
@@ -474,11 +478,6 @@ namespace TeamUtility.IO
 		/// </summary>
 		public static void SetRemoteAxisValue(string inputConfigName, string axisName, float value)
 		{
-			if(inputConfigName == null)
-				throw new ArgumentNullException("inputConfigName");
-			else if(axisName == null)
-				throw new ArgumentNullException("axisName");
-
 			AxisConfiguration axisConfig = GetAxisConfiguration(inputConfigName, axisName);
 			if(axisConfig == null) 
 				throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the input configuration named \'{1}\'", axisName, inputConfigName));
@@ -501,9 +500,6 @@ namespace TeamUtility.IO
 		/// </summary>
 		public static void SetRemoteButtonValue(InputConfiguration inputConfig, string buttonName, bool down, bool changedThisFrame)
 		{
-			if(inputConfig == null)
-				throw new ArgumentNullException("inputConfig");
-			
 			SetRemoteButtonValue(inputConfig.name, buttonName, down, changedThisFrame);
 		}
 
@@ -512,11 +508,6 @@ namespace TeamUtility.IO
 		/// </summary>
 		private static void SetRemoteButtonValue(string inputConfigName, string buttonName, bool down, bool changedThisFrame)
 		{
-			if(inputConfigName == null)
-				throw new ArgumentNullException("inputConfigName");
-			else if(buttonName == null)
-				throw new ArgumentNullException("buttonName");
-			
 			AxisConfiguration axisConfig = GetAxisConfiguration(inputConfigName, buttonName);
 			if(axisConfig == null) 
 				throw new ArgumentException(string.Format("An button named \'{0}\' does not exist in the input configuration named \'{1}\'", buttonName, inputConfigName));
@@ -537,9 +528,7 @@ namespace TeamUtility.IO
 		public static InputConfiguration CreateInputConfiguration(string name)
 		{
 			if(_instance._configurationTable.ContainsKey(name))
-			{
 				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' already exists", name));
-			}
 			
 			InputConfiguration inputConfig = new InputConfiguration(name);
 			_instance.inputConfigurations.Add(inputConfig);
@@ -856,6 +845,23 @@ namespace TeamUtility.IO
 			{
 				_instance.StopScan();
 			}
+		}
+
+		public static void SetConfigurationDirty(string inputConfigName)
+		{
+			InputConfiguration inputConfig = GetConfiguration(inputConfigName);
+			if(inputConfig == null)
+				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
+
+			_instance.RaiseConfigurationDirtyEvent(inputConfig);
+		}
+
+		public static void SetConfigurationDirty(InputConfiguration inputConfig)
+		{
+			if(inputConfig == null)
+				throw new ArgumentNullException("inputConfig");
+
+			_instance.RaiseConfigurationDirtyEvent(inputConfig);
 		}
 		
 		/// <summary>

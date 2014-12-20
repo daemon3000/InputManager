@@ -37,12 +37,16 @@ namespace TeamUtility.IO.Examples
 			//	The axis config needs to be reinitialized because loading can invalidate
 			//	the input configurations
 			InputManager.Instance.Loaded += InitializeAxisConfig;
+			InputManager.Instance.ConfigurationDirty += HandleConfigurationDirty;
 		}
 		
 		private void OnDestroy()
 		{
 			if(InputManager.Instance != null)
+			{
 				InputManager.Instance.Loaded -= InitializeAxisConfig;
+				InputManager.Instance.ConfigurationDirty -= HandleConfigurationDirty;
+			}
 		}
 		
 		private void InitializeAxisConfig()
@@ -77,6 +81,12 @@ namespace TeamUtility.IO.Examples
 				m_keyDescription.text = "";
 				Debug.LogError(string.Format(@"Input configuration '{0}' does not exist or axis '{1}' does not exist", m_inputConfigName, m_axisConfigName));
 			}
+		}
+
+		private void HandleConfigurationDirty(InputConfiguration inputConfig)
+		{
+			if(inputConfig.name == m_inputConfigName)
+				InitializeAxisConfig();
 		}
 
 		public void OnPointerDown(PointerEventData data)

@@ -83,6 +83,24 @@ namespace TeamUtility.IO
 				}
 			}
 		}
+
+		public InputConfiguration LoadSelective(string inputConfigName)
+		{
+			InputConfiguration inputConfig = null;
+			using(XmlReader reader = CreateXmlReader())
+			{
+				while(reader.Read())
+				{
+					if(reader.IsStartElement("InputConfiguration") && reader["name"] == inputConfigName)
+					{
+						inputConfig = ReadInputConfiguration(reader);
+						break;
+					}
+				}
+			}
+
+			return inputConfig;
+		}
 		
 		private XmlReader CreateXmlReader()
 		{
