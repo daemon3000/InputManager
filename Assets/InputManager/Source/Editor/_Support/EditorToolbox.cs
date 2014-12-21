@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -134,7 +134,7 @@ namespace TeamUtility.Editor.IO.InputManager
 			return GetMappingImporterWindowType() != null;
 		}
 
-		public static void OpenImportJoystickMappingWindow(InputConfigurator configurator)
+		public static void OpenImportJoystickMappingWindow(AdvancedInputEditor configurator)
 		{
 			Type type = GetMappingImporterWindowType();
 			if(type == null)

@@ -1,15 +1,13 @@
 ## Introduction
-*InputManager* is a custom input manager for Unity. It does everything Unity's input manager does and it allows you remap keys at runtime.
-
-The *InputManager* can have one or more input configurations(e.g. one for keyboard and mouse and one for a Xbox controller), each one with its own set of axes(like the ones provided by Unity's input manager).
+*InputManager* is a custom input manager for Unity that allows you to rebind keys at runtime and abstract input devices(through input configurations) for cross platform input.
 
 ## Platforms
 Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX, WebPlayer and Android(not tested on iOS but it might work). Requires the latest version of Unity.
 
 ## Getting Started
 ### Setup
-1. Open the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. You don't need to export the "Examples" folder if you don't want to.
-**If you are using a Unity version lower than 4.6 skip the UIInputModules addon and the associated example.**
+1. Clone or download the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. It's important to export the pluing as a unitypackage in order to preserve the script execution order.
+**If you are using a Unity version lower than 4.6 don't import the UIInputModules addon and the examples.**
 2. Create a new *Input Manager* by going to *Team Utility/Input Manager* and selecting *Create Input Manager*.
 3. Open the *Advanced Editor* by going to *Team Utility/Input Manager* and selecting *Open Advanced Editor*. The first time you open the *Advanced Editor* you will be prompted to overwrite your project's input settings. You can also do it from the *File* menu of the *Advanced Editor* at a later time.
 4. Use the *Advanced Editor* to create new input configurations, buttons and axes.
@@ -67,7 +65,7 @@ This addon allows you to map joystick buttons to key codes and axes.
 
 ### UI Input Modules
 Custom standalone input module for the new UI system in Unity 4.6.
-**If you are using a Unity version lower than 4.6 don't import this addon or the associated example.**
+**If you are using a Unity version lower than 4.6 don't import this addon.**
 
 **For more information about the addons visit the Wiki.**
 

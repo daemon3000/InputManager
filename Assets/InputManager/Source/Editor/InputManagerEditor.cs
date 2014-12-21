@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -67,10 +67,10 @@ namespace TeamUtility.Editor
 			GUILayout.Space(5.0f);
 			
 			GUILayout.BeginHorizontal();
-			GUI.enabled = !InputConfigurator.IsOpen;
+			GUI.enabled = !AdvancedInputEditor.IsOpen;
 			if(GUILayout.Button("Advanced\nEditor", GUILayout.Height(40.0f)))
 			{
-				InputConfigurator.OpenWindow(inputManager);
+				AdvancedInputEditor.OpenWindow(inputManager);
 			}
 			GUI.enabled = true;
 			if(GUILayout.Button("Create\nSnapshot", GUILayout.Height(40.0f)))

@@ -31,8 +31,20 @@ using TeamUtility.Editor.IO.InputManager;
 
 namespace TeamUtility.Editor
 {
-	public sealed class InputConfigurator : EditorWindow
+	public sealed class AdvancedInputEditor : EditorWindow
 	{
+		#region [Menu Options]
+		public enum FileMenuOptions
+		{
+			OverriteInputSettings = 0, CreateSnapshot, LoadSnapshot, Export, Import, ImportJoystickMapping, ConfigureForInputAdapter
+		}
+
+		public enum EditMenuOptions
+		{
+			NewInputConfiguration = 0, NewAxisConfiguration, Duplicate, Delete, DeleteAll, SelectTarget, IgnoreTimescale, DontDestroyOnLoad, Copy, Paste
+		}
+		#endregion
+
 		#region [SearchResult]
 		[Serializable]
 		private class SearchResult
@@ -64,7 +76,8 @@ namespace TeamUtility.Editor
 		[SerializeField] private Texture2D _highlightTexture;
 		[SerializeField] private string _searchString = "";
 		[SerializeField] private string _keyString = string.Empty;
-		
+
+		private AxisConfiguration _copySource;
 		private GUIStyle _whiteLabel;
 		private GUIStyle _whiteFoldout;
 		private float _minCursorRectWidth = 10.0f;
@@ -90,21 +103,13 @@ namespace TeamUtility.Editor
 			IsOpen = true;
 			
 			if(_inputManager == null)
-			{
 				_inputManager = UnityEngine.Object.FindObjectOfType(typeof(InputManager)) as InputManager;
-			}
 			if(_selectionPath == null)
-			{
 				_selectionPath = new List<int>();
-			}
-			if(_highlightTexture == null)
-			{
-				CreateHighlightTexture();
-			}
 			if(_searchResults == null)
-			{
-				_searchResults = new List<SearchResult>();
-			}
+			_searchResults = new List<SearchResult>();
+			if(_highlightTexture == null)
+				CreateHighlightTexture();
 		}
 
 		private void CreateHighlightTexture()
@@ -138,6 +143,7 @@ namespace TeamUtility.Editor
 			IsOpen = false;
 			Texture2D.DestroyImmediate(_highlightTexture);
 			_highlightTexture = null;
+			_copySource = null;
 		}
 
 		public void AddInputConfiguration(InputConfiguration configuration)
@@ -199,8 +205,11 @@ namespace TeamUtility.Editor
 
 		private void ConfigureForInputAdapter()
 		{
-			bool cont = EditorUtility.DisplayDialog("Warning", "This operation will replace the current input configrations!\nDo you want to continue?", "Yes", "No");
-			if(!cont) return;
+			if(_inputManager.inputConfigurations.Count > 0)
+			{
+				bool cont = EditorUtility.DisplayDialog("Warning", "This operation will replace the current input configrations!\nDo you want to continue?", "Yes", "No");
+				if(!cont) return;
+			}
 
 			TextAsset textAsset = Resources.Load<TextAsset>("input_adapter_init");
 			if(textAsset != null)
@@ -222,69 +231,58 @@ namespace TeamUtility.Editor
 		private void CreateFileMenu(Rect position)
 		{
 			GenericMenu fileMenu = new GenericMenu();
-			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, 0);
+			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, FileMenuOptions.OverriteInputSettings);
 			if(EditorToolbox.HasInputAdapterAddon())
-				fileMenu.AddItem(new GUIContent("Configure For Input Adapter"), false, HandleFileMenuOption, 6);
+				fileMenu.AddItem(new GUIContent("Configure For Input Adapter"), false, HandleFileMenuOption, FileMenuOptions.ConfigureForInputAdapter);
 
 			fileMenu.AddSeparator("");
 			if(_inputManager.inputConfigurations.Count > 0)
-			{
-				fileMenu.AddItem(new GUIContent("Create Snapshot"), false, HandleFileMenuOption, 1);
-			}
+				fileMenu.AddItem(new GUIContent("Create Snapshot"), false, HandleFileMenuOption, FileMenuOptions.CreateSnapshot);
 			else
-			{
 				fileMenu.AddDisabledItem(new GUIContent("Create Snapshot"));
-			}
+
 			if(EditorToolbox.CanLoadSnapshot())
-			{
-				fileMenu.AddItem(new GUIContent("Load Snapshot"), false, HandleFileMenuOption, 2);
-			}
+				fileMenu.AddItem(new GUIContent("Load Snapshot"), false, HandleFileMenuOption, FileMenuOptions.LoadSnapshot);
 			else
-			{
 				fileMenu.AddDisabledItem(new GUIContent("Load Snapshot"));
-			}
 			fileMenu.AddSeparator("");
+
 			if(_inputManager.inputConfigurations.Count > 0)
-			{
-				fileMenu.AddItem(new GUIContent("Export"), false, HandleFileMenuOption, 3);
-			}
+				fileMenu.AddItem(new GUIContent("Export"), false, HandleFileMenuOption, FileMenuOptions.Export);
 			else
-			{
 				fileMenu.AddDisabledItem(new GUIContent("Export"));
-			}
-			fileMenu.AddItem(new GUIContent("Import"), false, HandleFileMenuOption, 4);
+
+			fileMenu.AddItem(new GUIContent("Import"), false, HandleFileMenuOption, FileMenuOptions.Import);
 			if(EditorToolbox.HasJoystickMappingAddon())
-			{
-				fileMenu.AddItem(new GUIContent("Import Joystick Mapping"), false, HandleFileMenuOption, 5);
-			}
+				fileMenu.AddItem(new GUIContent("Import Joystick Mapping"), false, HandleFileMenuOption, FileMenuOptions.ImportJoystickMapping);
 
 			fileMenu.DropDown(position);
 		}
 		
 		private void HandleFileMenuOption(object arg)
 		{
-			int option = (int)arg;
+			FileMenuOptions option = (FileMenuOptions)arg;
 			switch(option)
 			{
-			case 0:
+			case FileMenuOptions.OverriteInputSettings:
 				EditorToolbox.OverwriteInputSettings();
 				break;
-			case 1:
+			case FileMenuOptions.CreateSnapshot:
 				EditorToolbox.CreateSnapshot(_inputManager);
 				break;
-			case 2:
+			case FileMenuOptions.LoadSnapshot:
 				EditorToolbox.LoadSnapshot(_inputManager);
 				break;
-			case 3:
+			case FileMenuOptions.Export:
 				ExportInputConfigurations();
 				break;
-			case 4:
+			case FileMenuOptions.Import:
 				ImportInputConfigurations();
 				break;
-			case 5:
+			case FileMenuOptions.ImportJoystickMapping:
 				EditorToolbox.OpenImportJoystickMappingWindow(this);
 				break;
-			case 6:
+			case FileMenuOptions.ConfigureForInputAdapter:
 				ConfigureForInputAdapter();
 				break;
 			}
@@ -293,70 +291,80 @@ namespace TeamUtility.Editor
 		private void CreateEditMenu(Rect position)
 		{
 			GenericMenu editMenu = new GenericMenu();
-			editMenu.AddItem(new GUIContent("New Configuration"), false, HandleEditMenuOption, 0); 
+			editMenu.AddItem(new GUIContent("New Configuration"), false, HandleEditMenuOption, EditMenuOptions.NewInputConfiguration); 
 			if(_selectionPath.Count >= 1)
-			{
-				editMenu.AddItem(new GUIContent("New Axis"), false, HandleEditMenuOption, 1);
-			}
+				editMenu.AddItem(new GUIContent("New Axis"), false, HandleEditMenuOption, EditMenuOptions.NewAxisConfiguration);
 			else
-			{
 				editMenu.AddDisabledItem(new GUIContent("New Axis"));
-			}
 			editMenu.AddSeparator("");
 			
 			if(_selectionPath.Count > 0)
-			{
-				editMenu.AddItem(new GUIContent("Duplicate          Shift+D"), false, HandleEditMenuOption, 2);
-			}
+				editMenu.AddItem(new GUIContent("Duplicate          Shift+D"), false, HandleEditMenuOption, EditMenuOptions.Duplicate);
 			else
-			{
 				editMenu.AddDisabledItem(new GUIContent("Duplicate          Shift+D"));
-			}
+
 			if(_selectionPath.Count > 0)
-			{
-				editMenu.AddItem(new GUIContent("Delete                Del"), false, HandleEditMenuOption, 3);
-			}
+				editMenu.AddItem(new GUIContent("Delete                Del"), false, HandleEditMenuOption, EditMenuOptions.Delete);
 			else
-			{
 				editMenu.AddDisabledItem(new GUIContent("Delete                Del"));
-			}
-			editMenu.AddItem(new GUIContent("Delete All"), false, HandleEditMenuOption, 4);
+
+			if(_inputManager.inputConfigurations.Count > 0)
+				editMenu.AddItem(new GUIContent("Delete All"), false, HandleEditMenuOption, EditMenuOptions.DeleteAll);
+			else
+				editMenu.AddDisabledItem(new GUIContent("Delete All"));
+
+			if(_selectionPath.Count >= 2)
+				editMenu.AddItem(new GUIContent("Copy"), false, HandleEditMenuOption, EditMenuOptions.Copy);
+			else
+				editMenu.AddDisabledItem(new GUIContent("Copy"));
+
+			if(_copySource != null && _selectionPath.Count >= 2)
+				editMenu.AddItem(new GUIContent("Paste"), false, HandleEditMenuOption, EditMenuOptions.Paste);
+			else
+				editMenu.AddDisabledItem(new GUIContent("Paste"));
+
 			editMenu.AddSeparator("");
 
-			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, 5);
-			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, 6);
-			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, 7);
+			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, EditMenuOptions.SelectTarget);
+			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, EditMenuOptions.IgnoreTimescale);
+			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, EditMenuOptions.DontDestroyOnLoad);
 			editMenu.DropDown(position);
 		}
 		
 		private void HandleEditMenuOption(object arg)
 		{
-			int option = (int)arg;
+			EditMenuOptions option = (EditMenuOptions)arg;
 			switch(option)
 			{
-			case 0:
+			case EditMenuOptions.NewInputConfiguration:
 				CreateNewInputConfiguration();
 				break;
-			case 1:
+			case EditMenuOptions.NewAxisConfiguration:
 				CreateNewAxisConfiguration();
 				break;
-			case 2:
+			case EditMenuOptions.Duplicate:
 				Duplicate();
 				break;
-			case 3:
+			case EditMenuOptions.Delete:
 				Delete();
 				break;
-			case 4:
+			case EditMenuOptions.DeleteAll:
 				DeleteAll();
 				break;
-			case 5:
+			case EditMenuOptions.SelectTarget:
 				Selection.activeGameObject = _inputManager.gameObject;
 				break;
-			case 6:
+			case EditMenuOptions.IgnoreTimescale:
 				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
 				break;
-			case 7:
+			case EditMenuOptions.DontDestroyOnLoad:
 				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
+				break;
+			case EditMenuOptions.Copy:
+				CopySelectedAxisConfig();
+				break;
+			case EditMenuOptions.Paste:
+				PasteAxisConfig();
 				break;
 			}
 		}
@@ -473,6 +481,23 @@ namespace TeamUtility.Editor
 				UpdateSearchResults();
 			}
 			Repaint();
+		}
+
+		private void CopySelectedAxisConfig()
+		{
+			if(_copySource == null)
+				_copySource = new AxisConfiguration();
+
+			InputConfiguration inputConfig = _inputManager.inputConfigurations[_selectionPath[0]];
+			AxisConfiguration axisConfig = inputConfig.axes[_selectionPath[1]];
+			_copySource.Copy(axisConfig);
+		}
+
+		private void PasteAxisConfig()
+		{
+			InputConfiguration inputConfig = _inputManager.inputConfigurations[_selectionPath[0]];
+			AxisConfiguration axisConfig = inputConfig.axes[_selectionPath[1]];
+			axisConfig.Copy(_copySource);
 		}
 		
 		private void UpdateSearchResults()
@@ -787,7 +812,7 @@ namespace TeamUtility.Editor
 										position.width - (_hierarchyPanelWidth + 5.0f), 
 										position.height - _toolbarHeight - 5.0f);
 			InputConfiguration inputConfig = _inputManager.inputConfigurations[_selectionPath[0]];
-			
+
 			if(_selectionPath.Count < 2)
 			{
 				DisplayInputConfigurationFields(inputConfig, screenRect);
@@ -823,7 +848,7 @@ namespace TeamUtility.Editor
 			GUILayout.EndArea();
 		}
 		
-		private void DisplayAxisConfigurationFields(InputConfiguration inputConfig, AxisConfiguration axisConfig, Rect screenRect)
+		private void DisplayAxisConfigurationFields(InputConfiguration inputConfigx, AxisConfiguration axisConfig, Rect screenRect)
 		{
 			GUIContent gravityInfo = new GUIContent("Gravity", "The speed(in units/sec) at which a digital axis falls towards neutral.");
 			GUIContent sensitivityInfo = new GUIContent("Sensitivity", "The speed(in units/sec) at which an axis moves towards the target value.");
@@ -860,7 +885,16 @@ namespace TeamUtility.Editor
 			axisConfig.type = (InputType)EditorGUILayout.EnumPopup("Type", axisConfig.type);
 			axisConfig.axis = EditorGUILayout.Popup("Axis", axisConfig.axis, _axisOptions);
 			axisConfig.joystick = EditorGUILayout.Popup("Joystick", axisConfig.joystick, _joystickOptions);
-			
+
+			if(EditorApplication.isPlaying)
+			{
+				EditorGUILayout.Space();
+				GUI.enabled = false;
+				EditorGUILayout.FloatField("Axis", axisConfig.GetAxis());
+				EditorGUILayout.Toggle("Button", axisConfig.GetButton());
+				GUI.enabled = true;
+			}
+
 			GUILayout.EndScrollView();
 			GUILayout.EndArea();
 		}
@@ -896,7 +930,7 @@ namespace TeamUtility.Editor
 					GameObject gameObject = new GameObject("InputManager");
 					gameObject.AddComponent<InputManager>();
 				}
-				EditorWindow.GetWindow<InputConfigurator>("Input");
+				EditorWindow.GetWindow<AdvancedInputEditor>("Input");
 			}
 		}
 		
@@ -904,7 +938,7 @@ namespace TeamUtility.Editor
 		{
 			if(!IsOpen)
 			{
-				var window = EditorWindow.GetWindow<InputConfigurator>("Input");
+				var window = EditorWindow.GetWindow<AdvancedInputEditor>("Input");
 				window._inputManager = target;
 			}
 		}
@@ -913,7 +947,7 @@ namespace TeamUtility.Editor
 		{
 			if(IsOpen)
 			{
-				var window = EditorWindow.GetWindow<InputConfigurator>("Input");
+				var window = EditorWindow.GetWindow<AdvancedInputEditor>("Input");
 				window.Close();
 			}
 		}

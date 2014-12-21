@@ -1845,7 +1845,7 @@ MonoBehaviour:
       type: 0
       axis: 0
       joystick: 0
-    isExpanded: 1
+    isExpanded: 0
   defaultConfiguration: KeyboardAndMouse
   dontDestroyOnLoad: 0
   ignoreTimescale: 1

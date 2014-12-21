@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -12,7 +12,7 @@ namespace TeamUtility.Editor.IO.InputManager
 	public class MappingImportWindow : EditorWindow
 	{
 		[SerializeField] private List<JoystickMapping> _mappings;
-		[SerializeField] private InputConfigurator _configurator;
+		[SerializeField] private AdvancedInputEditor _configurator;
 		[SerializeField] private Texture2D _highlightTexture;
 		[SerializeField] private Vector2 _mappingListScrollPos = Vector2.zero;
 		[SerializeField] private string _searchString = string.Empty;
@@ -261,7 +261,7 @@ namespace TeamUtility.Editor.IO.InputManager
 			_configurator.AddInputConfiguration(inputConfig);
 		}
 
-		public static void Open(InputConfigurator configurator)
+		public static void Open(AdvancedInputEditor configurator)
 		{
 			var window = EditorWindow.GetWindow<MappingImportWindow>("Mapping Importer");
 			window._configurator = configurator;
