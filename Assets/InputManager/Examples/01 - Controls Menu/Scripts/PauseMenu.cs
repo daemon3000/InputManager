@@ -29,8 +29,6 @@ namespace TeamUtility.IO.Examples
 			{
 				if(!m_isOpen)
 					Open();
-				else
-					Close();
 			}
 		}
 

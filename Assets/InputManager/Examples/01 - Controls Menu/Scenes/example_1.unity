@@ -2243,6 +2243,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 0
 --- !u!1 &456662670
 GameObject:
@@ -3094,6 +3095,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 1
 --- !u!114 &751669326
 MonoBehaviour:
@@ -3675,6 +3677,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 0
 --- !u!1 &916927269
 GameObject:
@@ -3927,6 +3930,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1014348814
 MonoBehaviour:
@@ -5294,6 +5298,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 0
 --- !u!1 &1452717734
 GameObject:
@@ -5636,6 +5641,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1532841870
 MonoBehaviour:
@@ -6089,6 +6095,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1671376370
 MonoBehaviour:
@@ -6746,6 +6753,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1874661970
 MonoBehaviour:
@@ -7104,6 +7112,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 0
 --- !u!1 &2095828570
 GameObject:
@@ -7188,6 +7197,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_joystick: 0
   m_rebindType: 0
 --- !u!1 &2098577071
 GameObject:

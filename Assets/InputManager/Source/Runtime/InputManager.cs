@@ -321,7 +321,7 @@ namespace TeamUtility.IO
 				int scanStart = _joystickToScan * AxisConfiguration.MaxJoystickAxes;
 				for(int i = 0; i < AxisConfiguration.MaxJoystickAxes; i++)
 				{
-					if(Mathf.Abs(Input.GetAxisRaw(_rawJoystickAxes[scanStart + i])) >=   1.0f)
+					if(Mathf.Abs(Input.GetAxisRaw(_rawJoystickAxes[scanStart + i])) >= 1.0f)
 					{
 						if(_axisScanHandler(i, _optionalParameters))
 						{

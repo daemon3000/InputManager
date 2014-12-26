@@ -22,11 +22,16 @@ namespace TeamUtility.IO.Examples
 		[SerializeField] private float m_timeout;
 		[SerializeField] private bool m_changePositiveKey;
 		[SerializeField] private bool m_changeAltKey;
+
+		[SerializeField] 
+		[Range(0, AxisConfiguration.MaxJoysticks)]
+		private int m_joystick = 0;
+
 		[SerializeField] private RebindType m_rebindType;
 		
 		private AxisConfiguration m_axisConfig;
 		private Image m_image;
-		private string[] m_axisNames = new string[] { "X", "Y", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
+		private static string[] m_axisNames = new string[] { "X", "Y", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 		
 		private void Awake()
 		{
@@ -114,9 +119,9 @@ namespace TeamUtility.IO.Examples
 				return false;
 			
 			//	The key is KeyCode.None when the timeout has been reached or the scan has been canceled
-			//	If the key is KeyCode.Backspace clear the current binding
 			if(key != KeyCode.None)
 			{
+				//	If the key is KeyCode.Backspace clear the current binding
 				key = (key == KeyCode.Backspace) ? KeyCode.None : key;
 				if(m_changePositiveKey)
 				{
@@ -132,35 +137,44 @@ namespace TeamUtility.IO.Examples
 					else
 						m_axisConfig.negative = key;
 				}
+				m_keyDescription.text = (key == KeyCode.None) ? "" : key.ToString();
+			}
+			else
+			{
+				KeyCode currentKey = GetCurrentKeyCode();
+				m_keyDescription.text = (currentKey == KeyCode.None) ? "" : key.ToString();
 			}
 
 			m_image.overrideSprite = m_normalState;
-			m_keyDescription.text = (key == KeyCode.None) ? "" : key.ToString();
 			return true;
 		}
 		
 		private bool IsKeyValid(KeyCode key)
 		{
+			bool isValid = true;
+
 			if(m_rebindType == RebindType.Keyboard)
 			{
 				if((int)key >= (int)KeyCode.JoystickButton0)
-					return false;
-				if(key == KeyCode.LeftApple || key == KeyCode.RightApple)
-					return false;
-				if(key == KeyCode.LeftWindows || key == KeyCode.RightWindows)
-					return false;
+					isValid = false;
+				else if(key == KeyCode.LeftApple || key == KeyCode.RightApple)
+					isValid = false;
+				else if(key == KeyCode.LeftWindows || key == KeyCode.RightWindows)
+					isValid = false;
 			}
 			else if(m_rebindType == RebindType.GamepadButton)
 			{
-				//	Allow KeyCode.None to pass because it means that the scan has been canceled
+				//	Allow KeyCode.None to pass because it means that the scan has been canceled or the timeout has been reached
 				//	Allow KeyCode.Backspace to pass so it can clear the current binding
 				if((int)key < (int)KeyCode.JoystickButton0 && key != KeyCode.None && key != KeyCode.Backspace)
-					return false;
+					isValid = false;
 			}
 			else
-				return false;
-			
-			return true;
+			{
+				isValid = false;
+			}
+
+			return isValid;
 		}
 
 		private void StartJoystickAxisScan()
@@ -172,15 +186,34 @@ namespace TeamUtility.IO.Examples
 
 		private bool HandleJoystickAxisScan(int axis, object[] arg)
 		{
+			//	The axis is negative when the timeout has been reached or the scan has been canceled
 			if(axis >= 0)
-			{
-				m_axisConfig.SetAnalogAxis(0, axis);
-				m_image.overrideSprite = m_normalState;
-				m_keyDescription.text = m_axisNames[axis];
-				return true;
-			}
+				m_axisConfig.SetAnalogAxis(m_joystick, axis);
 
-			return false;
+			m_image.overrideSprite = m_normalState;
+			m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+			return true;
+		}
+
+		private KeyCode GetCurrentKeyCode()
+		{
+			if(m_rebindType == RebindType.GamepadAxis)
+				return KeyCode.None;
+
+			if(m_changePositiveKey)
+			{
+				if(m_changeAltKey)
+					return m_axisConfig.altPositive;
+				else
+					return m_axisConfig.positive;
+			}
+			else
+			{
+				if(m_changeAltKey)
+					return m_axisConfig.altNegative;
+				else
+					return m_axisConfig.negative;
+			}
 		}
 	}
 }
