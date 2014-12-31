@@ -21,11 +21,13 @@
 //	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
+//
+//	https://bitbucket.org/Unity-Technologies/ui
 #endregion
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace TeamUtility.IO
 {
@@ -34,23 +36,23 @@ namespace TeamUtility.IO
 	{
 		private float m_NextAction;
 		
-		private InputMode m_CurrentInputMode = InputMode.Mouse;
-		
 		private Vector2 m_LastMousePosition;
 		private Vector2 m_MousePosition;
 		
 		protected StandaloneInputModule()
 		{ }
 		
+		[Obsolete("Mode is no longer needed on input module as it handles both mouse and keyboard simultaneously.", false)]
 		public enum InputMode
 		{
 			Mouse,
 			Buttons
 		}
 		
+		[Obsolete("Mode is no longer needed on input module as it handles both mouse and keyboard simultaneously.", false)]
 		public InputMode inputMode
 		{
-			get { return m_CurrentInputMode; }
+			get { return InputMode.Mouse; }
 		}
 		
 		[SerializeField]
@@ -193,7 +195,7 @@ namespace TeamUtility.IO
 		/// </summary>
 		private bool SendSubmitEventToSelectedObject()
 		{
-			if (eventSystem.currentSelectedGameObject == null || m_CurrentInputMode != InputMode.Buttons)
+			if (eventSystem.currentSelectedGameObject == null)
 				return false;
 			
 			var data = GetBaseEventData();
@@ -252,49 +254,10 @@ namespace TeamUtility.IO
 			if (!Mathf.Approximately(axisEventData.moveVector.x, 0f)
 			    || !Mathf.Approximately(axisEventData.moveVector.y, 0f))
 			{
-				if (m_CurrentInputMode != InputMode.Buttons)
-				{
-					// so if we are chaning to keyboard
-					m_CurrentInputMode = InputMode.Buttons;
-					
-					// if we are doing a 'fresh selection'
-					// return as we don't want to do a move.
-					if (ResetSelection())
-					{
-						m_NextAction = time + 1f / m_InputActionsPerSecond;
-						return true;
-					}
-				}
 				ExecuteEvents.Execute(eventSystem.currentSelectedGameObject, axisEventData, ExecuteEvents.moveHandler);
 			}
 			m_NextAction = time + 1f / m_InputActionsPerSecond;
 			return axisEventData.used;
-		}
-		
-		private bool ResetSelection()
-		{
-			var baseEventData = GetBaseEventData();
-			// clear all selection
-			// & figure out what the mouse is over
-			var lastMousePointer = GetLastPointerEventData(kMouseLeftId);
-			var hoveredObject = lastMousePointer == null ? null : lastMousePointer.pointerEnter;
-			HandlePointerExitAndEnter(lastMousePointer, null);
-			eventSystem.SetSelectedGameObject(null, baseEventData);
-			
-			// if we were hovering something...
-			// use this as the basis for the selection
-			bool resetSelection = false;
-			GameObject toSelect = ExecuteEvents.GetEventHandler<ISelectHandler>(hoveredObject);
-			if (toSelect == null)
-			{
-				// if there was no hover
-				// then use the last selected
-				toSelect = eventSystem.lastSelectedGameObject;
-				resetSelection = true;
-			}
-			
-			eventSystem.SetSelectedGameObject(toSelect, baseEventData);
-			return resetSelection;
 		}
 		
 		/// <summary>
@@ -330,19 +293,12 @@ namespace TeamUtility.IO
 			}
 		}
 		
-		private bool UseMouse(bool pressed, bool released, PointerEventData pointerData)
+		private static bool UseMouse(bool pressed, bool released, PointerEventData pointerData)
 		{
-			if (m_CurrentInputMode == InputMode.Mouse)
+			if (pressed || released || pointerData.IsPointerMoving() || pointerData.IsScrolling())
 				return true;
 			
-			// On mouse action switch back to mouse control scheme
-			if (pressed || released)
-			{
-				m_CurrentInputMode = InputMode.Mouse;
-				eventSystem.SetSelectedGameObject(null);
-			}
-			
-			return m_CurrentInputMode == InputMode.Mouse;
+			return false;
 		}
 		
 		private bool SendUpdateEventToSelectedObject()
@@ -439,11 +395,11 @@ namespace TeamUtility.IO
 				pointerEvent.eligibleForClick = false;
 				pointerEvent.pointerPress = null;
 				pointerEvent.rawPointerPress = null;
-				pointerEvent.dragging = false;
 				
-				if (pointerEvent.pointerDrag != null)
+				if (pointerEvent.pointerDrag != null && pointerEvent.dragging)
 					ExecuteEvents.Execute(pointerEvent.pointerDrag, pointerEvent, ExecuteEvents.endDragHandler);
 				
+				pointerEvent.dragging = false;
 				pointerEvent.pointerDrag = null;
 				
 				// redo pointer enter / exit to refresh state
@@ -456,7 +412,6 @@ namespace TeamUtility.IO
 					HandlePointerExitAndEnter(pointerEvent, currentOverGo);
 				}
 			}
-		
 		}
 
 #if UNITY_EDITOR && UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9 || UNITY_5_0
