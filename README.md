@@ -5,30 +5,12 @@
 Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX, WebPlayer and Android(not tested on iOS but it might work). Requires the latest version of Unity.
 
 ## Getting Started
-### Setup
-1. Clone or download the InputManager project, export the folder named "InputManager" as a unitypackage and import it in your project. It's important to export the pluing as a unitypackage in order to preserve the script execution order.
-**If you are using a Unity version lower than 4.6 don't import the UIInputModules addon and the examples.**
-2. Create a new *Input Manager* by going to *Team Utility/Input Manager* and selecting *Create Input Manager*.
-3. Open the *Advanced Editor* by going to *Team Utility/Input Manager* and selecting *Open Advanced Editor*. The first time you open the *Advanced Editor* you will be prompted to overwrite your project's input settings. You can also do it from the *File* menu of the *Advanced Editor* at a later time.
-4. Use the *Advanced Editor* to create new input configurations, buttons and axes.
-5. If this isn't a new project open it in MonoDevelop(or any IDE you use) and replace all calls to the *Input* class with calls to the *InputManager* class. *InputManager* provides the same public methods and variables so it should be as simple as doing a *Find and Replace*.
+For detailed information on how to get started with this plugin visit the [Wiki](https://github.com/daemon3000/InputManager/wiki/Getting-Started).
 
-**It is recommended that you have only one *Input Manager* in your game. Add it in the first scene and enable *Dont Destroy On Load* in the inspector.** 
-
-### Advanced Editor
-Use the editor to create input configurations and axes. 
-
-The *Edit* menu contains options to create, delete and duplicate input configurations or individual axes.
-
-The *File* menu allows you to create snapshots of the *InputManager* and restore it when you exit play-mode.
-
-Note: The names you'll use for the *(Alt)Positive* and *(Alt)Negative* keys are not the same as the ones you use with the default input manager; they are the names of the [KeyCode](https://docs.unity3d.com/Documentation/ScriptReference/KeyCode.html) values. The names are case insensitive.
-For example, instead of "left shift" you would use "LeftShift".
-
-### API
+## API
 The *InputManager* class provides the following methods and variables, in addition to the ones provided by Unity's *Input* class:
 
-- **Instance** - Use it to check if a InputManager instance exists in the scene or to subscribe to the event handlers
+- **Instance** - Use it to check if a InputManager instance exists in the game or to subscribe to the event handlers
 - **CurrentConfiguration** - A reference to the current input configuration used by the InputManager
 - **InputConfigurations** - A list of all the input configurations
 - **AnyInput** - Returns *true* if any button or axis is used

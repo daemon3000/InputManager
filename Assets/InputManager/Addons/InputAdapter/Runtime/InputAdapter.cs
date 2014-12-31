@@ -64,6 +64,18 @@ namespace TeamUtility.IO
 
 		[SerializeField]
 		private string linuxJoystickConfiguration = "Linux_Gamepad";
+
+		[SerializeField]
+		private string leftTriggerAxis = "LeftTrigger";
+
+		[SerializeField]
+		private string rightTriggerAxis = "RightTrigger";
+
+		[SerializeField]
+		private string dpadHorizontalAxis = "DPADHorizontal";
+
+		[SerializeField]
+		private string dpadVerticalAxis = "DPADVertical";
 		
 		private Vector2 _lastDpadValues = Vector2.zero;
 		private Vector2 _currentDpadValues = Vector2.zero;
@@ -144,11 +156,11 @@ namespace TeamUtility.IO
 			
 			if(axis == InputTriggerAxis.Left)
 			{
-				return InputManager.GetAxis("LeftTrigger");
+				return InputManager.GetAxis(_instance.leftTriggerAxis);
 			}
 			else
 			{
-				return InputManager.GetAxis("RightTrigger");
+				return InputManager.GetAxis(_instance.rightTriggerAxis);
 			}
 		}
 		
@@ -159,11 +171,11 @@ namespace TeamUtility.IO
 			
 			if(axis == InputDPADAxis.Horizontal) 
 			{
-				return InputManager.GetAxis("DPADHorizontal");
+				return InputManager.GetAxis(_instance.dpadHorizontalAxis);
 			}
 			else
 			{
-				return InputManager.GetAxis("DPADVertical");
+				return InputManager.GetAxis(_instance.dpadVerticalAxis);
 			}
 		}
 		
@@ -460,11 +472,11 @@ namespace TeamUtility.IO
 			if(_inputDevice == InputDevice.Joystick)
 			{
 				_lastDpadValues = _currentDpadValues;
-				_currentDpadValues.x = InputManager.GetAxis("DPADHorizontal");
-				_currentDpadValues.y = InputManager.GetAxis("DPADVertical");
+				_currentDpadValues.x = InputManager.GetAxis(_instance.dpadHorizontalAxis);
+				_currentDpadValues.y = InputManager.GetAxis(_instance.dpadVerticalAxis);
 				_lastTriggerValues = _currentTriggerValues;
-				_currentTriggerValues.x = InputManager.GetAxis("LeftTrigger");
-				_currentTriggerValues.y = InputManager.GetAxis("RightTrigger");
+				_currentTriggerValues.x = InputManager.GetAxis(_instance.leftTriggerAxis);
+				_currentTriggerValues.y = InputManager.GetAxis(_instance.rightTriggerAxis);
 			}
 			else
 			{
