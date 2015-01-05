@@ -98,51 +98,58 @@ namespace TeamUtility.IO.Examples
 		{
 			if(!InputManager.IsScanning && m_axisConfig != null)
 			{
-				if(m_rebindType == RebindType.Keyboard || m_rebindType == RebindType.GamepadButton)
-					StartKeyScan();
+				m_image.overrideSprite = m_scanningState;
+				m_keyDescription.text = "...";
+
+				ScanSettings settings;
+				settings.joystick = m_joystick;
+				settings.cancelScanButton = m_cancelButton;
+				settings.timeout = m_timeout;
+				settings.userData = null;
+				if(m_rebindType == RebindType.GamepadAxis)
+				{
+					settings.scanFlags = ScanFlags.JoystickAxis;
+					InputManager.StartScan(settings, HandleJoystickAxisScan);
+				}
 				else
-					StartJoystickAxisScan();
+				{
+					settings.scanFlags = ScanFlags.Key | ScanFlags.JoystickButton;
+					InputManager.StartScan(settings, HandleKeyScan);
+				}
 			}
 		}
-
-		private void StartKeyScan()
-		{
-			m_image.overrideSprite = m_scanningState;
-			m_keyDescription.text = "...";
-			InputManager.StartKeyScan(HandleKeyScan, m_timeout, string.IsNullOrEmpty(m_cancelButton) ? null : m_cancelButton);
-		}
 		
-		private bool HandleKeyScan(KeyCode key, object[] arg)
+		private bool HandleKeyScan(ScanResult result)
 		{
 			//	When you return false you tell the InputManager that it should keep scaning for other keys
-			if(!IsKeyValid(key))
+			if(!IsKeyValid(result.key))
 				return false;
 			
 			//	The key is KeyCode.None when the timeout has been reached or the scan has been canceled
-			if(key != KeyCode.None)
+			if(result.key != KeyCode.None)
 			{
 				//	If the key is KeyCode.Backspace clear the current binding
-				key = (key == KeyCode.Backspace) ? KeyCode.None : key;
+				result.key = (result.key == KeyCode.Backspace) ? KeyCode.None : result.key;
 				if(m_changePositiveKey)
 				{
 					if(m_changeAltKey)
-						m_axisConfig.altPositive = key;
+						m_axisConfig.altPositive = result.key;
 					else
-						m_axisConfig.positive = key;
+						m_axisConfig.positive = result.key;
 				}
 				else
 				{
 					if(m_changeAltKey)
-						m_axisConfig.altNegative = key;
+						m_axisConfig.altNegative = result.key;
 					else
-						m_axisConfig.negative = key;
+						m_axisConfig.negative = result.key;
 				}
-				m_keyDescription.text = (key == KeyCode.None) ? "" : key.ToString();
+				m_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
 			}
 			else
 			{
 				KeyCode currentKey = GetCurrentKeyCode();
-				m_keyDescription.text = (currentKey == KeyCode.None) ? "" : key.ToString();
+				m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
 			}
 
 			m_image.overrideSprite = m_normalState;
@@ -177,18 +184,11 @@ namespace TeamUtility.IO.Examples
 			return isValid;
 		}
 
-		private void StartJoystickAxisScan()
-		{
-			m_image.overrideSprite = m_scanningState;
-			m_keyDescription.text = "...";
-			InputManager.StartJoystickAxisScan(HandleJoystickAxisScan, 0, m_timeout, string.IsNullOrEmpty(m_cancelButton) ? null : m_cancelButton);
-		}
-
-		private bool HandleJoystickAxisScan(int axis, object[] arg)
+		private bool HandleJoystickAxisScan(ScanResult result)
 		{
 			//	The axis is negative when the timeout has been reached or the scan has been canceled
-			if(axis >= 0)
-				m_axisConfig.SetAnalogAxis(m_joystick, axis);
+			if(result.joystickAxis >= 0)
+				m_axisConfig.SetAnalogAxis(m_joystick, result.joystickAxis);
 
 			m_image.overrideSprite = m_normalState;
 			m_keyDescription.text = m_axisNames[m_axisConfig.axis];

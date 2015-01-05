@@ -31,26 +31,27 @@ namespace TeamUtility.IO
 	/// <summary>
 	/// Encapsulates a method that takes one parameter(the key) and returns 'true' if
 	/// the key is accepted or 'false' if it isn't.
-	/// The 'args' parameter is used to send additional user data.
+	/// The 'userData' parameter is used to send additional user data.
 	/// </summary>
-	public delegate bool KeyScanHandler(KeyCode key, object[] args);
+	public delegate bool KeyScanHandler(KeyCode key, object[] userData);
 	
 	/// <summary>
 	/// Encapsulates a method that takes one parameter(the axis) and returns 'true' if
 	/// the axis is accepted or 'false' if it isn't.
-	/// The 'args' parameter is used to send additional user data.
+	/// The 'userData' parameter is used to send additional user data.
 	/// </summary>
-	public delegate bool AxisScanHandler(int axis, object[] args);
+	public delegate bool AxisScanHandler(int axis, object[] userData);
+
+	/// <summary>
+	/// Encapsulates a method that takes one parameter(the scan result) and returns 'true' if
+	/// the scan result is accepted or 'false' if it isn't.
+	/// </summary>
+	public delegate bool ScanHandler(ScanResult result);
 	
 	[ExecuteInEditMode]
 	public sealed class InputManager : MonoBehaviour 
 	{
-		public const string VERSION = "1.8.2.0";
-		
-		public enum ScanType
-		{
-			None, Key, MouseAxis, JoystickAxis
-		}
+		public const string VERSION = "1.8.3.0";
 		
 		#region [Fields]
 		public event Action<string> ConfigurationChanged;
@@ -65,19 +66,20 @@ namespace TeamUtility.IO
 		public bool ignoreTimescale;
 		
 		private static InputManager _instance;
-		private float _scanTimeout;
-		private float _lastUpdateTime;
-		private int _joystickToScan;
-		private string _cancelScanButton;
-		private object[] _optionalParameters;
-		private ScanType _scanType;
-		private KeyScanHandler _keyScanHandler;
-		private AxisScanHandler _axisScanHandler;
 		private InputConfiguration _currentConfiguration;
+		private ScanHandler _scanHandler;
+		private ScanResult _scanResult;
+		private ScanFlags _scanFlags;
+		private string _cancelScanButton;
+		private float _scanStartTime;
+		private float _scanTimeout;
+		private int _scanJoystick;
+		private object _scanUserData;
 		
 		//	Cached data for improved performance.
 		private string[] _rawMouseAxes;
 		private string[] _rawJoystickAxes;
+		private KeyCode[] _keys;
 		private Dictionary<string, KeyCode> _stringToKeyTable;
 		private Dictionary<string, InputConfiguration> _configurationTable;
 		private Dictionary<string, Dictionary<string, AxisConfiguration>> _axesTable;
@@ -110,7 +112,7 @@ namespace TeamUtility.IO
 				}
 				
 				_instance = this;
-				_lastUpdateTime = Time.realtimeSinceStartup;
+				_keys = (KeyCode[])Enum.GetValues(typeof(KeyCode));
 				_stringToKeyTable = new Dictionary<string, KeyCode>();
 				_configurationTable = new Dictionary<string, InputConfiguration>();
 				_axesTable = new Dictionary<string, Dictionary<string, AxisConfiguration>>();
@@ -141,16 +143,11 @@ namespace TeamUtility.IO
 		
 		private void SetKeyNames()
 		{
-			foreach(KeyCode key in Enum.GetValues(typeof(KeyCode)))
+			for(int i = 0; i < _keys.Length; i++)
 			{
-				if((int)key < 330 || (int)key > 340)
-				{
-					string keyStr = key.ToString().ToLower();
-					if(!_stringToKeyTable.ContainsKey(keyStr))
-					{
-						_stringToKeyTable.Add(keyStr, key);
-					}
-				}
+				string keyStr = _keys[i].ToString().ToLower();
+				if(!_stringToKeyTable.ContainsKey(keyStr))
+					_stringToKeyTable.Add(keyStr, _keys[i]);
 			}
 		}
 		
@@ -224,131 +221,171 @@ namespace TeamUtility.IO
 			if(!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
-
-			float deltaTime = ignoreTimescale ? (Time.realtimeSinceStartup - _lastUpdateTime) : Time.deltaTime;
-			_lastUpdateTime = Time.realtimeSinceStartup;
-
-			if(_currentConfiguration == null)
+			if(_currentConfiguration != null)
 			{
-				if(_scanType != ScanType.None)
-					StopScan();
-				
+				for(int i = 0; i < _currentConfiguration.axes.Count; i++)
+				{
+					_currentConfiguration.axes[i].Update();
+				}
+				if(RemoteUpdate != null)
+					RemoteUpdate();
+
+				if(_scanFlags != ScanFlags.None)
+					ScanInput();
+			}
+			else
+			{
+				if(_scanFlags != ScanFlags.None)
+					StopInputScan();
+			}
+		}
+
+		private void ScanInput()
+		{
+			float timeout = ignoreTimescale ? (Time.realtimeSinceStartup - _scanStartTime) : (Time.time - _scanStartTime);
+			if(!string.IsNullOrEmpty(_cancelScanButton) && GetButtonDown(_cancelScanButton) || timeout >= _scanTimeout)
+			{
+				StopInputScan();
 				return;
 			}
-			
-			for(int i = 0; i < _currentConfiguration.axes.Count; i++)
-			{
-				_currentConfiguration.axes[i].Update();
-			}
-			if(RemoteUpdate != null)
-				RemoteUpdate();
 
-			if(_scanType != ScanType.None)
+			bool scanSuccess = false;
+			if(((int)_scanFlags & (int)ScanFlags.Key) == (int)ScanFlags.Key)
 			{
-				_scanTimeout -= deltaTime;
-				switch(_scanType)
-				{
-				case ScanType.Key:
-					ScanKey();
-					break;
-				case ScanType.MouseAxis:
-					ScanMouseAxis();
-					break;
-				case ScanType.JoystickAxis:
-					ScanJoystickAxis();
-					break;
-				}
+				scanSuccess = ScanKey();
+			}
+			if(!scanSuccess && (((int)_scanFlags & (int)ScanFlags.JoystickButton) == (int)ScanFlags.JoystickButton))
+			{
+				scanSuccess = ScanJoystickButton();
+			}
+			if(!scanSuccess && (((int)_scanFlags & (int)ScanFlags.JoystickAxis) == (int)ScanFlags.JoystickAxis))
+			{
+				scanSuccess = ScanJoystickAxis();
+			}
+			if(!scanSuccess && (((int)_scanFlags & (int)ScanFlags.MouseAxis) == (int)ScanFlags.MouseAxis))
+			{
+				ScanMouseAxis();
 			}
 		}
-		
-		private void ScanKey()
+
+		private bool ScanKey()
 		{
-			if(!string.IsNullOrEmpty(_cancelScanButton) && 
-				GetButtonDown(_cancelScanButton) || _scanTimeout <= 0.0f)
+			for(int i = 0; i < _keys.Length; i++)
 			{
-				StopScan();
-			}
-			else
-			{
-				foreach(KeyValuePair<string, KeyCode> entry in _stringToKeyTable)
+				if((int)_keys[i] >= (int)KeyCode.JoystickButton0)
+					break;
+
+				if(Input.GetKeyDown(_keys[i]))
 				{
-					if(Input.GetKeyDown(entry.Value))
+					_scanResult.scanFlags = ScanFlags.Key;
+					_scanResult.key = _keys[i];
+					_scanResult.joystick = -1;
+					_scanResult.joystickAxis = -1;
+					_scanResult.mouseAxis = -1;
+					_scanResult.userData = _scanUserData;
+					if(_scanHandler(_scanResult))
 					{
-						if(_keyScanHandler(entry.Value, _optionalParameters))
-						{
-							_keyScanHandler = null;
-							_scanType = ScanType.None;
-							break;
-						}
+						_scanHandler = null;
+						_scanResult.userData = null;
+						_scanFlags = ScanFlags.None;
+						return true;
 					}
 				}
 			}
+
+			return false;
 		}
-		
-		private void ScanMouseAxis()
+
+		private bool ScanJoystickButton()
 		{
-			if(!string.IsNullOrEmpty(_cancelScanButton) && 
-				GetButtonDown(_cancelScanButton) || _scanTimeout <= 0.0f)
+			for(int key = (int)KeyCode.JoystickButton0; key < (int)KeyCode.Joystick4Button19; key++)
 			{
-				StopScan();
-			}
-			else
-			{
-				for(int i = 0; i < _rawMouseAxes.Length; i++)
+				if(Input.GetKeyDown((KeyCode)key))
 				{
-					if(Mathf.Abs(Input.GetAxis(_rawMouseAxes[i])) > 0.0f)
+					_scanResult.scanFlags = ScanFlags.JoystickButton;
+					_scanResult.key = (KeyCode)key;
+					_scanResult.joystick = -1;
+					_scanResult.joystickAxis = -1;
+					_scanResult.mouseAxis = -1;
+					_scanResult.userData = _scanUserData;
+					if(_scanHandler(_scanResult))
 					{
-						if(_axisScanHandler(i, _optionalParameters))
-						{
-							_axisScanHandler = null;
-							_scanType = ScanType.None;
-							break;
-						}
+						_scanHandler = null;
+						_scanResult.userData = null;
+						_scanFlags = ScanFlags.None;
+						return true;
 					}
 				}
 			}
+
+			return false;
 		}
-		
-		private void ScanJoystickAxis()
+
+		private bool ScanJoystickAxis()
 		{
-			if(!string.IsNullOrEmpty(_cancelScanButton) && 
-				GetButtonDown(_cancelScanButton) || _scanTimeout <= 0.0f)
+			int scanStart = _scanJoystick * AxisConfiguration.MaxJoystickAxes;
+			for(int i = 0; i < AxisConfiguration.MaxJoystickAxes; i++)
 			{
-				StopScan();
-			}
-			else
-			{
-				int scanStart = _joystickToScan * AxisConfiguration.MaxJoystickAxes;
-				for(int i = 0; i < AxisConfiguration.MaxJoystickAxes; i++)
+				if(Mathf.Abs(Input.GetAxisRaw(_rawJoystickAxes[scanStart + i])) >= 1.0f)
 				{
-					if(Mathf.Abs(Input.GetAxisRaw(_rawJoystickAxes[scanStart + i])) >= 1.0f)
+					_scanResult.scanFlags = ScanFlags.JoystickAxis;
+					_scanResult.key = KeyCode.None;
+					_scanResult.joystick = _scanJoystick;
+					_scanResult.joystickAxis = i;
+					_scanResult.mouseAxis = -1;
+					_scanResult.userData = _scanUserData;
+					if(_scanHandler(_scanResult))
 					{
-						if(_axisScanHandler(i, _optionalParameters))
-						{
-							_axisScanHandler = null;
-							_scanTimeout = 0.0f;
-							_scanType = ScanType.None;
-							break;
-						}
+						_scanHandler = null;
+						_scanResult.userData = null;
+						_scanFlags = ScanFlags.None;
+						return true;
 					}
 				}
 			}
+
+			return false;
 		}
-		
-		private void StopScan()
+
+		private bool ScanMouseAxis()
 		{
-			if(_scanType == ScanType.Key)
+			for(int i = 0; i < _rawMouseAxes.Length; i++)
 			{
-				_keyScanHandler(KeyCode.None, _optionalParameters);
+				if(Mathf.Abs(Input.GetAxis(_rawMouseAxes[i])) > 0.0f)
+				{
+					_scanResult.scanFlags = ScanFlags.MouseAxis;
+					_scanResult.key = KeyCode.None;
+					_scanResult.joystick = -1;
+					_scanResult.joystickAxis = -1;
+					_scanResult.mouseAxis = i;
+					_scanResult.userData = _scanUserData;
+					if(_scanHandler(_scanResult))
+					{
+						_scanHandler = null;
+						_scanResult.userData = null;
+						_scanFlags = ScanFlags.None;
+						return true;
+					}
+				}
 			}
-			else if(_scanType == ScanType.MouseAxis || _scanType == ScanType.JoystickAxis)
-			{
-				_axisScanHandler(-1, _optionalParameters);
-			}
-			
-			_scanType = ScanType.None;
-			_axisScanHandler = null;
-			_keyScanHandler = null;
+
+			return false;
+		}
+
+		private void StopInputScan()
+		{
+			_scanResult.scanFlags = ScanFlags.None;
+			_scanResult.key = KeyCode.None;
+			_scanResult.joystick = -1;
+			_scanResult.joystickAxis = -1;
+			_scanResult.mouseAxis = -1;
+			_scanResult.userData = _scanUserData;
+
+			_scanHandler(_scanResult);
+
+			_scanHandler = null;
+			_scanResult.userData = null;
+			_scanFlags = ScanFlags.None;
 		}
 		
 		private void RaiseConfigurationChangedEvent(string configuration)
@@ -402,15 +439,7 @@ namespace TeamUtility.IO
 		{
 			get
 			{
-				return (_instance._scanType != ScanType.None);
-			}
-		}
-		
-		public static ScanType CurrentScanType
-		{
-			get
-			{
-				return _instance._scanType;
+				return _instance._scanFlags != ScanFlags.None;
 			}
 		}
 		
@@ -797,13 +826,19 @@ namespace TeamUtility.IO
 		/// Scans for keyboard input and calls the handler with the result.
 		/// Returns KeyCode.None if timeout is reached.
 		/// </summary>
-		public static void StartKeyScan(KeyScanHandler scanHandler, float timeout, string cancelScanButton, params object[] optional)
+		public static void StartKeyScan(KeyScanHandler scanHandler, float timeout, string cancelScanButton, params object[] userData)
 		{
 			_instance._scanTimeout = timeout;
+			_instance._scanFlags = ScanFlags.Key | ScanFlags.JoystickButton;
+			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
-			_instance._optionalParameters = optional;
-			_instance._scanType = ScanType.Key;
-			_instance._keyScanHandler = scanHandler;
+			_instance._scanUserData = userData;
+			_instance._scanHandler = (result) => {
+				if(result.scanFlags == ScanFlags.Key || result.scanFlags == ScanFlags.JoystickButton)
+					return scanHandler(result.key, (object[])result.userData);
+				else
+					return scanHandler(KeyCode.None, (object[])result.userData);
+			};
 		}
 		
 		
@@ -811,20 +846,23 @@ namespace TeamUtility.IO
 		/// Scans for mouse input and calls the handler with the result.
 		/// Returns -1 if timeout is reached.
 		/// </summary>
-		public static void StartMouseAxisScan(AxisScanHandler scanHandler, float timeout, string cancelScanButton, params object[] optional)
+		public static void StartMouseAxisScan(AxisScanHandler scanHandler, float timeout, string cancelScanButton, params object[] userData)
 		{
 			_instance._scanTimeout = timeout;
+			_instance._scanFlags = ScanFlags.MouseAxis;
+			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
-			_instance._optionalParameters = optional;
-			_instance._scanType = ScanType.MouseAxis;
-			_instance._axisScanHandler = scanHandler;
+			_instance._scanUserData = userData;
+			_instance._scanHandler = (result) => { 
+				return scanHandler(result.mouseAxis, (object[])result.userData); 
+			};
 		}
 		
 		/// <summary>
 		/// Scans for joystick input and calls the handler with the result.
 		/// Returns -1 if timeout is reached.
 		/// </summary>
-		public static void StartJoystickAxisScan(AxisScanHandler scanHandler, int joystick, float timeout, string cancelScanButton, params object[] optional)
+		public static void StartJoystickAxisScan(AxisScanHandler scanHandler, int joystick, float timeout, string cancelScanButton, params object[] userData)
 		{
 			if(joystick < 0 || joystick >= AxisConfiguration.MaxJoystickAxes)
 			{
@@ -832,19 +870,34 @@ namespace TeamUtility.IO
 			}
 			
 			_instance._scanTimeout = timeout;
-			_instance._joystickToScan = joystick;
+			_instance._scanFlags = ScanFlags.JoystickAxis;
+			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
-			_instance._optionalParameters = optional;
-			_instance._scanType = ScanType.JoystickAxis;
-			_instance._axisScanHandler = scanHandler;
+			_instance._scanJoystick = joystick;
+			_instance._scanUserData = userData;
+			_instance._scanHandler = (result) => { 
+				return scanHandler(result.mouseAxis, (object[])result.userData); 
+			};
+		}
+
+		public static void StartScan(ScanSettings settings, ScanHandler scanHandler)
+		{
+			if(settings.joystick < 0 || settings.joystick >= AxisConfiguration.MaxJoystickAxes)
+				throw new ArgumentOutOfRangeException("joystick");
+			
+			_instance._scanTimeout = settings.timeout;
+			_instance._scanFlags = settings.scanFlags;
+			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._cancelScanButton = settings.cancelScanButton;
+			_instance._scanJoystick = settings.joystick;
+			_instance._scanUserData = settings.userData;
+			_instance._scanHandler = scanHandler;
 		}
 		
 		public static void CancelScan()
 		{
-			if(_instance._scanType != ScanType.None)
-			{
-				_instance.StopScan();
-			}
+			if(_instance._scanFlags != ScanFlags.None)
+				_instance.StopInputScan();
 		}
 
 		public static void SetConfigurationDirty(string inputConfigName)
