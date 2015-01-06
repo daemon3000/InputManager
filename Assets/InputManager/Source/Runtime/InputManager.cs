@@ -510,8 +510,6 @@ namespace TeamUtility.IO
 			AxisConfiguration axisConfig = GetAxisConfiguration(inputConfigName, axisName);
 			if(axisConfig == null) 
 				throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the input configuration named \'{1}\'", axisName, inputConfigName));
-			else if(axisConfig.type != InputType.RemoteAxis)
-				throw new ArgumentException(string.Format("The axis named \'{0}\' is not of type \'RemoteAxis\'", axisName));
 
 			axisConfig.SetRemoteAxisValue(value);
 		}
@@ -519,31 +517,29 @@ namespace TeamUtility.IO
 		/// <summary>
 		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
 		/// </summary>
-		public static void SetRemoteButtonValue(string buttonName, bool down, bool changedThisFrame)
+		public static void SetRemoteButtonValue(string buttonName, bool down, bool justChanged)
 		{
-			SetRemoteButtonValue(_instance._currentConfiguration.name, buttonName, down, changedThisFrame);
+			SetRemoteButtonValue(_instance._currentConfiguration.name, buttonName, down, justChanged);
 		}
 		
 		/// <summary>
 		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
 		/// </summary>
-		public static void SetRemoteButtonValue(InputConfiguration inputConfig, string buttonName, bool down, bool changedThisFrame)
+		public static void SetRemoteButtonValue(InputConfiguration inputConfig, string buttonName, bool down, bool justChanged)
 		{
-			SetRemoteButtonValue(inputConfig.name, buttonName, down, changedThisFrame);
+			SetRemoteButtonValue(inputConfig.name, buttonName, down, justChanged);
 		}
 
 		/// <summary>
 		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
 		/// </summary>
-		private static void SetRemoteButtonValue(string inputConfigName, string buttonName, bool down, bool changedThisFrame)
+		private static void SetRemoteButtonValue(string inputConfigName, string buttonName, bool down, bool justChanged)
 		{
 			AxisConfiguration axisConfig = GetAxisConfiguration(inputConfigName, buttonName);
 			if(axisConfig == null) 
 				throw new ArgumentException(string.Format("An button named \'{0}\' does not exist in the input configuration named \'{1}\'", buttonName, inputConfigName));
-			else if(axisConfig.type != InputType.RemoteAxis)
-				throw new ArgumentException(string.Format("The button named \'{0}\' is not of type \'RemoteButton\'", buttonName));
-			
-			axisConfig.SetRemoteButtonValue(down, changedThisFrame);
+
+			axisConfig.SetRemoteButtonValue(down, justChanged);
 		}
 		
 		/// <summary>

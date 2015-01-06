@@ -890,6 +890,7 @@ namespace TeamUtility.Editor
 			{
 				EditorGUILayout.Space();
 				GUI.enabled = false;
+				EditorGUILayout.FloatField("Raw Axis", axisConfig.GetAxisRaw());
 				EditorGUILayout.FloatField("Axis", axisConfig.GetAxis());
 				EditorGUILayout.Toggle("Button", axisConfig.GetButton());
 				GUI.enabled = true;

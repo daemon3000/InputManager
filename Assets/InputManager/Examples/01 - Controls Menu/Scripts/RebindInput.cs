@@ -22,6 +22,7 @@ namespace TeamUtility.IO.Examples
 		[SerializeField] private float m_timeout;
 		[SerializeField] private bool m_changePositiveKey;
 		[SerializeField] private bool m_changeAltKey;
+		[SerializeField] private bool m_allowAnalogButton;
 
 		[SerializeField] 
 		[Range(0, AxisConfiguration.MaxJoysticks)]
@@ -114,45 +115,81 @@ namespace TeamUtility.IO.Examples
 				else
 				{
 					settings.scanFlags = ScanFlags.Key | ScanFlags.JoystickButton;
-					InputManager.StartScan(settings, HandleKeyScan);
+					if(m_rebindType == RebindType.GamepadButton && m_allowAnalogButton)
+						settings.scanFlags = settings.scanFlags | ScanFlags.JoystickAxis;
+					InputManager.StartScan(settings, HandleButtonScan);
 				}
 			}
 		}
 		
-		private bool HandleKeyScan(ScanResult result)
+		private bool HandleButtonScan(ScanResult result)
 		{
-			//	When you return false you tell the InputManager that it should keep scaning for other keys
-			if(!IsKeyValid(result.key))
-				return false;
-			
-			//	The key is KeyCode.None when the timeout has been reached or the scan has been canceled
-			if(result.key != KeyCode.None)
+			if(result.scanFlags == ScanFlags.Key || result.scanFlags == ScanFlags.JoystickButton)
 			{
-				//	If the key is KeyCode.Backspace clear the current binding
-				result.key = (result.key == KeyCode.Backspace) ? KeyCode.None : result.key;
-				if(m_changePositiveKey)
+				//	When you return false you tell the InputManager that it should keep scaning for other keys
+				if(!IsKeyValid(result.key))
+					return false;
+				
+				//	The key is KeyCode.None when the timeout has been reached or the scan has been canceled
+				if(result.key != KeyCode.None)
 				{
-					if(m_changeAltKey)
-						m_axisConfig.altPositive = result.key;
+					//	If the key is KeyCode.Backspace clear the current binding
+					result.key = (result.key == KeyCode.Backspace) ? KeyCode.None : result.key;
+					m_axisConfig.type = InputType.Button;
+					if(m_changePositiveKey)
+					{
+						if(m_changeAltKey)
+							m_axisConfig.altPositive = result.key;
+						else
+							m_axisConfig.positive = result.key;
+					}
 					else
-						m_axisConfig.positive = result.key;
+					{
+						if(m_changeAltKey)
+							m_axisConfig.altNegative = result.key;
+						else
+							m_axisConfig.negative = result.key;
+					}
+					m_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
 				}
 				else
 				{
-					if(m_changeAltKey)
-						m_axisConfig.altNegative = result.key;
+					if(m_axisConfig.type == InputType.Button)
+					{
+						KeyCode currentKey = GetCurrentKeyCode();
+						m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+					}
 					else
-						m_axisConfig.negative = result.key;
+					{
+						m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+					}
 				}
-				m_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
+				m_image.overrideSprite = m_normalState;
 			}
 			else
 			{
-				KeyCode currentKey = GetCurrentKeyCode();
-				m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+				//	The axis is negative when the timeout has been reached or the scan has been canceled
+				if(result.joystickAxis >= 0)
+				{
+					m_axisConfig.type = InputType.AnalogButton;
+					m_axisConfig.SetAnalogButton(m_joystick, result.joystickAxis);
+					m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+				}
+				else
+				{
+					if(m_axisConfig.type == InputType.Button)
+					{
+						KeyCode currentKey = GetCurrentKeyCode();
+						m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+					}
+					else
+					{
+						m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+					}
+				}
+				m_image.overrideSprite = m_normalState;
 			}
 
-			m_image.overrideSprite = m_normalState;
 			return true;
 		}
 		

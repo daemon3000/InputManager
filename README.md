@@ -1,6 +1,14 @@
 ## Introduction
 *InputManager* is a custom input manager for Unity that allows you to rebind keys at runtime and abstract input devices(through input configurations) for cross platform input.
 
+### Features
+- Very simple to implement. It has the same public methods and variables as Unity's **Input** class
+- Allows you to customize key bindings at runtime
+- Allows you to convert touch input to axes and buttons on mobile devices
+- Save the key bindings to a file, to PlayerPrefs or anywhere else by implementing a simple interface
+- Seamless transition from keyboard to gamepad with the InputAdapter addon
+- Works with the new Unity 4.6 UI system
+
 ## Platforms
 Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX, WebPlayer and Android(not tested on iOS but it might work). Requires the latest version of Unity.
 

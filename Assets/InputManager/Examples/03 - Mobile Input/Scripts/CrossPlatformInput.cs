@@ -37,6 +37,15 @@ namespace TeamUtility.IO.Examples
 		}
 #endif
 
+		private void LateUpdate()
+		{
+#if UNITY_EDITOR
+			if(!UnityEditor.EditorApplication.isPlaying)
+				return;
+#endif
+			InputManager.SetRemoteButtonValue("Jump", false, false);
+		}
+
 		public void AddVertical(float value)
 		{
 			InputManager.SetRemoteAxisValue("Vertical", InputManager.GetAxis("Vertical") + value);
@@ -55,6 +64,11 @@ namespace TeamUtility.IO.Examples
 		public void SetMouseY(float value)
 		{
 			InputManager.SetRemoteAxisValue("LookVertical", value);
+		}
+
+		public void Jump()
+		{
+			InputManager.SetRemoteButtonValue("Jump", true, true);
 		}
 	}
 }

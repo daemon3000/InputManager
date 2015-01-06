@@ -2243,6 +2243,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 0
 --- !u!1 &456662670
@@ -3095,6 +3096,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_allowAnalogButton: 1
   m_joystick: 0
   m_rebindType: 1
 --- !u!114 &751669326
@@ -3677,6 +3679,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 0
 --- !u!1 &916927269
@@ -3930,6 +3933,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1014348814
@@ -5298,6 +5302,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 0
 --- !u!1 &1452717734
@@ -5520,7 +5525,6 @@ MonoBehaviour:
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Priority: 3
   ignoreReversedGraphics: 1
   blockingObjects: 0
   m_BlockingMask:
@@ -5641,6 +5645,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1532841870
@@ -6095,6 +6100,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1671376370
@@ -6753,6 +6759,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 2
 --- !u!114 &1874661970
@@ -7112,6 +7119,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 1
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 0
 --- !u!1 &2095828570
@@ -7197,6 +7205,7 @@ MonoBehaviour:
   m_timeout: 10
   m_changePositiveKey: 0
   m_changeAltKey: 0
+  m_allowAnalogButton: 0
   m_joystick: 0
   m_rebindType: 0
 --- !u!1 &2098577071
