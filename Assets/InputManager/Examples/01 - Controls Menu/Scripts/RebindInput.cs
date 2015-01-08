@@ -112,22 +112,85 @@ namespace TeamUtility.IO.Examples
 					settings.scanFlags = ScanFlags.JoystickAxis;
 					InputManager.StartScan(settings, HandleJoystickAxisScan);
 				}
-				else
+				else if(m_rebindType == RebindType.GamepadButton)
 				{
 					settings.scanFlags = ScanFlags.Key | ScanFlags.JoystickButton;
 					if(m_rebindType == RebindType.GamepadButton && m_allowAnalogButton)
 						settings.scanFlags = settings.scanFlags | ScanFlags.JoystickAxis;
-					InputManager.StartScan(settings, HandleButtonScan);
+					InputManager.StartScan(settings, HandleJoystickButtonScan);
+				}
+				else
+				{
+					settings.scanFlags = ScanFlags.Key;
+					InputManager.StartScan(settings, HandleKeyScan);
 				}
 			}
 		}
 		
-		private bool HandleButtonScan(ScanResult result)
+		private bool HandleKeyScan(ScanResult result)
 		{
-			if(result.scanFlags == ScanFlags.Key || result.scanFlags == ScanFlags.JoystickButton)
+			//	When you return false you tell the InputManager that it should keep scaning for other keys
+			if(!IsKeyValid(result.key))
+				return false;
+			
+			//	The key is KeyCode.None when the timeout has been reached or the scan has been canceled
+			if(result.key != KeyCode.None)
+			{
+				//	If the key is KeyCode.Backspace clear the current binding
+				result.key = (result.key == KeyCode.Backspace) ? KeyCode.None : result.key;
+				if(m_changePositiveKey)
+				{
+					if(m_changeAltKey)
+						m_axisConfig.altPositive = result.key;
+					else
+						m_axisConfig.positive = result.key;
+				}
+				else
+				{
+					if(m_changeAltKey)
+						m_axisConfig.altNegative = result.key;
+					else
+						m_axisConfig.negative = result.key;
+				}
+				m_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
+			}
+			else
+			{
+				KeyCode currentKey = GetCurrentKeyCode();
+				m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+			}
+
+			m_image.overrideSprite = m_normalState;
+			return true;
+		}
+
+		private bool IsKeyValid(KeyCode key)
+		{
+			bool isValid = true;
+
+			if(m_rebindType == RebindType.Keyboard)
+			{
+				if((int)key >= (int)KeyCode.JoystickButton0)
+					isValid = false;
+				else if(key == KeyCode.LeftApple || key == KeyCode.RightApple)
+					isValid = false;
+				else if(key == KeyCode.LeftWindows || key == KeyCode.RightWindows)
+					isValid = false;
+			}
+			else
+			{
+				isValid = false;
+			}
+
+			return isValid;
+		}
+
+		private bool HandleJoystickButtonScan(ScanResult result)
+		{
+			if(result.scanFlags == ScanFlags.Key | result.scanFlags == ScanFlags.JoystickButton)
 			{
 				//	When you return false you tell the InputManager that it should keep scaning for other keys
-				if(!IsKeyValid(result.key))
+				if(!IsJoytickButtonValid(result.key))
 					return false;
 				
 				//	The key is KeyCode.None when the timeout has been reached or the scan has been canceled
@@ -177,36 +240,27 @@ namespace TeamUtility.IO.Examples
 				}
 				else
 				{
-					if(m_axisConfig.type == InputType.Button)
+					if(m_axisConfig.type == InputType.AnalogButton)
+					{
+						m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+					}
+					else
 					{
 						KeyCode currentKey = GetCurrentKeyCode();
 						m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
 					}
-					else
-					{
-						m_keyDescription.text = m_axisNames[m_axisConfig.axis];
-					}
 				}
 				m_image.overrideSprite = m_normalState;
 			}
-
+			
 			return true;
 		}
-		
-		private bool IsKeyValid(KeyCode key)
+
+		private bool IsJoytickButtonValid(KeyCode key)
 		{
 			bool isValid = true;
-
-			if(m_rebindType == RebindType.Keyboard)
-			{
-				if((int)key >= (int)KeyCode.JoystickButton0)
-					isValid = false;
-				else if(key == KeyCode.LeftApple || key == KeyCode.RightApple)
-					isValid = false;
-				else if(key == KeyCode.LeftWindows || key == KeyCode.RightWindows)
-					isValid = false;
-			}
-			else if(m_rebindType == RebindType.GamepadButton)
+			
+			if(m_rebindType == RebindType.GamepadButton)
 			{
 				//	Allow KeyCode.None to pass because it means that the scan has been canceled or the timeout has been reached
 				//	Allow KeyCode.Backspace to pass so it can clear the current binding
@@ -217,7 +271,7 @@ namespace TeamUtility.IO.Examples
 			{
 				isValid = false;
 			}
-
+			
 			return isValid;
 		}
 

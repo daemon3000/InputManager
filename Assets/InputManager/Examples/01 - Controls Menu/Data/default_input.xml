@@ -291,7 +291,7 @@
     <AxisConfiguration name="PauseMenu">
       <description />
       <positive>Joystick1Button7</positive>
-      <altPositive>None</altPositive>
+      <altPositive>Escape</altPositive>
       <negative>None</negative>
       <altNegative>None</altNegative>
       <deadZone>0</deadZone>
@@ -321,7 +321,7 @@
     <AxisConfiguration name="Cancel">
       <description />
       <positive>Joystick1Button6</positive>
-      <altPositive>None</altPositive>
+      <altPositive>Escape</altPositive>
       <negative>None</negative>
       <altNegative>None</altNegative>
       <deadZone>0</deadZone>

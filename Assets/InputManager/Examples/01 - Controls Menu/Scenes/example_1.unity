@@ -1807,7 +1807,7 @@ MonoBehaviour:
       description: 
       positive: 357
       negative: 0
-      altPositive: 0
+      altPositive: 27
       altNegative: 0
       deadZone: 0
       gravity: 0
@@ -1835,7 +1835,7 @@ MonoBehaviour:
       description: 
       positive: 356
       negative: 0
-      altPositive: 0
+      altPositive: 27
       altNegative: 0
       deadZone: 0
       gravity: 0
