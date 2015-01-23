@@ -58,7 +58,7 @@ namespace TeamUtility.Editor.IO.InputManager
 		[MenuItem("Team Utility/Input Manager/About", false, 403)]
 		public static void OpenAboutDialog()
 		{
-			string message = string.Format("Input Manager v{0}, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", TeamUtility.IO.InputManager.VERSION);
+			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 	}

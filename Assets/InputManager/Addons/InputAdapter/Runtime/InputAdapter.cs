@@ -576,7 +576,7 @@ namespace TeamUtility.IO
 			if(inpuDevice == InputDevice.Joystick)
 			{
 				Screen.showCursor = false;
-				InputManager.SetConfiguration(_joystickConfiguration);
+				InputManager.SetInputConfiguration(_joystickConfiguration);
 #if UNITY_EDITOR
 				Debug.Log("Current Input Device: Joystick");
 #endif
@@ -584,7 +584,7 @@ namespace TeamUtility.IO
 			else
 			{
 				Screen.showCursor = true;
-				InputManager.SetConfiguration(_keyboardConfiguration);
+				InputManager.SetInputConfiguration(_keyboardConfiguration);
 #if UNITY_EDITOR
 				Debug.Log("Current Input Device: KeyboardAndMouse");
 #endif

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.IO;
 using System.Collections;
 
@@ -11,7 +11,7 @@ namespace TeamUtility.IO.Examples
 		
 		public void ResetInputs()
 		{
-			InputConfiguration inputConfig = InputManager.GetConfiguration(m_inputConfigName);
+			InputConfiguration inputConfig = InputManager.GetInputConfiguration(m_inputConfigName);
 			InputConfiguration defInputConfig = null;
 
 			using(StringReader reader = new StringReader(m_defaultInputs.text))
@@ -28,7 +28,7 @@ namespace TeamUtility.IO.Examples
 					{
 						inputConfig.axes[i].Copy(defInputConfig.axes[i]);
 					}
-					InputManager.SetConfigurationDirty(inputConfig);
+					InputManager.SetConfigurationDirty(m_inputConfigName);
 				}
 				else
 				{

@@ -89,9 +89,9 @@ namespace TeamUtility.IO.Examples
 			}
 		}
 
-		private void HandleConfigurationDirty(InputConfiguration inputConfig)
+		private void HandleConfigurationDirty(string configName)
 		{
-			if(inputConfig.name == m_inputConfigName)
+			if(configName == m_inputConfigName)
 				InitializeAxisConfig();
 		}
 

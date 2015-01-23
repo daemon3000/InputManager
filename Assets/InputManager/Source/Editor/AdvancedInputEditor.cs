@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2014 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -839,7 +839,7 @@ namespace TeamUtility.Editor
 			GUI.enabled = (EditorApplication.isPlaying && InputManager.CurrentConfiguration.name != inputConfig.name);
 			if(GUILayout.Button("Switch To", GUILayout.Width(135.0f), GUILayout.Height(20.0f)))
 			{
-				InputManager.SetConfiguration(inputConfig.name);
+				InputManager.SetInputConfiguration(inputConfig.name);
 			}
 			GUI.enabled = true;
 			

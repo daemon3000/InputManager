@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -37,12 +37,12 @@ namespace TeamUtility.IO.Examples
 		{
 			if(m_gamepadOn)
 			{
-				InputManager.SetConfiguration(m_gamepadInputConfig);
+				InputManager.SetInputConfiguration(m_gamepadInputConfig);
 				m_status.text = "Gamepad: On";
 			}
 			else
 			{
-				InputManager.SetConfiguration(m_keyboardInputConfig);
+				InputManager.SetInputConfiguration(m_keyboardInputConfig);
 				m_status.text = "Gamepad: Off";
 			}
 		}
@@ -51,13 +51,13 @@ namespace TeamUtility.IO.Examples
 		{
 			if(m_gamepadOn)
 			{
-				InputManager.SetConfiguration(m_keyboardInputConfig);
+				InputManager.SetInputConfiguration(m_keyboardInputConfig);
 				m_status.text = "Gamepad: Off";
 				m_gamepadOn = false;
 			}
 			else
 			{
-				InputManager.SetConfiguration(m_gamepadInputConfig);
+				InputManager.SetInputConfiguration(m_gamepadInputConfig);
 				m_status.text = "Gamepad: On";
 				m_gamepadOn = true;
 			}
