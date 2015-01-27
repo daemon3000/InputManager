@@ -374,11 +374,18 @@ namespace TeamUtility.IO
 		}
 		
 		#region [Static Interface]
+		/// <summary>
+		/// A reference to the input manager instance. Use it to check if an input manager exists in the scene and
+		/// to subscribe to the input manager's events.
+		/// </summary>
 		public static InputManager Instance { get { return _instance; } }
 		public static InputConfiguration CurrentConfiguration { get { return _instance._currentConfiguration; } }
 		public static bool IsScanning { get { return _instance._scanFlags != ScanFlags.None; } }
 		public static bool IgnoreTimescale { get { return _instance.ignoreTimescale; } }
 
+		/// <summary>
+		/// Returns true if any axis of the active input configuration is receiving input.
+		/// </summary>
 		public static bool AnyInput()
 		{
 			InputConfiguration inputConfig = _instance._currentConfiguration;
@@ -394,7 +401,12 @@ namespace TeamUtility.IO
 			
 			return false;
 		}
-		
+
+		/// <summary>
+		/// Returns true if any axis of the specified input configuration is receiving input.
+		/// If the specified input configuration is not active and the axis is of type
+		/// DigialAxis, RemoteAxis, RemoteButton or AnalogButton this method will return false.
+		/// </summary>
 		public static bool AnyInput(string inputConfigName)
 		{
 			InputConfiguration inputConfig;
@@ -452,13 +464,16 @@ namespace TeamUtility.IO
 		}
 		
 		/// <summary>
-		/// Resets the internal state of the InputManager.
+		/// Resets the internal state of the input manager.
 		/// </summary>
 		public static void Reinitialize()
 		{
 			_instance.Initialize();
 		}
-		
+
+		/// <summary>
+		/// Changes the active input configuration.
+		/// </summary>
 		public static void SetInputConfiguration(string name)
 		{
 			if(_instance._currentConfiguration != null && name == _instance._currentConfiguration.name)
@@ -474,7 +489,7 @@ namespace TeamUtility.IO
 				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", name));
 			}
 		}
-		
+
 		public static InputConfiguration GetInputConfiguration(string name)
 		{
 			InputConfiguration inputConfig = null;
@@ -509,7 +524,13 @@ namespace TeamUtility.IO
 			
 			return inputConfig;
 		}
-		
+
+		/// <summary>
+		/// Deletes the specified input configuration. If the speficied input configuration is
+		/// active the input manager will try to switch to the default input configuration.
+		/// If a default input configuration has not been set in the inspector, the active
+		/// input configuration will become null and the input manager will stop working.
+		/// </summary>
 		public static bool DeleteInputConfiguration(string name)
 		{
 			InputConfiguration inputConfig = GetInputConfiguration(name);
@@ -791,7 +812,7 @@ namespace TeamUtility.IO
 		
 		/// <summary>
 		/// Scans for keyboard input and calls the handler with the result.
-		/// Returns KeyCode.None if timeout is reached.
+		/// Returns KeyCode.None if timeout is reached or the scan is canceled.
 		/// </summary>
 		public static void StartKeyScan(KeyScanHandler scanHandler, float timeout, string cancelScanButton, params object[] userData)
 		{
@@ -811,7 +832,7 @@ namespace TeamUtility.IO
 		
 		/// <summary>
 		/// Scans for mouse input and calls the handler with the result.
-		/// Returns -1 if timeout is reached.
+		/// Returns -1 if timeout is reached or the scan is canceled.
 		/// </summary>
 		public static void StartMouseAxisScan(AxisScanHandler scanHandler, float timeout, string cancelScanButton, params object[] userData)
 		{
@@ -830,7 +851,7 @@ namespace TeamUtility.IO
 		
 		/// <summary>
 		/// Scans for joystick input and calls the handler with the result.
-		/// Returns -1 if timeout is reached.
+		/// Returns -1 if timeout is reached or the scan is canceled.
 		/// </summary>
 		public static void StartJoystickAxisScan(AxisScanHandler scanHandler, int joystick, float timeout, string cancelScanButton, params object[] userData)
 		{
@@ -874,6 +895,9 @@ namespace TeamUtility.IO
 				_instance.StopInputScan();
 		}
 
+		/// <summary>
+		/// Triggers the ConfigurationDirty event.
+		/// </summary>
 		public static void SetConfigurationDirty(string inputConfigName)
 		{
 			_instance.RaiseConfigurationDirtyEvent(inputConfigName);

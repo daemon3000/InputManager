@@ -137,7 +137,10 @@ namespace TeamUtility.IO
 				_lastAxis = axis;
 				_lastJoystick = joystick;
 			}
-			if(type == InputType.DigitalAxis && !PositiveAndNegativeDown())
+
+			bool positiveAndNegativeDown = (Input.GetKey(positive) || Input.GetKey(altPositive)) &&
+											(Input.GetKey(negative) || Input.GetKey(altNegative));
+			if(type == InputType.DigitalAxis && !positiveAndNegativeDown)
 			{
 				UpdateDigitalAxisValue();
 			}
@@ -145,12 +148,6 @@ namespace TeamUtility.IO
 			{
 				UpdateAnalogButtonValue();
 			}
-		}
-
-		private bool PositiveAndNegativeDown()
-		{
-			return (Input.GetKey(positive) || Input.GetKey(altPositive)) &&
-				(Input.GetKey(negative) || Input.GetKey(altNegative));
 		}
 
 		private void UpdateDigitalAxisValue()
