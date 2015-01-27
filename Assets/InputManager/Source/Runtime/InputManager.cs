@@ -471,7 +471,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", name));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", name));
 			}
 		}
 		
@@ -500,7 +500,7 @@ namespace TeamUtility.IO
 		public static InputConfiguration CreateInputConfiguration(string name)
 		{
 			if(_instance._configurationTable.ContainsKey(name))
-				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' already exists", name));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' already exists", name));
 			
 			InputConfiguration inputConfig = new InputConfiguration(name);
 			_instance.inputConfigurations.Add(inputConfig);
@@ -545,7 +545,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException(string.Format("An input configuration with named \'{0}\' does not exist", inputConfigName));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
 			}
 			if(_instance._axesTable[inputConfigName].ContainsKey(buttonName))
 			{
@@ -577,7 +577,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException(string.Format("An input configuration with named \'{0}\' does not exist", inputConfigName));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
 			}
 			if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
 			{
@@ -607,7 +607,7 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
 			}
 			if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
 			{
@@ -635,16 +635,16 @@ namespace TeamUtility.IO
 			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
 			}
 			if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
 			{
 				string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
 				throw new ArgumentException(error);
 			}
-			if(axis < 0 || axis > 9)
+			if(axis < 0 || axis >= AxisConfiguration.MaxJoystickAxes)
 				throw new ArgumentOutOfRangeException("axis");
-			if(joystick < 0 || joystick > 3)
+			if(joystick < 0 || joystick >= AxisConfiguration.MaxJoysticks)
 				throw new ArgumentOutOfRangeException("joystick");
 			
 			AxisConfiguration axisConfig = new AxisConfiguration(axisName);
@@ -661,13 +661,103 @@ namespace TeamUtility.IO
 			
 			return axisConfig;
 		}
-		
+
+		public static AxisConfiguration CreateRemoteAxis(string inputConfigName, string axisName)
+		{
+			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
+			if(inputConfig == null)
+			{
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+			}
+			if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
+			{
+				string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
+				throw new ArgumentException(error);
+			}
+			
+			AxisConfiguration axisConfig = new AxisConfiguration(axisName);
+			axisConfig.type = InputType.RemoteAxis;
+			axisConfig.positive = KeyCode.None;
+			axisConfig.negative = KeyCode.None;
+			axisConfig.altPositive = KeyCode.None;
+			axisConfig.altNegative = KeyCode.None;
+			axisConfig.Initialize();
+			inputConfig.axes.Add(axisConfig);
+			
+			var table = _instance._axesTable[inputConfigName];
+			table.Add(axisName, axisConfig);
+			
+			return axisConfig;
+		}
+
+		public static AxisConfiguration CreateRemoteButton(string inputConfigName, string buttonName)
+		{
+			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
+			if(inputConfig == null)
+			{
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+			}
+			if(_instance._axesTable[inputConfigName].ContainsKey(buttonName))
+			{
+				string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
+				throw new ArgumentException(error);
+			}
+			
+			AxisConfiguration axisConfig = new AxisConfiguration(buttonName);
+			axisConfig.type = InputType.RemoteButton;
+			axisConfig.positive = KeyCode.None;
+			axisConfig.negative = KeyCode.None;
+			axisConfig.altPositive = KeyCode.None;
+			axisConfig.altNegative = KeyCode.None;
+			axisConfig.Initialize();
+			inputConfig.axes.Add(axisConfig);
+			
+			var table = _instance._axesTable[inputConfigName];
+			table.Add(buttonName, axisConfig);
+			
+			return axisConfig;
+		}
+
+		public static AxisConfiguration CreateAnalogButton(string inputConfigName, string buttonName, int joystick, int axis)
+		{
+			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
+			if(inputConfig == null)
+			{
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+			}
+			if(_instance._axesTable[inputConfigName].ContainsKey(buttonName))
+			{
+				string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
+				throw new ArgumentException(error);
+			}
+			if(axis < 0 || axis >= AxisConfiguration.MaxJoystickAxes)
+				throw new ArgumentOutOfRangeException("axis");
+			if(joystick < 0 || joystick >= AxisConfiguration.MaxJoysticks)
+				throw new ArgumentOutOfRangeException("joystick");
+
+			AxisConfiguration axisConfig = new AxisConfiguration(buttonName);
+			axisConfig.type = InputType.AnalogButton;
+			axisConfig.joystick = joystick;
+			axisConfig.axis = axis;
+			axisConfig.positive = KeyCode.None;
+			axisConfig.negative = KeyCode.None;
+			axisConfig.altPositive = KeyCode.None;
+			axisConfig.altNegative = KeyCode.None;
+			axisConfig.Initialize();
+			inputConfig.axes.Add(axisConfig);
+			
+			var table = _instance._axesTable[inputConfigName];
+			table.Add(buttonName, axisConfig);
+			
+			return axisConfig;
+		}
+
 		public static AxisConfiguration CreateEmptyAxis(string inputConfigName, string axisName)
 		{
 			InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
 			if(inputConfig == null)
 			{
-				throw new ArgumentException(string.Format("An input configuration with the name \'{0}\' does not exist", inputConfigName));
+				throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
 			}
 			if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
 			{
