@@ -187,7 +187,7 @@ namespace TeamUtility.IO.Examples
 
 		private bool HandleJoystickButtonScan(ScanResult result)
 		{
-			if(result.scanFlags == ScanFlags.Key | result.scanFlags == ScanFlags.JoystickButton)
+			if(result.scanFlags == ScanFlags.Key || result.scanFlags == ScanFlags.JoystickButton)
 			{
 				//	When you return false you tell the InputManager that it should keep scaning for other keys
 				if(!IsJoytickButtonValid(result.key))

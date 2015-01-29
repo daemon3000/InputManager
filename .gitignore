@@ -5,6 +5,7 @@ Assets/Tests/*
 Assets/Tests*
 JoystickMappings/*
 Build/*
+Assets/UnityVS*
 
 #Junk files
 Assets/Tests.meta
@@ -12,6 +13,8 @@ Assembly-CSharp*
 Assembly-UnityScript*
 Assembly-Boo*
 *.sln
+*.suo
+*.csproj
 *.userprefs
 *.usertasks
 *.orig.meta
