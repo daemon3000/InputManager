@@ -6,6 +6,7 @@ Assets/Tests*
 JoystickMappings/*
 Build/*
 Assets/UnityVS*
+obj/*
 
 #Junk files
 Assets/Tests.meta
