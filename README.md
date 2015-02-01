@@ -20,26 +20,29 @@ The *InputManager* class provides the following methods and variables, in additi
 
 - **Instance** - Use it to check if a InputManager instance exists in the game or to subscribe to the event handlers
 - **CurrentConfiguration** - A reference to the current input configuration used by the InputManager
-- **InputConfigurations** - A list of all the input configurations
+- **IsScanning** - Use this to check if a scan is already running before starting a new one
 - **AnyInput** - Returns *true* if any button or axis is used
 - **SetRemoteAxisValue** - Allows you to manually set the value of an axis, if the respective axis is of type *RemoteAxis*
 - **SetRemoteButtonValue** - Allows you to manually set the state of a button, if the respective button is of type *RemoteButton*
 - **Reinitialize**
+- **SetInputConfiguration** - Switch to another input configuration
+- **GetInputConfiguration** - Gets a reference to an input configuration
 - **CreateInputConfiguration** - Allows you to create input configurations at runtime
 - **DeleteInputConfiguration** - Allows you to delete input configurations at runtime
-- **SetConfiguration** - Switch to another input configuration
-- **GetConfiguration** - Gets a reference to an input configuration
-- **GetConfigurationNames** - Returns an array with the names of all input configurations. A new array is created every time you call this method
+- **GetAxisConfiguration** - Gets a reference to an axis configuration
 - **CreateButton** - Allows you to create axis configurations at runtime
 - **CreateDigitalAxis** - Allows you to create axis configurations at runtime
 - **CreateMouseAxis** - Allows you to create axis configurations at runtime
 - **CreateAnalogAxis** - Allows you to create axis configurations at runtime
+- **CreateAnalogButton** - Allows you to create axis configurations at runtime
+- **CreateRemoteAxis** - Allows you to create axis configurations at runtime
+- **CreateRemoteButton** - Allows you to create axis configurations at runtime
 - **CreateEmptyAxis** - Allows you to create axis configurations at runtime
 - **DeleteAxisConfiguration** - Allows you to delete axis configurations at runtime
-- **GetAxisConfiguration** - Gets a reference to an axis configuration
-- **StartKeyScan** - Calls the scan handler when a key is pressed. Use this to remap digital axes
-- **StartMouseAxisScan** - To change a mouse axis when you get the result from *StartMouseAxisScan* use *AxisConfiguraton.SetMouseAxis*
-- **StartJoystickAxisScan** - To change a joystick axis when you get the result from *StartJoystickAxisScan* use *AxisConfiguration.SetAnalogAxis*
+- **StartKeyScan** - Scans for keyboard keys, mouse buttons and joystick buttons
+- **StartMouseAxisScan** - Scans for mouse axes. To change a mouse axis when you get the result from *StartMouseAxisScan* use *AxisConfiguraton.SetMouseAxis*
+- **StartJoystickAxisScan** - Scans for joystick axes. To change a joystick axis when you get the result from *StartJoystickAxisScan* use *AxisConfiguration.SetAnalogAxis*
+- **StartScan** - Scans for multiple input types(keyboard keys, joystick buttons, joystick axes, etc) at the same time
 - **CancelScan**
 - **Save** - Saves the input configurations to a file(XML by default). Create a class that implements *IInputSaver* for custom formats
 - **Load** - Loads input configurations from a file(XML by default). Create a class that implements *IInputLoader* for custom formats
