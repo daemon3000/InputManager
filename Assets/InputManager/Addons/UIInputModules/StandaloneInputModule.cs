@@ -164,7 +164,6 @@ namespace TeamUtility.IO
 			if (toSelect == null)
 				toSelect = eventSystem.firstSelectedGameObject;
 			
-			eventSystem.SetSelectedGameObject(null, GetBaseEventData());
 			eventSystem.SetSelectedGameObject(toSelect, GetBaseEventData());
 		}
 		
@@ -414,8 +413,8 @@ namespace TeamUtility.IO
 			}
 		}
 
-#if UNITY_EDITOR && UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9 || UNITY_5_0
-		[UnityEditor.MenuItem("Team Utility/Input Manager/Fix Event System", false, 200)]
+#if UNITY_EDITOR && (UNITY_4_6 || UNITY_4_7 || UNITY_5)
+		[UnityEditor.MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 200)]
 		private static void FixEventSystem()
 		{
 			UnityEngine.EventSystems.StandaloneInputModule[] im = UnityEngine.Object.FindObjectsOfType<UnityEngine.EventSystems.StandaloneInputModule>();

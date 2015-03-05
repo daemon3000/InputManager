@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: d5170e837b391d245b93774d4d5676e8
+timeCreated: 1425572069
+licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: orange_assets_0
@@ -46,6 +48,9 @@ TextureImporter:
   isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
   maxTextureSize: 1024
@@ -56,6 +61,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
+  rGBM: 0
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
@@ -168,7 +174,7 @@ TextureImporter:
         height: 49
       alignment: 0
       pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 12, y: 15, z: 12, w: 11}
     - name: orange_assets_10
       rect:
         serializedVersion: 2
@@ -178,7 +184,7 @@ TextureImporter:
         height: 45
       alignment: 0
       pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 12, y: 11, z: 13, w: 11}
     - name: orange_assets_11
       rect:
         serializedVersion: 2
@@ -331,3 +337,5 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
