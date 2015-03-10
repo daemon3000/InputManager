@@ -96,6 +96,33 @@ namespace TeamUtility.IO
 					return Mathf.Abs(Input.GetAxisRaw(_rawAxisName)) >= 1.0f;
 			}
 		}
+
+		public bool AnyKey
+		{
+			get
+			{
+				return Input.GetKey(positive) || Input.GetKey(altPositive) || 
+						Input.GetKey(negative) || Input.GetKey(altNegative);
+			}
+		}
+
+		public bool AnyKeyDown
+		{
+			get
+			{
+				return Input.GetKeyDown(positive) || Input.GetKeyDown(altPositive) || 
+						Input.GetKeyDown(negative) || Input.GetKeyDown(altNegative);
+			}
+		}
+
+		public bool AnyKeyUp
+		{
+			get
+			{
+				return Input.GetKeyUp(positive) || Input.GetKeyUp(altPositive) || 
+						Input.GetKeyUp(negative) || Input.GetKeyUp(altNegative);
+			}
+		}
 		
 		public AxisConfiguration() :
 			this("New Axis") { }
@@ -302,7 +329,7 @@ namespace TeamUtility.IO
 			
 			return false;
 		}
-		
+
 		public void SetMouseAxis(int axis)
 		{
 			if(type == InputType.MouseAxis)

@@ -208,8 +208,12 @@ namespace TeamUtility.IO
 		
 		private bool AllowMoveEventProcessing(float time)
 		{
-			bool allow = InputManager.GetButtonDown(m_HorizontalAxis);
-			allow |= InputManager.GetButtonDown(m_VerticalAxis);
+			string inputConfigName = InputManager.CurrentConfiguration.name;
+			AxisConfiguration hAxisConfig = InputManager.GetAxisConfiguration(inputConfigName, m_HorizontalAxis);
+			AxisConfiguration vAxisConfig = InputManager.GetAxisConfiguration(inputConfigName, m_VerticalAxis);
+
+			bool allow = hAxisConfig.AnyKeyDown;
+			allow |= vAxisConfig.AnyKeyDown;
 			allow |= (time > m_NextAction);
 			return allow;
 		}
