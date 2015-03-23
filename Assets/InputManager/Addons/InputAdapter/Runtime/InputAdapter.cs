@@ -575,7 +575,11 @@ namespace TeamUtility.IO
 			_inputDevice = inpuDevice;
 			if(inpuDevice == InputDevice.Joystick)
 			{
+#if UNITY_5_0 || UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
 				Cursor.visible = false;
+#else
+				Screen.showCursor = false;
+#endif
 				InputManager.SetInputConfiguration(_joystickConfiguration);
 #if UNITY_EDITOR
 				Debug.Log("Current Input Device: Joystick");
@@ -583,7 +587,11 @@ namespace TeamUtility.IO
 			}
 			else
 			{
+#if UNITY_5_0 || UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
 				Cursor.visible = true;
+#else
+				Screen.showCursor = true;
+#endif
 				InputManager.SetInputConfiguration(_keyboardConfiguration);
 #if UNITY_EDITOR
 				Debug.Log("Current Input Device: KeyboardAndMouse");
@@ -630,7 +638,11 @@ namespace TeamUtility.IO
 		
 		private void OnDestroy()
 		{
+#if UNITY_5_0 || UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
 			Cursor.visible = true;
+#else
+			Screen.showCursor = true;
+#endif
 			StopAllCoroutines();
 		}
 
