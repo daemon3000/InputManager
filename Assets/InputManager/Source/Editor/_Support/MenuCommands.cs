@@ -49,16 +49,23 @@ namespace TeamUtility.Editor.IO.InputManager
 			Application.OpenURL("https://github.com/daemon3000/InputManager/issues");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Forum", false, 402)]
+		[MenuItem("Team Utility/Input Manager/Contact", false, 402)]
+		public static void OpenContactDialog()
+		{
+			string message = "Email: geambasu.cristi@gmail.com";
+			EditorUtility.DisplayDialog("Contact", message, "Close");
+		}
+
+		[MenuItem("Team Utility/Input Manager/Forum", false, 403)]
 		public static void OpenForumPage()
 		{
 			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
 		}
 
-		[MenuItem("Team Utility/Input Manager/About", false, 403)]
+		[MenuItem("Team Utility/Input Manager/About", false, 404)]
 		public static void OpenAboutDialog()
 		{
-			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2014 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
+			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2015 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 	}

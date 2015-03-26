@@ -82,7 +82,7 @@ namespace TeamUtility.Editor.IO.InputManager
 		
 		public static void OverwriteInputSettings()
 		{
-			TextAsset textAsset = Resources.Load("InputManager") as TextAsset;
+			TextAsset textAsset = Resources.Load(ResourcePaths.CUSTOM_PROJECT_SETTINGS) as TextAsset;
 			if(textAsset == null)
 			{
 				EditorUtility.DisplayDialog("Error", "Unable to load input settings from the Resources folder.", "OK");

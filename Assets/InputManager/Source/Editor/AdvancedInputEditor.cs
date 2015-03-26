@@ -36,7 +36,7 @@ namespace TeamUtility.Editor
 		#region [Menu Options]
 		public enum FileMenuOptions
 		{
-			OverriteInputSettings = 0, CreateSnapshot, LoadSnapshot, Export, Import, ImportJoystickMapping, ConfigureForInputAdapter
+			OverriteInputSettings = 0, CreateSnapshot, LoadSnapshot, Export, Import, ImportJoystickMapping, ConfigureForInputAdapter, CreateDefaultInputConfig
 		}
 
 		public enum EditMenuOptions
@@ -80,6 +80,7 @@ namespace TeamUtility.Editor
 		private AxisConfiguration _copySource;
 		private GUIStyle _whiteLabel;
 		private GUIStyle _whiteFoldout;
+		private GUIStyle _warningLabel;
 		private float _minCursorRectWidth = 10.0f;
 		private float _maxCursorRectWidth = 50.0f;
 		private float _toolbarHeight = 18.0f;
@@ -89,6 +90,7 @@ namespace TeamUtility.Editor
 		private bool _editingAltPositiveKey = false;
 		private bool _editingNegativeKey = false;
 		private bool _editingAltNegativeKey = false;
+		private bool _tryedToFindInputManagerInScene = false;
 		private string[] _axisOptions = new string[] { "X", "Y", "3rd(Scrollwheel)", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 		private string[] _joystickOptions = new string[] { "Joystick 1", "Joystick 2", "Joystick 3", "Joystick 4" };
 		
@@ -99,9 +101,9 @@ namespace TeamUtility.Editor
 		private void OnEnable()
 		{
 			EditorToolbox.ShowStartupWarning();
-			CreateGUIStyles();
 			IsOpen = true;
-			
+
+			_tryedToFindInputManagerInScene = false;
 			if(_inputManager == null)
 				_inputManager = UnityEngine.Object.FindObjectOfType(typeof(InputManager)) as InputManager;
 			if(_selectionPath == null)
@@ -110,6 +112,18 @@ namespace TeamUtility.Editor
 			_searchResults = new List<SearchResult>();
 			if(_highlightTexture == null)
 				CreateHighlightTexture();
+
+			EditorApplication.playmodeStateChanged += HandlePlayModeChanged;
+		}
+
+		private void OnDisable()
+		{
+			IsOpen = false;
+			Texture2D.DestroyImmediate(_highlightTexture);
+			_highlightTexture = null;
+			_copySource = null;
+			
+			EditorApplication.playmodeStateChanged -= HandlePlayModeChanged;
 		}
 
 		private void CreateHighlightTexture()
@@ -119,7 +133,7 @@ namespace TeamUtility.Editor
 			_highlightTexture.Apply();
 		}
 		
-		private void CreateGUIStyles()
+		private void ValidateGUIStyles()
 		{
 			if(_whiteLabel == null)
 			{
@@ -136,14 +150,13 @@ namespace TeamUtility.Editor
 				_whiteFoldout.focused.textColor = Color.white;
 				_whiteFoldout.onFocused.textColor = Color.white;
 			}
-		}
-		
-		private void OnDestroy()
-		{
-			IsOpen = false;
-			Texture2D.DestroyImmediate(_highlightTexture);
-			_highlightTexture = null;
-			_copySource = null;
+			if(_warningLabel == null)
+			{
+				_warningLabel = new GUIStyle(EditorStyles.largeLabel);
+				_warningLabel.alignment = TextAnchor.MiddleCenter;
+				_warningLabel.fontStyle = FontStyle.Bold;
+				_warningLabel.fontSize = 14;
+			}
 		}
 
 		public void AddInputConfiguration(InputConfiguration configuration)
@@ -203,15 +216,15 @@ namespace TeamUtility.Editor
 			Repaint();
 		}
 
-		private void ConfigureForInputAdapter()
+		private void LoadInputConfigurationsFromResource(string resourcePath)
 		{
 			if(_inputManager.inputConfigurations.Count > 0)
 			{
 				bool cont = EditorUtility.DisplayDialog("Warning", "This operation will replace the current input configrations!\nDo you want to continue?", "Yes", "No");
 				if(!cont) return;
 			}
-
-			TextAsset textAsset = Resources.Load<TextAsset>("input_adapter_init");
+			
+			TextAsset textAsset = Resources.Load<TextAsset>(resourcePath);
 			if(textAsset != null)
 			{
 				using(System.IO.StringReader reader = new System.IO.StringReader(textAsset.text))
@@ -223,8 +236,20 @@ namespace TeamUtility.Editor
 			}
 			else
 			{
-				EditorUtility.DisplayDialog("Error", "Failed to load default configurations for Input Adapter.", "OK");
+				EditorUtility.DisplayDialog("Error", "Failed to load input configurations. The resource file might have been deleted or renamed.", "OK");
 			}
+		}
+
+		private void TryToFindInputManagerInScene()
+		{
+			_inputManager = UnityEngine.Object.FindObjectOfType(typeof(InputManager)) as InputManager;
+			_tryedToFindInputManagerInScene = true;
+		}
+
+		private void HandlePlayModeChanged()
+		{
+			if(_inputManager == null)
+				TryToFindInputManagerInScene();
 		}
 		
 		#region [Menus]
@@ -232,6 +257,7 @@ namespace TeamUtility.Editor
 		{
 			GenericMenu fileMenu = new GenericMenu();
 			fileMenu.AddItem(new GUIContent("Overwrite Input Settings"), false, HandleFileMenuOption, FileMenuOptions.OverriteInputSettings);
+			fileMenu.AddItem(new GUIContent("Default Input Configuration"), false, HandleFileMenuOption, FileMenuOptions.CreateDefaultInputConfig);
 			if(EditorToolbox.HasInputAdapterAddon())
 				fileMenu.AddItem(new GUIContent("Configure For Input Adapter"), false, HandleFileMenuOption, FileMenuOptions.ConfigureForInputAdapter);
 
@@ -283,7 +309,10 @@ namespace TeamUtility.Editor
 				EditorToolbox.OpenImportJoystickMappingWindow(this);
 				break;
 			case FileMenuOptions.ConfigureForInputAdapter:
-				ConfigureForInputAdapter();
+				LoadInputConfigurationsFromResource(ResourcePaths.INPUT_ADAPTER_DEFAULT_CONFIG);
+				break;
+			case FileMenuOptions.CreateDefaultInputConfig:
+				LoadInputConfigurationsFromResource(ResourcePaths.INPUT_MANAGER_DEFAULT_CONFIG);
 				break;
 			}
 		}
@@ -521,8 +550,16 @@ namespace TeamUtility.Editor
 		#region [OnGUI]
 		private void OnGUI()
 		{
+			ValidateGUIStyles();
+
+			if(_inputManager == null && !_tryedToFindInputManagerInScene)
+				TryToFindInputManagerInScene();
+
 			if(_inputManager == null)
+			{
+				DisplayMissingInputManagerWarning();
 				return;
+			}
 			
 #if UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
 			Undo.SetSnapshotTarget(_inputManager, "InputManager");
@@ -557,9 +594,20 @@ namespace TeamUtility.Editor
 				EditorUtility.SetDirty(_inputManager);
 			}
 #endif
-			Repaint();
 		}
-		
+
+		private void DisplayMissingInputManagerWarning()
+		{
+			Rect warningRect = new Rect(0.0f, 20.0f, position.width, 40.0f);
+			Rect buttonRect = new Rect(position.width / 2 - 100.0f, warningRect.yMax, 200.0f, 25.0f);
+
+			EditorGUI.LabelField(warningRect, "Could not find an input manager instance in the scene!", _warningLabel);
+			if(GUI.Button(buttonRect, "Try Again"))
+			{
+				TryToFindInputManagerInScene();
+			}
+		}
+
 		private void DisplayMainToolbar()
 		{
 			Rect screenRect = new Rect(0.0f, 0.0f, position.width, _toolbarHeight);
