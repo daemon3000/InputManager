@@ -97,11 +97,18 @@ namespace TeamUtility.IO.Examples
 
 		public void OnPointerDown(PointerEventData data)
 		{
+			StartCoroutine(StartInputScanDelayed());
+		}
+
+		private IEnumerator StartInputScanDelayed()
+		{
+			yield return null;
+
 			if(!InputManager.IsScanning && m_axisConfig != null)
 			{
 				m_image.overrideSprite = m_scanningState;
 				m_keyDescription.text = "...";
-
+				
 				ScanSettings settings;
 				settings.joystick = m_joystick;
 				settings.cancelScanButton = m_cancelButton;
