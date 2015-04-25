@@ -26,6 +26,9 @@
 #endregion
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System;
 using System.Collections.Generic;
 
@@ -418,14 +421,23 @@ namespace TeamUtility.IO
 		}
 
 #if UNITY_EDITOR && (UNITY_4_6 || UNITY_4_7 || UNITY_5)
-		[UnityEditor.MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 200)]
+		[MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 200)]
 		private static void FixEventSystem()
 		{
 			UnityEngine.EventSystems.StandaloneInputModule[] im = UnityEngine.Object.FindObjectsOfType<UnityEngine.EventSystems.StandaloneInputModule>();
-			for(int i = 0; i < im.Length; i++)
+			if(im.Length > 0)
 			{
-				im[i].gameObject.AddComponent<TeamUtility.IO.StandaloneInputModule>();
-				UnityEngine.Object.DestroyImmediate(im[i]);
+				for(int i = 0; i < im.Length; i++)
+				{
+					im[i].gameObject.AddComponent<TeamUtility.IO.StandaloneInputModule>();
+					UnityEngine.Object.DestroyImmediate(im[i]);
+				}
+				EditorUtility.DisplayDialog("Success", "All built-in standalone input modules have been replaced!", "OK");
+				Debug.LogFormat("{0} built-in standalone input module(s) have been replaced", im.Length);
+			}
+			else
+			{
+				EditorUtility.DisplayDialog("Warning", "Unable to find any built-in input modules in the scene!", "OK");
 			}
 		}
 #endif
