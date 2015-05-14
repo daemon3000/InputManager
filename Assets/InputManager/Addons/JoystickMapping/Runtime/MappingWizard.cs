@@ -39,7 +39,7 @@ namespace TeamUtility.IO
 
 		[SerializeField] 
 		[Range(0.1f, 1.0f)]
-#if UNITY_4_5 || UNITY_4_6 || UNITY_4_8 || UNITY_4_9 || UNITY_5_0
+#if UNITY_4_5 || UNITY_4_6 || UNITY_4_8 || UNITY_4_9 || UNITY_5
 		[Tooltip("Absolute minimum value to register joystick axis movement")]
 #endif
 		private float _axisDetectTreshold = 0.9f;
@@ -74,7 +74,6 @@ namespace TeamUtility.IO
 				_items = null;
 				Debug.LogException(ex);
 			}
-
 		}
 
 		private void LoadTestDefinition()
@@ -256,7 +255,7 @@ namespace TeamUtility.IO
 #if UNITY_WINRT && !UNITY_EDITOR
 		private XmlWriter CreateXmlWriter(XmlWriterSettings settings, out MemoryStream stream, out string filename)
 		{
-			string folder = Application.dataPath.Substring(0, Application.dataPath.Length - 6) + "JoystickMappings/";
+			string folder = GetJoystickMappingSaveFolder();
 			filename = folder + _mappingName.ToLower().Replace(' ', '_') + ".xml";
 			stream = new MemoryStream();
 
@@ -268,7 +267,7 @@ namespace TeamUtility.IO
 #else
 		private XmlWriter CreateXmlWriter(XmlWriterSettings settings)
 		{
-			string folder = Application.dataPath.Substring(0, Application.dataPath.Length - 6) + "JoystickMappings/";
+			string folder = GetJoystickMappingSaveFolder();
 			string file = folder + _mappingName.ToLower().Replace(' ', '_') + ".xml";
 
 			if(!Directory.Exists(folder))
@@ -286,6 +285,14 @@ namespace TeamUtility.IO
 			writer.WriteAttributeString("joystickAxis", result.JoystickAxis.ToString());
 			writer.WriteAttributeString("scanType", result.ScanType.ToString());
 			writer.WriteEndElement();
+		}
+
+		private string GetJoystickMappingSaveFolder()
+		{
+			string dataPath = Application.dataPath;
+			int slashIndex = dataPath.LastIndexOf('/');
+
+			return dataPath.Substring(0, slashIndex) + "/JoystickMappings/";
 		}
 	}
 }

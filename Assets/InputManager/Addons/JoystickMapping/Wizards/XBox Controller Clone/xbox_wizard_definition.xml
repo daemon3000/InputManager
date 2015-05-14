@@ -18,4 +18,4 @@
 	<Axis name="Right Trigger" scanType="Axis" />
 	<Axis name="DPAD Vertical" scanType="Axis" />
 	<Axis name="DPAD Horizontal" scanType="Axis" />
-</MappingTest>
+</MappingWizard>
