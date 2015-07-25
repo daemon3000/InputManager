@@ -442,10 +442,10 @@ namespace TeamUtility.IO
         public static void SetRemoteAxisValue(string inputConfigName, string axisName, float value)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(inputConfigName, axisName);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the input configuration named \'{1}\'", axisName, inputConfigName));
-
-            axisConfig.SetRemoteAxisValue(value);
+            if(axisConfig != null)
+				axisConfig.SetRemoteAxisValue(value);
+			else
+				Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the input configuration named \'{1}\'", axisName, inputConfigName);
         }
 
         /// <summary>
@@ -462,10 +462,10 @@ namespace TeamUtility.IO
         public static void SetRemoteButtonValue(string inputConfigName, string buttonName, bool down, bool justChanged)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(inputConfigName, buttonName);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("A remote button named \'{0}\' does not exist in the input configuration named \'{1}\'", buttonName, inputConfigName));
-
-            axisConfig.SetRemoteButtonValue(down, justChanged);
+            if(axisConfig != null)
+				axisConfig.SetRemoteButtonValue(down, justChanged);
+			else
+                Debug.LogErrorFormat("A remote button named \'{0}\' does not exist in the input configuration named \'{1}\'", buttonName, inputConfigName);
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace TeamUtility.IO
             }
             else
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", name));
+                Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", name);
             }
         }
 
@@ -520,7 +520,10 @@ namespace TeamUtility.IO
         public static InputConfiguration CreateInputConfiguration(string name)
         {
             if(_instance._configurationTable.ContainsKey(name))
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' already exists", name));
+			{
+                Debug.LogErrorFormat("An input configuration named \'{0}\' already exists", name);
+				return null;
+			}
 
             InputConfiguration inputConfig = new InputConfiguration(name);
             _instance.inputConfigurations.Add(inputConfig);
@@ -571,12 +574,13 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+                Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(buttonName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
-                throw new ArgumentException(error);
+                Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
+				return null;
             }
 
             AxisConfiguration axisConfig = new AxisConfiguration(buttonName);
@@ -603,12 +607,13 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+                Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
+				return null;
             }
 
             AxisConfiguration axisConfig = new AxisConfiguration(axisName);
@@ -633,15 +638,19 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+				Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
+				return null;
             }
             if(axis < 0 || axis > 2)
-                throw new ArgumentOutOfRangeException("axis");
+			{
+				Debug.LogError("Mouse axis is out of range. Cannot create new mouse axis.");
+				return null;
+			}
 
             AxisConfiguration axisConfig = new AxisConfiguration(axisName);
             axisConfig.type = InputType.MouseAxis;
@@ -661,17 +670,24 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+				Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
+				return null;
             }
             if(axis < 0 || axis >= AxisConfiguration.MaxJoystickAxes)
-                throw new ArgumentOutOfRangeException("axis");
+			{
+				Debug.LogError("Joystick axis is out of range. Cannot create new analog axis.");
+				return null;
+			}
             if(joystick < 0 || joystick >= AxisConfiguration.MaxJoysticks)
-                throw new ArgumentOutOfRangeException("joystick");
+			{
+				Debug.LogError("Joystick is out of range. Cannot create new analog axis.");
+				return null;
+			}
 
             AxisConfiguration axisConfig = new AxisConfiguration(axisName);
             axisConfig.type = InputType.AnalogAxis;
@@ -693,12 +709,13 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+				Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
+				return null;
             }
 
             AxisConfiguration axisConfig = new AxisConfiguration(axisName);
@@ -721,12 +738,13 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+				Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(buttonName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
+				return null;
             }
 
             AxisConfiguration axisConfig = new AxisConfiguration(buttonName);
@@ -749,17 +767,24 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+				Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(buttonName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, buttonName);
+				return null;
             }
-            if(axis < 0 || axis >= AxisConfiguration.MaxJoystickAxes)
-                throw new ArgumentOutOfRangeException("axis");
-            if(joystick < 0 || joystick >= AxisConfiguration.MaxJoysticks)
-                throw new ArgumentOutOfRangeException("joystick");
+			if(axis < 0 || axis >= AxisConfiguration.MaxJoystickAxes)
+			{
+				Debug.LogError("Joystick axis is out of range. Cannot create new analog button.");
+				return null;
+			}
+			if(joystick < 0 || joystick >= AxisConfiguration.MaxJoysticks)
+			{
+				Debug.LogError("Joystick is out of range. Cannot create new analog button.");
+				return null;
+			}
 
             AxisConfiguration axisConfig = new AxisConfiguration(buttonName);
             axisConfig.type = InputType.AnalogButton;
@@ -783,12 +808,13 @@ namespace TeamUtility.IO
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
             if(inputConfig == null)
             {
-                throw new ArgumentException(string.Format("An input configuration named \'{0}\' does not exist", inputConfigName));
+                Debug.LogErrorFormat("An input configuration named \'{0}\' does not exist", inputConfigName);
+				return null;
             }
             if(_instance._axesTable[inputConfigName].ContainsKey(axisName))
             {
-                string error = string.Format("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
-                throw new ArgumentException(error);
+				Debug.LogErrorFormat("The input configuration named {0} already contains an axis configuration named {1}", inputConfigName, axisName);
+				return null;
             }
 
             AxisConfiguration axisConfig = new AxisConfiguration(axisName);
@@ -861,7 +887,10 @@ namespace TeamUtility.IO
         public static void StartJoystickAxisScan(AxisScanHandler scanHandler, int joystick, float timeout, string cancelScanButton, params object[] userData)
         {
             if(joystick < 0 || joystick >= AxisConfiguration.MaxJoystickAxes)
-                throw new ArgumentOutOfRangeException("joystick");
+			{
+				Debug.LogError("Joystick is out of range. Cannot start joystick axis scan.");
+				return;
+			}
 
             if(_instance._scanFlags != ScanFlags.None)
                 _instance.StopInputScan();
@@ -880,7 +909,10 @@ namespace TeamUtility.IO
         public static void StartScan(ScanSettings settings, ScanHandler scanHandler)
         {
             if(settings.joystick < 0 || settings.joystick >= AxisConfiguration.MaxJoystickAxes)
-                throw new ArgumentException("The joystick id you want to scan for is out of range");
+			{
+				Debug.LogError("Joystick is out of range. Cannot start scan.");
+				return;
+			}
 
             if(_instance._scanFlags != ScanFlags.None)
                 _instance.StopInputScan();
@@ -931,11 +963,15 @@ namespace TeamUtility.IO
 
         public static void Save(IInputSaver inputSaver)
         {
-            if(inputSaver == null)
-                throw new ArgumentNullException("inputSaver");
-
-            inputSaver.Save(_instance.inputConfigurations, _instance.defaultConfiguration);
-            _instance.RaiseSavedEvent();
+            if(inputSaver != null)
+			{
+	            inputSaver.Save(_instance.inputConfigurations, _instance.defaultConfiguration);
+	            _instance.RaiseSavedEvent();
+			}
+			else
+			{
+				Debug.LogError("InputSaver is null. Cannot save input configurations.");
+			}
         }
 
         /// <summary>
@@ -968,12 +1004,16 @@ namespace TeamUtility.IO
 
         public static void Load(IInputLoader inputLoader)
         {
-            if(inputLoader == null)
-                throw new ArgumentNullException("inputLoader");
-
-            inputLoader.Load(out _instance.inputConfigurations, out _instance.defaultConfiguration);
-            _instance.Initialize();
-            _instance.RaiseLoadedEvent();
+            if(inputLoader != null)
+			{
+	            inputLoader.Load(out _instance.inputConfigurations, out _instance.defaultConfiguration);
+	            _instance.Initialize();
+	            _instance.RaiseLoadedEvent();
+			}
+			else
+			{
+				Debug.LogError("InputLoader is null. Cannot load input configurations.");
+			}
         }
 
         #region [UNITY Interface]
@@ -1026,46 +1066,71 @@ namespace TeamUtility.IO
         public static float GetAxis(string name)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the active input configuration", name));
-
-            return axisConfig.GetAxis();
+            if(axisConfig != null)
+			{
+				return axisConfig.GetAxis();
+			}
+			else
+			{
+                Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the active input configuration", name);
+				return 0.0f;
+			}
         }
 
         public static float GetAxisRaw(string name)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("An axis named \'{0}\' does not exist in the active input configuration", name));
-
-            return axisConfig.GetAxisRaw();
+            if(axisConfig != null)
+			{
+				return axisConfig.GetAxisRaw();
+			}
+			else
+			{
+                Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the active input configuration", name);
+				return 0.0f;
+			}
         }
 
         public static bool GetButton(string name)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
-
-            return axisConfig.GetButton();
+            if(axisConfig != null)
+			{
+				return axisConfig.GetButton();
+			}
+			else
+			{
+                Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
+				return false;
+			}
         }
 
         public static bool GetButtonDown(string name)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
-
-            return axisConfig.GetButtonDown();
+            if(axisConfig != null)
+			{
+				return axisConfig.GetButtonDown();
+			}
+			else
+			{
+                Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
+				return false;
+			}
         }
 
         public static bool GetButtonUp(string name)
         {
             AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig == null)
-                throw new ArgumentException(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
-
-            return axisConfig.GetButtonUp();
+            if(axisConfig != null)
+			{
+				return axisConfig.GetButtonUp();
+			}
+			else
+			{
+                Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
+				return false;
+			}
         }
 
         public static bool GetKey(KeyCode key)

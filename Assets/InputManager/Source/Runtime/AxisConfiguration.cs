@@ -436,34 +436,32 @@ namespace TeamUtility.IO
 		{
 			if(type == InputType.MouseAxis)
 			{
-#if UNITY_EDITOR
-				if(axis >= MaxMouseAxes) 
+				if(axis < 0 || axis >= MaxMouseAxes) 
 				{
-					string message = string.Format("Desired mouse axis is {0}. Max mouse axis is {1}. Mouse axis has been clamped to {1}.",
-													axis, MaxMouseAxes - 1);
+					string message = string.Format("Desired mouse axis is out of range. Mouse axis will be clamped to {0}.", 
+					                               Mathf.Clamp(axis, 0, MaxMouseAxes - 1));
 					Debug.LogWarning(message);
 				}
-#endif
-				_rawAxisName = string.Concat("mouse_axis_", Mathf.Clamp(axis, 0, MaxMouseAxes));
+
+				_rawAxisName = string.Concat("mouse_axis_", Mathf.Clamp(axis, 0, MaxMouseAxes - 1));
 			}
 			else if(type == InputType.AnalogAxis || type == InputType.AnalogButton)
 			{
-#if UNITY_EDITOR
-				if(joystick >= MaxJoysticks)
+				if(joystick < 0 || joystick >= MaxJoysticks)
 				{
-					string message = string.Format("Desired joystick is {0}. Max joystick is {1}. Joystick has been clamped to {1}.",
-													joystick, MaxJoysticks - 1);
+					string message = string.Format("Desired joystick is out of range. Joystick has been clamped to {0}.",
+					                               Mathf.Clamp(joystick, 0, MaxJoysticks - 1));
 					Debug.LogWarning(message);
 				}
 				if(axis >= MaxJoystickAxes)
 				{
-					string message = string.Format("Desired joystick axis is {0}. Max joystick axis is {1}. Joystick axis has been clamped to {1}.",
-													axis, MaxJoystickAxes - 1);
+					string message = string.Format("Desired joystick axis is out of range. Joystick axis will be clamped to {0}.", 
+					                               Mathf.Clamp(axis, 0, MaxJoystickAxes - 1));
 					Debug.LogWarning(message);
 				}
-#endif
-				_rawAxisName = string.Concat("joy_", Mathf.Clamp(joystick, 0, MaxJoysticks), 
-											 "_axis_", Mathf.Clamp(axis, 0, MaxJoystickAxes));
+
+				_rawAxisName = string.Concat("joy_", Mathf.Clamp(joystick, 0, MaxJoysticks - 1), 
+				                     "_axis_", Mathf.Clamp(axis, 0, MaxJoystickAxes - 1));
 			}
 			else
 			{

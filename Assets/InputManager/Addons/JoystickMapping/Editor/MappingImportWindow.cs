@@ -245,8 +245,11 @@ namespace TeamUtility.Editor.IO.InputManager
 				}
 				else
 				{
-					if(am.JoystickAxis < 0 || am.JoystickAxis > 9)
-						throw new ArgumentOutOfRangeException("joystickAxis");
+					if(am.JoystickAxis < 0 || am.JoystickAxis >= AxisConfiguration.MaxJoystickAxes)
+					{
+						Debug.LogError("Joystick axis is out of range. Cannot import axis configuration: " + am.Name);
+						continue;
+					}
 					
 					AxisConfiguration axisConfig = new AxisConfiguration(am.Name);
 					axisConfig.type = InputType.AnalogAxis;
