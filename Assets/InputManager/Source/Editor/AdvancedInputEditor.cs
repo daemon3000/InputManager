@@ -268,9 +268,9 @@ namespace TeamUtility.Editor
 				fileMenu.AddDisabledItem(new GUIContent("Create Snapshot"));
 
 			if(EditorToolbox.CanLoadSnapshot())
-				fileMenu.AddItem(new GUIContent("Load Snapshot"), false, HandleFileMenuOption, FileMenuOptions.LoadSnapshot);
+				fileMenu.AddItem(new GUIContent("Restore Snapshot"), false, HandleFileMenuOption, FileMenuOptions.LoadSnapshot);
 			else
-				fileMenu.AddDisabledItem(new GUIContent("Load Snapshot"));
+				fileMenu.AddDisabledItem(new GUIContent("Restore Snapshot"));
 			fileMenu.AddSeparator("");
 
 			if(_inputManager.inputConfigurations.Count > 0)
@@ -788,11 +788,13 @@ namespace TeamUtility.Editor
 				{
 					_selectionPath.Clear();
 					_selectionPath.Add(index);
+					GUI.FocusControl(null);
 					Repaint();
 				}
 				else if(screenRect.Contains(Event.current.mousePosition))
 				{
 					_selectionPath.Clear();
+					GUI.FocusControl(null);
 					Repaint();
 				}
 			}
@@ -826,12 +828,14 @@ namespace TeamUtility.Editor
 					_selectionPath.Clear();
 					_selectionPath.Add(inputConfigIndex);
 					_selectionPath.Add(index);
+					GUI.FocusControl(null);
 					Event.current.Use();
 					Repaint();
 				}
 				else if(screenRect.Contains(Event.current.mousePosition))
 				{
 					_selectionPath.Clear();
+					GUI.FocusControl(null);
 					Repaint();
 				}
 			}
@@ -969,7 +973,7 @@ namespace TeamUtility.Editor
 		#region [Static Interface]
 		public static bool IsOpen { get; private set; }
 		
-		[MenuItem("Team Utility/Input Manager/Open Advanced Editor", false, 0)]
+		[MenuItem("Team Utility/Input Manager/Open Input Editor", false, 0)]
 		public static void OpenWindow()
 		{
 			if(!IsOpen)
@@ -979,7 +983,7 @@ namespace TeamUtility.Editor
 					GameObject gameObject = new GameObject("InputManager");
 					gameObject.AddComponent<InputManager>();
 				}
-				EditorWindow.GetWindow<AdvancedInputEditor>("Input");
+				EditorWindow.GetWindow<AdvancedInputEditor>("Input Editor");
 			}
 		}
 		
@@ -987,7 +991,7 @@ namespace TeamUtility.Editor
 		{
 			if(!IsOpen)
 			{
-				var window = EditorWindow.GetWindow<AdvancedInputEditor>("Input");
+				var window = EditorWindow.GetWindow<AdvancedInputEditor>("Input Editor");
 				window._inputManager = target;
 			}
 		}
@@ -996,7 +1000,7 @@ namespace TeamUtility.Editor
 		{
 			if(IsOpen)
 			{
-				var window = EditorWindow.GetWindow<AdvancedInputEditor>("Input");
+				var window = EditorWindow.GetWindow<AdvancedInputEditor>("Input Editor");
 				window.Close();
 			}
 		}

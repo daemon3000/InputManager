@@ -68,7 +68,7 @@ namespace TeamUtility.Editor
 			
 			GUILayout.BeginHorizontal();
 			GUI.enabled = !AdvancedInputEditor.IsOpen;
-			if(GUILayout.Button("Advanced\nEditor", GUILayout.Height(40.0f)))
+			if(GUILayout.Button("Input\nEditor", GUILayout.Height(40.0f)))
 			{
 				AdvancedInputEditor.OpenWindow(inputManager);
 			}
@@ -78,7 +78,7 @@ namespace TeamUtility.Editor
 				EditorToolbox.CreateSnapshot(inputManager);
 			}
 			GUI.enabled = EditorToolbox.CanLoadSnapshot();
-			if(GUILayout.Button("Load\nSnapshot", GUILayout.Height(40.0f)))
+			if(GUILayout.Button("Restore\nSnapshot", GUILayout.Height(40.0f)))
 			{
 				EditorToolbox.LoadSnapshot(inputManager);
 			}
