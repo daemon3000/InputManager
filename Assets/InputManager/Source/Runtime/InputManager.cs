@@ -48,7 +48,7 @@ namespace TeamUtility.IO
     /// </summary>
     public delegate bool ScanHandler(ScanResult result);
 
-    public sealed class InputManager : MonoBehaviour
+    public partial class InputManager : MonoBehaviour
     {
         #region [Fields]
         public event Action<string> ConfigurationChanged;
@@ -73,7 +73,6 @@ namespace TeamUtility.IO
         private int _scanJoystick;
         private object _scanUserData;
 
-        //	Cached data for improved performance.
         private string[] _rawMouseAxes;
         private string[] _rawJoystickAxes;
         private KeyCode[] _keys;
@@ -187,12 +186,10 @@ namespace TeamUtility.IO
         {
             if(_currentConfiguration != null)
             {
-                int count = _currentConfiguration.axes.Count;
-                for(int i = 0; i < count; i++)
-                {
-                    _currentConfiguration.axes[i].Update();
-                }
-                if(RemoteUpdate != null)
+				for(int i = 0; i < _currentConfiguration.axes.Count; i++)
+                	_currentConfiguration.axes[i].Update();
+                
+				if(RemoteUpdate != null)
                     RemoteUpdate();
 
                 if(_scanFlags != ScanFlags.None)
@@ -803,6 +800,9 @@ namespace TeamUtility.IO
             return axisConfig;
         }
 
+		/// <summary>
+		/// Creates an uninitialized axis configuration. It's your responsability to configure the axis properly.
+		/// </summary>
         public static AxisConfiguration CreateEmptyAxis(string inputConfigName, string axisName)
         {
             InputConfiguration inputConfig = GetInputConfiguration(inputConfigName);
@@ -859,7 +859,6 @@ namespace TeamUtility.IO
                 return scanHandler(result.key, (object[])result.userData);
             };
         }
-
 
         /// <summary>
         /// Scans for mouse input and calls the handler with the result.
@@ -1015,175 +1014,6 @@ namespace TeamUtility.IO
 				Debug.LogError("InputLoader is null. Cannot load input configurations.");
 			}
         }
-
-        #region [UNITY Interface]
-        public static Vector3 acceleration { get { return Input.acceleration; } }
-        public static int accelerationEventCount { get { return Input.accelerationEventCount; } }
-        public static AccelerationEvent[] accelerationEvents { get { return Input.accelerationEvents; } }
-        public static bool anyKey { get { return Input.anyKey; } }
-        public static bool anyKeyDown { get { return Input.anyKeyDown; } }
-        public static Compass compass { get { return Input.compass; } }
-        public static string compositionString { get { return Input.compositionString; } }
-        public static DeviceOrientation deviceOrientation { get { return Input.deviceOrientation; } }
-        public static Gyroscope gyro { get { return Input.gyro; } }
-        public static bool imeIsSelected { get { return Input.imeIsSelected; } }
-        public static string inputString { get { return Input.inputString; } }
-        public static LocationService location { get { return Input.location; } }
-        public static Vector2 mousePosition { get { return Input.mousePosition; } }
-        public static bool mousePresent { get { return Input.mousePresent; } }
-        public static int touchCount { get { return Input.touchCount; } }
-        public static Touch[] touches { get { return Input.touches; } }
-
-        public static bool compensateSensors
-        {
-            get { return Input.compensateSensors; }
-            set { Input.compensateSensors = value; }
-        }
-
-        public static Vector2 compositionCursorPos
-        {
-            get { return Input.compositionCursorPos; }
-            set { Input.compositionCursorPos = value; }
-        }
-
-        public static IMECompositionMode imeCompositionMode
-        {
-            get { return Input.imeCompositionMode; }
-            set { Input.imeCompositionMode = value; }
-        }
-
-        public static bool multiTouchEnabled
-        {
-            get { return Input.multiTouchEnabled; }
-            set { Input.multiTouchEnabled = value; }
-        }
-
-        public static AccelerationEvent GetAccelerationEvent(int index)
-        {
-            return Input.GetAccelerationEvent(index);
-        }
-
-        public static float GetAxis(string name)
-        {
-            AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig != null)
-			{
-				return axisConfig.GetAxis();
-			}
-			else
-			{
-                Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the active input configuration", name);
-				return 0.0f;
-			}
-        }
-
-        public static float GetAxisRaw(string name)
-        {
-            AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig != null)
-			{
-				return axisConfig.GetAxisRaw();
-			}
-			else
-			{
-                Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the active input configuration", name);
-				return 0.0f;
-			}
-        }
-
-        public static bool GetButton(string name)
-        {
-            AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig != null)
-			{
-				return axisConfig.GetButton();
-			}
-			else
-			{
-                Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
-				return false;
-			}
-        }
-
-        public static bool GetButtonDown(string name)
-        {
-            AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig != null)
-			{
-				return axisConfig.GetButtonDown();
-			}
-			else
-			{
-                Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
-				return false;
-			}
-        }
-
-        public static bool GetButtonUp(string name)
-        {
-            AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
-            if(axisConfig != null)
-			{
-				return axisConfig.GetButtonUp();
-			}
-			else
-			{
-                Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
-				return false;
-			}
-        }
-
-        public static bool GetKey(KeyCode key)
-        {
-            return Input.GetKey(key);
-        }
-
-        public static bool GetKeyDown(KeyCode key)
-        {
-            return Input.GetKeyDown(key);
-        }
-
-        public static bool GetKeyUp(KeyCode key)
-        {
-            return Input.GetKeyUp(key);
-        }
-
-        public static bool GetMouseButton(int index)
-        {
-            return Input.GetMouseButton(index);
-        }
-
-        public static bool GetMouseButtonDown(int index)
-        {
-            return Input.GetMouseButtonDown(index);
-        }
-
-        public static bool GetMouseButtonUp(int index)
-        {
-            return Input.GetMouseButtonUp(index);
-        }
-
-        public static Touch GetTouch(int index)
-        {
-            return Input.GetTouch(index);
-        }
-
-        public static string[] GetJoystickNames()
-        {
-            return Input.GetJoystickNames();
-        }
-
-        public static void ResetInputAxes()
-        {
-            InputConfiguration inputConfig = _instance._currentConfiguration;
-            int count = inputConfig.axes.Count;
-            for(int i = 0; i < count; i++)
-            {
-                inputConfig.axes[i].Reset();
-            }
-            Input.ResetInputAxes();
-        }
-        #endregion
 
         #endregion
     }

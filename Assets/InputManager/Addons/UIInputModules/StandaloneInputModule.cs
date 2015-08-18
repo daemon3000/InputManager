@@ -162,8 +162,8 @@ namespace TeamUtility.IO
 			m_LastMousePosition = InputManager.mousePosition;
 			
 			var toSelect = eventSystem.currentSelectedGameObject;
-			if (toSelect == null)
-				toSelect = eventSystem.lastSelectedGameObject;
+//			if (toSelect == null)
+//				toSelect = eventSystem.lastSelectedGameObject;
 			if (toSelect == null)
 				toSelect = eventSystem.firstSelectedGameObject;
 			
