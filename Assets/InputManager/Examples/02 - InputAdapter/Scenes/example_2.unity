@@ -870,7 +870,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
   allowRealtimeInputDeviceSwitch: 1
-  updateInputDeviceInterval: 1
+  checkInputDeviceEveryFrame: 1
+  inputDeviceChecksPerSecond: 10
   updateJoystickCountInterval: 1
   keyboardConfiguration: KeyboardAndMouse
   windowsJoystickConfiguration: Windows_Gamepad
@@ -934,8 +935,6 @@ Terrain:
     serializedVersion: 2
     rgba: 4286545791
   m_LegacyShininess: .078125
-  m_UseDefaultSmoothness: 1
-  m_DefaultSmoothness: 0
   m_MaterialTemplate: {fileID: 0}
   m_BakeLightProbesForTrees: 1
   m_ScaleInLightmap: 1

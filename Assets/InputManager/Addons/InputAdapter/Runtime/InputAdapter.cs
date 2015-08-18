@@ -43,11 +43,17 @@ namespace TeamUtility.IO
 		private bool dontDestroyOnLoad = false;
 
 		[SerializeField]
+		[Tooltip("If enabled you will switch automatically to joystick/keyboard input when the user presses a joystick/keyboard button or a joystick/mouse axis")]
 		private bool allowRealtimeInputDeviceSwitch = true;
-		
+
 		[SerializeField]
-		[Range(0.1f, 1.0f)]
-		private float updateInputDeviceInterval = 1.0f;
+		[Tooltip("If enabled you'll check every frame wich device the user is trying to use and switch the input device accordingly.")]
+		private bool checkInputDeviceEveryFrame = false;
+
+		[SerializeField]
+		[Range(1, 30)]
+		[Tooltip("How many times per second do you want to check wich device the user is trying to use.\nA higher value will mean a faster and smoother transition between keyboard and joystick input.")]
+		private int inputDeviceChecksPerSecond = 15;
 		
 		[SerializeField]
 		[Range(1.0f, 5.0f)]
@@ -82,9 +88,9 @@ namespace TeamUtility.IO
 		private Vector2 _lastTriggerValues = Vector2.zero;
 		private Vector2 _currentTriggerValues = Vector2.zero;
 		private InputDevice _inputDevice;
+		private float _lastInputDeviceCheck;
 		private int _joystickCount = 0;
 		private int _firstJoystickKey = 330;
-		private bool _canUpdateInputDevice = false;
 		private string _joystickConfiguration;
 		private string _keyboardConfiguration;
 		private static InputAdapter _instance;
@@ -439,6 +445,7 @@ namespace TeamUtility.IO
 				
 				_instance = this;
 				_joystickCount = InputManager.GetJoystickNames().Length;
+				_lastInputDeviceCheck = Time.deltaTime;
 
 				if(dontDestroyOnLoad)
 				{
@@ -450,20 +457,27 @@ namespace TeamUtility.IO
 		private void Start()
 		{
 			StartCoroutine(UpdateJoystickCount());
-			if(allowRealtimeInputDeviceSwitch) 
-			{
-				StartCoroutine(SetCanUpdateInputDevice());
-			}
 		}
 		
 		private void Update()
 		{
-			if(_canUpdateInputDevice)
+			if(allowRealtimeInputDeviceSwitch)
 			{
-				UpdateInputDevice();
-				_canUpdateInputDevice = false;
+				if(checkInputDeviceEveryFrame)
+				{
+					UpdateInputDevice();
+					_lastInputDeviceCheck = Time.time;
+				}
+				else
+				{
+					if(Time.time >= _lastInputDeviceCheck + (1.0f / inputDeviceChecksPerSecond))
+					{
+						UpdateInputDevice();
+						_lastInputDeviceCheck = Time.time;
+					}
+				}
 			}
-			
+
 			UpdateTriggerAndDPAD();
 		}
 		
@@ -498,15 +512,6 @@ namespace TeamUtility.IO
 					SetInputDevice(InputDevice.KeyboardAndMouse);
 				}
 				yield return new WaitForSeconds(updateJoystickCountInterval);
-			}
-		}
-		
-		private IEnumerator SetCanUpdateInputDevice()
-		{
-			while(true)
-			{
-				_canUpdateInputDevice = true;
-				yield return new WaitForSeconds(updateInputDeviceInterval);
 			}
 		}
 		
