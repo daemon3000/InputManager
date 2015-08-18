@@ -420,7 +420,6 @@ namespace TeamUtility.IO
 			}
 		}
 
-#if UNITY_EDITOR && (UNITY_4_6 || UNITY_4_7 || UNITY_5)
 		[MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 200)]
 		private static void FixEventSystem()
 		{
@@ -440,6 +439,5 @@ namespace TeamUtility.IO
 				EditorUtility.DisplayDialog("Warning", "Unable to find any built-in input modules in the scene!", "OK");
 			}
 		}
-#endif
 	}
 }

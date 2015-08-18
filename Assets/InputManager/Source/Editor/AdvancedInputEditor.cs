@@ -561,12 +561,7 @@ namespace TeamUtility.Editor
 				return;
 			}
 			
-#if UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
-			Undo.SetSnapshotTarget(_inputManager, "InputManager");
-			Undo.CreateSnapshot();
-#else
 			Undo.RecordObject(_inputManager, "InputManager");
-#endif
 			UpdateHierarchyPanelWidth();
 			if(_searchString.Length > 0)
 			{
@@ -581,19 +576,8 @@ namespace TeamUtility.Editor
 				DisplayMainPanel();
 			}
 			DisplayMainToolbar();
-#if UNITY_3_4 || UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2
 			if(GUI.changed)
-			{
-				Undo.RegisterSnapshot();
 				EditorUtility.SetDirty(_inputManager);
-			}
-			Undo.ClearSnapshotTarget();
-#else
-			if(GUI.changed)
-			{
-				EditorUtility.SetDirty(_inputManager);
-			}
-#endif
 		}
 
 		private void DisplayMissingInputManagerWarning()
