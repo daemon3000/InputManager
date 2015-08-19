@@ -22,18 +22,141 @@
 #endregion
 using UnityEngine;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace TeamUtility.IO
 {
 	public class InputEventManager : MonoBehaviour
 	{
-		[SerializeField] private InputEvent[] _inputEvents;
+		[SerializeField] private List<InputEvent> _inputEvents;
+		private Dictionary<string, InputEvent> _eventLookup;
+
+		public int EventCount { get { return _inputEvents.Count; } }
+
+		private void Awake()
+		{
+			_eventLookup = new Dictionary<string, InputEvent>();
+			foreach(var evt in _inputEvents)
+			{
+				if(!_eventLookup.ContainsKey(evt.name))
+					_eventLookup.Add(evt.name, evt);
+				else
+					Debug.LogWarningFormat(this, "An input event named \'{0}\' already exists in the lookup table", evt.name);
+			}
+		}
 
 		private void Update()
 		{
-			for(int i = 0; i < _inputEvents.Length; i++)
-				_inputEvents[i].Update();
+			for(int i = 0; i < _inputEvents.Count; i++)
+				_inputEvents[i].Evaluate();
+		}
+
+		public InputEvent CreateAxisEvent(string name, string axisName)
+		{
+			if(!_eventLookup.ContainsKey(name))
+			{
+				InputEvent evt = new InputEvent(name);
+				evt.axisName = axisName;
+				evt.eventType = InputEventType.Axis;
+
+				_inputEvents.Add(evt);
+				_eventLookup.Add(name, evt);
+				return evt;
+			}
+			else
+			{
+				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				return null;
+			}
+		}
+
+		public InputEvent CreateButtonEvent(string name, string buttonName, InputState inputState)
+		{
+			if(!_eventLookup.ContainsKey(name))
+			{
+				InputEvent evt = new InputEvent(name);
+				evt.buttonName = buttonName;
+				evt.eventType = InputEventType.Button;
+				evt.inputState = inputState;
+				
+				_inputEvents.Add(evt);
+				_eventLookup.Add(name, evt);
+				return evt;
+			}
+			else
+			{
+				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				return null;
+			}
+		}
+
+		public InputEvent CreateKeyEvent(string name, KeyCode key, InputState inputState)
+		{
+			if(!_eventLookup.ContainsKey(name))
+			{
+				InputEvent evt = new InputEvent(name);
+				evt.keyCode = key;
+				evt.eventType = InputEventType.Key;
+				evt.inputState = inputState;
+				
+				_inputEvents.Add(evt);
+				_eventLookup.Add(name, evt);
+				return evt;
+			}
+			else
+			{
+				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				return null;
+			}
+		}
+
+		public InputEvent CreateEmptyEvent(string name)
+		{
+			if(!_eventLookup.ContainsKey(name))
+			{
+				InputEvent evt = new InputEvent(name);
+				_inputEvents.Add(evt);
+				_eventLookup.Add(name, evt);
+				return evt;
+			}
+			else
+			{
+				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				return null;
+			}
+		}
+
+		public void DeleteEvent(string name)
+		{
+			InputEvent evt = null;
+			if(_eventLookup.TryGetValue(name, out evt))
+			{
+				_eventLookup.Remove(name);
+				_inputEvents.Remove(evt);
+			}
+		}
+
+		/// <summary>
+		/// Searches for an event based on the specified name. If an event can't be found the return value will be null.
+		/// </summary>
+		public InputEvent GetEvent(string name)
+		{
+			InputEvent evt = null;
+			if(_eventLookup.TryGetValue(name, out evt))
+				return evt;
+
+			return null;
+		}
+
+		/// <summary>
+		/// Gets the event at the specified index. If the index is out of range the return value will be null.
+		/// </summary>
+		public InputEvent GetEvent(int index)
+		{
+			if(index >= 0 && index < _inputEvents.Count)
+				return _inputEvents[index];
+			else
+				return null;
 		}
 	}
 }

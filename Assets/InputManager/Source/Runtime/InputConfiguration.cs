@@ -30,6 +30,9 @@ namespace TeamUtility.IO
 	[Serializable]
 	public sealed class InputConfiguration
 	{
+		/// <summary>
+		/// Do not change the name of an input configuration at runtime because it will invalidate the lookup tables.
+		/// </summary>
 		public string name;
 		public List<AxisConfiguration> axes;
 		public bool isExpanded;

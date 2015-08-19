@@ -39,6 +39,9 @@ namespace TeamUtility.IO
 		#endregion
 		
 		#region [Settings]
+		/// <summary>
+		/// Do not change the name of an axis at runtime because it will invalidate the lookup tables.
+		/// </summary>
 		public string name;
 		public string description;
 		public KeyCode positive;

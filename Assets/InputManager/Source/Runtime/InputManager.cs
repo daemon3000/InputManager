@@ -152,12 +152,10 @@ namespace TeamUtility.IO
                 {
                     _configurationTable.Add(inputConfig.name, inputConfig);
                 }
-#if UNITY_EDITOR
                 else
                 {
-                    Debug.LogWarning("An input configuration named \'" + inputConfig.name + "\' already exists in the lookup table");
+					Debug.LogWarningFormat("An input configuration named \'{0}\' already exists in the lookup table", inputConfig.name);
                 }
-#endif
             }
 
             _axesTable.Clear();
@@ -170,12 +168,10 @@ namespace TeamUtility.IO
                     {
                         table.Add(axisConfig.name, axisConfig);
                     }
-#if UNITY_EDITOR
                     else
                     {
-                        Debug.LogWarning(string.Format("Input configuration \'{0}\' already contains an axis named \'{1}\'", inputConfig.name, axisConfig.name));
+                        Debug.LogWarningFormat("Input configuration \'{0}\' already contains an axis named \'{1}\'", inputConfig.name, axisConfig.name);
                     }
-#endif
                 }
 
                 _axesTable.Add(inputConfig.name, table);

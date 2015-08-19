@@ -36,74 +36,88 @@ namespace TeamUtility.IO
 		[Serializable]
 		public class ActionEvent : UnityEvent { }
 
-		[SerializeField] private string _name;
-		[SerializeField] private string _axisName;
-		[SerializeField] private string _buttonName;
-		[SerializeField] private KeyCode _keyCode;
-		[SerializeField] private InputEventType _eventType;
-		[SerializeField] private InputState _inputState;
-		[SerializeField] private ActionEvent _onAction;
-		[SerializeField] private AxisEvent _onAxis;
+		/// <summary>
+		/// Do not change the name of an event at runtime because it will invalidate the lookup table.
+		/// </summary>
+		public string name;
+		public string axisName;
+		public string buttonName;
+		public KeyCode keyCode;
+		public InputEventType eventType;
+		public InputState inputState;
+		public ActionEvent onAction;
+		public AxisEvent onAxis;
 
-		public void Update()
+		public InputEvent() :
+			this("New Event") { }
+
+		public InputEvent(string name)
 		{
-			switch(_eventType)
+			this.name = name;
+			axisName = "";
+			buttonName = "";
+			keyCode = KeyCode.None;
+			eventType = InputEventType.Key;
+			inputState = InputState.Pressed;
+			onAxis = new AxisEvent();
+			onAction = new ActionEvent();
+		}
+
+		public void Evaluate()
+		{
+			switch(eventType)
 			{
 			case InputEventType.Axis:
-				UpdateAxis();
+				EvaluateAxis();
 				break;
 			case InputEventType.Button:
-				UpdateButton();
+				EvaluateButton();
 				break;
 			case InputEventType.Key:
-				UpdateKey();
+				EvaluateKey();
 				break;
 			}
 		}
 
-		private void UpdateAxis()
+		private void EvaluateAxis()
 		{
-			if(!string.IsNullOrEmpty(_axisName))
-				_onAxis.Invoke(InputManager.GetAxis(_axisName));
+			onAxis.Invoke(InputManager.GetAxis(axisName));
 		}
 
-		private void UpdateButton()
+		private void EvaluateButton()
 		{
-			if(!string.IsNullOrEmpty(_buttonName))
-			{
-				switch(_inputState) 
-				{
-				case InputState.Pressed:
-					if(InputManager.GetButtonDown(_buttonName))
-						_onAction.Invoke();
-					break;
-				case InputState.Released:
-					if(InputManager.GetButtonUp(_buttonName))
-						_onAction.Invoke();
-					break;
-				case InputState.Held:
-					if(InputManager.GetButton(_buttonName))
-						_onAction.Invoke();
-					break;
-				}
-			}
-		}
-
-		private void UpdateKey()
-		{
-			switch(_inputState) 
+			switch(inputState) 
 			{
 			case InputState.Pressed:
-				if(InputManager.GetKeyDown(_keyCode))
-					_onAction.Invoke();
+				if(InputManager.GetButtonDown(buttonName))
+					onAction.Invoke();
 				break;
 			case InputState.Released:
-				if(InputManager.GetKeyUp(_keyCode))
-					_onAction.Invoke();
+				if(InputManager.GetButtonUp(buttonName))
+					onAction.Invoke();
 				break;
 			case InputState.Held:
-				if(InputManager.GetKey(_keyCode))
-					_onAction.Invoke();
+				if(InputManager.GetButton(buttonName))
+					onAction.Invoke();
+				break;
+			}
+		}
+
+		private void EvaluateKey()
+		{
+			switch(inputState) 
+			{
+			case InputState.Pressed:
+				if(InputManager.GetKeyDown(keyCode))
+					onAction.Invoke();
+				break;
+			case InputState.Released:
+				if(InputManager.GetKeyUp(keyCode))
+					onAction.Invoke();
+				break;
+			case InputState.Held:
+				if(InputManager.GetKey(keyCode))
+					onAction.Invoke();
 				break;
 			}
 		}
