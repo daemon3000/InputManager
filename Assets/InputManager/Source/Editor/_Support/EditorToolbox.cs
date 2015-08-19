@@ -157,7 +157,7 @@ namespace TeamUtility.Editor.IO.InputManager
 
 		public static bool HasInputAdapterAddon()
 		{
-			Assembly assembly = typeof(InputAdapter).Assembly;
+			Assembly assembly = typeof(TeamUtility.IO.InputManager).Assembly;
 			Type inputAdapterType = Array.Find<Type>(assembly.GetTypes(), (type) => { return type.Name == "InputAdapter"; });
 			return inputAdapterType != null;
 		}
