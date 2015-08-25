@@ -84,7 +84,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the active input configuration", name);
+				Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the active input configuration", name));
 				return 0.0f;
 			}
 		}
@@ -98,7 +98,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat("An axis named \'{0}\' does not exist in the active input configuration", name);
+				Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the active input configuration", name));
 				return 0.0f;
 			}
 		}
@@ -112,7 +112,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
+				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
 				return false;
 			}
 		}
@@ -126,7 +126,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
+				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
 				return false;
 			}
 		}
@@ -140,7 +140,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat("An button named \'{0}\' does not exist in the active input configuration", name);
+				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
 				return false;
 			}
 		}

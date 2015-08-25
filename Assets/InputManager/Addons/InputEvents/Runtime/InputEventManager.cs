@@ -30,9 +30,9 @@ namespace TeamUtility.IO
 	{
 		[SerializeField] private List<InputEvent> _inputEvents;
 		private Dictionary<string, InputEvent> _eventLookup;
-
+		
 		public int EventCount { get { return _inputEvents.Count; } }
-
+		
 		private void Awake()
 		{
 			_eventLookup = new Dictionary<string, InputEvent>();
@@ -41,16 +41,16 @@ namespace TeamUtility.IO
 				if(!_eventLookup.ContainsKey(evt.name))
 					_eventLookup.Add(evt.name, evt);
 				else
-					Debug.LogWarningFormat(this, "An input event named \'{0}\' already exists in the lookup table", evt.name);
+					Debug.LogWarning(string.Format("An input event named \'{0}\' already exists in the lookup table", evt.name), this);
 			}
 		}
-
+		
 		private void Update()
 		{
 			for(int i = 0; i < _inputEvents.Count; i++)
 				_inputEvents[i].Evaluate();
 		}
-
+		
 		public InputEvent CreateAxisEvent(string name, string axisName)
 		{
 			if(!_eventLookup.ContainsKey(name))
@@ -58,18 +58,18 @@ namespace TeamUtility.IO
 				InputEvent evt = new InputEvent(name);
 				evt.axisName = axisName;
 				evt.eventType = InputEventType.Axis;
-
+				
 				_inputEvents.Add(evt);
 				_eventLookup.Add(name, evt);
 				return evt;
 			}
 			else
 			{
-				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				Debug.LogError(string.Format("An input event named {0} already exists", name), this);
 				return null;
 			}
 		}
-
+		
 		public InputEvent CreateButtonEvent(string name, string buttonName, InputState inputState)
 		{
 			if(!_eventLookup.ContainsKey(name))
@@ -85,11 +85,11 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				Debug.LogError(string.Format("An input event named {0} already exists", name), this);
 				return null;
 			}
 		}
-
+		
 		public InputEvent CreateKeyEvent(string name, KeyCode key, InputState inputState)
 		{
 			if(!_eventLookup.ContainsKey(name))
@@ -105,11 +105,11 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				Debug.LogError(string.Format("An input event named {0} already exists", name), this);
 				return null;
 			}
 		}
-
+		
 		public InputEvent CreateEmptyEvent(string name)
 		{
 			if(!_eventLookup.ContainsKey(name))
@@ -121,11 +121,11 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Debug.LogErrorFormat(this, "An input event named {0} already exists", name);
+				Debug.LogError(string.Format("An input event named {0} already exists", name), this);
 				return null;
 			}
 		}
-
+		
 		public void DeleteEvent(string name)
 		{
 			InputEvent evt = null;
@@ -135,7 +135,7 @@ namespace TeamUtility.IO
 				_inputEvents.Remove(evt);
 			}
 		}
-
+		
 		/// <summary>
 		/// Searches for an event based on the specified name. If an event can't be found the return value will be null.
 		/// </summary>
@@ -144,10 +144,10 @@ namespace TeamUtility.IO
 			InputEvent evt = null;
 			if(_eventLookup.TryGetValue(name, out evt))
 				return evt;
-
+			
 			return null;
 		}
-
+		
 		/// <summary>
 		/// Gets the event at the specified index. If the index is out of range the return value will be null.
 		/// </summary>
