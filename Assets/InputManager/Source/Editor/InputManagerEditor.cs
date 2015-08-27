@@ -23,15 +23,14 @@
 using UnityEngine;
 using UnityEditor;
 using System;
-using System.IO;
-using System.Linq;
 using System.Collections;
 using TeamUtility.IO;
-using TeamUtility.Editor.IO.InputManager;
+using TeamUtilityEditor.IO.InputManager;
+using _InputManager = TeamUtility.IO.InputManager;
 
-namespace TeamUtility.Editor
+namespace TeamUtilityEditor.IO
 {
-	[CustomEditor(typeof(InputManager))]
+	[CustomEditor(typeof(_InputManager))]
 	public sealed class InputManagerEditor : UnityEditor.Editor 
 	{
 		private SerializedProperty _intputConfigurations;
@@ -61,7 +60,7 @@ namespace TeamUtility.Editor
 		
 		public override void OnInspectorGUI()
 		{
-			InputManager inputManager = target as InputManager;
+			_InputManager inputManager = target as _InputManager;
 			
 			serializedObject.Update();
 			GUILayout.Space(5.0f);

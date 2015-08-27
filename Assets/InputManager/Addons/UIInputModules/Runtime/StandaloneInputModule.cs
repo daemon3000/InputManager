@@ -37,6 +37,8 @@ namespace TeamUtility.IO
 	[AddComponentMenu("Team Utility/Input Manager/Standalone Input Module")]
 	public class StandaloneInputModule : PointerInputModule
 	{
+		public const string VERSION = "5.1";
+		
 		private float m_PrevActionTime;
 		Vector2 m_LastMoveVector;
 		int m_ConsecutiveMoveCount = 0;
@@ -431,7 +433,7 @@ namespace TeamUtility.IO
 		}
 
 #if UNITY_EDITOR
-		[MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 200)]
+		[MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 201)]
 		private static void FixEventSystem()
 		{
 			UnityEngine.EventSystems.StandaloneInputModule[] im = UnityEngine.Object.FindObjectsOfType<UnityEngine.EventSystems.StandaloneInputModule>();

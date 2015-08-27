@@ -27,9 +27,10 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using TeamUtility.IO;
-using TeamUtility.Editor.IO.InputManager;
+using TeamUtilityEditor.IO.InputManager;
+using _InputManager = TeamUtility.IO.InputManager;
 
-namespace TeamUtility.Editor
+namespace TeamUtilityEditor.IO
 {
 	public sealed class AdvancedInputEditor : EditorWindow
 	{
@@ -67,7 +68,7 @@ namespace TeamUtility.Editor
 		#endregion
 		
 		#region [Fields]
-		[SerializeField] private InputManager _inputManager;
+		[SerializeField] private _InputManager _inputManager;
 		[SerializeField] private List<SearchResult> _searchResults;
 		[SerializeField] private List<int> _selectionPath;
 		[SerializeField] private Vector2 _hierarchyScrollPos = Vector2.zero;
@@ -105,7 +106,7 @@ namespace TeamUtility.Editor
 
 			_tryedToFindInputManagerInScene = false;
 			if(_inputManager == null)
-				_inputManager = UnityEngine.Object.FindObjectOfType(typeof(InputManager)) as InputManager;
+				_inputManager = UnityEngine.Object.FindObjectOfType(typeof(_InputManager)) as _InputManager;
 			if(_selectionPath == null)
 				_selectionPath = new List<int>();
 			if(_searchResults == null)
@@ -242,7 +243,7 @@ namespace TeamUtility.Editor
 
 		private void TryToFindInputManagerInScene()
 		{
-			_inputManager = UnityEngine.Object.FindObjectOfType(typeof(InputManager)) as InputManager;
+			_inputManager = UnityEngine.Object.FindObjectOfType(typeof(_InputManager)) as _InputManager;
 			_tryedToFindInputManagerInScene = true;
 		}
 
@@ -872,10 +873,10 @@ namespace TeamUtility.Editor
 			{
 				_inputManager.defaultConfiguration = inputConfig.name;
 			}
-			GUI.enabled = (EditorApplication.isPlaying && InputManager.CurrentConfiguration.name != inputConfig.name);
+			GUI.enabled = (EditorApplication.isPlaying && _InputManager.CurrentConfiguration.name != inputConfig.name);
 			if(GUILayout.Button("Switch To", GUILayout.Width(135.0f), GUILayout.Height(20.0f)))
 			{
-				InputManager.SetInputConfiguration(inputConfig.name);
+				_InputManager.SetInputConfiguration(inputConfig.name);
 			}
 			GUI.enabled = true;
 			
@@ -962,16 +963,16 @@ namespace TeamUtility.Editor
 		{
 			if(!IsOpen)
 			{
-				if(UnityEngine.Object.FindObjectOfType(typeof(InputManager)) == null)
+				if(UnityEngine.Object.FindObjectOfType(typeof(_InputManager)) == null)
 				{
 					GameObject gameObject = new GameObject("InputManager");
-					gameObject.AddComponent<InputManager>();
+					gameObject.AddComponent<_InputManager>();
 				}
 				EditorWindow.GetWindow<AdvancedInputEditor>("Input Editor");
 			}
 		}
 		
-		public static void OpenWindow(InputManager target)
+		public static void OpenWindow(_InputManager target)
 		{
 			if(!IsOpen)
 			{

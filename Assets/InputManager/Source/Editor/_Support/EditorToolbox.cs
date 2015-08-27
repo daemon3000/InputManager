@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Collections;
 using TeamUtility.IO;
 
-namespace TeamUtility.Editor.IO.InputManager
+namespace TeamUtilityEditor.IO.InputManager
 {
 	public static class EditorToolbox
 	{

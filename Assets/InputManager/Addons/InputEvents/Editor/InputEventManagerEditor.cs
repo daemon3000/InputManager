@@ -26,7 +26,7 @@ using System;
 using System.Collections;
 using TeamUtility.IO;
 
-namespace TeamUtility.Editor
+namespace TeamUtilityEditor.IO
 {
 	[CustomEditor(typeof(InputEventManager))]
 	public class InputEventManagerEditor : UnityEditor.Editor

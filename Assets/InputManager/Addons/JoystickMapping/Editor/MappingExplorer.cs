@@ -26,9 +26,9 @@ using System.IO;
 using System.Xml;
 using System.Collections.Generic;
 using TeamUtility.IO;
-using TeamUtility.Editor.IO.InputManager;
+using TeamUtilityEditor.IO.InputManager;
 
-namespace TeamUtility.Editor.IO
+namespace TeamUtilityEditor.IO
 {
 	public class MappingExplorer : EditorWindow
 	{

@@ -24,7 +24,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace TeamUtility.Editor.IO.InputManager
+namespace TeamUtilityEditor.IO.InputManager
 {
 	public static class MenuCommands
 	{

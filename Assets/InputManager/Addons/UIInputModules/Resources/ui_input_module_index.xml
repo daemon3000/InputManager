@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<InputModules>
+	<Item name="Unity 4.6" path="ui_input_modules/unity_4_6" />
+	<Item name="Unity 5.0" path="ui_input_modules/unity_5_0" />
+	<Item name="Unity 5.1" path="ui_input_modules/unity_5_1" />
+</InputModules>

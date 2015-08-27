@@ -6,8 +6,9 @@ using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 using TeamUtility.IO;
+using TeamUtilityEditor.IO.InputManager;
 
-namespace TeamUtility.Editor.IO.InputManager
+namespace TeamUtilityEditor.IO
 {
 	public class MappingImportWindow : EditorWindow
 	{
