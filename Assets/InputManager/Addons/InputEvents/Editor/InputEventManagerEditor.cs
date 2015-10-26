@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -66,7 +66,7 @@ namespace TeamUtilityEditor.IO
 					if(action == Action.Add)
 					{
 						_inputEvents.InsertArrayElementAtIndex(i);
-						break;
+                        break;
 					}
 					else if(action == Action.Remove)
 					{
@@ -94,14 +94,20 @@ namespace TeamUtilityEditor.IO
 			SerializedProperty inputState = inputEvent.FindPropertyRelative("inputState");
 			SerializedProperty actionEvent = inputEvent.FindPropertyRelative("onAction");
 			SerializedProperty axisEvent = inputEvent.FindPropertyRelative("onAxis");
-			InputEvent evt = _eventManager.GetEvent(index);
-			Action evtAction = Action.None;
+            InputEvent evt = _eventManager.GetEvent(index);
+            Action evtAction = Action.None;
 
-			if(GUILayout.Button(string.IsNullOrEmpty(evt.name) ? "Event" : evt.name, _headerStyle, GUILayout.ExpandWidth(true)))
-				inputEvent.isExpanded = !inputEvent.isExpanded;
+            string label = string.IsNullOrEmpty(evt.name) ? "Event" : evt.name;
+            if (inputEvent.isExpanded)
+                label += " (Click to collapse)";
+            else
+                label += " (Click to expand)";
 
-			if(inputEvent.isExpanded)
-			{
+            if (GUILayout.Button(label, _headerStyle, GUILayout.ExpandWidth(true)))
+                inputEvent.isExpanded = !inputEvent.isExpanded;
+
+            if (inputEvent.isExpanded)
+            {
 				Rect bgRect = GUILayoutUtility.GetLastRect();
 				bgRect.y += 18;
 				bgRect.height = CalculateBackgroundHeight(evt);
