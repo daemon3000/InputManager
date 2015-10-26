@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -37,32 +37,38 @@ namespace TeamUtilityEditor.IO.InputManager
 			Selection.activeGameObject = gameObject;
 		}
 
-		[MenuItem("Team Utility/Input Manager/Documentation", false, 400)]
+        [MenuItem("Team Utility/Input Manager/Check For Updates", false, 400)]
+        public static void CheckForUpdates()
+        {
+            Application.OpenURL("https://github.com/daemon3000/InputManager");
+        }
+
+        [MenuItem("Team Utility/Input Manager/Documentation", false, 401)]
 		public static void OpenDocumentationPage()
 		{
 			Application.OpenURL("https://github.com/daemon3000/InputManager/wiki");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Report Bug", false, 401)]
+		[MenuItem("Team Utility/Input Manager/Report Bug", false, 402)]
 		public static void OpenReportBugPage()
 		{
 			Application.OpenURL("https://github.com/daemon3000/InputManager/issues");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Contact", false, 402)]
-		public static void OpenContactDialog()
-		{
-			string message = "Email: geambasu.cristi@gmail.com";
-			EditorUtility.DisplayDialog("Contact", message, "Close");
-		}
+        [MenuItem("Team Utility/Input Manager/Contact", false, 403)]
+        public static void OpenContactDialog()
+        {
+            string message = "Email: geambasu.cristi@gmail.com";
+            EditorUtility.DisplayDialog("Contact", message, "Close");
+        }
 
-		[MenuItem("Team Utility/Input Manager/Forum", false, 403)]
+        [MenuItem("Team Utility/Input Manager/Forum", false, 404)]
 		public static void OpenForumPage()
 		{
 			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
 		}
 
-		[MenuItem("Team Utility/Input Manager/About", false, 404)]
+		[MenuItem("Team Utility/Input Manager/About", false, 405)]
 		public static void OpenAboutDialog()
 		{
 			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2015 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";

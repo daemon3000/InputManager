@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
 
@@ -14,7 +14,7 @@ namespace TeamUtility.IO.Examples
 
 		private MenuPage m_currentPage;
 
-		private void Awake()
+		private void Start()
 		{
 			ChangePage(m_startPage.ID);
 		}
