@@ -6,6 +6,7 @@
 - Allows you to customize key bindings at runtime
 - Allows you to convert touch input to axes and buttons on mobile devices
 - Allows you to bind script methods to various input events(e.g. when the user presses a button or key) through the inspector
+- Run up to four input configurations at the same time for easy local co-op input handling
 - Save the key bindings to a file, to PlayerPrefs or anywhere else by implementing a simple interface
 - Seamless transition from keyboard to gamepad with the InputAdapter addon
 - Works with the new UI system introduced in Unity 4.6
@@ -20,7 +21,10 @@ For detailed information on how to get started with this plugin visit the [Wiki]
 The *InputManager* class provides the following methods and variables, in addition to the ones provided by Unity's *Input* class:
 
 - **Instance** - Use it to check if a InputManager instance exists in the game or to subscribe to the event handlers
-- **CurrentConfiguration** - A reference to the current input configuration used by the InputManager
+- **PlayerOneConfiguration** - A reference to the active input configuration used by the InputManager for player one
+- **PlayerTwoConfiguration** - A reference to the active input configuration used by the InputManager for player two
+- **PlayerThreeConfiguration** - A reference to the active input configuration used by the InputManager for player three
+- **PlayerFourConfiguration** - A reference to the active input configuration used by the InputManager for player four
 - **IsScanning** - Use this to check if a scan is already running before starting a new one
 - **AnyInput** - Returns *true* if any button or axis is used
 - **SetRemoteAxisValue** - Allows you to manually set the value of an axis, if the respective axis is of type *RemoteAxis*
