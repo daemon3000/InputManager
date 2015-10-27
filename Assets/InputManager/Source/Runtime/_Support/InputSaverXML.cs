@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -65,18 +65,21 @@ namespace TeamUtility.IO
 			_output = output;
 		}
 		
-		public void Save(List<InputConfiguration> inputConfigurations, string defaultConfiguration)
+		public void Save(SaveLoadParameters parameters)
 		{
-			XmlWriterSettings settings = new XmlWriterSettings();
-			settings.Encoding = System.Text.Encoding.UTF8;
-			settings.Indent = true;
+			XmlWriterSettings xmlSettings = new XmlWriterSettings();
+			xmlSettings.Encoding = System.Text.Encoding.UTF8;
+			xmlSettings.Indent = true;
 			
-			using(XmlWriter writer = CreateXmlWriter(settings))
+			using(XmlWriter writer = CreateXmlWriter(xmlSettings))
 			{
 				writer.WriteStartDocument(true);
 				writer.WriteStartElement("Input");
-				writer.WriteAttributeString("defaultConfiguration", defaultConfiguration);
-				foreach(InputConfiguration inputConfig in inputConfigurations)
+				writer.WriteAttributeString("playerOneDefault", parameters.playerOneDefault);
+                writer.WriteAttributeString("playerTwoDefault", parameters.playerTwoDefault);
+                writer.WriteAttributeString("playerThreeDefault", parameters.playerThreeDefault);
+                writer.WriteAttributeString("playerFourDefault", parameters.playerFourDefault);
+                foreach (InputConfiguration inputConfig in parameters.inputConfigurations)
 				{
 					WriteInputConfiguration(inputConfig, writer);
 				}

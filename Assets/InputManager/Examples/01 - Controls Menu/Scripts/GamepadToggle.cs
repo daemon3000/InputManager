@@ -14,7 +14,7 @@ namespace TeamUtility.IO.Examples
 
 		private void Awake()
 		{
-			if(InputManager.CurrentConfiguration.name == m_keyboardInputConfig)
+			if(InputManager.PlayerOneConfiguration.name == m_keyboardInputConfig)
 			{
 				m_gamepadOn = false;
 				m_status.text = "Gamepad: Off";
@@ -37,12 +37,12 @@ namespace TeamUtility.IO.Examples
 		{
 			if(m_gamepadOn)
 			{
-				InputManager.SetInputConfiguration(m_gamepadInputConfig);
+				InputManager.SetInputConfiguration(m_gamepadInputConfig, PlayerID.One);
 				m_status.text = "Gamepad: On";
 			}
 			else
 			{
-				InputManager.SetInputConfiguration(m_keyboardInputConfig);
+				InputManager.SetInputConfiguration(m_keyboardInputConfig, PlayerID.One);
 				m_status.text = "Gamepad: Off";
 			}
 		}
@@ -51,13 +51,13 @@ namespace TeamUtility.IO.Examples
 		{
 			if(m_gamepadOn)
 			{
-				InputManager.SetInputConfiguration(m_keyboardInputConfig);
+				InputManager.SetInputConfiguration(m_keyboardInputConfig, PlayerID.One);
 				m_status.text = "Gamepad: Off";
 				m_gamepadOn = false;
 			}
 			else
 			{
-				InputManager.SetInputConfiguration(m_gamepadInputConfig);
+				InputManager.SetInputConfiguration(m_gamepadInputConfig, PlayerID.One);
 				m_status.text = "Gamepad: On";
 				m_gamepadOn = true;
 			}

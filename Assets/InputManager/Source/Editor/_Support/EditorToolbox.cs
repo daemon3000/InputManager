@@ -53,7 +53,7 @@ namespace TeamUtilityEditor.IO.InputManager
 			}
 			
 			InputSaverXML inputSaver = new InputSaverXML(_snapshotFile);
-			inputSaver.Save(inputManager.inputConfigurations, inputManager.defaultConfiguration);
+			inputSaver.Save(inputManager.GetSaveParameters());
 		}
 		
 		public static void LoadSnapshot(TeamUtility.IO.InputManager inputManager)
@@ -62,7 +62,7 @@ namespace TeamUtilityEditor.IO.InputManager
 				return;
 			
 			InputLoaderXML inputLoader = new InputLoaderXML(_snapshotFile);
-			inputLoader.Load(out inputManager.inputConfigurations, out inputManager.defaultConfiguration);
+            inputManager.Load(inputLoader.Load());
 		}
 		
 		public static void ShowStartupWarning()

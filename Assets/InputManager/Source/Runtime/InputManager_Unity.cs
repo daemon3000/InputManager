@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -28,7 +28,6 @@ namespace TeamUtility.IO
 {
 	public partial class InputManager : MonoBehaviour
 	{
-		#region [UNITY Interface]
 		public static Vector3 acceleration { get { return Input.acceleration; } }
 		public static int accelerationEventCount { get { return Input.accelerationEventCount; } }
 		public static AccelerationEvent[] accelerationEvents { get { return Input.accelerationEvents; } }
@@ -75,73 +74,73 @@ namespace TeamUtility.IO
 			return Input.GetAccelerationEvent(index);
 		}
 		
-		public static float GetAxis(string name)
+		public static float GetAxis(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
+			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
 			if(axisConfig != null)
 			{
 				return axisConfig.GetAxis();
 			}
 			else
 			{
-				Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the active input configuration", name));
+				Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the active input configuration for player {1}", name, playerID));
 				return 0.0f;
 			}
 		}
 		
-		public static float GetAxisRaw(string name)
+		public static float GetAxisRaw(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
+			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
 			if(axisConfig != null)
 			{
 				return axisConfig.GetAxisRaw();
 			}
 			else
 			{
-				Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the active input configuration", name));
-				return 0.0f;
+                Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the active input configuration for player {1}", name, playerID));
+                return 0.0f;
 			}
 		}
 		
-		public static bool GetButton(string name)
+		public static bool GetButton(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
+			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
 			if(axisConfig != null)
 			{
 				return axisConfig.GetButton();
 			}
 			else
 			{
-				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
+				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration for player {1}", name, playerID));
 				return false;
 			}
 		}
 		
-		public static bool GetButtonDown(string name)
+		public static bool GetButtonDown(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
+			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
 			if(axisConfig != null)
 			{
 				return axisConfig.GetButtonDown();
 			}
 			else
 			{
-				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
-				return false;
+                Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration for player {1}", name, playerID));
+                return false;
 			}
 		}
 		
-		public static bool GetButtonUp(string name)
+		public static bool GetButtonUp(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(_instance._currentConfiguration.name, name);
+			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
 			if(axisConfig != null)
 			{
 				return axisConfig.GetButtonUp();
 			}
 			else
 			{
-				Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration", name));
-				return false;
+                Debug.LogError(string.Format("An button named \'{0}\' does not exist in the active input configuration for player {1}", name, playerID));
+                return false;
 			}
 		}
 		
@@ -184,17 +183,10 @@ namespace TeamUtility.IO
 		{
 			return Input.GetJoystickNames();
 		}
-		
-		public static void ResetInputAxes()
-		{
-			InputConfiguration inputConfig = _instance._currentConfiguration;
-			int count = inputConfig.axes.Count;
-			for(int i = 0; i < count; i++)
-			{
-				inputConfig.axes[i].Reset();
-			}
-			Input.ResetInputAxes();
-		}
-		#endregion
+        
+        public static void ResetInputAxes()
+        {
+            Input.ResetInputAxes();
+        }
 	}
 }

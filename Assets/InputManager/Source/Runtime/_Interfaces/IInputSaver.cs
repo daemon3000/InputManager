@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -28,6 +28,6 @@ namespace TeamUtility.IO
 {
 	public interface IInputSaver
 	{
-		void Save(List<InputConfiguration> inputConfigurations, string defaultConfiguration);
+		void Save(SaveLoadParameters parameters);
 	}
 }

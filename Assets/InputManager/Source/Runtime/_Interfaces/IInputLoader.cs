@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -28,7 +28,7 @@ namespace TeamUtility.IO
 {
 	public interface IInputLoader
 	{
-		void Load(out List<InputConfiguration> inputConfigurations, out string defaultConfig);
+		SaveLoadParameters Load();
 		InputConfiguration LoadSelective(string inputConfigName);
 	}
 }

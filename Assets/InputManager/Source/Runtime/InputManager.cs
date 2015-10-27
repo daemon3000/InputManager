@@ -47,24 +47,32 @@ namespace TeamUtility.IO
 	/// the scan result is accepted or 'false' if it isn't.
 	/// </summary>
 	public delegate bool ScanHandler(ScanResult result);
-	
+
+    public delegate void RemoteUpdateDelegate(PlayerID playerID);
+
 	public partial class InputManager : MonoBehaviour
 	{
 		#region [Fields]
-		public event Action<string> ConfigurationChanged;
+		public event Action<PlayerID> ConfigurationChanged;
 		public event Action<string> ConfigurationDirty;
 		public event Action Loaded;
 		public event Action Saved;
-		public event Action RemoteUpdate;
+		public event RemoteUpdateDelegate RemoteUpdate;
 		
 		public List<InputConfiguration> inputConfigurations = new List<InputConfiguration>();
-		public string defaultConfiguration;
-		public bool dontDestroyOnLoad;
+		public string playerOneDefault;
+        public string playerTwoDefault;
+        public string playerThreeDefault;
+        public string playerFourDefault;
+        public bool dontDestroyOnLoad;
 		public bool ignoreTimescale;
 		
 		private static InputManager _instance;
-		private InputConfiguration _currentConfiguration;
-		private ScanHandler _scanHandler;
+		private InputConfiguration _playerOneConfig;
+        private InputConfiguration _playerTwoConfig;
+        private InputConfiguration _playerThreeConfig;
+        private InputConfiguration _playerFourConfig;
+        private ScanHandler _scanHandler;
 		private ScanResult _scanResult;
 		private ScanFlags _scanFlags;
 		private string _cancelScanButton;
@@ -78,7 +86,7 @@ namespace TeamUtility.IO
 		private KeyCode[] _keys;
 		private Dictionary<string, InputConfiguration> _configurationTable;
 		private Dictionary<string, Dictionary<string, AxisConfiguration>> _axesTable;
-		
+
 		#endregion
 		
 		private void Awake()
@@ -98,8 +106,8 @@ namespace TeamUtility.IO
 				_keys = (KeyCode[])Enum.GetValues(typeof(KeyCode));
 				_configurationTable = new Dictionary<string, InputConfiguration>();
 				_axesTable = new Dictionary<string, Dictionary<string, AxisConfiguration>>();
-				
-				SetRawAxisNames();
+
+                SetRawAxisNames();
 				Initialize();
 			}
 		}
@@ -124,24 +132,51 @@ namespace TeamUtility.IO
 		
 		private void Initialize()
 		{
-			if(inputConfigurations.Count == 0)
+            _playerOneConfig = null;
+            _playerTwoConfig = null;
+            _playerThreeConfig = null;
+            _playerFourConfig = null;
+
+            if (inputConfigurations.Count == 0)
 				return;
 			
 			PopulateLookupTables();
-			if(string.IsNullOrEmpty(defaultConfiguration) || !_configurationTable.ContainsKey(defaultConfiguration))
-				_currentConfiguration = inputConfigurations[0];
-			else
-				_currentConfiguration = _configurationTable[defaultConfiguration];
-			
-			foreach(InputConfiguration inputConfig in inputConfigurations)
+
+            if (!string.IsNullOrEmpty(playerOneDefault) && _configurationTable.ContainsKey(playerOneDefault))
+            {
+                _playerOneConfig = _configurationTable[playerOneDefault];
+            }
+            else
+            {
+                if(inputConfigurations.Count > 0)
+                    _playerOneConfig = inputConfigurations[0];
+            }
+
+            if (!string.IsNullOrEmpty(playerTwoDefault) && _configurationTable.ContainsKey(playerTwoDefault))
+            {
+                _playerTwoConfig = _configurationTable[playerTwoDefault];
+            }
+
+            if (!string.IsNullOrEmpty(playerThreeDefault) && _configurationTable.ContainsKey(playerThreeDefault))
+            {
+                _playerThreeConfig = _configurationTable[playerThreeDefault];
+            }
+
+            if (!string.IsNullOrEmpty(playerFourDefault) && _configurationTable.ContainsKey(playerFourDefault))
+            {
+                _playerFourConfig = _configurationTable[playerFourDefault];
+            }
+
+            foreach (InputConfiguration inputConfig in inputConfigurations)
 			{
 				foreach(AxisConfiguration axisConfig in inputConfig.axes)
 				{
 					axisConfig.Initialize();
 				}
 			}
-			ResetInputAxes();
-		}
+
+            Input.ResetInputAxes();
+        }
 		
 		private void PopulateLookupTables()
 		{
@@ -180,23 +215,34 @@ namespace TeamUtility.IO
 		
 		private void Update()
 		{
-			if(_currentConfiguration != null)
-			{
-				for(int i = 0; i < _currentConfiguration.axes.Count; i++)
-					_currentConfiguration.axes[i].Update();
-				
-				if(RemoteUpdate != null)
-					RemoteUpdate();
-				
-				if(_scanFlags != ScanFlags.None)
-					ScanInput();
-			}
-			else
+            UpdateInputConfiguration(_playerOneConfig, PlayerID.One);
+            UpdateInputConfiguration(_playerTwoConfig, PlayerID.Two);
+            UpdateInputConfiguration(_playerThreeConfig, PlayerID.Three);
+            UpdateInputConfiguration(_playerFourConfig, PlayerID.Four);
+
+            if (_playerOneConfig != null)
+            {
+                if (_scanFlags != ScanFlags.None)
+                    ScanInput();
+            }
+            else
 			{
 				if(_scanFlags != ScanFlags.None)
 					StopInputScan();
 			}
 		}
+
+        private void UpdateInputConfiguration(InputConfiguration inputConfig, PlayerID playerID)
+        {
+            if (inputConfig != null)
+            {
+                for (int i = 0; i < inputConfig.axes.Count; i++)
+                    inputConfig.axes[i].Update();
+
+                if (RemoteUpdate != null)
+                    RemoteUpdate(playerID);
+            }
+        }
 		
 		private void ScanInput()
 		{
@@ -346,11 +392,69 @@ namespace TeamUtility.IO
 			_scanResult.userData = null;
 			_scanFlags = ScanFlags.None;
 		}
-		
-		private void RaiseInputConfigurationChangedEvent(string configName)
+
+        private void SetInputConfigurationByPlayerID(PlayerID playerID, InputConfiguration inputConfig)
+        {
+            if (playerID == PlayerID.One)
+                _playerOneConfig = inputConfig;
+            else if (playerID == PlayerID.Two)
+                _playerTwoConfig = inputConfig;
+            else if (playerID == PlayerID.Three)
+                _playerThreeConfig = inputConfig;
+            else if (playerID == PlayerID.Four)
+                _playerFourConfig = inputConfig;
+        }
+
+        private InputConfiguration GetInputConfigurationByPlayerID(PlayerID playerID)
+        {
+            if (playerID == PlayerID.One)
+                return _playerOneConfig;
+            else if (playerID == PlayerID.Two)
+                return _playerTwoConfig;
+            else if (playerID == PlayerID.Three)
+                return _playerThreeConfig;
+            else if (playerID == PlayerID.Four)
+                return _playerFourConfig;
+            else
+                return null;
+        }
+
+        private bool IsInputConfigurationInUse(string name)
+        {
+            return (_playerOneConfig != null && _playerOneConfig.name == name) ||
+                    (_playerTwoConfig != null && _playerTwoConfig.name == name) ||
+                    (_playerThreeConfig != null && _playerThreeConfig.name == name) ||
+                    (_playerFourConfig != null && _playerFourConfig.name == name);
+        }
+
+        public void Load(SaveLoadParameters parameters)
+        {
+            if (parameters != null)
+            {
+                inputConfigurations = parameters.inputConfigurations;
+                playerOneDefault = parameters.playerOneDefault;
+                playerTwoDefault = parameters.playerTwoDefault;
+                playerThreeDefault = parameters.playerThreeDefault;
+                playerFourDefault = parameters.playerFourDefault;
+            }
+        }
+
+        public SaveLoadParameters GetSaveParameters()
+        {
+            SaveLoadParameters parameters = new SaveLoadParameters();
+            parameters.inputConfigurations = inputConfigurations;
+            parameters.playerOneDefault = playerOneDefault;
+            parameters.playerTwoDefault = playerTwoDefault;
+            parameters.playerThreeDefault = playerThreeDefault;
+            parameters.playerFourDefault = playerFourDefault;
+
+            return parameters;
+        }
+
+        private void RaiseInputConfigurationChangedEvent(PlayerID playerID)
 		{
 			if(ConfigurationChanged != null)
-				ConfigurationChanged(configName);
+				ConfigurationChanged(playerID);
 		}
 		
 		private void RaiseConfigurationDirtyEvent(string configName)
@@ -377,28 +481,31 @@ namespace TeamUtility.IO
 		/// to subscribe to the input manager's events.
 		/// </summary>
 		public static InputManager Instance { get { return _instance; } }
-		public static InputConfiguration CurrentConfiguration { get { return _instance._currentConfiguration; } }
-		public static bool IsScanning { get { return _instance._scanFlags != ScanFlags.None; } }
+        [Obsolete("Use InputManager.PlayerOneConfiguration instead")]
+		public static InputConfiguration CurrentConfiguration { get { return _instance._playerOneConfig; } }
+        public static InputConfiguration PlayerOneConfiguration { get { return _instance._playerOneConfig; } }
+        public static InputConfiguration PlayerTwoConfiguration { get { return _instance._playerTwoConfig; } }
+        public static InputConfiguration PlayerThreeConfiguration { get { return _instance._playerThreeConfig; } }
+        public static InputConfiguration PlayerFourConfiguration { get { return _instance._playerFourConfig; } }
+        public static bool IsScanning { get { return _instance._scanFlags != ScanFlags.None; } }
 		public static bool IgnoreTimescale { get { return _instance.ignoreTimescale; } }
 		
 		/// <summary>
-		/// Returns true if any axis of the active input configuration is receiving input.
+		/// Returns true if any axis of any active input configuration is receiving input.
 		/// </summary>
 		public static bool AnyInput()
 		{
-			InputConfiguration inputConfig = _instance._currentConfiguration;
-			if(inputConfig != null)
-			{
-				int count = inputConfig.axes.Count;
-				for(int i = 0; i < count; i++)
-				{
-					if(inputConfig.axes[i].AnyInput)
-						return true;
-				}
-			}
-			
-			return false;
+            return AnyInput(_instance._playerOneConfig) || AnyInput(_instance._playerTwoConfig) ||
+                    AnyInput(_instance._playerThreeConfig) || AnyInput(_instance._playerFourConfig);
 		}
+
+        /// <summary>
+		/// Returns true if any axis of the input configuration is receiving input.
+		/// </summary>
+        public static bool AnyInput(PlayerID playerID)
+        {
+            return AnyInput(_instance.GetInputConfigurationByPlayerID(playerID));
+        }
 		
 		/// <summary>
 		/// Returns true if any axis of the specified input configuration is receiving input.
@@ -420,13 +527,29 @@ namespace TeamUtility.IO
 			
 			return false;
 		}
+
+        private static bool AnyInput(InputConfiguration inputConfig)
+        {
+            if (inputConfig != null)
+            {
+                int count = inputConfig.axes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    if (inputConfig.axes[i].AnyInput)
+                        return true;
+                }
+            }
+
+            return false;
+        }
 		
 		/// <summary>
 		/// If an axis with the requested name exists, and it is of type 'RemoteAxis', the axis' value will be changed.
 		/// </summary>
+        [Obsolete()]
 		public static void SetRemoteAxisValue(string axisName, float value)
 		{
-			SetRemoteAxisValue(_instance._currentConfiguration.name, axisName, value);
+			SetRemoteAxisValue(_instance._playerOneConfig.name, axisName, value);
 		}
 		
 		/// <summary>
@@ -440,13 +563,14 @@ namespace TeamUtility.IO
 			else
 				Debug.LogError(string.Format("An axis named \'{0}\' does not exist in the input configuration named \'{1}\'", axisName, inputConfigName));
 		}
-		
-		/// <summary>
-		/// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
-		/// </summary>
-		public static void SetRemoteButtonValue(string buttonName, bool down, bool justChanged)
+
+        /// <summary>
+        /// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
+        /// </summary>
+        [Obsolete()]
+        public static void SetRemoteButtonValue(string buttonName, bool down, bool justChanged)
 		{
-			SetRemoteButtonValue(_instance._currentConfiguration.name, buttonName, down, justChanged);
+			SetRemoteButtonValue(_instance._playerOneConfig.name, buttonName, down, justChanged);
 		}
 		
 		/// <summary>
@@ -468,27 +592,54 @@ namespace TeamUtility.IO
 		{
 			_instance.Initialize();
 		}
-		
-		/// <summary>
-		/// Changes the active input configuration.
-		/// </summary>
-		public static void SetInputConfiguration(string name)
+
+        public static void ResetInputConfiguration(PlayerID playerID)
+        {
+            InputConfiguration inputConfig = _instance.GetInputConfigurationByPlayerID(playerID);
+            if (inputConfig != null)
+            {
+                int count = inputConfig.axes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    inputConfig.axes[i].Reset();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Changes the active input configuration.
+        /// </summary>
+        [Obsolete()]
+        public static void SetInputConfiguration(string name)
+        {
+            SetInputConfiguration(name, PlayerID.One);
+        }
+
+        /// <summary>
+        /// Changes the active input configuration.
+        /// </summary>
+        public static void SetInputConfiguration(string name, PlayerID playerID)
 		{
-			if(_instance._currentConfiguration != null && name == _instance._currentConfiguration.name)
-				return;
-			
-			if(_instance._configurationTable.TryGetValue(name, out _instance._currentConfiguration))
+            if (_instance.IsInputConfigurationInUse(name))
+            {
+                Debug.LogErrorFormat("The input configuration named \'{0}\' is already being used by a player", name);
+                return;
+            }
+            
+            InputConfiguration inputConfig = null;
+			if(_instance._configurationTable.TryGetValue(name, out inputConfig))
 			{
-				ResetInputAxes();
-				_instance.RaiseInputConfigurationChangedEvent(name);
+                _instance.SetInputConfigurationByPlayerID(playerID, inputConfig);
+                ResetInputConfiguration(playerID);
+				_instance.RaiseInputConfigurationChangedEvent(playerID);
 			}
 			else
 			{
 				Debug.LogError(string.Format("An input configuration named \'{0}\' does not exist", name));
 			}
 		}
-		
-		public static InputConfiguration GetInputConfiguration(string name)
+
+        public static InputConfiguration GetInputConfiguration(string name)
 		{
 			InputConfiguration inputConfig = null;
 			if(_instance._configurationTable.TryGetValue(name, out inputConfig))
@@ -496,8 +647,13 @@ namespace TeamUtility.IO
 			
 			return null;
 		}
-		
-		public static AxisConfiguration GetAxisConfiguration(string inputConfigName, string axisName)
+
+        public static InputConfiguration GetInputConfiguration(PlayerID playerID)
+        {
+            return _instance.GetInputConfigurationByPlayerID(playerID);
+        }
+
+        public static AxisConfiguration GetAxisConfiguration(string inputConfigName, string axisName)
 		{
 			Dictionary<string, AxisConfiguration> table;
 			if(_instance._axesTable.TryGetValue(inputConfigName, out table))
@@ -509,8 +665,25 @@ namespace TeamUtility.IO
 			
 			return null;
 		}
-		
-		public static InputConfiguration CreateInputConfiguration(string name)
+
+        public static AxisConfiguration GetAxisConfiguration(PlayerID playerID, string axisName)
+        {
+            var inputConfig = _instance.GetInputConfigurationByPlayerID(playerID);
+            if (inputConfig == null)
+                return null;
+
+            Dictionary<string, AxisConfiguration> table;
+            if (_instance._axesTable.TryGetValue(inputConfig.name, out table))
+            {
+                AxisConfiguration axisConfig;
+                if (table.TryGetValue(axisName, out axisConfig))
+                    return axisConfig;
+            }
+
+            return null;
+        }
+
+        public static InputConfiguration CreateInputConfiguration(string name)
 		{
 			if(_instance._configurationTable.ContainsKey(name))
 			{
@@ -528,9 +701,7 @@ namespace TeamUtility.IO
 		
 		/// <summary>
 		/// Deletes the specified input configuration. If the speficied input configuration is
-		/// active the input manager will try to switch to the default input configuration.
-		/// If a default input configuration has not been set in the inspector, the active
-		/// input configuration will become null and the input manager will stop working.
+		/// active for any player then the active input configuration for the respective player will be set to null.
 		/// </summary>
 		public static bool DeleteInputConfiguration(string name)
 		{
@@ -541,20 +712,16 @@ namespace TeamUtility.IO
 			_instance._axesTable.Remove(name);
 			_instance._configurationTable.Remove(name);
 			_instance.inputConfigurations.Remove(inputConfig);
-			if(_instance._currentConfiguration.name == inputConfig.name)
-			{
-				if(_instance.inputConfigurations.Count == 0 || string.IsNullOrEmpty(_instance.defaultConfiguration) ||
-				   !_instance._configurationTable.ContainsKey(_instance.defaultConfiguration))
-				{
-					_instance._currentConfiguration = null;
-				}
-				else
-				{
-					_instance._currentConfiguration = _instance._configurationTable[_instance.defaultConfiguration];
-				}
-			}
-			
-			return true;
+            if (_instance._playerOneConfig.name == inputConfig.name)
+                _instance._playerOneConfig = null;
+            if (_instance._playerTwoConfig.name == inputConfig.name)
+                _instance._playerTwoConfig = null;
+            if (_instance._playerThreeConfig.name == inputConfig.name)
+                _instance._playerThreeConfig = null;
+            if (_instance._playerFourConfig.name == inputConfig.name)
+                _instance._playerFourConfig = null;
+
+            return true;
 		}
 		
 		public static AxisConfiguration CreateButton(string inputConfigName, string buttonName, KeyCode primaryKey)
@@ -960,7 +1127,7 @@ namespace TeamUtility.IO
 		{
 			if(inputSaver != null)
 			{
-				inputSaver.Save(_instance.inputConfigurations, _instance.defaultConfiguration);
+                inputSaver.Save(_instance.GetSaveParameters());
 				_instance.RaiseSavedEvent();
 			}
 			else
@@ -968,8 +1135,8 @@ namespace TeamUtility.IO
 				Debug.LogError("InputSaver is null. Cannot save input configurations.");
 			}
 		}
-		
-		/// <summary>
+
+        /// <summary>
 		/// Loads the input configurations saved in the XML format, from Application.persistentDataPath.
 		/// </summary>
 		public static void Load()
@@ -1001,10 +1168,10 @@ namespace TeamUtility.IO
 		{
 			if(inputLoader != null)
 			{
-				inputLoader.Load(out _instance.inputConfigurations, out _instance.defaultConfiguration);
-				_instance.Initialize();
-				_instance.RaiseLoadedEvent();
-			}
+				_instance.Load(inputLoader.Load());
+                _instance.Initialize();
+                _instance.RaiseLoadedEvent();
+            }
 			else
 			{
 				Debug.LogError("InputLoader is null. Cannot load input configurations.");

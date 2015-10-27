@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -64,24 +64,34 @@ namespace TeamUtility.IO
 			_textReader = reader;
 		}
 
-		public void Load(out List<InputConfiguration> inputConfigurations, out string defaultConfig)
+		public SaveLoadParameters Load()
 		{
+            SaveLoadParameters parameters = new SaveLoadParameters();
+
 			using(XmlReader reader = CreateXmlReader())
 			{
-				inputConfigurations = new List<InputConfiguration>();
-				defaultConfig = string.Empty;
-				while(reader.Read())
+                parameters.inputConfigurations = new List<InputConfiguration>();
+                parameters.playerOneDefault = string.Empty;
+                parameters.playerTwoDefault = string.Empty;
+                parameters.playerThreeDefault = string.Empty;
+                parameters.playerFourDefault = string.Empty;
+                while (reader.Read())
 				{
 					if(reader.IsStartElement("Input"))
 					{
-						defaultConfig = reader["defaultConfiguration"];
-					}
+                        parameters.playerOneDefault = reader["playerOneDefault"];
+                        parameters.playerTwoDefault = reader["playerTwoDefault"];
+                        parameters.playerThreeDefault = reader["playerThreeDefault"];
+                        parameters.playerFourDefault = reader["playerFourDefault"];
+                    }
 					else if(reader.IsStartElement("InputConfiguration"))
 					{
-						inputConfigurations.Add(ReadInputConfiguration(reader));
+                        parameters.inputConfigurations.Add(ReadInputConfiguration(reader));
 					}
 				}
 			}
+
+            return parameters;
 		}
 
 		public InputConfiguration LoadSelective(string inputConfigName)

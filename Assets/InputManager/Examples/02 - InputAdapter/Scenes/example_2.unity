@@ -37,9 +37,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1943261885}
---- !u!127 &3
-LevelGameManager:
-  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -68,6 +65,7 @@ LightmapSettings:
     m_TextureCompression: 0
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
+    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
@@ -842,7 +840,10 @@ MonoBehaviour:
       axis: 2
       joystick: 0
     isExpanded: 0
-  defaultConfiguration: KeyboardAndMouse
+  playerOneDefault: KeyboardAndMouse
+  playerTwoDefault: 
+  playerThreeDefault: 
+  playerFourDefault: 
   dontDestroyOnLoad: 0
   ignoreTimescale: 1
 --- !u!4 &1089371678

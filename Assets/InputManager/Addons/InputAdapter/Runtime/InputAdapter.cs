@@ -413,7 +413,8 @@ namespace TeamUtility.IO
 		
 		public static void ResetInputAxes()
 		{
-			InputManager.ResetInputAxes();
+			InputManager.ResetInputConfiguration(PlayerID.One);
+            InputManager.ResetInputAxes();
 		}
 		
 		public static string[] GetJoystickNames()
@@ -583,7 +584,7 @@ namespace TeamUtility.IO
 #else
 				Screen.showCursor = false;
 #endif
-				InputManager.SetInputConfiguration(_joystickConfiguration);
+				InputManager.SetInputConfiguration(_joystickConfiguration, PlayerID.One);
 				Debug.Log("Current Input Device: Joystick");
 			}
 			else
@@ -593,10 +594,10 @@ namespace TeamUtility.IO
 #else
 				Screen.showCursor = true;
 #endif
-				InputManager.SetInputConfiguration(_keyboardConfiguration);
+				InputManager.SetInputConfiguration(_keyboardConfiguration, PlayerID.One);
 				Debug.Log("Current Input Device: KeyboardAndMouse");
 			}
-			InputManager.ResetInputAxes();
+            ResetInputAxes();
 			RaiseInputDeviceChangedEvent();
 		}
 		

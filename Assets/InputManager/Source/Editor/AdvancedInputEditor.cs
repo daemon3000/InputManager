@@ -175,7 +175,7 @@ namespace TeamUtilityEditor.IO
 				return;
 			
 			InputSaverXML inputSaver = new InputSaverXML(file);
-			inputSaver.Save(_inputManager.inputConfigurations, _inputManager.defaultConfiguration);
+			inputSaver.Save(_inputManager.GetSaveParameters());
 			if(file.StartsWith(Application.dataPath))
 				AssetDatabase.Refresh();
 		}
@@ -190,19 +190,16 @@ namespace TeamUtilityEditor.IO
 			if(replace)
 			{
 				InputLoaderXML inputLoader = new InputLoaderXML(file);
-				inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+                _inputManager.Load(inputLoader.Load());
 				_selectionPath.Clear();
 			}
 			else
 			{
-				List<InputConfiguration> configurations;
-				string defaultConfig;
-				
 				InputLoaderXML inputLoader = new InputLoaderXML(file);
-				inputLoader.Load(out configurations, out defaultConfig);
-				if(configurations != null && configurations.Count > 0)
+				var parameters = inputLoader.Load();
+				if(parameters.inputConfigurations != null && parameters.inputConfigurations.Count > 0)
 				{
-					foreach(var config in configurations)
+					foreach(var config in parameters.inputConfigurations)
 					{
 						_inputManager.inputConfigurations.Add(config);
 					}
@@ -231,7 +228,7 @@ namespace TeamUtilityEditor.IO
 				using(System.IO.StringReader reader = new System.IO.StringReader(textAsset.text))
 				{
 					InputLoaderXML inputLoader = new InputLoaderXML(reader);
-					inputLoader.Load(out _inputManager.inputConfigurations, out _inputManager.defaultConfiguration);
+                    _inputManager.Load(inputLoader.Load());
 					_selectionPath.Clear();
 				}
 			}
@@ -490,10 +487,7 @@ namespace TeamUtilityEditor.IO
 				_inputManager.inputConfigurations[_selectionPath[0]].axes.RemoveAt(_selectionPath[1]);
 				Repaint();
 			}
-			if(_inputManager.inputConfigurations.Count == 0)
-			{
-				_inputManager.defaultConfiguration = string.Empty;
-			}
+
 			_selectionPath.Clear();
 			if(_searchString.Length > 0)
 			{
@@ -504,8 +498,11 @@ namespace TeamUtilityEditor.IO
 		private void DeleteAll()
 		{
 			_inputManager.inputConfigurations.Clear();
-			_inputManager.defaultConfiguration = string.Empty;
-			_selectionPath.Clear();
+            _inputManager.playerOneDefault = string.Empty;
+            _inputManager.playerTwoDefault = string.Empty;
+            _inputManager.playerThreeDefault = string.Empty;
+            _inputManager.playerFourDefault = string.Empty;
+            _selectionPath.Clear();
 			if(_searchString.Length > 0)
 			{
 				UpdateSearchResults();
@@ -867,20 +864,39 @@ namespace TeamUtilityEditor.IO
 			_mainPanelScrollPos = EditorGUILayout.BeginScrollView(_mainPanelScrollPos);
 			inputConfig.name = EditorGUILayout.TextField("Name", inputConfig.name);
 			EditorGUILayout.Space();
-			EditorGUILayout.BeginHorizontal();
-			GUI.enabled = (!EditorApplication.isPlaying && _inputManager.defaultConfiguration != inputConfig.name);
-			if(GUILayout.Button("Make Default", GUILayout.Width(135.0f), GUILayout.Height(20.0f)))
+
+			GUI.enabled = (!EditorApplication.isPlaying && _inputManager.playerOneDefault != inputConfig.name);
+			if(GUILayout.Button("Make Player One Default", GUILayout.Width(200.0f), GUILayout.Height(25.0f)))
 			{
-				_inputManager.defaultConfiguration = inputConfig.name;
+				_inputManager.playerOneDefault = inputConfig.name;
 			}
-			GUI.enabled = (EditorApplication.isPlaying && _InputManager.CurrentConfiguration.name != inputConfig.name);
-			if(GUILayout.Button("Switch To", GUILayout.Width(135.0f), GUILayout.Height(20.0f)))
-			{
-				_InputManager.SetInputConfiguration(inputConfig.name);
-			}
-			GUI.enabled = true;
+
+            GUI.enabled = (!EditorApplication.isPlaying && _inputManager.playerTwoDefault != inputConfig.name);
+            if (GUILayout.Button("Make Player Two Default", GUILayout.Width(200.0f), GUILayout.Height(25.0f)))
+            {
+                _inputManager.playerTwoDefault = inputConfig.name;
+            }
+
+            GUI.enabled = (!EditorApplication.isPlaying && _inputManager.playerThreeDefault != inputConfig.name);
+            if (GUILayout.Button("Make Player Three Default", GUILayout.Width(200.0f), GUILayout.Height(25.0f)))
+            {
+                _inputManager.playerThreeDefault = inputConfig.name;
+            }
+
+            GUI.enabled = (!EditorApplication.isPlaying && _inputManager.playerFourDefault != inputConfig.name);
+            if (GUILayout.Button("Make Player Four Default", GUILayout.Width(200.0f), GUILayout.Height(25.0f)))
+            {
+                _inputManager.playerFourDefault = inputConfig.name;
+            }
+
+            //GUI.enabled = (EditorApplication.isPlaying && _InputManager.PlayerOneConfiguration.name != inputConfig.name);
+            //if(GUILayout.Button("Switch To", GUILayout.Width(135.0f), GUILayout.Height(20.0f)))
+            //{
+            //	_InputManager.SetInputConfiguration(inputConfig.name, PlayerID.One);
+            //}
+
+            GUI.enabled = true;
 			
-			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.EndScrollView();
 			GUILayout.EndArea();
 		}

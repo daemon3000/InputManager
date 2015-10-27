@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace TeamUtility.IO.Examples
@@ -17,7 +17,7 @@ namespace TeamUtility.IO.Examples
 				return;
 #endif
 #if UNITY_ANDROID || UNITY_IPHONE
-			InputManager.SetConfiguration(mobileInputConfig);
+			InputManager.SetInputConfiguration(mobileInputConfig, PlayerID.One);
 #endif
 		}
 
@@ -37,38 +37,40 @@ namespace TeamUtility.IO.Examples
 		}
 #endif
 
-		private void LateUpdate()
+#if UNITY_ANDROID || UNITY_IPHONE
+        private void LateUpdate()
 		{
 #if UNITY_EDITOR
 			if(!UnityEditor.EditorApplication.isPlaying)
 				return;
 #endif
-			InputManager.SetRemoteButtonValue("Jump", false, false);
-		}
+            InputManager.SetRemoteButtonValue(InputManager.PlayerOneConfiguration.name, "Jump", false, false);
+        }
+#endif
 
-		public void AddVertical(float value)
+        public void AddVertical(float value)
 		{
-			InputManager.SetRemoteAxisValue("Vertical", InputManager.GetAxis("Vertical") + value);
+			InputManager.SetRemoteAxisValue(InputManager.PlayerOneConfiguration.name, "Vertical", InputManager.GetAxis("Vertical") + value);
 		}
 
 		public void AddHorizontal(float value)
 		{
-			InputManager.SetRemoteAxisValue("Horizontal", InputManager.GetAxis("Horizontal") + value);
+			InputManager.SetRemoteAxisValue(InputManager.PlayerOneConfiguration.name, "Horizontal", InputManager.GetAxis("Horizontal") + value);
 		}
 
 		public void SetMouseX(float value)
 		{
-			InputManager.SetRemoteAxisValue("LookHorizontal", value);
+			InputManager.SetRemoteAxisValue(InputManager.PlayerOneConfiguration.name, "LookHorizontal", value);
 		}
 
 		public void SetMouseY(float value)
 		{
-			InputManager.SetRemoteAxisValue("LookVertical", value);
+			InputManager.SetRemoteAxisValue(InputManager.PlayerOneConfiguration.name, "LookVertical", value);
 		}
 
 		public void Jump()
 		{
-			InputManager.SetRemoteButtonValue("Jump", true, true);
+			InputManager.SetRemoteButtonValue(InputManager.PlayerOneConfiguration.name, "Jump", true, true);
 		}
 	}
 }

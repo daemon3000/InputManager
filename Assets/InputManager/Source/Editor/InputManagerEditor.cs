@@ -36,8 +36,11 @@ namespace TeamUtilityEditor.IO
 		private SerializedProperty _intputConfigurations;
 		private SerializedProperty _dontDestroyOnLoad;
 		private SerializedProperty _ignoreTimescale;
-		private SerializedProperty _defaultConfiguration;
-		private GUIContent _gravityInfo = new GUIContent("Gravity", "The speed(in units/sec) at which a digital axis falls towards neutral.");
+		private SerializedProperty _playerOneDefault;
+        private SerializedProperty _playerTwoDefault;
+        private SerializedProperty _playerThreeDefault;
+        private SerializedProperty _playerFourDefault;
+        private GUIContent _gravityInfo = new GUIContent("Gravity", "The speed(in units/sec) at which a digital axis falls towards neutral.");
 		private GUIContent _sensitivityInfo = new GUIContent("Sensitivity", "The speed(in units/sec) at which an axis moves towards the target value.");
 		private GUIContent _snapInfo = new GUIContent("Snap", "If input switches direction, do we snap to neutral and continue from there? For digital axes only.");
 		private GUIContent _deadZoneInfo = new GUIContent("Dead Zone", "Size of analog dead zone. Values within this range map to neutral.");
@@ -55,8 +58,11 @@ namespace TeamUtilityEditor.IO
 			_intputConfigurations = serializedObject.FindProperty("inputConfigurations");
 			_dontDestroyOnLoad = serializedObject.FindProperty("dontDestroyOnLoad");
 			_ignoreTimescale = serializedObject.FindProperty("ignoreTimescale");
-			_defaultConfiguration = serializedObject.FindProperty("defaultConfiguration");
-		}
+			_playerOneDefault = serializedObject.FindProperty("playerOneDefault");
+            _playerTwoDefault = serializedObject.FindProperty("playerTwoDefault");
+            _playerThreeDefault = serializedObject.FindProperty("playerThreeDefault");
+            _playerFourDefault = serializedObject.FindProperty("playerFourDefault");
+        }
 		
 		public override void OnInspectorGUI()
 		{
@@ -85,8 +91,11 @@ namespace TeamUtilityEditor.IO
 			GUILayout.EndHorizontal();
 			
 			GUILayout.Space(5.0f);
-			EditorGUILayout.PropertyField(_defaultConfiguration);
-			EditorGUILayout.PropertyField(_dontDestroyOnLoad);
+			EditorGUILayout.PropertyField(_playerOneDefault);
+            EditorGUILayout.PropertyField(_playerTwoDefault);
+            EditorGUILayout.PropertyField(_playerThreeDefault);
+            EditorGUILayout.PropertyField(_playerFourDefault);
+            EditorGUILayout.PropertyField(_dontDestroyOnLoad);
 			EditorGUILayout.PropertyField(_ignoreTimescale);
 			EditorGUILayout.PropertyField(_intputConfigurations);
 			if(_intputConfigurations.isExpanded)
