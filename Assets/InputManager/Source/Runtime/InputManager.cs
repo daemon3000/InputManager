@@ -286,6 +286,7 @@ namespace TeamUtility.IO
 					_scanResult.key = _keys[i];
 					_scanResult.joystick = -1;
 					_scanResult.joystickAxis = -1;
+					_scanResult.joystickAxisValue = 0.0f;
 					_scanResult.mouseAxis = -1;
 					_scanResult.userData = _scanUserData;
 					if(_scanHandler(_scanResult))
@@ -311,6 +312,7 @@ namespace TeamUtility.IO
 					_scanResult.key = (KeyCode)key;
 					_scanResult.joystick = -1;
 					_scanResult.joystickAxis = -1;
+					_scanResult.joystickAxisValue = 0.0f;
 					_scanResult.mouseAxis = -1;
 					_scanResult.userData = _scanUserData;
 					if(_scanHandler(_scanResult))
@@ -329,14 +331,18 @@ namespace TeamUtility.IO
 		private bool ScanJoystickAxis()
 		{
 			int scanStart = _scanJoystick * AxisConfiguration.MaxJoystickAxes;
+			float axisRaw = 0.0f;
+
 			for(int i = 0; i < AxisConfiguration.MaxJoystickAxes; i++)
 			{
-				if(Mathf.Abs(Input.GetAxisRaw(_rawJoystickAxes[scanStart + i])) >= 1.0f)
+				axisRaw = Input.GetAxisRaw(_rawJoystickAxes[scanStart + i]);
+				if(Mathf.Abs(axisRaw) >= 1.0f)
 				{
 					_scanResult.scanFlags = ScanFlags.JoystickAxis;
 					_scanResult.key = KeyCode.None;
 					_scanResult.joystick = _scanJoystick;
 					_scanResult.joystickAxis = i;
+					_scanResult.joystickAxisValue = axisRaw;
 					_scanResult.mouseAxis = -1;
 					_scanResult.userData = _scanUserData;
 					if(_scanHandler(_scanResult))
@@ -362,6 +368,7 @@ namespace TeamUtility.IO
 					_scanResult.key = KeyCode.None;
 					_scanResult.joystick = -1;
 					_scanResult.joystickAxis = -1;
+					_scanResult.joystickAxisValue = 0.0f;
 					_scanResult.mouseAxis = i;
 					_scanResult.userData = _scanUserData;
 					if(_scanHandler(_scanResult))
@@ -383,6 +390,7 @@ namespace TeamUtility.IO
 			_scanResult.key = KeyCode.None;
 			_scanResult.joystick = -1;
 			_scanResult.joystickAxis = -1;
+			_scanResult.joystickAxisValue = 0.0f;
 			_scanResult.mouseAxis = -1;
 			_scanResult.userData = _scanUserData;
 			

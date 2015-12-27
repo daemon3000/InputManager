@@ -973,22 +973,30 @@ namespace TeamUtilityEditor.IO
 		
 		#region [Static Interface]
 		public static bool IsOpen { get; private set; }
-		
-		[MenuItem("Team Utility/Input Manager/Open Input Editor", false, 0)]
-		public static void OpenWindow()
-		{
-			if(!IsOpen)
-			{
-				if(UnityEngine.Object.FindObjectOfType(typeof(_InputManager)) == null)
-				{
-					GameObject gameObject = new GameObject("InputManager");
-					gameObject.AddComponent<_InputManager>();
-				}
-				EditorWindow.GetWindow<AdvancedInputEditor>("Input Editor");
-			}
-		}
-		
-		public static void OpenWindow(_InputManager target)
+
+        [MenuItem("Team Utility/Input Manager/Open Input Editor", false, 0)]
+        public static void OpenWindow()
+        {
+            if (!IsOpen)
+            {
+                if (UnityEngine.Object.FindObjectOfType(typeof(_InputManager)) == null)
+                {
+                    bool create = EditorUtility.DisplayDialog("Warning", "There is no InputManager instance in the scene. Do you want to create one?", "Yes", "No");
+                    if (create)
+                    {
+                        GameObject gameObject = new GameObject("InputManager");
+                        gameObject.AddComponent<_InputManager>();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                EditorWindow.GetWindow<AdvancedInputEditor>("Input Editor");
+            }
+        }
+
+        public static void OpenWindow(_InputManager target)
 		{
 			if(!IsOpen)
 			{

@@ -231,7 +231,7 @@ namespace TeamUtility.IO.Examples
 					}
 					else
 					{
-						m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+						m_keyDescription.text = (m_axisConfig.invert ? "-" : "+") + m_axisNames[m_axisConfig.axis];
 					}
 				}
 				m_image.overrideSprite = m_normalState;
@@ -242,14 +242,15 @@ namespace TeamUtility.IO.Examples
 				if(result.joystickAxis >= 0)
 				{
 					m_axisConfig.type = InputType.AnalogButton;
+					m_axisConfig.invert = result.joystickAxisValue < 0.0f;
 					m_axisConfig.SetAnalogButton(m_joystick, result.joystickAxis);
-					m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+					m_keyDescription.text = (m_axisConfig.invert ? "-" : "+") + m_axisNames[m_axisConfig.axis];
 				}
 				else
 				{
 					if(m_axisConfig.type == InputType.AnalogButton)
 					{
-						m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+						m_keyDescription.text = (m_axisConfig.invert ? "-" : "+") + m_axisNames[m_axisConfig.axis];
 					}
 					else
 					{

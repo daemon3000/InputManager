@@ -9,6 +9,7 @@ namespace TeamUtility.IO
 		public KeyCode key;
 		public int joystick;
 		public int joystickAxis;
+		public float joystickAxisValue;
 		public int mouseAxis;
 		public object userData;
 	}

@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -319,7 +319,7 @@ namespace TeamUtilityEditor.IO
 			_selection = SELECTION_EMPTY;
 		}
 
-		[MenuItem("Team Utility/Input Manager/Open Mapping Explorer", false, 1)]
+		[MenuItem("Team Utility/Input Manager/View Joystick Mappings", false, 1)]
 		public static void Open()
 		{
 			EditorWindow.GetWindow<MappingExplorer>("Mapping Explorer");
