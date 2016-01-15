@@ -14,8 +14,8 @@
 	<Axis name="Left Stick Horizontal" key="None" joystickAxis="0" scanType="Axis" />
 	<Axis name="Right Stick Vertical" key="None" joystickAxis="4" scanType="Axis" />
 	<Axis name="Right Stick Horizontal" key="None" joystickAxis="3" scanType="Axis" />
-	<Axis name="Left Trigger" key="None" joystickAxis="2" scanType="Axis" />
-	<Axis name="Right Trigger" key="None" joystickAxis="2" scanType="Axis" />
+	<Axis name="Left Trigger" key="None" joystickAxis="8" scanType="Axis" />
+	<Axis name="Right Trigger" key="None" joystickAxis="9" scanType="Axis" />
 	<Axis name="DPAD Vertical" key="None" joystickAxis="6" scanType="Axis" />
 	<Axis name="DPAD Horizontal" key="None" joystickAxis="5" scanType="Axis" />
 </Mapping>

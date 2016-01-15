@@ -42,6 +42,7 @@ namespace TeamUtility.IO
 		public static LocationService location { get { return Input.location; } }
 		public static Vector2 mousePosition { get { return Input.mousePosition; } }
 		public static bool mousePresent { get { return Input.mousePresent; } }
+		public static bool touchSupported { get { return Input.touchSupported; } }
 		public static int touchCount { get { return Input.touchCount; } }
 		public static Touch[] touches { get { return Input.touches; } }
 		

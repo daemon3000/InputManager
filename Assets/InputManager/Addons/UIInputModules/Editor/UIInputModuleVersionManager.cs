@@ -103,9 +103,12 @@ namespace TeamUtilityEditor.IO
 		private void OnGUI()
 		{
 			float importButtonHeight = 24.0f;
-			Rect versionListPosition = new Rect(0.0f, 0.0f, this.position.width, this.position.height - (importButtonHeight + 10.0f));
+			Rect versionListPosition = new Rect(0.0f, 20.0f, this.position.width, this.position.height - (importButtonHeight + 30.0f));
 			Rect importButtonPosition = new Rect(this.position.width / 2 - 100.0f, this.position.height - importButtonHeight - 5.0f, 200.0f, importButtonHeight);
-			
+
+			EditorGUILayout.LabelField("Current Version: Unity " + TeamUtility.IO.StandaloneInputModule.VERSION);
+			EditorGUILayout.Space();
+
 			DisplayVersionList(versionListPosition);
 			
 			GUI.enabled = _selection != SELECTION_EMPTY;

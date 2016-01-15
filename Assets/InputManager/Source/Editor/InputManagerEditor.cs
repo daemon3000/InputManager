@@ -44,6 +44,7 @@ namespace TeamUtilityEditor.IO
 		private GUIContent _sensitivityInfo = new GUIContent("Sensitivity", "The speed(in units/sec) at which an axis moves towards the target value.");
 		private GUIContent _snapInfo = new GUIContent("Snap", "If input switches direction, do we snap to neutral and continue from there? For digital axes only.");
 		private GUIContent _deadZoneInfo = new GUIContent("Dead Zone", "Size of analog dead zone. Values within this range map to neutral.");
+		private GUIContent _createSnapshotIngo = new GUIContent("Create\nSnapshot", "Creates a snapshot of your input configurations which can be restored at a later time(when you exit play-mode for example)");
 		private string[] _axisOptions = new string[] { "X", "Y", "3rd(Scrollwheel)", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 		private string[] _joystickOptions = new string[] { "Joystick 1", "Joystick 2", "Joystick 3", "Joystick 4" };
 		private string _keyString;
@@ -78,7 +79,7 @@ namespace TeamUtilityEditor.IO
 				AdvancedInputEditor.OpenWindow(inputManager);
 			}
 			GUI.enabled = true;
-			if(GUILayout.Button("Create\nSnapshot", GUILayout.Height(40.0f)))
+			if(GUILayout.Button(_createSnapshotIngo, GUILayout.Height(40.0f)))
 			{
 				EditorToolbox.CreateSnapshot(inputManager);
 			}
