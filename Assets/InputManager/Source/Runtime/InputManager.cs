@@ -1072,7 +1072,7 @@ namespace TeamUtility.IO
 			_instance._scanJoystick = joystick;
 			_instance._scanUserData = userData;
 			_instance._scanHandler = (result) => {
-				return scanHandler(result.mouseAxis, (object[])result.userData);
+				return scanHandler(result.joystickAxis, (object[])result.userData);
 			};
 		}
 		
