@@ -427,12 +427,18 @@ namespace TeamUtility.IO
                 return null;
         }
 
-        private bool IsInputConfigurationInUse(string name)
+		private PlayerID? IsInputConfigurationInUse(string name)
         {
-            return (_playerOneConfig != null && _playerOneConfig.name == name) ||
-                    (_playerTwoConfig != null && _playerTwoConfig.name == name) ||
-                    (_playerThreeConfig != null && _playerThreeConfig.name == name) ||
-                    (_playerFourConfig != null && _playerFourConfig.name == name);
+            if(_playerOneConfig != null && _playerOneConfig.name == name)
+				return PlayerID.One;
+			if(_playerTwoConfig != null && _playerTwoConfig.name == name)
+				return PlayerID.Two;
+			if(_playerThreeConfig != null && _playerThreeConfig.name == name)
+				return PlayerID.Three;
+			if(_playerFourConfig != null && _playerFourConfig.name == name)
+				return PlayerID.Four;
+
+			return null;
         }
 
         public void Load(SaveLoadParameters parameters)
@@ -489,8 +495,10 @@ namespace TeamUtility.IO
 		/// to subscribe to the input manager's events.
 		/// </summary>
 		public static InputManager Instance { get { return _instance; } }
-        [Obsolete("Use InputManager.PlayerOneConfiguration instead")]
+
+		[Obsolete("Use InputManager.PlayerOneConfiguration instead", true)]
 		public static InputConfiguration CurrentConfiguration { get { return _instance._playerOneConfig; } }
+
         public static InputConfiguration PlayerOneConfiguration { get { return _instance._playerOneConfig; } }
         public static InputConfiguration PlayerTwoConfiguration { get { return _instance._playerTwoConfig; } }
         public static InputConfiguration PlayerThreeConfiguration { get { return _instance._playerThreeConfig; } }
@@ -554,7 +562,7 @@ namespace TeamUtility.IO
 		/// <summary>
 		/// If an axis with the requested name exists, and it is of type 'RemoteAxis', the axis' value will be changed.
 		/// </summary>
-        [Obsolete()]
+		[Obsolete("Use the method overload that takes in the input configuration name", true)]
 		public static void SetRemoteAxisValue(string axisName, float value)
 		{
 			SetRemoteAxisValue(_instance._playerOneConfig.name, axisName, value);
@@ -575,7 +583,7 @@ namespace TeamUtility.IO
         /// <summary>
         /// If an button with the requested name exists, and it is of type 'RemoteButton', the button's state will be changed.
         /// </summary>
-        [Obsolete()]
+		[Obsolete("Use the method overload that takes in the input configuration name", true)]
         public static void SetRemoteButtonValue(string buttonName, bool down, bool justChanged)
 		{
 			SetRemoteButtonValue(_instance._playerOneConfig.name, buttonName, down, justChanged);
@@ -617,7 +625,7 @@ namespace TeamUtility.IO
         /// <summary>
         /// Changes the active input configuration.
         /// </summary>
-        [Obsolete()]
+		[Obsolete("Use the method overload that takes in the player ID", true)]
         public static void SetInputConfiguration(string name)
         {
             SetInputConfiguration(name, PlayerID.One);
@@ -628,11 +636,16 @@ namespace TeamUtility.IO
         /// </summary>
         public static void SetInputConfiguration(string name, PlayerID playerID)
 		{
-            if (_instance.IsInputConfigurationInUse(name))
+			PlayerID? playerWhoUsesInputConfig = _instance.IsInputConfigurationInUse(name);
+
+			if (playerWhoUsesInputConfig.HasValue && playerWhoUsesInputConfig.Value != playerID)
             {
-                Debug.LogErrorFormat("The input configuration named \'{0}\' is already being used by a player", name);
+				Debug.LogErrorFormat("The input configuration named \'{0}\' is already being used by player {1}", name, playerWhoUsesInputConfig.Value.ToString());
                 return;
             }
+
+			if(playerWhoUsesInputConfig.HasValue && playerWhoUsesInputConfig.Value == playerID)
+				return;
             
             InputConfiguration inputConfig = null;
 			if(_instance._configurationTable.TryGetValue(name, out inputConfig))
