@@ -3,7 +3,6 @@
 --- !u!13 &1
 InputManager:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
   m_Axes:
   - serializedVersion: 3
     m_Name: mouse_axis_0

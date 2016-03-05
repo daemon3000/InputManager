@@ -28,10 +28,15 @@ namespace TeamUtility.IO
 {
 	public class InputEventManager : MonoBehaviour
 	{
-		[SerializeField] private List<InputEvent> _inputEvents;
-		private Dictionary<string, InputEvent> _eventLookup;
+		[SerializeField]
+        private List<InputEvent> _inputEvents;
+
+        private Dictionary<string, InputEvent> _eventLookup;
 		
-		public int EventCount { get { return _inputEvents.Count; } }
+		public int EventCount
+        {
+            get { return _inputEvents.Count; }
+        }
 		
 		private void Awake()
 		{
@@ -51,13 +56,14 @@ namespace TeamUtility.IO
 				_inputEvents[i].Evaluate();
 		}
 		
-		public InputEvent CreateAxisEvent(string name, string axisName)
+		public InputEvent CreateAxisEvent(string name, string axisName, PlayerID playerID = PlayerID.One)
 		{
 			if(!_eventLookup.ContainsKey(name))
 			{
 				InputEvent evt = new InputEvent(name);
 				evt.axisName = axisName;
 				evt.eventType = InputEventType.Axis;
+                evt.playerID = playerID;
 				
 				_inputEvents.Add(evt);
 				_eventLookup.Add(name, evt);
@@ -70,7 +76,7 @@ namespace TeamUtility.IO
 			}
 		}
 		
-		public InputEvent CreateButtonEvent(string name, string buttonName, InputState inputState)
+		public InputEvent CreateButtonEvent(string name, string buttonName, InputState inputState, PlayerID playerID = PlayerID.One)
 		{
 			if(!_eventLookup.ContainsKey(name))
 			{
@@ -78,6 +84,7 @@ namespace TeamUtility.IO
 				evt.buttonName = buttonName;
 				evt.eventType = InputEventType.Button;
 				evt.inputState = inputState;
+                evt.playerID = playerID;
 				
 				_inputEvents.Add(evt);
 				_eventLookup.Add(name, evt);

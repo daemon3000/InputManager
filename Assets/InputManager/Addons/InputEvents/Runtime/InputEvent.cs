@@ -42,9 +42,10 @@ namespace TeamUtility.IO
 		public string name;
 		public string axisName;
 		public string buttonName;
-		public KeyCode keyCode;
-		public InputEventType eventType;
-		public InputState inputState;
+		public KeyCode keyCode = KeyCode.None;
+		public InputEventType eventType = InputEventType.Button;
+		public InputState inputState = InputState.Pressed;
+        public PlayerID playerID = PlayerID.One;
 		public ActionEvent onAction;
 		public AxisEvent onAxis;
 
@@ -59,6 +60,7 @@ namespace TeamUtility.IO
 			keyCode = KeyCode.None;
 			eventType = InputEventType.Key;
 			inputState = InputState.Pressed;
+            playerID = PlayerID.One;
 			onAxis = new AxisEvent();
 			onAction = new ActionEvent();
 		}
@@ -81,7 +83,7 @@ namespace TeamUtility.IO
 
 		private void EvaluateAxis()
 		{
-			onAxis.Invoke(InputManager.GetAxis(axisName));
+			onAxis.Invoke(InputManager.GetAxis(axisName, playerID));
 		}
 
 		private void EvaluateButton()
@@ -89,15 +91,15 @@ namespace TeamUtility.IO
 			switch(inputState) 
 			{
 			case InputState.Pressed:
-				if(InputManager.GetButtonDown(buttonName))
+				if(InputManager.GetButtonDown(buttonName, playerID))
 					onAction.Invoke();
 				break;
 			case InputState.Released:
-				if(InputManager.GetButtonUp(buttonName))
+				if(InputManager.GetButtonUp(buttonName, playerID))
 					onAction.Invoke();
 				break;
 			case InputState.Held:
-				if(InputManager.GetButton(buttonName))
+				if(InputManager.GetButton(buttonName, playerID))
 					onAction.Invoke();
 				break;
 			}

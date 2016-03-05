@@ -92,6 +92,7 @@ namespace TeamUtilityEditor.IO
 			SerializedProperty keyCode = inputEvent.FindPropertyRelative("keyCode");
 			SerializedProperty eventType = inputEvent.FindPropertyRelative("eventType");
 			SerializedProperty inputState = inputEvent.FindPropertyRelative("inputState");
+            SerializedProperty playerID = inputEvent.FindPropertyRelative("playerID");
 			SerializedProperty actionEvent = inputEvent.FindPropertyRelative("onAction");
 			SerializedProperty axisEvent = inputEvent.FindPropertyRelative("onAxis");
             InputEvent evt = _eventManager.GetEvent(index);
@@ -121,12 +122,14 @@ namespace TeamUtilityEditor.IO
 				EditorGUILayout.PropertyField(eventType);
 				if(evt.eventType == InputEventType.Axis)
 				{
-					EditorGUILayout.PropertyField(axisName);
+                    EditorGUILayout.PropertyField(playerID);
+                    EditorGUILayout.PropertyField(axisName);
 					EditorGUILayout.PropertyField(axisEvent);
 				}
 				else if(evt.eventType == InputEventType.Button)
 				{
-					EditorGUILayout.PropertyField(buttonName);
+                    EditorGUILayout.PropertyField(playerID);
+                    EditorGUILayout.PropertyField(buttonName);
 					EditorGUILayout.PropertyField(inputState);
 					EditorGUILayout.PropertyField(actionEvent);
 				}
@@ -186,7 +189,7 @@ namespace TeamUtilityEditor.IO
 
 		private float CalculateBackgroundHeight(InputEvent evt)
 		{
-			int fieldCount = evt.eventType == InputEventType.Axis ? 3 : 4;
+			int fieldCount = evt.eventType == InputEventType.Button ? 5 : 4;
 			int eventCount = evt.eventType == InputEventType.Axis ? evt.onAxis.GetPersistentEventCount() : evt.onAction.GetPersistentEventCount();
 			float fieldHeight = 18.0f;
 			float eventBorderHeight = 95.0f;
