@@ -92,6 +92,7 @@ namespace TeamUtilityEditor.IO
 		private bool _editingNegativeKey = false;
 		private bool _editingAltNegativeKey = false;
 		private bool _tryedToFindInputManagerInScene = false;
+		private bool _isDisposed = false;
 		private string[] _axisOptions = new string[] { "X", "Y", "3rd(Scrollwheel)", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 		private string[] _joystickOptions = new string[] { "Joystick 1", "Joystick 2", "Joystick 3", "Joystick 4" };
 		
@@ -115,16 +116,31 @@ namespace TeamUtilityEditor.IO
 				CreateHighlightTexture();
 
 			EditorApplication.playmodeStateChanged += HandlePlayModeChanged;
+			_isDisposed = false;
 		}
 
 		private void OnDisable()
 		{
-			IsOpen = false;
-			Texture2D.DestroyImmediate(_highlightTexture);
-			_highlightTexture = null;
-			_copySource = null;
-			
-			EditorApplication.playmodeStateChanged -= HandlePlayModeChanged;
+			Dispose();
+		}
+
+		private void OnDestroy()
+		{
+			Dispose();
+		}
+
+		private void Dispose()
+		{
+			if(!_isDisposed)
+			{
+				IsOpen = false;
+				Texture2D.DestroyImmediate(_highlightTexture);
+				_highlightTexture = null;
+				_copySource = null;
+
+				EditorApplication.playmodeStateChanged -= HandlePlayModeChanged;
+				_isDisposed = true;
+			}
 		}
 
 		private void CreateHighlightTexture()

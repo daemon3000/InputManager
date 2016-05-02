@@ -223,6 +223,7 @@ namespace TeamUtilityEditor.IO
 					key.enumValueIndex = IndexOfKeyName(key.enumNames, _keyString);
 					_keyString = keyCode.ToString();
 				}
+				isEditing = false;
 			}
 		}
 		
