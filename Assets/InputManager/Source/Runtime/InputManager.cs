@@ -78,7 +78,7 @@ namespace TeamUtility.IO
 		private string _cancelScanButton;
 		private float _scanStartTime;
 		private float _scanTimeout;
-		private int _scanJoystick;
+		private int? _scanJoystick;
 		private object _scanUserData;
 		
 		private string[] _rawMouseAxes;
@@ -304,13 +304,22 @@ namespace TeamUtility.IO
 		
 		private bool ScanJoystickButton()
 		{
-			for(int key = (int)KeyCode.JoystickButton0; key < (int)KeyCode.Joystick4Button19; key++)
+			int scanStart = (int)KeyCode.JoystickButton0;
+			int scanEnd = (int)KeyCode.JoystickButton19;
+
+			if(_scanJoystick.HasValue)
+			{
+				scanStart = (int)KeyCode.Joystick1Button0 + _scanJoystick.Value * 20;
+				scanEnd = scanStart + 20;
+			}
+
+			for(int key = scanStart; key < scanEnd; key++)
 			{
 				if(Input.GetKeyDown((KeyCode)key))
 				{
 					_scanResult.scanFlags = ScanFlags.JoystickButton;
 					_scanResult.key = (KeyCode)key;
-					_scanResult.joystick = -1;
+					_scanResult.joystick = _scanJoystick.HasValue ? _scanJoystick.Value : -1;
 					_scanResult.joystickAxis = -1;
 					_scanResult.joystickAxisValue = 0.0f;
 					_scanResult.mouseAxis = -1;
@@ -330,17 +339,23 @@ namespace TeamUtility.IO
 		
 		private bool ScanJoystickAxis()
 		{
-			int scanStart = _scanJoystick * AxisConfiguration.MaxJoystickAxes;
+			int scanStart = 0, scanEnd = _rawJoystickAxes.Length;
 			float axisRaw = 0.0f;
 
-			for(int i = 0; i < AxisConfiguration.MaxJoystickAxes; i++)
+			if(_scanJoystick.HasValue)
 			{
-				axisRaw = Input.GetAxisRaw(_rawJoystickAxes[scanStart + i]);
+				scanStart = _scanJoystick.Value * AxisConfiguration.MaxJoystickAxes;
+				scanEnd = scanStart + AxisConfiguration.MaxJoystickAxes;
+			}
+			
+			for(int i = scanStart; i < scanEnd; i++)
+			{
+				axisRaw = Input.GetAxisRaw(_rawJoystickAxes[i]);
 				if(Mathf.Abs(axisRaw) >= 1.0f)
 				{
 					_scanResult.scanFlags = ScanFlags.JoystickAxis;
 					_scanResult.key = KeyCode.None;
-					_scanResult.joystick = _scanJoystick;
+					_scanResult.joystick = i / AxisConfiguration.MaxJoystickAxes;
 					_scanResult.joystickAxis = i;
 					_scanResult.joystickAxisValue = axisRaw;
 					_scanResult.mouseAxis = -1;
@@ -395,7 +410,8 @@ namespace TeamUtility.IO
 			_scanResult.userData = _scanUserData;
 			
 			_scanHandler(_scanResult);
-			
+
+			_scanJoystick = null;
 			_scanHandler = null;
 			_scanResult.userData = null;
 			_scanFlags = ScanFlags.None;
@@ -1029,6 +1045,7 @@ namespace TeamUtility.IO
 		/// Scans for keyboard input and calls the handler with the result.
 		/// Returns KeyCode.None if timeout is reached or the scan is canceled.
 		/// </summary>
+		[Obsolete("Use StartKeyboardButtonScan or StartJoystickButtonScan instead.")]
 		public static void StartKeyScan(KeyScanHandler scanHandler, float timeout, string cancelScanButton, params object[] userData)
 		{
 			if(_instance._scanFlags != ScanFlags.None)
@@ -1043,7 +1060,27 @@ namespace TeamUtility.IO
 				return scanHandler(result.key, (object[])result.userData);
 			};
 		}
-		
+
+		/// <summary>
+		/// Scans for keyboard input and calls the handler with the result.
+		/// Returns KeyCode.None if timeout is reached or the scan is canceled.
+		/// </summary>
+		public static void StartKeyboardButtonScan(KeyScanHandler scanHandler, float timeout, string cancelScanButton, params object[] userData)
+		{
+			if(_instance._scanFlags != ScanFlags.None)
+				_instance.StopInputScan();
+
+			_instance._scanTimeout = timeout;
+			_instance._scanFlags = ScanFlags.Key;
+			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._cancelScanButton = cancelScanButton;
+			_instance._scanJoystick = null;
+			_instance._scanUserData = userData;
+			_instance._scanHandler = (result) => {
+				return scanHandler(result.key, (object[])result.userData);
+			};
+		}
+
 		/// <summary>
 		/// Scans for mouse input and calls the handler with the result.
 		/// Returns -1 if timeout is reached or the scan is canceled.
@@ -1057,19 +1094,48 @@ namespace TeamUtility.IO
 			_instance._scanFlags = ScanFlags.MouseAxis;
 			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
+			_instance._scanJoystick = null;
 			_instance._scanUserData = userData;
 			_instance._scanHandler = (result) => {
 				return scanHandler(result.mouseAxis, (object[])result.userData);
 			};
 		}
-		
+
+		/// <summary>
+		/// Scans for joystick button input and calls the handler with the result.
+		/// Returns KeyCode.None if timeout is reached or the scan is canceled.
+		/// <param name="joystick">The index of the joystick to scan for input. If null all joysticks will be scanned.</param>
+		/// </summary>
+		public static void StartJoystickButtonScan(KeyScanHandler scanHandler, int? joystick, float timeout, string cancelScanButton, params object[] userData)
+		{
+			if(joystick.HasValue && (joystick < 0 || joystick >= AxisConfiguration.MaxJoystickAxes))
+			{
+				Debug.LogError("Joystick is out of range. Cannot start joystick axis scan.");
+				return;
+			}
+
+			if(_instance._scanFlags != ScanFlags.None)
+				_instance.StopInputScan();
+
+			_instance._scanTimeout = timeout;
+			_instance._scanFlags = ScanFlags.JoystickButton;
+			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._cancelScanButton = cancelScanButton;
+			_instance._scanJoystick = joystick;
+			_instance._scanUserData = userData;
+			_instance._scanHandler = (result) => {
+				return scanHandler(result.key, (object[])result.userData);
+			};
+		}
+
 		/// <summary>
 		/// Scans for joystick input and calls the handler with the result.
 		/// Returns -1 if timeout is reached or the scan is canceled.
+		/// <param name="joystick">The index of the joystick to scan for input. If null all joysticks will be scanned.</param>
 		/// </summary>
-		public static void StartJoystickAxisScan(AxisScanHandler scanHandler, int joystick, float timeout, string cancelScanButton, params object[] userData)
+		public static void StartJoystickAxisScan(AxisScanHandler scanHandler, int? joystick, float timeout, string cancelScanButton, params object[] userData)
 		{
-			if(joystick < 0 || joystick >= AxisConfiguration.MaxJoystickAxes)
+			if(joystick.HasValue && (joystick < 0 || joystick >= AxisConfiguration.MaxJoystickAxes))
 			{
 				Debug.LogError("Joystick is out of range. Cannot start joystick axis scan.");
 				return;
@@ -1091,7 +1157,7 @@ namespace TeamUtility.IO
 		
 		public static void StartScan(ScanSettings settings, ScanHandler scanHandler)
 		{
-			if(settings.joystick < 0 || settings.joystick >= AxisConfiguration.MaxJoystickAxes)
+			if(settings.joystick.HasValue && (settings.joystick < 0 || settings.joystick >= AxisConfiguration.MaxJoystickAxes))
 			{
 				Debug.LogError("Joystick is out of range. Cannot start scan.");
 				return;

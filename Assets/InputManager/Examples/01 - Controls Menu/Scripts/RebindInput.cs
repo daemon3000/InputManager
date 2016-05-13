@@ -121,9 +121,11 @@ namespace TeamUtility.IO.Examples
 				}
 				else if(m_rebindType == RebindType.GamepadButton)
 				{
-					settings.scanFlags = ScanFlags.Key | ScanFlags.JoystickButton;
-					if(m_rebindType == RebindType.GamepadButton && m_allowAnalogButton)
+					settings.scanFlags = ScanFlags.JoystickButton;
+					if(m_allowAnalogButton)
+					{
 						settings.scanFlags = settings.scanFlags | ScanFlags.JoystickAxis;
+					}
 					InputManager.StartScan(settings, HandleJoystickButtonScan);
 				}
 				else
@@ -194,7 +196,7 @@ namespace TeamUtility.IO.Examples
 
 		private bool HandleJoystickButtonScan(ScanResult result)
 		{
-			if(result.scanFlags == ScanFlags.Key || result.scanFlags == ScanFlags.JoystickButton)
+			if(result.scanFlags == ScanFlags.JoystickButton)
 			{
 				//	When you return false you tell the InputManager that it should keep scaning for other keys
 				if(!IsJoytickButtonValid(result.key))
