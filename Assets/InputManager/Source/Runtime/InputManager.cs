@@ -356,7 +356,7 @@ namespace TeamUtility.IO
 					_scanResult.scanFlags = ScanFlags.JoystickAxis;
 					_scanResult.key = KeyCode.None;
 					_scanResult.joystick = i / AxisConfiguration.MaxJoystickAxes;
-					_scanResult.joystickAxis = i;
+					_scanResult.joystickAxis = i % AxisConfiguration.MaxJoystickAxes;
 					_scanResult.joystickAxisValue = axisRaw;
 					_scanResult.mouseAxis = -1;
 					_scanResult.userData = _scanUserData;
