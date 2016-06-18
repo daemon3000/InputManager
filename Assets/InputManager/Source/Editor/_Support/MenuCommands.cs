@@ -58,7 +58,7 @@ namespace TeamUtilityEditor.IO.InputManager
         [MenuItem("Team Utility/Input Manager/Contact", false, 403)]
         public static void OpenContactDialog()
         {
-            string message = "Email: geambasu.cristi@gmail.com";
+            string message = "Email: daemon3000@hotmail.com";
             EditorUtility.DisplayDialog("Contact", message, "Close");
         }
 
