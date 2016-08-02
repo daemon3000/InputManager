@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
 	public class InvertAnalogAxis : MonoBehaviour 
 	{
-		[SerializeField] private string m_inputConfigName;
-		[SerializeField] private string m_axisConfigName;
-		[SerializeField] private Text m_status;
+		[SerializeField]
+		[FormerlySerializedAs("m_inputConfigName")]
+		private string _inputConfigName;
+		[SerializeField]
+		[FormerlySerializedAs("m_axisConfigName")]
+		private string _axisConfigName;
+		[SerializeField]
+		[FormerlySerializedAs("m_status")]
+		private Text _status;
 
-		private AxisConfiguration m_axisConfig;
+		private AxisConfiguration _axisConfig;
 
 		private void Awake()
 		{
@@ -26,24 +32,24 @@ namespace TeamUtility.IO.Examples
 
 		private void InitAxisConfig()
 		{
-			m_axisConfig = InputManager.GetAxisConfiguration(m_inputConfigName, m_axisConfigName);
-			if(m_axisConfig != null)
+			_axisConfig = InputManager.GetAxisConfiguration(_inputConfigName, _axisConfigName);
+			if(_axisConfig != null)
 			{
-				m_status.text = m_axisConfig.invert ? "On" : "Off";
+				_status.text = _axisConfig.invert ? "On" : "Off";
 			}
 			else
 			{
-				m_status.text = "Off";
-				Debug.LogError(string.Format(@"Input configuration '{0}' does not exist or axis '{1}' does not exist", m_inputConfigName, m_axisConfigName));
+				_status.text = "Off";
+				Debug.LogError(string.Format(@"Input configuration '{0}' does not exist or axis '{1}' does not exist", _inputConfigName, _axisConfigName));
 			}
 		}
 
 		public void OnClick()
 		{
-			if(m_axisConfig != null)
+			if(_axisConfig != null)
 			{
-				m_axisConfig.invert = !m_axisConfig.invert;
-				m_status.text = m_axisConfig.invert ? "On" : "Off";
+				_axisConfig.invert = !_axisConfig.invert;
+				_status.text = _axisConfig.invert ? "On" : "Off";
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using System.Collections;
 
 namespace TeamUtility.IO.Examples
@@ -13,31 +14,63 @@ namespace TeamUtility.IO.Examples
 			Keyboard, GamepadButton, GamepadAxis
 		}
 
-		[SerializeField] private Sprite m_normalState;
-		[SerializeField] private Sprite m_scanningState;
-		[SerializeField] private Text m_keyDescription;
-		[SerializeField] private string m_inputConfigName;
-		[SerializeField] private string m_axisConfigName;
-		[SerializeField] private string m_cancelButton;
-		[SerializeField] private float m_timeout;
-		[SerializeField] private bool m_changePositiveKey;
-		[SerializeField] private bool m_changeAltKey;
-		[SerializeField] private bool m_allowAnalogButton;
+		[SerializeField]
+		[FormerlySerializedAs("m_normalState")]
+		private Sprite _normalState;
 
-		[SerializeField] 
+		[SerializeField]
+		[FormerlySerializedAs("m_scanningState")]
+		private Sprite _scanningState;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_keyDescription")]
+		private Text _keyDescription;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_inputConfigName")]
+		private string _inputConfigName;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_axisConfigName")]
+		private string _axisConfigName;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_cancelButton")]
+		private string _cancelButton;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_timeout")]
+		private float _timeout;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_changePositiveKey")]
+		private bool _changePositiveKey;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_changeAltKey")]
+		private bool _changeAltKey;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_allowAnalogButton")]
+		private bool _allowAnalogButton;
+
+		[SerializeField]
+		[FormerlySerializedAs("m_joystick")]
 		[Range(0, AxisConfiguration.MaxJoysticks)]
-		private int m_joystick = 0;
+		private int _joystick = 0;
 
-		[SerializeField] private RebindType m_rebindType;
+		[SerializeField]
+		[FormerlySerializedAs("m_rebindType")]
+		private RebindType _rebindType;
 		
-		private AxisConfiguration m_axisConfig;
-		private Image m_image;
-		private static string[] m_axisNames = new string[] { "X", "Y", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
+		private AxisConfiguration _axisConfig;
+		private Image _image;
+		private static string[] _axisNames = new string[] { "X", "Y", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
 		
 		private void Awake()
 		{
-			m_image = GetComponent<Image>();
-			m_image.overrideSprite = m_normalState;
+			_image = GetComponent<Image>();
+			_image.overrideSprite = _normalState;
 			InitializeAxisConfig();
 			
 			//	The axis config needs to be reinitialized because loading can invalidate
@@ -57,41 +90,41 @@ namespace TeamUtility.IO.Examples
 		
 		private void InitializeAxisConfig()
 		{
-			m_axisConfig = InputManager.GetAxisConfiguration(m_inputConfigName, m_axisConfigName);
-			if(m_axisConfig != null)
+			_axisConfig = InputManager.GetAxisConfiguration(_inputConfigName, _axisConfigName);
+			if(_axisConfig != null)
 			{
-				if(m_rebindType == RebindType.Keyboard || m_rebindType == RebindType.GamepadButton)
+				if(_rebindType == RebindType.Keyboard || _rebindType == RebindType.GamepadButton)
 				{
-					if(m_changePositiveKey)
+					if(_changePositiveKey)
 					{
-						if(m_changeAltKey)
-							m_keyDescription.text = m_axisConfig.altPositive == KeyCode.None ? "" : m_axisConfig.altPositive.ToString();
+						if(_changeAltKey)
+							_keyDescription.text = _axisConfig.altPositive == KeyCode.None ? "" : _axisConfig.altPositive.ToString();
 						else
-							m_keyDescription.text = m_axisConfig.positive == KeyCode.None ? "" : m_axisConfig.positive.ToString();
+							_keyDescription.text = _axisConfig.positive == KeyCode.None ? "" : _axisConfig.positive.ToString();
 					}
 					else
 					{
-						if(m_changeAltKey)
-							m_keyDescription.text = m_axisConfig.altNegative == KeyCode.None ? "" : m_axisConfig.altNegative.ToString();
+						if(_changeAltKey)
+							_keyDescription.text = _axisConfig.altNegative == KeyCode.None ? "" : _axisConfig.altNegative.ToString();
 						else
-							m_keyDescription.text = m_axisConfig.negative == KeyCode.None ? "" : m_axisConfig.negative.ToString();
+							_keyDescription.text = _axisConfig.negative == KeyCode.None ? "" : _axisConfig.negative.ToString();
 					}
 				}
 				else
 				{
-					m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+					_keyDescription.text = _axisNames[_axisConfig.axis];
 				}
 			}
 			else
 			{
-				m_keyDescription.text = "";
-				Debug.LogError(string.Format(@"Input configuration '{0}' does not exist or axis '{1}' does not exist", m_inputConfigName, m_axisConfigName));
+				_keyDescription.text = "";
+				Debug.LogError(string.Format(@"Input configuration '{0}' does not exist or axis '{1}' does not exist", _inputConfigName, _axisConfigName));
 			}
 		}
 
 		private void HandleConfigurationDirty(string configName)
 		{
-			if(configName == m_inputConfigName)
+			if(configName == _inputConfigName)
 				InitializeAxisConfig();
 		}
 
@@ -104,25 +137,25 @@ namespace TeamUtility.IO.Examples
 		{
 			yield return null;
 
-			if(!InputManager.IsScanning && m_axisConfig != null)
+			if(!InputManager.IsScanning && _axisConfig != null)
 			{
-				m_image.overrideSprite = m_scanningState;
-				m_keyDescription.text = "...";
+				_image.overrideSprite = _scanningState;
+				_keyDescription.text = "...";
 				
 				ScanSettings settings;
-				settings.joystick = m_joystick;
-				settings.cancelScanButton = m_cancelButton;
-				settings.timeout = m_timeout;
+				settings.joystick = _joystick;
+				settings.cancelScanButton = _cancelButton;
+				settings.timeout = _timeout;
 				settings.userData = null;
-				if(m_rebindType == RebindType.GamepadAxis)
+				if(_rebindType == RebindType.GamepadAxis)
 				{
 					settings.scanFlags = ScanFlags.JoystickAxis;
 					InputManager.StartScan(settings, HandleJoystickAxisScan);
 				}
-				else if(m_rebindType == RebindType.GamepadButton)
+				else if(_rebindType == RebindType.GamepadButton)
 				{
 					settings.scanFlags = ScanFlags.JoystickButton;
-					if(m_allowAnalogButton)
+					if(_allowAnalogButton)
 					{
 						settings.scanFlags = settings.scanFlags | ScanFlags.JoystickAxis;
 					}
@@ -147,29 +180,29 @@ namespace TeamUtility.IO.Examples
 			{
 				//	If the key is KeyCode.Backspace clear the current binding
 				result.key = (result.key == KeyCode.Backspace) ? KeyCode.None : result.key;
-				if(m_changePositiveKey)
+				if(_changePositiveKey)
 				{
-					if(m_changeAltKey)
-						m_axisConfig.altPositive = result.key;
+					if(_changeAltKey)
+						_axisConfig.altPositive = result.key;
 					else
-						m_axisConfig.positive = result.key;
+						_axisConfig.positive = result.key;
 				}
 				else
 				{
-					if(m_changeAltKey)
-						m_axisConfig.altNegative = result.key;
+					if(_changeAltKey)
+						_axisConfig.altNegative = result.key;
 					else
-						m_axisConfig.negative = result.key;
+						_axisConfig.negative = result.key;
 				}
-				m_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
+				_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
 			}
 			else
 			{
 				KeyCode currentKey = GetCurrentKeyCode();
-				m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+				_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
 			}
 
-			m_image.overrideSprite = m_normalState;
+			_image.overrideSprite = _normalState;
 			return true;
 		}
 
@@ -177,7 +210,7 @@ namespace TeamUtility.IO.Examples
 		{
 			bool isValid = true;
 
-			if(m_rebindType == RebindType.Keyboard)
+			if(_rebindType == RebindType.Keyboard)
 			{
 				if((int)key >= (int)KeyCode.JoystickButton0)
 					isValid = false;
@@ -207,60 +240,60 @@ namespace TeamUtility.IO.Examples
 				{
 					//	If the key is KeyCode.Backspace clear the current binding
 					result.key = (result.key == KeyCode.Backspace) ? KeyCode.None : result.key;
-					m_axisConfig.type = InputType.Button;
-					if(m_changePositiveKey)
+					_axisConfig.type = InputType.Button;
+					if(_changePositiveKey)
 					{
-						if(m_changeAltKey)
-							m_axisConfig.altPositive = result.key;
+						if(_changeAltKey)
+							_axisConfig.altPositive = result.key;
 						else
-							m_axisConfig.positive = result.key;
+							_axisConfig.positive = result.key;
 					}
 					else
 					{
-						if(m_changeAltKey)
-							m_axisConfig.altNegative = result.key;
+						if(_changeAltKey)
+							_axisConfig.altNegative = result.key;
 						else
-							m_axisConfig.negative = result.key;
+							_axisConfig.negative = result.key;
 					}
-					m_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
+					_keyDescription.text = (result.key == KeyCode.None) ? "" : result.key.ToString();
 				}
 				else
 				{
-					if(m_axisConfig.type == InputType.Button)
+					if(_axisConfig.type == InputType.Button)
 					{
 						KeyCode currentKey = GetCurrentKeyCode();
-						m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+						_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
 					}
 					else
 					{
-						m_keyDescription.text = (m_axisConfig.invert ? "-" : "+") + m_axisNames[m_axisConfig.axis];
+						_keyDescription.text = (_axisConfig.invert ? "-" : "+") + _axisNames[_axisConfig.axis];
 					}
 				}
-				m_image.overrideSprite = m_normalState;
+				_image.overrideSprite = _normalState;
 			}
 			else
 			{
 				//	The axis is negative when the timeout has been reached or the scan has been canceled
 				if(result.joystickAxis >= 0)
 				{
-					m_axisConfig.type = InputType.AnalogButton;
-					m_axisConfig.invert = result.joystickAxisValue < 0.0f;
-					m_axisConfig.SetAnalogButton(m_joystick, result.joystickAxis);
-					m_keyDescription.text = (m_axisConfig.invert ? "-" : "+") + m_axisNames[m_axisConfig.axis];
+					_axisConfig.type = InputType.AnalogButton;
+					_axisConfig.invert = result.joystickAxisValue < 0.0f;
+					_axisConfig.SetAnalogButton(_joystick, result.joystickAxis);
+					_keyDescription.text = (_axisConfig.invert ? "-" : "+") + _axisNames[_axisConfig.axis];
 				}
 				else
 				{
-					if(m_axisConfig.type == InputType.AnalogButton)
+					if(_axisConfig.type == InputType.AnalogButton)
 					{
-						m_keyDescription.text = (m_axisConfig.invert ? "-" : "+") + m_axisNames[m_axisConfig.axis];
+						_keyDescription.text = (_axisConfig.invert ? "-" : "+") + _axisNames[_axisConfig.axis];
 					}
 					else
 					{
 						KeyCode currentKey = GetCurrentKeyCode();
-						m_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
+						_keyDescription.text = (currentKey == KeyCode.None) ? "" : currentKey.ToString();
 					}
 				}
-				m_image.overrideSprite = m_normalState;
+				_image.overrideSprite = _normalState;
 			}
 			
 			return true;
@@ -270,7 +303,7 @@ namespace TeamUtility.IO.Examples
 		{
 			bool isValid = true;
 			
-			if(m_rebindType == RebindType.GamepadButton)
+			if(_rebindType == RebindType.GamepadButton)
 			{
 				//	Allow KeyCode.None to pass because it means that the scan has been canceled or the timeout has been reached
 				//	Allow KeyCode.Backspace to pass so it can clear the current binding
@@ -289,31 +322,31 @@ namespace TeamUtility.IO.Examples
 		{
 			//	The axis is negative when the timeout has been reached or the scan has been canceled
 			if(result.joystickAxis >= 0)
-				m_axisConfig.SetAnalogAxis(m_joystick, result.joystickAxis);
+				_axisConfig.SetAnalogAxis(_joystick, result.joystickAxis);
 
-			m_image.overrideSprite = m_normalState;
-			m_keyDescription.text = m_axisNames[m_axisConfig.axis];
+			_image.overrideSprite = _normalState;
+			_keyDescription.text = _axisNames[_axisConfig.axis];
 			return true;
 		}
 
 		private KeyCode GetCurrentKeyCode()
 		{
-			if(m_rebindType == RebindType.GamepadAxis)
+			if(_rebindType == RebindType.GamepadAxis)
 				return KeyCode.None;
 
-			if(m_changePositiveKey)
+			if(_changePositiveKey)
 			{
-				if(m_changeAltKey)
-					return m_axisConfig.altPositive;
+				if(_changeAltKey)
+					return _axisConfig.altPositive;
 				else
-					return m_axisConfig.positive;
+					return _axisConfig.positive;
 			}
 			else
 			{
-				if(m_changeAltKey)
-					return m_axisConfig.altNegative;
+				if(_changeAltKey)
+					return _axisConfig.altNegative;
 				else
-					return m_axisConfig.negative;
+					return _axisConfig.negative;
 			}
 		}
 	}

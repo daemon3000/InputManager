@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
 	public class MenuPage : MonoBehaviour 
 	{
 		[SerializeField] 
-		private string m_id;
+		[FormerlySerializedAs("m_id")]
+		private string _id;
 		[SerializeField]
-		private GameObject m_firstSelected;
+		[FormerlySerializedAs("m_firstSelected")]
+		private GameObject _firstSelected;
 
-		public string ID { get { return m_id; } }
-		public GameObject FirstSelected { get { return m_firstSelected; } }
+		public string ID { get { return _id; } }
+		public GameObject FirstSelected { get { return _firstSelected; } }
 	}
 }

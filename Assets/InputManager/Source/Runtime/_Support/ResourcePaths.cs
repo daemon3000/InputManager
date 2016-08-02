@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿
 namespace TeamUtility.IO
 {
 	public static class ResourcePaths

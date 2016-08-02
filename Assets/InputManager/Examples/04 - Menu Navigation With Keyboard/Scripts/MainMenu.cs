@@ -1,40 +1,42 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections;
+using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
 	public class MainMenu : MonoBehaviour 
 	{
 		[SerializeField]
-		private MenuPage m_startPage;
+		[FormerlySerializedAs("m_startPage")]
+		private MenuPage _startPage;
 
 		[SerializeField]
-		private MenuPage[] m_pages;
+		[FormerlySerializedAs("m_pages")]
+		private MenuPage[] _pages;
 
-		private MenuPage m_currentPage;
+		private MenuPage _currentPage;
 
 		private void Start()
 		{
-			ChangePage(m_startPage.ID);
+			ChangePage(_startPage.ID);
 		}
 
 		public void ChangePage(string id)
 		{
-			if(m_currentPage != null)
-				m_currentPage.gameObject.SetActive(false);
+			if(_currentPage != null)
+				_currentPage.gameObject.SetActive(false);
 
-			m_currentPage = FindPage(id);
-			if(m_currentPage != null)
+			_currentPage = FindPage(id);
+			if(_currentPage != null)
 			{
-				m_currentPage.gameObject.SetActive(true);
-				EventSystem.current.SetSelectedGameObject(m_currentPage.FirstSelected);
+				_currentPage.gameObject.SetActive(true);
+				EventSystem.current.SetSelectedGameObject(_currentPage.FirstSelected);
 			}
 		}
 
 		private MenuPage FindPage(string id)
 		{
-			foreach(MenuPage page in m_pages)
+			foreach(MenuPage page in _pages)
 			{
 				if(page.ID == id)
 					return page;

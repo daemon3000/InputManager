@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
@@ -17,16 +17,19 @@ namespace TeamUtility.IO.Examples
 		public event Action Paused;
 		public event Action Unpaused;
 
-		[SerializeField] private bool m_dontDestroyOnLoad;
-		private PauseManagerState m_state;
-		private bool m_hardPause;
-		private static PauseManager m_instance;
+		[SerializeField]
+		[FormerlySerializedAs("m_dontDestroyOnLoad")]
+		private bool _dontDestroyOnLoad;
+
+		private PauseManagerState _state;
+		private bool _hardPause;
+		private static PauseManager _instance;
 		
 		public static PauseManager Instance
 		{
 			get
 			{
-				return m_instance;
+				return _instance;
 			}
 		}
 		
@@ -34,7 +37,7 @@ namespace TeamUtility.IO.Examples
 		{
 			get
 			{
-				return m_instance.m_state;
+				return _instance._state;
 			}
 		}
 		
@@ -42,56 +45,56 @@ namespace TeamUtility.IO.Examples
 		{
 			get
 			{
-				return (m_instance.m_state == PauseManagerState.Paused);
+				return (_instance._state == PauseManagerState.Paused);
 			}
 		}
 		
 		public static void Pause()
 		{
 			//	The game will be paused at the start of the next update cycle.
-			if(m_instance.m_state != PauseManagerState.Paused)
+			if(_instance._state != PauseManagerState.Paused)
 			{
-				m_instance.m_state = PauseManagerState.Pausing;
+				_instance._state = PauseManagerState.Pausing;
 			}
 		}
 		
 		public static void UnPause()
 		{
 			//	The game will be unpaused at the start of the next update cycle.
-			if(m_instance.m_state == PauseManagerState.Paused)
+			if(_instance._state == PauseManagerState.Paused)
 			{
-				m_instance.m_state = PauseManagerState.UnPausing;
+				_instance._state = PauseManagerState.UnPausing;
 			}
 		}
 		
 		private void Awake()
 		{
-			if(m_instance != null)
+			if(_instance != null)
 			{
 				Destroy(this);
 			}
 			else
 			{
-				m_instance = this;
-				m_state = PauseManagerState.Idle;
-				m_hardPause = false;
-				if(m_dontDestroyOnLoad)
+				_instance = this;
+				_state = PauseManagerState.Idle;
+				_hardPause = false;
+				if(_dontDestroyOnLoad)
 					DontDestroyOnLoad(gameObject);
 			}
 		}
 		
 		private void Update()
 		{
-			switch(m_state)
+			switch(_state)
 			{
 			case PauseManagerState.Pausing:
 				Time.timeScale = 0.0f;
-				m_state = PauseManagerState.Paused;
+				_state = PauseManagerState.Paused;
 				RaisePausedEvent();
 				break;
 			case PauseManagerState.UnPausing:
 				Time.timeScale = 1.0f;
-				m_state = PauseManagerState.Idle;
+				_state = PauseManagerState.Idle;
 				RaiseUnpausedEvent();
 				break;
 			default:
@@ -100,17 +103,17 @@ namespace TeamUtility.IO.Examples
 			
 			if(InputManager.GetButtonDown("Pause"))
 			{
-				if(m_state == PauseManagerState.Idle)
+				if(_state == PauseManagerState.Idle)
 				{
-					m_state = PauseManagerState.Pausing;
-					m_hardPause = true;
+					_state = PauseManagerState.Pausing;
+					_hardPause = true;
 				}
-				else if(m_state == PauseManagerState.Paused)
+				else if(_state == PauseManagerState.Paused)
 				{
-					if(m_hardPause)
+					if(_hardPause)
 					{
-						m_state = PauseManagerState.UnPausing;
-						m_hardPause = false;
+						_state = PauseManagerState.UnPausing;
+						_hardPause = false;
 					}
 				}
 			}
@@ -118,10 +121,10 @@ namespace TeamUtility.IO.Examples
 		
 		private void OnLevelWasLoaded(int levelIndex)
 		{
-			if(m_state != PauseManagerState.Idle)
+			if(_state != PauseManagerState.Idle)
 			{
 				Time.timeScale = 1.0f;
-				m_state = PauseManagerState.Idle;
+				_state = PauseManagerState.Idle;
 			}
 		}
 		

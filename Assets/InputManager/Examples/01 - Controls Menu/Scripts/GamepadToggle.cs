@@ -1,28 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
 	public class GamepadToggle : MonoBehaviour 
 	{
-		[SerializeField] private string m_keyboardInputConfig;
-		[SerializeField] private string m_gamepadInputConfig;
-		[SerializeField] private Text m_status;
+		[SerializeField]
+		[FormerlySerializedAs("m_keyboardInputConfig")]
+		private string _keyboardInputConfig;
+		[SerializeField]
+		[FormerlySerializedAs("m_gamepadInputConfig")]
+		private string _gamepadInputConfig;
+		[SerializeField]
+		[FormerlySerializedAs("m_status")]
+		private Text _status;
 
-		private bool m_gamepadOn;
+		private bool _gamepadOn;
 
 		private void Awake()
 		{
-			if(InputManager.PlayerOneConfiguration.name == m_keyboardInputConfig)
+			if(InputManager.PlayerOneConfiguration.name == _keyboardInputConfig)
 			{
-				m_gamepadOn = false;
-				m_status.text = "Gamepad: Off";
+				_gamepadOn = false;
+				_status.text = "Gamepad: Off";
 			}
 			else
 			{
-				m_gamepadOn = true;
-				m_status.text = "Gamepad: On";
+				_gamepadOn = true;
+				_status.text = "Gamepad: On";
 			}
 			InputManager.Instance.Loaded += HandleInputLoaded;
 		}
@@ -35,31 +41,31 @@ namespace TeamUtility.IO.Examples
 
 		private void HandleInputLoaded()
 		{
-			if(m_gamepadOn)
+			if(_gamepadOn)
 			{
-				InputManager.SetInputConfiguration(m_gamepadInputConfig, PlayerID.One);
-				m_status.text = "Gamepad: On";
+				InputManager.SetInputConfiguration(_gamepadInputConfig, PlayerID.One);
+				_status.text = "Gamepad: On";
 			}
 			else
 			{
-				InputManager.SetInputConfiguration(m_keyboardInputConfig, PlayerID.One);
-				m_status.text = "Gamepad: Off";
+				InputManager.SetInputConfiguration(_keyboardInputConfig, PlayerID.One);
+				_status.text = "Gamepad: Off";
 			}
 		}
 
 		public void Toggle()
 		{
-			if(m_gamepadOn)
+			if(_gamepadOn)
 			{
-				InputManager.SetInputConfiguration(m_keyboardInputConfig, PlayerID.One);
-				m_status.text = "Gamepad: Off";
-				m_gamepadOn = false;
+				InputManager.SetInputConfiguration(_keyboardInputConfig, PlayerID.One);
+				_status.text = "Gamepad: Off";
+				_gamepadOn = false;
 			}
 			else
 			{
-				InputManager.SetInputConfiguration(m_gamepadInputConfig, PlayerID.One);
-				m_status.text = "Gamepad: On";
-				m_gamepadOn = true;
+				InputManager.SetInputConfiguration(_gamepadInputConfig, PlayerID.One);
+				_status.text = "Gamepad: On";
+				_gamepadOn = true;
 			}
 		}
 	}
