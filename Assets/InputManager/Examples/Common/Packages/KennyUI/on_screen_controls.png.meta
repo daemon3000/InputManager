@@ -1,0 +1,315 @@
+fileFormatVersion: 2
+guid: a5659e2da325e92439c9742fab2f1d50
+timeCreated: 1470136066
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: dpad_center
+    21300002: dpad_down
+    21300004: dpad_down_left
+    21300006: dpad_down_right
+    21300008: dpad_left
+    21300010: dpad_right
+    21300012: dpad_up
+    21300014: dpad_up_left
+    21300016: dpad_up_right
+    21300018: joystick_base
+    21300020: joystick_knob
+    21300022: jump
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: dpad_center
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 347
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_down
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 347
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_down_left
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 347
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_down_right
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 347
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_left
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 347
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_right
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 347
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_up
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 182
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_up_left
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 182
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: dpad_up_right
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 182
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 80}
+        - {x: -41, y: 80}
+        - {x: -80, y: 65}
+        - {x: -80, y: -49}
+        - {x: -49, y: -80}
+        - {x: 46, y: -80}
+        - {x: 53, y: -78}
+        - {x: 80, y: -50}
+        - {x: 80, y: 59}
+        - {x: 79, y: 64}
+    - name: joystick_base
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 182
+        width: 160
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -29, y: 80}
+        - {x: -47, y: 77}
+        - {x: -80, y: 47}
+        - {x: -80, y: -74}
+        - {x: -56, y: -80}
+        - {x: 72, y: -80}
+        - {x: 80, y: -72}
+        - {x: 80, y: 53}
+        - {x: 72, y: 80}
+    - name: joystick_knob
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 242
+        width: 96
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 18, y: 50}
+        - {x: -48, y: 50}
+        - {x: -48, y: -50}
+        - {x: 28, y: -50}
+        - {x: 48, y: -43}
+        - {x: 48, y: 29}
+        - {x: 33, y: 44}
+    - name: jump
+      rect:
+        serializedVersion: 2
+        x: 766
+        y: 262
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -31, y: 40}
+        - {x: -40, y: 31}
+        - {x: -40, y: -21}
+        - {x: -32, y: -40}
+        - {x: 23, y: -40}
+        - {x: 40, y: -31}
+        - {x: 40, y: 34}
+        - {x: 22, y: 40}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

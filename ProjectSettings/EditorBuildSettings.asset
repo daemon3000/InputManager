@@ -5,5 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/InputManager/Addons/JoystickMapping/Wizards/XBox Controller Clone/xbox_controller.unity
+  - enabled: 0
+    path: Assets/InputManager/Examples/03 - Mobile Input/Scenes/example_03_01.unity
+  - enabled: 1
+    path: Assets/InputManager/Examples/03 - Mobile Input/Scenes/example_03_02.unity

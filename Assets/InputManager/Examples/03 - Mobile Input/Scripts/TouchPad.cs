@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace TeamUtility.IO.Examples
 {
@@ -12,64 +12,84 @@ namespace TeamUtility.IO.Examples
 			Both, OnlyHorizontal, OnlyVertical
 		}
 		
-		public CrossPlatformInput mobileInputAdapter;
 		public AxisOption axesToUse = AxisOption.Both;
 		public Vector2 sensitivity = Vector2.one;
+		public string inputConfiguration;
+		public string horizontalAxis;
+		public string verticalAxis;
 
-		private RectTransform m_transform;
-		private Vector2 m_pointerPos;
-		private bool m_isPointerDown;
+		private RectTransform _transform;
+		private Vector2 _pointerPos;
+		private bool _isPointerDown;
 
 		private void Start()
 		{
-			m_transform = GetComponent<RectTransform>();
-			m_isPointerDown = false;
+			_transform = GetComponent<RectTransform>();
+			_isPointerDown = false;
 			ResetAxisValues();
 		}
 
 		public void OnPointerDown(PointerEventData eventData)
 		{
-			m_isPointerDown = true;
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(m_transform, eventData.position, eventData.pressEventCamera, out m_pointerPos);
+			_isPointerDown = true;
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(_transform, eventData.position, eventData.pressEventCamera, out _pointerPos);
 		}
 		
 		public void OnDrag(PointerEventData eventData)
 		{
-			if(m_isPointerDown)
+			if(_isPointerDown)
 			{
-				Vector2 lastPointerPos = m_pointerPos;
-				RectTransformUtility.ScreenPointToLocalPointInRectangle(m_transform, eventData.position, eventData.pressEventCamera, out m_pointerPos);
-				if(m_pointerPos.x >= m_transform.rect.x && m_pointerPos.x <= m_transform.rect.xMax &&
-				   m_pointerPos.y >= m_transform.rect.y && m_pointerPos.y <= m_transform.rect.yMax)
+				Vector2 lastPointerPos = _pointerPos;
+				RectTransformUtility.ScreenPointToLocalPointInRectangle(_transform, eventData.position, eventData.pressEventCamera, out _pointerPos);
+				if(_pointerPos.x >= _transform.rect.x && _pointerPos.x <= _transform.rect.xMax &&
+				   _pointerPos.y >= _transform.rect.y && _pointerPos.y <= _transform.rect.yMax)
 				{
-					UpdateAxisValues(m_pointerPos - lastPointerPos);
+					UpdateAxisValues(_pointerPos - lastPointerPos);
 				}
 				else
 				{
 					ResetAxisValues();
-					m_isPointerDown = false;
+					_isPointerDown = false;
 				}
 			}
 		}
 
 		public void OnPointerUp(PointerEventData eventData) 
 		{
-			m_isPointerDown = false;
+			_isPointerDown = false;
 			ResetAxisValues();
 		}
 
 		private void UpdateAxisValues(Vector2 delta)
 		{
 			if(axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyHorizontal)
-				mobileInputAdapter.SetMouseX(delta.x * sensitivity.x);
+				SetHorizontalAxis(delta.x * sensitivity.x);
 			if(axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyVertical)
-				mobileInputAdapter.SetMouseY(delta.y * sensitivity.y);
+				SetVerticalAxis(delta.y * sensitivity.y);
 		}
 
 		private void ResetAxisValues()
 		{
-			mobileInputAdapter.SetMouseX(0.0f);
-			mobileInputAdapter.SetMouseY(0.0f);
+			SetHorizontalAxis(0.0f);
+			SetVerticalAxis(0.0f);
+		}
+
+		private void SetHorizontalAxis(float value)
+		{
+			if(!string.IsNullOrEmpty(inputConfiguration))
+			{
+				if(!string.IsNullOrEmpty(horizontalAxis))
+					InputManager.SetRemoteAxisValue(inputConfiguration, horizontalAxis, value);
+			}
+		}
+
+		private void SetVerticalAxis(float value)
+		{
+			if(!string.IsNullOrEmpty(inputConfiguration))
+			{
+				if(!string.IsNullOrEmpty(verticalAxis))
+					InputManager.SetRemoteAxisValue(inputConfiguration, verticalAxis, value);
+			}
 		}
 	}
 }

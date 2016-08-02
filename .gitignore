@@ -22,4 +22,5 @@ Assembly-Boo*
 *.orig
 *.pfx
 *.pfx.meta
+*.keystore
 
