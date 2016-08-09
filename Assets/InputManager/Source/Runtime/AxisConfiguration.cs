@@ -22,7 +22,6 @@
 #endregion
 using UnityEngine;
 using System;
-using System.Collections;
 
 namespace TeamUtility.IO
 {
@@ -34,8 +33,8 @@ namespace TeamUtility.IO
 		public const float Positive = 1.0f;
 		public const float Negative = -1.0f;
 		public const int MaxMouseAxes = 3;
-		public const int MaxJoystickAxes = 10;
-		public const int MaxJoysticks = 4;
+		public const int MaxJoystickAxes = 28;
+		public const int MaxJoysticks = 11;
 		#endregion
 		
 		#region [Settings]

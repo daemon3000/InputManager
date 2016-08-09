@@ -93,8 +93,8 @@ namespace TeamUtilityEditor.IO
 		private bool _editingAltNegativeKey = false;
 		private bool _tryedToFindInputManagerInScene = false;
 		private bool _isDisposed = false;
-		private string[] _axisOptions = new string[] { "X", "Y", "3rd(Scrollwheel)", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
-		private string[] _joystickOptions = new string[] { "Joystick 1", "Joystick 2", "Joystick 3", "Joystick 4" };
+		private string[] _axisOptions;
+		private string[] _joystickOptions;
 		
 		private const float _menuWidth = 100.0f;
 		private const float _minHierarchyPanelWidth = 150.0f;
@@ -102,6 +102,9 @@ namespace TeamUtilityEditor.IO
 		
 		private void OnEnable()
 		{
+			_joystickOptions = EditorToolbox.GenerateJoystickNames();
+			_axisOptions = EditorToolbox.GenerateJoystickAxisNames();
+
 			EditorToolbox.ShowStartupWarning();
 			IsOpen = true;
 

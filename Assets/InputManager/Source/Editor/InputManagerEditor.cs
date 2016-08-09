@@ -46,7 +46,7 @@ namespace TeamUtilityEditor.IO
 		private GUIContent _deadZoneInfo = new GUIContent("Dead Zone", "Size of analog dead zone. Values within this range map to neutral.");
 		private GUIContent _createSnapshotIngo = new GUIContent("Create\nSnapshot", "Creates a snapshot of your input configurations which can be restored at a later time(when you exit play-mode for example)");
 		private string[] _axisOptions = new string[] { "X", "Y", "3rd(Scrollwheel)", "4th", "5th", "6th", "7th", "8th", "9th", "10th" };
-		private string[] _joystickOptions = new string[] { "Joystick 1", "Joystick 2", "Joystick 3", "Joystick 4" };
+		private string[] _joystickOptions;
 		private string _keyString;
 		private bool _editingPositiveKey = false;
 		private bool _editingAltPositiveKey = false;
@@ -55,6 +55,9 @@ namespace TeamUtilityEditor.IO
 		
 		private void OnEnable()
 		{
+			_joystickOptions = EditorToolbox.GenerateJoystickNames();
+			_axisOptions = EditorToolbox.GenerateJoystickAxisNames();
+
 			EditorToolbox.ShowStartupWarning();
 			_intputConfigurations = serializedObject.FindProperty("inputConfigurations");
 			_dontDestroyOnLoad = serializedObject.FindProperty("dontDestroyOnLoad");
