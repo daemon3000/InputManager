@@ -140,8 +140,10 @@ namespace TeamUtilityEditor.IO.InputManager
 				return false;
 			}
 
+			int option = EditorUtility.DisplayDialogComplex("Warning", "Do you want to export your old input settings?\n\nYour project needs to have text serialization enabled. If text serialization is not enabled press the Abort button.\n\nYou can resume this process after text serialization is enabled from the File menu.", "Yes", "No", "Abort");
 			string exportPath = null;
-			if(EditorUtility.DisplayDialog("Warning", "Do you want to export your old input settings?", "Yes", "No"))
+
+			if(option == 0)
 			{
 				exportPath = EditorUtility.SaveFilePanel("Export old input axes", "", "unity_input_export", "xml");
 				if(string.IsNullOrEmpty(exportPath))
@@ -152,19 +154,35 @@ namespace TeamUtilityEditor.IO.InputManager
 			}
 			else
 			{
-				if(!EditorUtility.DisplayDialog("Warning", "You chose not to export your old input settings. They will be lost forever. Are you sure you want to continue?", "Yes", "No"))
+				if(option == 1)
+				{
+					if(!EditorUtility.DisplayDialog("Warning", "You chose not to export your old input settings. They will be lost forever. Are you sure you want to continue?", "Yes", "No"))
+						return false;
+				}
+				else
+				{
 					return false;
+				}
 			}
 
 			InputConverter inputConverter = new InputConverter();
 			if(!string.IsNullOrEmpty(exportPath))
 			{
-				inputConverter.ConvertUnityInputManager(inputManagerPath, exportPath);
+				try
+				{
+					inputConverter.ConvertUnityInputManager(inputManagerPath, exportPath);
+				}
+				catch(System.Exception ex)
+				{
+					Debug.LogException(ex);
+					if(!EditorUtility.DisplayDialog("Error", "Failed to export your old input settings. Do you want to continue? If you continue your old input settings will be lost forever.", "Yes", "No"))
+						return false;
+				}
 			}
 
 			inputConverter.GenerateDefaultUnityInputManager(inputManagerPath);
 
-			EditorUtility.DisplayDialog("Success", "The input settings have been successfully replaced.\nYou might need to minimize and restore Unity to reimport the new settings.", "OK");
+			EditorUtility.DisplayDialog("Success", "The input settings have been successfully replaced.\n\nYou might need to minimize and restore Unity to reimport the new settings.", "OK");
 
 			return true;
 		}
