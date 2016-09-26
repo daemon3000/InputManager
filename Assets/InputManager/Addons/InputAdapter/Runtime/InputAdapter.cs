@@ -608,12 +608,10 @@ namespace TeamUtility.IO
 			{
 			case RuntimePlatform.WindowsPlayer:
 			case RuntimePlatform.WindowsEditor:
-			case RuntimePlatform.WindowsWebPlayer:
 				_joystickConfiguration = windowsJoystickConfiguration;
 				break;
 			case RuntimePlatform.OSXPlayer:
 			case RuntimePlatform.OSXEditor:
-			case RuntimePlatform.OSXWebPlayer:
 				_joystickConfiguration = osxJoystickConfiguration;
 				break;
 			case RuntimePlatform.LinuxPlayer:

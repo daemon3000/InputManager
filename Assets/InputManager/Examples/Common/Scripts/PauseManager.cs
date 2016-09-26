@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 namespace TeamUtility.IO.Examples
 {
@@ -78,11 +79,13 @@ namespace TeamUtility.IO.Examples
 				_instance = this;
 				_state = PauseManagerState.Idle;
 				_hardPause = false;
+				SceneManager.sceneLoaded += HandleLevelWasLoaded;
+
 				if(_dontDestroyOnLoad)
 					DontDestroyOnLoad(gameObject);
 			}
 		}
-		
+
 		private void Update()
 		{
 			switch(_state)
@@ -119,9 +122,9 @@ namespace TeamUtility.IO.Examples
 			}
 		}
 		
-		private void OnLevelWasLoaded(int levelIndex)
+		private void HandleLevelWasLoaded(Scene scene, LoadSceneMode loadSceneMode)
 		{
-			if(_state != PauseManagerState.Idle)
+			if(_state != PauseManagerState.Idle && loadSceneMode == LoadSceneMode.Single)
 			{
 				Time.timeScale = 1.0f;
 				_state = PauseManagerState.Idle;
@@ -132,6 +135,7 @@ namespace TeamUtility.IO.Examples
 		{
 			Paused = null;
 			Unpaused = null;
+			SceneManager.sceneLoaded -= HandleLevelWasLoaded;
 		}
 		
 		private void OnApplicationQuit()
