@@ -960,7 +960,7 @@ namespace TeamUtilityEditor.IO
 
 			EditorGUILayout.Space();
 
-			if(axisConfig.type == InputType.Button)
+			if(axisConfig.type == InputType.Button && (Event.current == null || Event.current.type != EventType.KeyUp))
 			{
 				if(IsGenericJoystickButton(axisConfig.positive))
 					DisplayGenericJoystickButtonWarning(axisConfig.positive, axisConfig.joystick);
