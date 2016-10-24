@@ -958,14 +958,21 @@ namespace TeamUtilityEditor.IO
 			axisConfig.axis = EditorGUILayout.Popup("Axis", axisConfig.axis, _axisOptions);
 			axisConfig.joystick = EditorGUILayout.Popup("Joystick", axisConfig.joystick, _joystickOptions);
 
-			if(EditorApplication.isPlaying)
+			EditorGUILayout.Space();
+
+			if(axisConfig.type == InputType.Button)
 			{
-				EditorGUILayout.Space();
-				GUI.enabled = false;
-				EditorGUILayout.FloatField("Raw Axis", axisConfig.GetAxisRaw());
-				EditorGUILayout.FloatField("Axis", axisConfig.GetAxis());
-				EditorGUILayout.Toggle("Button", axisConfig.GetButton());
-				GUI.enabled = true;
+				if(IsGenericJoystickButton(axisConfig.positive))
+					DisplayGenericJoystickButtonWarning(axisConfig.positive, axisConfig.joystick);
+
+				if(IsGenericJoystickButton(axisConfig.altPositive))
+					DisplayGenericJoystickButtonWarning(axisConfig.altPositive, axisConfig.joystick);
+
+				if(IsGenericJoystickButton(axisConfig.negative))
+					DisplayGenericJoystickButtonWarning(axisConfig.negative, axisConfig.joystick);
+
+				if(IsGenericJoystickButton(axisConfig.altNegative))
+					DisplayGenericJoystickButtonWarning(axisConfig.altNegative, axisConfig.joystick);
 			}
 
 			GUILayout.EndScrollView();
@@ -986,6 +993,26 @@ namespace TeamUtilityEditor.IO
 					_keyString = key.ToString();
 				}
 				isEditing = false;
+			}
+		}
+
+		private bool IsGenericJoystickButton(KeyCode keyCode)
+		{
+			return (int)keyCode >= (int)KeyCode.JoystickButton0 && (int)keyCode <= (int)KeyCode.JoystickButton19;
+		}
+
+		private void DisplayGenericJoystickButtonWarning(KeyCode button, int joystick)
+		{
+			if(joystick < 8)
+			{
+				KeyCode correctButton = (KeyCode)((int)KeyCode.Joystick1Button0 + joystick * 20 + ((int)button - (int)KeyCode.JoystickButton0));
+				string warning = string.Format("'{0}' will receive input from all joysticks. Use '{1}' to receive input only from 'Joystick {2}'.", button, correctButton, joystick + 1);
+				EditorGUILayout.HelpBox(warning, MessageType.Warning);
+			}
+			else
+			{
+				string warning = string.Format("'{0}' will receive input from all joysticks.", button);
+				EditorGUILayout.HelpBox(warning, MessageType.Warning);
 			}
 		}
 		#endregion
