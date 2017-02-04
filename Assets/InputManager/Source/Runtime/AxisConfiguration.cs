@@ -263,11 +263,13 @@ namespace TeamUtility.IO
 			{
 				if(_rawAxisName != null)
 				{
-					axis = Mathf.Clamp(Input.GetAxis(_rawAxisName) * sensitivity, -1, 1);
-					if(axis > -deadZone && axis < deadZone)
+					axis = Input.GetAxis(_rawAxisName);
+					if(Mathf.Abs(axis) < deadZone)
 					{
 						axis = Neutral;
 					}
+
+					axis = Mathf.Clamp(axis * sensitivity, -1, 1);
 				}
 			}
 			

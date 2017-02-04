@@ -5,4 +5,6 @@
 	<Item name="Unity 5.1" path="ui_input_modules/unity_5_1" />
   	<Item name="Unity 5.2" path="ui_input_modules/unity_5_2" />
   	<Item name="Unity 5.3" path="ui_input_modules/unity_5_3" />
+	<Item name="Unity 5.4" path="ui_input_modules/unity_5_4" />
+	<Item name="Unity 5.5" path="ui_input_modules/unity_5_5" />
 </InputModules>
