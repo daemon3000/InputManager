@@ -304,8 +304,8 @@ namespace TeamUtility.IO
 		
 		private bool ScanJoystickButton()
 		{
-			int scanStart = (int)KeyCode.JoystickButton0;
-			int scanEnd = (int)KeyCode.JoystickButton19;
+			int scanStart = (int)KeyCode.Joystick1Button0;
+			int scanEnd = (int)KeyCode.Joystick8Button19;
 
 			if(_scanJoystick.HasValue)
 			{
@@ -317,13 +317,23 @@ namespace TeamUtility.IO
 			{
 				if(Input.GetKeyDown((KeyCode)key))
 				{
-					_scanResult.scanFlags = ScanFlags.JoystickButton;
-					_scanResult.key = (KeyCode)key;
-					_scanResult.joystick = _scanJoystick.HasValue ? _scanJoystick.Value : -1;
+					if(_scanJoystick.HasValue)
+					{
+						_scanResult.key = (KeyCode)key;
+						_scanResult.joystick = _scanJoystick.Value;
+					}
+					else
+					{
+						_scanResult.key = (KeyCode)((int)KeyCode.JoystickButton0 + (key - (int)KeyCode.Joystick1Button0) % 20);
+						_scanResult.joystick = ((key - (int)KeyCode.Joystick1Button0) / 20) + 1;
+					}
+					
 					_scanResult.joystickAxis = -1;
 					_scanResult.joystickAxisValue = 0.0f;
 					_scanResult.mouseAxis = -1;
 					_scanResult.userData = _scanUserData;
+					_scanResult.scanFlags = ScanFlags.JoystickButton;
+
 					if(_scanHandler(_scanResult))
 					{
 						_scanHandler = null;
