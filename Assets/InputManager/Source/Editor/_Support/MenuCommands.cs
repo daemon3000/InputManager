@@ -22,7 +22,7 @@
 #endregion
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
+using UnityInputConverter;
 
 namespace TeamUtilityEditor.IO.InputManager
 {
@@ -37,7 +37,32 @@ namespace TeamUtilityEditor.IO.InputManager
 			Selection.activeGameObject = gameObject;
 		}
 
-        [MenuItem("Team Utility/Input Manager/Check For Updates", false, 400)]
+		[MenuItem("Team Utility/Input Manager/Convert Unity Input", false, 5)]
+		private static void ConvertInput()
+		{
+			string sourcePath = EditorUtility.OpenFilePanel("Select Unity input settings asset", "", "asset");
+			if(!string.IsNullOrEmpty(sourcePath))
+			{
+				string destinationPath = EditorUtility.SaveFilePanel("Save imported input axes", "", "input_manager", "xml");
+				if(!string.IsNullOrEmpty(destinationPath))
+				{
+					try
+					{
+						InputConverter converter = new InputConverter();
+						converter.ConvertUnityInputManager(sourcePath, destinationPath);
+
+						EditorUtility.DisplayDialog("Success", "Unity input converted successfuly!", "OK");
+					}
+					catch(System.Exception ex)
+					{
+						Debug.LogException(ex);
+						EditorUtility.DisplayDialog("Error", "Failed to convert Unity input!", "OK");
+					}
+				}
+			}
+		}
+
+		[MenuItem("Team Utility/Input Manager/Check For Updates", false, 400)]
         public static void CheckForUpdates()
         {
             Application.OpenURL("https://github.com/daemon3000/InputManager");
