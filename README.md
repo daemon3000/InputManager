@@ -38,3 +38,4 @@ This software is released under the [MIT license](http://opensource.org/licenses
 ## Contributors
 
 - [TheSniperFan](https://github.com/TheSniperFan)
+- [reberzon](https://github.com/reberzon)
