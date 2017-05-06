@@ -33,7 +33,10 @@ namespace TeamUtilityEditor.IO.InputManager
 		{
 			GameObject gameObject = new GameObject("Input Manager");
 			gameObject.AddComponent<TeamUtility.IO.InputManager>();
-			
+
+			// Register Input Manager for undo, mark scene as dirty.
+			Undo.RegisterCreatedObjectUndo(gameObject, "Create Input Manager");
+
 			Selection.activeGameObject = gameObject;
 		}
 
