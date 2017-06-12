@@ -20,11 +20,10 @@
 //	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-using UnityEngine;
 using System;
 using System.IO;
 using System.Xml;
-using System.Collections.Generic;
+using System.Globalization;
 
 namespace TeamUtility.IO
 {
@@ -67,43 +66,41 @@ namespace TeamUtility.IO
 		public SaveLoadParameters Load()
 		{
             SaveLoadParameters parameters = new SaveLoadParameters();
+			XmlDocument doc = CreateXmlDocument();
 
-			using(XmlReader reader = CreateXmlReader())
+			if(doc != null)
 			{
-                parameters.inputConfigurations = new List<InputConfiguration>();
-                parameters.playerOneDefault = string.Empty;
-                parameters.playerTwoDefault = string.Empty;
-                parameters.playerThreeDefault = string.Empty;
-                parameters.playerFourDefault = string.Empty;
-                while (reader.Read())
+				parameters.playerOneDefault = ReadAttribute(doc.DocumentElement, "playerOneDefault");
+				parameters.playerTwoDefault = ReadAttribute(doc.DocumentElement, "playerTwoDefault");
+				parameters.playerThreeDefault = ReadAttribute(doc.DocumentElement, "playerThreeDefault");
+				parameters.playerFourDefault = ReadAttribute(doc.DocumentElement, "playerFourDefault");
+
+				var inputConfigNodes = doc.DocumentElement.SelectNodes("InputConfiguration");
+				foreach(XmlNode node in inputConfigNodes)
 				{
-					if(reader.IsStartElement("Input"))
-					{
-                        parameters.playerOneDefault = reader["playerOneDefault"];
-                        parameters.playerTwoDefault = reader["playerTwoDefault"];
-                        parameters.playerThreeDefault = reader["playerThreeDefault"];
-                        parameters.playerFourDefault = reader["playerFourDefault"];
-                    }
-					else if(reader.IsStartElement("InputConfiguration"))
-					{
-                        parameters.inputConfigurations.Add(ReadInputConfiguration(reader));
-					}
+					parameters.inputConfigurations.Add(ReadInputConfiguration(node));
 				}
 			}
 
-            return parameters;
+			return parameters;
 		}
 
 		public InputConfiguration LoadSelective(string inputConfigName)
 		{
+			if(string.IsNullOrEmpty(inputConfigName))
+				return null;
+
+			XmlDocument doc = CreateXmlDocument();
 			InputConfiguration inputConfig = null;
-			using(XmlReader reader = CreateXmlReader())
+
+			if(doc != null)
 			{
-				while(reader.Read())
+				var inputConfigNodes = doc.SelectNodes("InputConfiguration");
+				foreach(XmlNode node in inputConfigNodes)
 				{
-					if(reader.IsStartElement("InputConfiguration") && reader["name"] == inputConfigName)
+					if(ReadAttribute(node, "name") == inputConfigName)
 					{
-						inputConfig = ReadInputConfiguration(reader);
+						inputConfig = ReadInputConfiguration(node);
 						break;
 					}
 				}
@@ -111,97 +108,138 @@ namespace TeamUtility.IO
 
 			return inputConfig;
 		}
-		
-		private XmlReader CreateXmlReader()
+
+		private XmlDocument CreateXmlDocument()
 		{
 			if(_filename != null)
 			{
-				return XmlReader.Create(_filename);
+				using(StreamReader reader = new StreamReader(_filename, true))
+				{
+					XmlDocument doc = new XmlDocument();
+					doc.Load(reader);
+
+					return doc;
+				}
 			}
 			else if(_inputStream != null)
 			{
-				return XmlReader.Create(_inputStream);
+				XmlDocument doc = new XmlDocument();
+				doc.Load(_inputStream);
+
+				return doc;
 			}
 			else if(_textReader != null)
 			{
-				return XmlReader.Create(_textReader);
+				XmlDocument doc = new XmlDocument();
+				doc.Load(_textReader);
+
+				return doc;
 			}
 
 			return null;
 		}
 		
-		private InputConfiguration ReadInputConfiguration(XmlReader reader)
+		private InputConfiguration ReadInputConfiguration(XmlNode node)
 		{
 			InputConfiguration inputConfig = new InputConfiguration();
-			inputConfig.name = reader["name"];
-			
-			while(reader.Read())
+			inputConfig.name = ReadAttribute(node, "name", "Unnamed Configuration");
+
+			var axisConfigNodes = node.SelectNodes("AxisConfiguration");
+			foreach(XmlNode child in axisConfigNodes)
 			{
-				if(!reader.IsStartElement("AxisConfiguration"))
-					break;
-				
-				inputConfig.axes.Add(ReadAxisConfiguration(reader));
+				inputConfig.axes.Add(ReadAxisConfiguration(child));
 			}
 			
 			return inputConfig;
 		}
 		
-		private AxisConfiguration ReadAxisConfiguration(XmlReader reader)
+		private AxisConfiguration ReadAxisConfiguration(XmlNode node)
 		{
 			AxisConfiguration axisConfig = new AxisConfiguration();
-			axisConfig.name = reader["name"];
-			
-			bool endOfAxis = false;
-			while(reader.Read() && reader.IsStartElement() && !endOfAxis)
+			axisConfig.name = ReadAttribute(node, "name", "Unnamed Axis");
+
+			foreach(XmlNode child in node.ChildNodes)
 			{
-				switch(reader.LocalName)
+				switch(child.LocalName)
 				{
 				case "description":
-					axisConfig.description = reader.IsEmptyElement ? string.Empty : reader.ReadElementContentAsString();
+					axisConfig.description = child.InnerText;
 					break;
 				case "positive":
-					axisConfig.positive = AxisConfiguration.StringToKey(reader.ReadElementContentAsString());
+					axisConfig.positive = AxisConfiguration.StringToKey(child.InnerText);
 					break;
 				case "altPositive":
-					axisConfig.altPositive = AxisConfiguration.StringToKey(reader.ReadElementContentAsString());
+					axisConfig.altPositive = AxisConfiguration.StringToKey(child.InnerText);
 					break;
 				case "negative":
-					axisConfig.negative = AxisConfiguration.StringToKey(reader.ReadElementContentAsString());
+					axisConfig.negative = AxisConfiguration.StringToKey(child.InnerText);
 					break;
 				case "altNegative":
-					axisConfig.altNegative = AxisConfiguration.StringToKey(reader.ReadElementContentAsString());
+					axisConfig.altNegative = AxisConfiguration.StringToKey(child.InnerText);
 					break;
 				case "deadZone":
-					axisConfig.deadZone = reader.ReadElementContentAsFloat();
+					axisConfig.deadZone = ReadAsFloat(child);
 					break;
 				case "gravity":
-					axisConfig.gravity = reader.ReadElementContentAsFloat();
+					axisConfig.gravity = ReadAsFloat(child, 1.0f);
 					break;
 				case "sensitivity":
-					axisConfig.sensitivity = reader.ReadElementContentAsFloat();
+					axisConfig.sensitivity = ReadAsFloat(child, 1.0f);
 					break;
 				case "snap":
-					axisConfig.snap = reader.ReadElementContentAsBoolean();
+					axisConfig.snap = ReadAsBool(child);
 					break;
 				case "invert":
-					axisConfig.invert = reader.ReadElementContentAsBoolean();
+					axisConfig.invert = ReadAsBool(child);
 					break;
 				case "type":
-					axisConfig.type = AxisConfiguration.StringToInputType(reader.ReadElementContentAsString());
+					axisConfig.type = AxisConfiguration.StringToInputType(child.InnerText);
 					break;
 				case "axis":
-					axisConfig.axis = reader.ReadElementContentAsInt();
+					axisConfig.axis = ReadAsInt(child);
 					break;
 				case "joystick":
-					axisConfig.joystick = reader.ReadElementContentAsInt();
-					break;
-				default:
-					endOfAxis = true;
+					axisConfig.joystick = ReadAsInt(child);
 					break;
 				}
 			}
 			
 			return axisConfig;
+		}
+
+		private string ReadAttribute(XmlNode node, string attribute, string defValue = null)
+		{
+			if(node.Attributes[attribute] != null)
+				return node.Attributes[attribute].InnerText;
+
+			return defValue;
+		}
+
+		private int ReadAsInt(XmlNode node, int defValue = 0)
+		{
+			int value = 0;
+			if(int.TryParse(node.InnerText, out value))
+				return value;
+
+			return defValue;
+		}
+
+		private float ReadAsFloat(XmlNode node, float defValue = 0.0f)
+		{
+			float value = 0;
+			if(float.TryParse(node.InnerText, NumberStyles.Float, CultureInfo.InvariantCulture, out value))
+				return value;
+
+			return defValue;
+		}
+
+		private bool ReadAsBool(XmlNode node, bool defValue = false)
+		{
+			bool value = false;
+			if(bool.TryParse(node.InnerText, out value))
+				return value;
+
+			return defValue;
 		}
 	}
 }

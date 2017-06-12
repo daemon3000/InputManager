@@ -9,5 +9,14 @@ namespace TeamUtility.IO
         public string playerTwoDefault;
         public string playerThreeDefault;
         public string playerFourDefault;
+
+		public SaveLoadParameters()
+		{
+			inputConfigurations = new List<InputConfiguration>();
+			playerOneDefault = null;
+			playerTwoDefault = null;
+			playerThreeDefault = null;
+			playerFourDefault = null;
+		}
     }
 }
