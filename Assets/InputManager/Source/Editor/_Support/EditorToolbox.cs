@@ -140,7 +140,7 @@ namespace TeamUtilityEditor.IO.InputManager
 				return false;
 			}
 
-			int option = EditorUtility.DisplayDialogComplex("Warning", "Do you want to export your old input settings?\n\nYour project needs to have text serialization enabled. If text serialization is not enabled press the Abort button.\n\nYou can resume this process after text serialization is enabled from the File menu.", "Yes", "No", "Abort");
+			int option = EditorUtility.DisplayDialogComplex("Warning", "Do you want to export your old input settings?\n\nYour project needs to have asset serialization mode set to 'Force Text' in the Editor Settings. If text serialization is not enabled press the Abort button.\n\nYou can resume this process after text serialization is enabled from the File menu.", "Yes", "No", "Abort");
 			string exportPath = null;
 
 			if(option == 0)
@@ -175,7 +175,9 @@ namespace TeamUtilityEditor.IO.InputManager
 				catch(System.Exception ex)
 				{
 					Debug.LogException(ex);
-					if(!EditorUtility.DisplayDialog("Error", "Failed to export your old input settings. Do you want to continue? If you continue your old input settings will be lost forever.", "Yes", "No"))
+
+					string message = "Failed to export your old input settings. Please make sure asset serialization mode is set to 'Forced Text' in the Editor Settings.\n\nDo you want to continue? If you continue your old input settings will be lost forever.";
+					if(!EditorUtility.DisplayDialog("Error", message, "Yes", "No"))
 						return false;
 				}
 			}

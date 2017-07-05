@@ -59,7 +59,9 @@ namespace TeamUtilityEditor.IO.InputManager
 					catch(System.Exception ex)
 					{
 						Debug.LogException(ex);
-						EditorUtility.DisplayDialog("Error", "Failed to convert Unity input!", "OK");
+
+						string message = "Failed to convert Unity input! Please make sure 'InputManager.asset' is serialized as a YAML text file.";
+						EditorUtility.DisplayDialog("Error", message, "OK");
 					}
 				}
 			}

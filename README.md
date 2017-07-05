@@ -39,3 +39,4 @@ This software is released under the [MIT license](http://opensource.org/licenses
 
 - [TheSniperFan](https://github.com/TheSniperFan)
 - [reberzon](https://github.com/reberzon)
+- [Ikillnukes](https://github.com/Ikillnukes)
