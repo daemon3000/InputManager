@@ -21,7 +21,10 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
-using System;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Callbacks;
+#endif
 using System.Collections.Generic;
 
 namespace TeamUtility.IO
@@ -32,21 +35,33 @@ namespace TeamUtility.IO
         private List<InputEvent> _inputEvents;
 
         private Dictionary<string, InputEvent> _eventLookup;
-		
+
 		public int EventCount
         {
-            get { return _inputEvents.Count; }
+            get
+			{
+				return _inputEvents.Count;
+			}
         }
 		
 		private void Awake()
+		{
+			Initialize();
+		}
+
+		private void Initialize()
 		{
 			_eventLookup = new Dictionary<string, InputEvent>();
 			foreach(var evt in _inputEvents)
 			{
 				if(!_eventLookup.ContainsKey(evt.name))
+				{
 					_eventLookup.Add(evt.name, evt);
+				}
 				else
+				{
 					Debug.LogWarning(string.Format("An input event named \'{0}\' already exists in the lookup table", evt.name), this);
+				}
 			}
 		}
 		
@@ -64,7 +79,7 @@ namespace TeamUtility.IO
 				evt.axisName = axisName;
 				evt.eventType = InputEventType.Axis;
                 evt.playerID = playerID;
-				
+
 				_inputEvents.Add(evt);
 				_eventLookup.Add(name, evt);
 				return evt;
@@ -85,7 +100,7 @@ namespace TeamUtility.IO
 				evt.eventType = InputEventType.Button;
 				evt.inputState = inputState;
                 evt.playerID = playerID;
-				
+
 				_inputEvents.Add(evt);
 				_eventLookup.Add(name, evt);
 				return evt;
@@ -105,7 +120,7 @@ namespace TeamUtility.IO
 				evt.keyCode = key;
 				evt.eventType = InputEventType.Key;
 				evt.inputState = inputState;
-				
+
 				_inputEvents.Add(evt);
 				_eventLookup.Add(name, evt);
 				return evt;
@@ -165,5 +180,25 @@ namespace TeamUtility.IO
 			else
 				return null;
 		}
+
+		public void OnInitializeAfterScriptReload()
+		{
+			Initialize();
+		}
+
+#if UNITY_EDITOR
+		[DidReloadScripts(1)]
+		private static void OnScriptReload()
+		{
+			if(EditorApplication.isPlaying)
+			{
+				InputEventManager[] inputEventManagers = FindObjectsOfType<InputEventManager>();
+				for(int i = 0; i < inputEventManagers.Length; i++)
+				{
+					inputEventManagers[i].OnInitializeAfterScriptReload();
+				}
+			}
+		}
+#endif
 	}
 }

@@ -1,6 +1,9 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Callbacks;
+#endif
 using System;
-using System.Text;
 using System.Collections;
 
 namespace TeamUtility.IO
@@ -459,7 +462,13 @@ namespace TeamUtility.IO
 		{
 			StartCoroutine(UpdateJoystickCount());
 		}
-		
+
+		private void OnDestroy()
+		{
+			Cursor.visible = true;
+			StopAllCoroutines();
+		}
+
 		private void Update()
 		{
 			if(allowRealtimeInputDeviceSwitch)
@@ -579,21 +588,13 @@ namespace TeamUtility.IO
 			_inputDevice = inpuDevice;
 			if(inpuDevice == InputDevice.Joystick)
 			{
-#if UNITY_5
 				Cursor.visible = false;
-#else
-				Screen.showCursor = false;
-#endif
 				InputManager.SetInputConfiguration(_joystickConfiguration, PlayerID.One);
 				Debug.Log("Current Input Device: Joystick");
 			}
 			else
 			{
-#if UNITY_5
 				Cursor.visible = true;
-#else
-				Screen.showCursor = true;
-#endif
 				InputManager.SetInputConfiguration(_keyboardConfiguration, PlayerID.One);
 				Debug.Log("Current Input Device: KeyboardAndMouse");
 			}
@@ -631,25 +632,45 @@ namespace TeamUtility.IO
 				InputDeviceChanged(_inputDevice);
 			}
 		}
-		
-		private void OnDestroy()
+
+		public void OnInitializeAfterScriptReload()
 		{
-#if UNITY_5
-			Cursor.visible = true;
-#else
-			Screen.showCursor = true;
-#endif
-			StopAllCoroutines();
+			if(_instance != null && _instance != this)
+			{
+				Debug.LogWarning("You have multiple InputAdapter instances in the scene!", gameObject);
+			}
+			else if(_instance == null)
+			{
+				SetInputManagerConfigurations();
+				SetInputDevice(InputDevice.KeyboardAndMouse);
+
+				_instance = this;
+				_joystickCount = InputManager.GetJoystickNames().Length;
+				_lastInputDeviceCheck = Time.deltaTime;
+			}
 		}
 
 #if UNITY_EDITOR
-		[UnityEditor.MenuItem("Team Utility/Input Manager/Create Input Adapter", false, 3)]
+		[DidReloadScripts(1)]
+		private static void OnScriptReload()
+		{
+			if(EditorApplication.isPlaying)
+			{
+				InputAdapter[] inputAdapters = FindObjectsOfType<InputAdapter>();
+				for(int i = 0; i < inputAdapters.Length; i++)
+				{
+					inputAdapters[i].OnInitializeAfterScriptReload();
+				}
+			}
+		}
+
+		[MenuItem("Team Utility/Input Manager/Create Input Adapter", false, 3)]
 		private static void Create()
 		{
 			GameObject gameObject = new GameObject("Input Adapter");
 			gameObject.AddComponent<InputAdapter>();
 
-			UnityEditor.Selection.activeGameObject = gameObject;
+			Selection.activeGameObject = gameObject;
 		}
 #endif
 	}

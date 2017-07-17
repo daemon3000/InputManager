@@ -21,9 +21,12 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
+using UnityEngine.Serialization;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Callbacks;
+#endif
 using System;
-using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace TeamUtility.IO
@@ -59,13 +62,36 @@ namespace TeamUtility.IO
 		public event Action Saved;
 		public event RemoteUpdateDelegate RemoteUpdate;
 		
-		public List<InputConfiguration> inputConfigurations = new List<InputConfiguration>();
-		public string playerOneDefault;
-        public string playerTwoDefault;
-        public string playerThreeDefault;
-        public string playerFourDefault;
-        public bool dontDestroyOnLoad;
-		public bool ignoreTimescale;
+		[SerializeField]
+		[FormerlySerializedAs("inputConfigurations")]
+		private List<InputConfiguration> _inputConfigurations = new List<InputConfiguration>();
+
+		[SerializeField]
+		[FormerlySerializedAs("playerOneDefault")]
+		private string _playerOneDefault;
+
+		[SerializeField]
+		[FormerlySerializedAs("playerTwoDefault")]
+		private string _playerTwoDefault;
+
+		[SerializeField]
+		[FormerlySerializedAs("playerThreeDefault")]
+		private string _playerThreeDefault;
+
+		[SerializeField]
+		[FormerlySerializedAs("playerFourDefault")]
+		private string _playerFourDefault;
+
+		[SerializeField]
+		[FormerlySerializedAs("dontDestroyOnLoad")]
+		private bool _dontDestroyOnLoad;
+
+		[SerializeField]
+		[FormerlySerializedAs("ignoreTimescale")]
+		private bool _ignoreTimescale;
+
+		[SerializeField]
+		private bool _hotReloadSupport;
 		
 		private static InputManager _instance;
 		private InputConfiguration _playerOneConfig;
@@ -88,16 +114,67 @@ namespace TeamUtility.IO
 		private Dictionary<string, Dictionary<string, AxisConfiguration>> _axesTable;
 
 		#endregion
+
+		#region [Properties]
+		public List<InputConfiguration> inputConfigurations
+		{
+			get { return _inputConfigurations; }
+		}
+
+		public string playerOneDefault
+		{
+			get { return _playerOneDefault; }
+			set { _playerOneDefault = value; }
+		}
+
+		public string playerTwoDefault
+		{
+			get { return _playerTwoDefault; }
+			set { _playerTwoDefault = value; }
+		}
+
+		public string playerThreeDefault
+		{
+			get { return _playerThreeDefault; }
+			set { _playerThreeDefault = value; }
+		}
+
+		public string playerFourDefault
+		{
+			get { return _playerFourDefault; }
+			set { _playerFourDefault = value; }
+		}
+
+		public bool dontDestroyOnLoad
+		{
+			get { return _dontDestroyOnLoad; }
+			set { _dontDestroyOnLoad = value; }
+		}
+
+		public bool ignoreTimescale
+		{
+			get { return _ignoreTimescale; }
+			set { _ignoreTimescale = value; }
+		}
+
+		public bool hotReloadSupport
+		{
+			get { return _hotReloadSupport; }
+			set { _hotReloadSupport = value; }
+		}
 		
+		#endregion
+
 		private void Awake()
 		{
 			if(_instance != null)
 			{
+				Debug.LogWarning("You have multiple InputManager instances in the scene!", gameObject);
 				UnityEngine.Object.Destroy(this);
 			}
 			else
 			{
-				if(dontDestroyOnLoad)
+				if(_dontDestroyOnLoad)
 				{
 					UnityEngine.Object.DontDestroyOnLoad(this);
 				}
@@ -137,37 +214,37 @@ namespace TeamUtility.IO
             _playerThreeConfig = null;
             _playerFourConfig = null;
 
-            if (inputConfigurations.Count == 0)
+            if (_inputConfigurations.Count == 0)
 				return;
 			
 			PopulateLookupTables();
 
-            if (!string.IsNullOrEmpty(playerOneDefault) && _configurationTable.ContainsKey(playerOneDefault))
+            if (!string.IsNullOrEmpty(_playerOneDefault) && _configurationTable.ContainsKey(_playerOneDefault))
             {
-                _playerOneConfig = _configurationTable[playerOneDefault];
+                _playerOneConfig = _configurationTable[_playerOneDefault];
             }
             else
             {
-                if(inputConfigurations.Count > 0)
-                    _playerOneConfig = inputConfigurations[0];
+                if(_inputConfigurations.Count > 0)
+                    _playerOneConfig = _inputConfigurations[0];
             }
 
-            if (!string.IsNullOrEmpty(playerTwoDefault) && _configurationTable.ContainsKey(playerTwoDefault))
+            if (!string.IsNullOrEmpty(_playerTwoDefault) && _configurationTable.ContainsKey(_playerTwoDefault))
             {
-                _playerTwoConfig = _configurationTable[playerTwoDefault];
+                _playerTwoConfig = _configurationTable[_playerTwoDefault];
             }
 
-            if (!string.IsNullOrEmpty(playerThreeDefault) && _configurationTable.ContainsKey(playerThreeDefault))
+            if (!string.IsNullOrEmpty(_playerThreeDefault) && _configurationTable.ContainsKey(_playerThreeDefault))
             {
-                _playerThreeConfig = _configurationTable[playerThreeDefault];
+                _playerThreeConfig = _configurationTable[_playerThreeDefault];
             }
 
-            if (!string.IsNullOrEmpty(playerFourDefault) && _configurationTable.ContainsKey(playerFourDefault))
+            if (!string.IsNullOrEmpty(_playerFourDefault) && _configurationTable.ContainsKey(_playerFourDefault))
             {
-                _playerFourConfig = _configurationTable[playerFourDefault];
+                _playerFourConfig = _configurationTable[_playerFourDefault];
             }
 
-            foreach (InputConfiguration inputConfig in inputConfigurations)
+            foreach (InputConfiguration inputConfig in _inputConfigurations)
 			{
 				foreach(AxisConfiguration axisConfig in inputConfig.axes)
 				{
@@ -181,7 +258,7 @@ namespace TeamUtility.IO
 		private void PopulateLookupTables()
 		{
 			_configurationTable.Clear();
-			foreach(InputConfiguration inputConfig in inputConfigurations)
+			foreach(InputConfiguration inputConfig in _inputConfigurations)
 			{
 				if(!_configurationTable.ContainsKey(inputConfig.name))
 				{
@@ -194,7 +271,7 @@ namespace TeamUtility.IO
 			}
 			
 			_axesTable.Clear();
-			foreach(InputConfiguration inputConfig in inputConfigurations)
+			foreach(InputConfiguration inputConfig in _inputConfigurations)
 			{
 				Dictionary<string, AxisConfiguration> table = new Dictionary<string, AxisConfiguration>();
 				foreach(AxisConfiguration axisConfig in inputConfig.axes)
@@ -246,7 +323,7 @@ namespace TeamUtility.IO
 		
 		private void ScanInput()
 		{
-			float timeout = ignoreTimescale ? (Time.realtimeSinceStartup - _scanStartTime) : (Time.time - _scanStartTime);
+			float timeout = _ignoreTimescale ? (Time.realtimeSinceStartup - _scanStartTime) : (Time.time - _scanStartTime);
 			if(!string.IsNullOrEmpty(_cancelScanButton) && GetButtonDown(_cancelScanButton) || timeout >= _scanTimeout)
 			{
 				StopInputScan();
@@ -471,27 +548,45 @@ namespace TeamUtility.IO
         {
             if (parameters != null)
             {
-                inputConfigurations = parameters.inputConfigurations;
-                playerOneDefault = parameters.playerOneDefault;
-                playerTwoDefault = parameters.playerTwoDefault;
-                playerThreeDefault = parameters.playerThreeDefault;
-                playerFourDefault = parameters.playerFourDefault;
+                _inputConfigurations = parameters.inputConfigurations;
+                _playerOneDefault = parameters.playerOneDefault;
+                _playerTwoDefault = parameters.playerTwoDefault;
+                _playerThreeDefault = parameters.playerThreeDefault;
+                _playerFourDefault = parameters.playerFourDefault;
             }
         }
 
         public SaveLoadParameters GetSaveParameters()
         {
             SaveLoadParameters parameters = new SaveLoadParameters();
-            parameters.inputConfigurations = inputConfigurations;
-            parameters.playerOneDefault = playerOneDefault;
-            parameters.playerTwoDefault = playerTwoDefault;
-            parameters.playerThreeDefault = playerThreeDefault;
-            parameters.playerFourDefault = playerFourDefault;
+            parameters.inputConfigurations = _inputConfigurations;
+            parameters.playerOneDefault = _playerOneDefault;
+            parameters.playerTwoDefault = _playerTwoDefault;
+            parameters.playerThreeDefault = _playerThreeDefault;
+            parameters.playerFourDefault = _playerFourDefault;
 
             return parameters;
         }
 
-        private void RaiseInputConfigurationChangedEvent(PlayerID playerID)
+		private void OnInitializeAfterScriptReload()
+		{
+			if(_instance != null && _instance != this)
+			{
+				Debug.LogWarning("You have multiple InputManager instances in the scene!", gameObject);
+			}
+			else if(_instance == null)
+			{
+				_instance = this;
+				_keys = (KeyCode[])Enum.GetValues(typeof(KeyCode));
+				_configurationTable = new Dictionary<string, InputConfiguration>();
+				_axesTable = new Dictionary<string, Dictionary<string, AxisConfiguration>>();
+
+				SetRawAxisNames();
+				Initialize();
+			}
+		}
+
+		private void RaiseInputConfigurationChangedEvent(PlayerID playerID)
 		{
 			if(ConfigurationChanged != null)
 				ConfigurationChanged(playerID);
@@ -514,7 +609,7 @@ namespace TeamUtility.IO
 			if(Saved != null)
 				Saved();
 		}
-		
+
 		#region [Static Interface]
 		/// <summary>
 		/// A reference to the input manager instance. Use it to check if an input manager exists in the scene and
@@ -530,7 +625,7 @@ namespace TeamUtility.IO
         public static InputConfiguration PlayerThreeConfiguration { get { return _instance._playerThreeConfig; } }
         public static InputConfiguration PlayerFourConfiguration { get { return _instance._playerFourConfig; } }
         public static bool IsScanning { get { return _instance._scanFlags != ScanFlags.None; } }
-		public static bool IgnoreTimescale { get { return _instance.ignoreTimescale; } }
+		public static bool IgnoreTimescale { get { return _instance._ignoreTimescale; } }
 		
 		/// <summary>
 		/// Returns true if any axis of any active input configuration is receiving input.
@@ -739,7 +834,7 @@ namespace TeamUtility.IO
 			}
 			
 			InputConfiguration inputConfig = new InputConfiguration(name);
-			_instance.inputConfigurations.Add(inputConfig);
+			_instance._inputConfigurations.Add(inputConfig);
 			_instance._configurationTable.Add(name, inputConfig);
 			_instance._axesTable.Add(name, new Dictionary<string, AxisConfiguration>());
 			
@@ -758,7 +853,7 @@ namespace TeamUtility.IO
 			
 			_instance._axesTable.Remove(name);
 			_instance._configurationTable.Remove(name);
-			_instance.inputConfigurations.Remove(inputConfig);
+			_instance._inputConfigurations.Remove(inputConfig);
             if (_instance._playerOneConfig.name == inputConfig.name)
                 _instance._playerOneConfig = null;
             if (_instance._playerTwoConfig.name == inputConfig.name)
@@ -1063,7 +1158,7 @@ namespace TeamUtility.IO
 			
 			_instance._scanTimeout = timeout;
 			_instance._scanFlags = ScanFlags.Key | ScanFlags.JoystickButton;
-			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._scanStartTime = _instance._ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
 			_instance._scanUserData = userData;
 			_instance._scanHandler = (result) => {
@@ -1082,7 +1177,7 @@ namespace TeamUtility.IO
 
 			_instance._scanTimeout = timeout;
 			_instance._scanFlags = ScanFlags.Key;
-			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._scanStartTime = _instance._ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
 			_instance._scanJoystick = null;
 			_instance._scanUserData = userData;
@@ -1102,7 +1197,7 @@ namespace TeamUtility.IO
 			
 			_instance._scanTimeout = timeout;
 			_instance._scanFlags = ScanFlags.MouseAxis;
-			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._scanStartTime = _instance._ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
 			_instance._scanJoystick = null;
 			_instance._scanUserData = userData;
@@ -1129,7 +1224,7 @@ namespace TeamUtility.IO
 
 			_instance._scanTimeout = timeout;
 			_instance._scanFlags = ScanFlags.JoystickButton;
-			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._scanStartTime = _instance._ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
 			_instance._scanJoystick = joystick;
 			_instance._scanUserData = userData;
@@ -1156,7 +1251,7 @@ namespace TeamUtility.IO
 			
 			_instance._scanTimeout = timeout;
 			_instance._scanFlags = ScanFlags.JoystickAxis;
-			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._scanStartTime = _instance._ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = cancelScanButton;
 			_instance._scanJoystick = joystick;
 			_instance._scanUserData = userData;
@@ -1178,7 +1273,7 @@ namespace TeamUtility.IO
 			
 			_instance._scanTimeout = settings.timeout;
 			_instance._scanFlags = settings.scanFlags;
-			_instance._scanStartTime = _instance.ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
+			_instance._scanStartTime = _instance._ignoreTimescale ? Time.realtimeSinceStartup : Time.time;
 			_instance._cancelScanButton = settings.cancelScanButton;
 			_instance._scanJoystick = settings.joystick;
 			_instance._scanUserData = settings.userData;
@@ -1274,7 +1369,21 @@ namespace TeamUtility.IO
 				Debug.LogError("InputLoader is null. Cannot load input configurations.");
 			}
 		}
-		
+
+#if UNITY_EDITOR
+		[DidReloadScripts(0)]
+		private static void OnScriptReload()
+		{
+			if(EditorApplication.isPlaying)
+			{
+				InputManager[] inputManagers = FindObjectsOfType<InputManager>();
+				for(int i = 0; i < inputManagers.Length; i++)
+				{
+					inputManagers[i].OnInitializeAfterScriptReload();
+				}
+			}
+		}
+#endif
 		#endregion
 	}
 }

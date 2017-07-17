@@ -42,7 +42,7 @@ namespace TeamUtilityEditor.IO
 
 		public enum EditMenuOptions
 		{
-			NewInputConfiguration = 0, NewAxisConfiguration, Duplicate, Delete, DeleteAll, SelectTarget, IgnoreTimescale, DontDestroyOnLoad, Copy, Paste
+			NewInputConfiguration = 0, NewAxisConfiguration, Duplicate, Delete, DeleteAll, SelectTarget, IgnoreTimescale, DontDestroyOnLoad, Copy, Paste, HotReloadSupport
 		}
 		#endregion
 
@@ -373,6 +373,7 @@ namespace TeamUtilityEditor.IO
 
 			editMenu.AddItem(new GUIContent("Select Target"), false, HandleEditMenuOption, EditMenuOptions.SelectTarget);
 			editMenu.AddItem(new GUIContent("Ignore Timescale"), _inputManager.ignoreTimescale, HandleEditMenuOption, EditMenuOptions.IgnoreTimescale);
+			editMenu.AddItem(new GUIContent("Hot Reload Support"), _inputManager.hotReloadSupport, HandleEditMenuOption, EditMenuOptions.HotReloadSupport);
 			editMenu.AddItem(new GUIContent("Dont Destroy On Load"), _inputManager.dontDestroyOnLoad, HandleEditMenuOption, EditMenuOptions.DontDestroyOnLoad);
 			editMenu.DropDown(position);
 		}
@@ -402,6 +403,9 @@ namespace TeamUtilityEditor.IO
 				break;
 			case EditMenuOptions.IgnoreTimescale:
 				_inputManager.ignoreTimescale = !_inputManager.ignoreTimescale;
+				break;
+			case EditMenuOptions.HotReloadSupport:
+				_inputManager.hotReloadSupport = !_inputManager.hotReloadSupport;
 				break;
 			case EditMenuOptions.DontDestroyOnLoad:
 				_inputManager.dontDestroyOnLoad = !_inputManager.dontDestroyOnLoad;
