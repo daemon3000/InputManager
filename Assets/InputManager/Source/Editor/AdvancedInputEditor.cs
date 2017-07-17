@@ -24,7 +24,6 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using TeamUtility.IO;
 using TeamUtilityEditor.IO.InputManager;
@@ -577,7 +576,9 @@ namespace TeamUtilityEditor.IO
 				DisplayMissingInputManagerWarning();
 				return;
 			}
-			
+
+			ValidateSelectionPath();
+
 			Undo.RecordObject(_inputManager, "InputManager");
 			UpdateHierarchyPanelWidth();
 			if(_searchString.Length > 0)
@@ -594,7 +595,21 @@ namespace TeamUtilityEditor.IO
 			}
 			DisplayMainToolbar();
 			if(GUI.changed)
+			{
 				EditorUtility.SetDirty(_inputManager);
+			}
+		}
+
+		private void ValidateSelectionPath()
+		{
+			if(_inputManager == null && _selectionPath.Count > 0)
+				_selectionPath.Clear();
+			else if(_inputManager.inputConfigurations.Count == 0 && _selectionPath.Count > 0)
+				_selectionPath.Clear();
+			else if(_selectionPath.Count > 0 && _selectionPath[0] >= _inputManager.inputConfigurations.Count)
+				_selectionPath.Clear();
+			else if(_selectionPath.Count > 1 && _selectionPath[1] >= _inputManager.inputConfigurations[_selectionPath[0]].axes.Count)
+				_selectionPath.Clear();
 		}
 
 		private void DisplayMissingInputManagerWarning()
