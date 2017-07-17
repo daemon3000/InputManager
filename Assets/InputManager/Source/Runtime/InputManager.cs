@@ -89,9 +89,6 @@ namespace TeamUtility.IO
 		[SerializeField]
 		[FormerlySerializedAs("ignoreTimescale")]
 		private bool _ignoreTimescale;
-
-		[SerializeField]
-		private bool _hotReloadSupport;
 		
 		private static InputManager _instance;
 		private InputConfiguration _playerOneConfig;
@@ -155,12 +152,6 @@ namespace TeamUtility.IO
 		{
 			get { return _ignoreTimescale; }
 			set { _ignoreTimescale = value; }
-		}
-
-		public bool hotReloadSupport
-		{
-			get { return _hotReloadSupport; }
-			set { _hotReloadSupport = value; }
 		}
 		
 		#endregion

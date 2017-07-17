@@ -38,7 +38,6 @@ namespace TeamUtilityEditor.IO
 		private SerializedProperty _intputConfigurations;
 		private SerializedProperty _dontDestroyOnLoad;
 		private SerializedProperty _ignoreTimescale;
-		private SerializedProperty _hotReloadSupport;
 		private SerializedProperty _playerOneDefault;
 		private SerializedProperty _playerTwoDefault;
 		private SerializedProperty _playerThreeDefault;
@@ -65,7 +64,6 @@ namespace TeamUtilityEditor.IO
 			_intputConfigurations = serializedObject.FindProperty("_inputConfigurations");
 			_dontDestroyOnLoad = serializedObject.FindProperty("_dontDestroyOnLoad");
 			_ignoreTimescale = serializedObject.FindProperty("_ignoreTimescale");
-			_hotReloadSupport = serializedObject.FindProperty("_hotReloadSupport");
 			_playerOneDefault = serializedObject.FindProperty("_playerOneDefault");
 			_playerTwoDefault = serializedObject.FindProperty("_playerTwoDefault");
 			_playerThreeDefault = serializedObject.FindProperty("_playerThreeDefault");
@@ -105,7 +103,6 @@ namespace TeamUtilityEditor.IO
 			EditorGUILayout.PropertyField(_playerFourDefault);
 			EditorGUILayout.PropertyField(_dontDestroyOnLoad);
 			EditorGUILayout.PropertyField(_ignoreTimescale);
-			EditorGUILayout.PropertyField(_hotReloadSupport);
 			EditorGUILayout.PropertyField(_intputConfigurations);
 			if(_intputConfigurations.isExpanded)
 			{
