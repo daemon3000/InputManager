@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Input version="2">
+  <PlayerOneScheme>85c52da314c14ce8bc1999635dc6e642</PlayerOneScheme>
+  <PlayerTwoScheme />
+  <PlayerThreeScheme />
+  <PlayerFourScheme />
+  <ControlScheme name="Default" id="85c52da314c14ce8bc1999635dc6e642">
+    <Action name="Horizontal">
+      <Description />
+      <Binding>
+        <Positive>D</Positive>
+        <Negative>A</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>RightArrow</Positive>
+        <Negative>LeftArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Vertical">
+      <Description />
+      <Binding>
+        <Positive>W</Positive>
+        <Negative>S</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>UpArrow</Positive>
+        <Negative>DownArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="LookHorizontal">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>0.1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>MouseAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="LookVertical">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>0.1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>MouseAxis</Type>
+        <Axis>1</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Jump">
+      <Description />
+      <Binding>
+        <Positive>Space</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Submit">
+      <Description />
+      <Binding>
+        <Positive>Space</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>Return</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Cancel">
+      <Description />
+      <Binding>
+        <Positive>Escape</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+  </ControlScheme>
+</Input>

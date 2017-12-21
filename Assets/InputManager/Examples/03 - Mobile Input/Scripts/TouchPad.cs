@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace TeamUtility.IO.Examples
 {
+	//	TODO: TouchPad
 	[RequireComponent(typeof(Image))]
 	public class TouchPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
@@ -78,8 +79,8 @@ namespace TeamUtility.IO.Examples
 		{
 			if(!string.IsNullOrEmpty(inputConfiguration))
 			{
-				if(!string.IsNullOrEmpty(horizontalAxis))
-					InputManager.SetRemoteAxisValue(inputConfiguration, horizontalAxis, value);
+				//if(!string.IsNullOrEmpty(horizontalAxis))
+				//	InputManager.SetRemoteAxisValue(inputConfiguration, horizontalAxis, value);
 			}
 		}
 
@@ -87,8 +88,8 @@ namespace TeamUtility.IO.Examples
 		{
 			if(!string.IsNullOrEmpty(inputConfiguration))
 			{
-				if(!string.IsNullOrEmpty(verticalAxis))
-					InputManager.SetRemoteAxisValue(inputConfiguration, verticalAxis, value);
+				//if(!string.IsNullOrEmpty(verticalAxis))
+				//	InputManager.SetRemoteAxisValue(inputConfiguration, verticalAxis, value);
 			}
 		}
 	}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<InputModules>
+	<Item name="Unity 2017.2" path="ui_input_modules/unity_2017_2" />
+</InputModules>

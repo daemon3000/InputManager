@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace TeamUtility.IO.Examples
 {
+	//	TODO: VirtualDirectionalPad
 	[RequireComponent(typeof(Image))]
 	public class VirtualDirectionalPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
@@ -221,8 +222,8 @@ namespace TeamUtility.IO.Examples
 		{
 			if(!string.IsNullOrEmpty(_inputConfiguration))
 			{
-				if(!string.IsNullOrEmpty(_horizontalAxis))
-					InputManager.SetRemoteAxisValue(_inputConfiguration, _horizontalAxis, value);
+				//if(!string.IsNullOrEmpty(_horizontalAxis))
+				//	InputManager.SetRemoteAxisValue(_inputConfiguration, _horizontalAxis, value);
 			}
 		}
 
@@ -230,8 +231,8 @@ namespace TeamUtility.IO.Examples
 		{
 			if(!string.IsNullOrEmpty(_inputConfiguration))
 			{
-				if(!string.IsNullOrEmpty(_verticalAxis))
-					InputManager.SetRemoteAxisValue(_inputConfiguration, _verticalAxis, value);
+				//if(!string.IsNullOrEmpty(_verticalAxis))
+				//	InputManager.SetRemoteAxisValue(_inputConfiguration, _verticalAxis, value);
 			}
 		}
 

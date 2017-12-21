@@ -28,83 +28,85 @@ using System.Reflection;
 using TeamUtility.IO;
 using UnityInputConverter;
 
-namespace TeamUtilityEditor.IO.InputManager
+namespace TeamUtilityEditor.IO
 {
-	public static class EditorToolbox
+	public static partial class EditorToolbox
 	{
-		private static string _snapshotFile;
-		private static string[] _axisNames;
-		private static string[] _joystickNames;
+		public const string DEFAULT_INPUT_PROFILE = "input_manager_default_scheme";
+
+		private static string m_snapshotFile;
+		private static string[] m_axisNames;
+		private static string[] m_joystickNames;
 
 		public static string[] GenerateJoystickAxisNames()
 		{
-			if(_axisNames == null || _axisNames.Length != AxisConfiguration.MaxJoystickAxes)
+			if(m_axisNames == null || m_axisNames.Length != InputBinding.MAX_JOYSTICK_AXES)
 			{
-				_axisNames = new string[AxisConfiguration.MaxJoystickAxes];
-				for(int i = 0; i < AxisConfiguration.MaxJoystickAxes; i++)
+				m_axisNames = new string[InputBinding.MAX_JOYSTICK_AXES];
+				for(int i = 0; i < InputBinding.MAX_JOYSTICK_AXES; i++)
 				{
 					if(i == 0)
-						_axisNames[i] = "X";
+						m_axisNames[i] = "X";
 					else if(i == 1)
-						_axisNames[i] = "Y";
+						m_axisNames[i] = "Y";
 					else if(i == 2)
-						_axisNames[i] = "3rd axis (Joysticks and Scrollwheel)";
+						m_axisNames[i] = "3rd axis (Joysticks and Scrollwheel)";
 					else if(i == 21)
-						_axisNames[i] = "21st axis (Joysticks)";
+						m_axisNames[i] = "21st axis (Joysticks)";
 					else if(i == 22)
-						_axisNames[i] = "22nd axis (Joysticks)";
+						m_axisNames[i] = "22nd axis (Joysticks)";
 					else if(i == 23)
-						_axisNames[i] = "23rd axis (Joysticks)";
+						m_axisNames[i] = "23rd axis (Joysticks)";
 					else
-						_axisNames[i] = string.Format("{0}th axis (Joysticks)", i + 1);
+						m_axisNames[i] = string.Format("{0}th axis (Joysticks)", i + 1);
 				}
 			}
 
-			return _axisNames;
+			return m_axisNames;
 		}
 
 		public static string[] GenerateJoystickNames()
 		{
-			if(_joystickNames == null || _joystickNames.Length != AxisConfiguration.MaxJoysticks)
+			if(m_joystickNames == null || m_joystickNames.Length != InputBinding.MAX_JOYSTICKS)
 			{
-				_joystickNames = new string[AxisConfiguration.MaxJoysticks];
-				for(int i = 0; i < AxisConfiguration.MaxJoysticks; i++)
+				m_joystickNames = new string[InputBinding.MAX_JOYSTICKS];
+				for(int i = 0; i < InputBinding.MAX_JOYSTICKS; i++)
 				{
-					_joystickNames[i] = string.Format("Joystick {0}", i + 1);
+					m_joystickNames[i] = string.Format("Joystick {0}", i + 1);
 				}
 			}
 
-			return _joystickNames;
+			return m_joystickNames;
 		}
 
 		public static bool CanLoadSnapshot()
 		{
-			if(_snapshotFile == null)
+			if(m_snapshotFile == null)
 			{
-				_snapshotFile = Path.Combine(Application.temporaryCachePath, "input_config.xml");
+				m_snapshotFile = Path.Combine(Application.temporaryCachePath, "input_config.xml");
 			}
 			
-			return File.Exists(_snapshotFile);
+			return File.Exists(m_snapshotFile);
 		}
 		
-		public static void CreateSnapshot(TeamUtility.IO.InputManager inputManager)
+		public static void CreateSnapshot(InputManager inputManager)
 		{
-			if(_snapshotFile == null)
+			if(m_snapshotFile == null)
 			{
-				_snapshotFile = Path.Combine(Application.temporaryCachePath, "input_config.xml");
+				m_snapshotFile = Path.Combine(Application.temporaryCachePath, "input_config.xml");
 			}
 
-			InputSaverXML inputSaver = new InputSaverXML(_snapshotFile);
-			inputSaver.Save(inputManager.GetSaveParameters());
+			InputSaverXML inputSaver = new InputSaverXML(m_snapshotFile);
+			inputSaver.Save(inputManager.GetSaveData());
 		}
 		
-		public static void LoadSnapshot(TeamUtility.IO.InputManager inputManager)
+		public static void LoadSnapshot(InputManager inputManager)
 		{
 			if(!CanLoadSnapshot())
 				return;
-			
-			InputLoaderXML inputLoader = new InputLoaderXML(_snapshotFile);
-            inputManager.Load(inputLoader.Load());
+
+			InputLoaderXML inputLoader = new InputLoaderXML(m_snapshotFile);
+			inputManager.SetSaveData(inputLoader.Load());
 		}
 		
 		public static void ShowStartupWarning()
@@ -116,13 +118,13 @@ namespace TeamUtilityEditor.IO.InputManager
 				string message = "In order to use the InputManager plugin you need to overwrite your project's input settings. Your old input axes will be exported to a file which can be imported at a later time from the File menu.\n\nDo you want to overwrite the input settings now?\nYou can always do it later from the File menu.";
 				if(EditorUtility.DisplayDialog("Warning", message, "Yes", "No"))
 				{
-					if(OverwriteInputSettings())
+					if(OverwriteProjectSettings())
 						EditorPrefs.SetBool(key, true);
 				}
 			}
 		}
 		
-		public static bool OverwriteInputSettings()
+		public static bool OverwriteProjectSettings()
 		{
 			int length = Application.dataPath.LastIndexOf('/');
 			string projectSettingsFolder = string.Concat(Application.dataPath.Substring(0, length), "/ProjectSettings");
@@ -209,72 +211,9 @@ namespace TeamUtilityEditor.IO.InputManager
 			}
 		}
 
-		public static bool HasJoystickMappingAddon()
+		public static Texture2D GetUnityIcon(string name)
 		{
-			return GetMappingImporterWindowType() != null;
-		}
-
-		public static void OpenImportJoystickMappingWindow(AdvancedInputEditor configurator)
-		{
-			Type type = GetMappingImporterWindowType();
-			if(type == null)
-				return;
-
-			MethodInfo methodInfo = type.GetMethod("Open", BindingFlags.Static | BindingFlags.Public);
-			if(methodInfo == null)
-			{
-				Debug.LogError("Unable to open joystick mapping import window");
-			}
-
-			methodInfo.Invoke(null, new object[] { configurator });
-		}
-
-		private static Type GetMappingImporterWindowType()
-		{
-			Assembly assembly = Assembly.GetExecutingAssembly();
-			return Array.Find<Type>(assembly.GetTypes(), (type) => { return type.Name == "MappingImportWindow"; });
-		}
-
-		public static bool HasInputAdapterAddon()
-		{
-			Assembly assembly = typeof(TeamUtility.IO.InputManager).Assembly;
-			Type inputAdapterType = Array.Find<Type>(assembly.GetTypes(), (type) => { return type.Name == "InputAdapter"; });
-			return inputAdapterType != null;
-		}
-		
-		/// <summary>
-		/// Used to get access to the hidden toolbar search field.
-		/// Credits go to the user TowerOfBricks for finding the way to do it.
-		/// </summary>
-		public static string SearchField(string searchString, params GUILayoutOption[] layoutOptions)
-		{
-			Type type = typeof(EditorGUILayout);
-			string methodName = "ToolbarSearchField";
-			System.Object[] parameters = new System.Object[] { searchString, layoutOptions };
-			string result = null;
-			
-			Type[] types = new Type[parameters.Length];
-			for(int i = 0; i < types.Length; i++)
-			{
-				types[i] = parameters[i].GetType();
-			}
-			MethodInfo method = type.GetMethod(methodName, (BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public),
-												null, types, null);
-			
-			if(method.IsStatic)
-			{
-				result = (string)method.Invoke(null, parameters);
-			}
-			else
-			{
-				var bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic |
-									BindingFlags.Instance | BindingFlags.CreateInstance;
-				System.Object obj = type.InvokeMember(null, bindingFlags, null, null, new System.Object[0]);
-				
-				result = (string)method.Invoke(obj, parameters);
-			}
-			
-			return (result != null) ? result : "";
+			return EditorGUIUtility.Load(name + ".png") as Texture2D;
 		}
 	}
 }

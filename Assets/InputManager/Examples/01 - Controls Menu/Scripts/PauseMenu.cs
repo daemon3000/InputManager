@@ -1,42 +1,30 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
 	public class PauseMenu : MonoBehaviour 
 	{
 		[SerializeField]
-		[FormerlySerializedAs("m_canvas")]
-		private Canvas _canvas;
-
+		private Canvas m_canvas;
 		[SerializeField]
-		[FormerlySerializedAs("m_mainPage")]
-		private GameObject _mainPage;
-
+		private GameObject m_mainPage;
 		[SerializeField]
-		[FormerlySerializedAs("m_controlsPage")]
-		private GameObject _controlsPage;
-
+		private GameObject m_controlsPage;
 		[SerializeField]
-		[FormerlySerializedAs("m_editKeyboardPage")]
-		private GameObject _editKeyboardPage;
-
+		private GameObject m_editKeyboardPage;
 		[SerializeField]
-		[FormerlySerializedAs("m_editGamepadPage")]
-		private GameObject _editGamepadPage;
-
+		private GameObject m_editGamepadPage;
 		[SerializeField]
-		[FormerlySerializedAs("m_openOnStart")]
-		private bool _openOnStart;
+		private bool m_openOnStart;
 
-		private bool _isOpen;
+		private bool m_isOpen;
 
 		private void Start()
 		{
-			_isOpen = false;
-			_canvas.gameObject.SetActive(false);
+			m_isOpen = false;
+			m_canvas.gameObject.SetActive(false);
 
-			if(_openOnStart)
+			if(m_openOnStart)
 				Open();
 		}
 
@@ -44,17 +32,17 @@ namespace TeamUtility.IO.Examples
 		{
 			if(InputManager.GetButtonDown("PauseMenu"))
 			{
-				if(!_isOpen)
+				if(!m_isOpen)
 					Open();
 			}
 		}
 
 		public void Open()
 		{
-			if(!_isOpen && !PauseManager.IsPaused)
+			if(!m_isOpen && !PauseManager.IsPaused)
 			{
-				_isOpen = true;
-				_canvas.gameObject.SetActive(true);
+				m_isOpen = true;
+				m_canvas.gameObject.SetActive(true);
 				ChangeToMainPage();
 				PauseManager.Pause();
 			}
@@ -62,44 +50,44 @@ namespace TeamUtility.IO.Examples
 
 		public void Close()
 		{
-			if(_isOpen)
+			if(m_isOpen)
 			{
-				_isOpen = false;
-				_canvas.gameObject.SetActive(false);
+				m_isOpen = false;
+				m_canvas.gameObject.SetActive(false);
 				PauseManager.UnPause();
 			}
 		}
 
 		public void ChangeToMainPage()
 		{
-			_controlsPage.SetActive(false);
-			_editKeyboardPage.SetActive(false);
-			_editGamepadPage.SetActive(false);
-			_mainPage.SetActive(true);
+			m_controlsPage.SetActive(false);
+			m_editKeyboardPage.SetActive(false);
+			m_editGamepadPage.SetActive(false);
+			m_mainPage.SetActive(true);
 		}
 
 		public void ChangeToControlsPage()
 		{
-			_mainPage.SetActive(false);
-			_editKeyboardPage.SetActive(false);
-			_editGamepadPage.SetActive(false);
-			_controlsPage.SetActive(true);
+			m_mainPage.SetActive(false);
+			m_editKeyboardPage.SetActive(false);
+			m_editGamepadPage.SetActive(false);
+			m_controlsPage.SetActive(true);
 		}
 
 		public void ChangeToEditKeyboardPage()
 		{
-			_mainPage.SetActive(false);
-			_controlsPage.SetActive(false);
-			_editGamepadPage.SetActive(false);
-			_editKeyboardPage.SetActive(true);
+			m_mainPage.SetActive(false);
+			m_controlsPage.SetActive(false);
+			m_editGamepadPage.SetActive(false);
+			m_editKeyboardPage.SetActive(true);
 		}
 
 		public void ChangeToEditGamepadPage()
 		{
-			_mainPage.SetActive(false);
-			_controlsPage.SetActive(false);
-			_editKeyboardPage.SetActive(false);
-			_editGamepadPage.SetActive(true);
+			m_mainPage.SetActive(false);
+			m_controlsPage.SetActive(false);
+			m_editKeyboardPage.SetActive(false);
+			m_editGamepadPage.SetActive(true);
 		}
 
 		public void Quit()

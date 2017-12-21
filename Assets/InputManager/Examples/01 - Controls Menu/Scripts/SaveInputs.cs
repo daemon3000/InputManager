@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
 	public class SaveInputs : MonoBehaviour 
 	{
 		[SerializeField]
-		[FormerlySerializedAs("m_exampleID")]
-		private int _exampleID;
+		private int m_exampleID;
 
 		public void Save()
 		{
-			string saveFolder = PathUtility.GetInputSaveFolder(_exampleID);
+			string saveFolder = PathUtility.GetInputSaveFolder(m_exampleID);
 			if(!System.IO.Directory.Exists(saveFolder))
 				System.IO.Directory.CreateDirectory(saveFolder);
 

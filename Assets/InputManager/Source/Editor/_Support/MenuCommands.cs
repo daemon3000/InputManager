@@ -24,9 +24,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityInputConverter;
 
-namespace TeamUtilityEditor.IO.InputManager
+namespace TeamUtilityEditor.IO
 {
-	public static class MenuCommands
+	public static partial class MenuCommands
 	{
 		[MenuItem("Team Utility/Input Manager/Create Input Manager", false, 2)]
 		private static void CreateInputManager()
@@ -101,7 +101,7 @@ namespace TeamUtilityEditor.IO.InputManager
 		[MenuItem("Team Utility/Input Manager/About", false, 405)]
 		public static void OpenAboutDialog()
 		{
-			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2015 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
+			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2017 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 	}

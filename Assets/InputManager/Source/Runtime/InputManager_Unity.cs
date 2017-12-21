@@ -21,8 +21,6 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
-using System;
-using System.Collections;
 
 namespace TeamUtility.IO
 {
@@ -42,6 +40,7 @@ namespace TeamUtility.IO
 		public static LocationService location { get { return Input.location; } }
 		public static Vector2 mousePosition { get { return Input.mousePosition; } }
 		public static bool mousePresent { get { return Input.mousePresent; } }
+		public static Vector2 mouseScrollDelta { get { return Input.mouseScrollDelta; } }
 		public static bool touchSupported { get { return Input.touchSupported; } }
 		public static int touchCount { get { return Input.touchCount; } }
 		public static Touch[] touches { get { return Input.touches; } }
@@ -77,10 +76,10 @@ namespace TeamUtility.IO
 		
 		public static float GetAxis(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
-			if(axisConfig != null)
+			InputAction action = GetAction(playerID, name);
+			if(action != null)
 			{
-				return axisConfig.GetAxis();
+				return action.GetAxis();
 			}
 			else
 			{
@@ -91,10 +90,10 @@ namespace TeamUtility.IO
 		
 		public static float GetAxisRaw(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
-			if(axisConfig != null)
+			InputAction action = GetAction(playerID, name);
+			if(action != null)
 			{
-				return axisConfig.GetAxisRaw();
+				return action.GetAxisRaw();
 			}
 			else
 			{
@@ -105,10 +104,10 @@ namespace TeamUtility.IO
 		
 		public static bool GetButton(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
-			if(axisConfig != null)
+			InputAction action = GetAction(playerID, name);
+			if(action != null)
 			{
-				return axisConfig.GetButton();
+				return action.GetButton();
 			}
 			else
 			{
@@ -119,10 +118,10 @@ namespace TeamUtility.IO
 		
 		public static bool GetButtonDown(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
-			if(axisConfig != null)
+			InputAction action = GetAction(playerID, name);
+			if(action != null)
 			{
-				return axisConfig.GetButtonDown();
+				return action.GetButtonDown();
 			}
 			else
 			{
@@ -133,10 +132,10 @@ namespace TeamUtility.IO
 		
 		public static bool GetButtonUp(string name, PlayerID playerID = PlayerID.One)
 		{
-			AxisConfiguration axisConfig = GetAxisConfiguration(playerID, name);
-			if(axisConfig != null)
+			InputAction action = GetAction(playerID, name);
+			if(action != null)
 			{
-				return axisConfig.GetButtonUp();
+				return action.GetButtonUp();
 			}
 			else
 			{

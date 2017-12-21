@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace TeamUtility.IO.Examples
 {
+	//	TODO: VirtualInputButton
 	[RequireComponent(typeof(Button))]
 	public class VirtualInputButton : MonoBehaviour
 	{
@@ -19,12 +20,12 @@ namespace TeamUtility.IO.Examples
 
 		private void HandleButtonClicked()
 		{
-			InputManager.SetRemoteButtonValue(_inputConfiguration, _buttonName, true, true);
+			//InputManager.SetRemoteButtonValue(_inputConfiguration, _buttonName, true, true);
 		}
 
 		private void LateUpdate()
 		{
-			InputManager.SetRemoteButtonValue(_inputConfiguration, _buttonName, false, false);
+			//InputManager.SetRemoteButtonValue(_inputConfiguration, _buttonName, false, false);
 		}
 	}
 }

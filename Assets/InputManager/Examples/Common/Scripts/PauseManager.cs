@@ -13,7 +13,7 @@ namespace TeamUtility.IO.Examples
 		Paused
 	}
 
-	public sealed class PauseManager : MonoBehaviour 
+	public class PauseManager : MonoBehaviour 
 	{
 		public event Action Paused;
 		public event Action Unpaused;
