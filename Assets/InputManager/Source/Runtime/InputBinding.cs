@@ -540,17 +540,19 @@ namespace TeamUtility.IO
 
 		public static InputBinding Duplicate(InputBinding source)
 		{
-			InputBinding duplicate = new InputBinding();
-			duplicate.m_positive = source.m_positive;
-			duplicate.m_negative = source.m_negative;
-			duplicate.m_deadZone = source.m_deadZone;
-			duplicate.m_gravity = source.m_gravity;
-			duplicate.m_sensitivity = source.m_sensitivity;
-			duplicate.m_snap = source.m_snap;
-			duplicate.m_invert = source.m_invert;
-			duplicate.m_type = source.m_type;
-			duplicate.m_axis = source.m_axis;
-			duplicate.m_joystick = source.m_joystick;
+			InputBinding duplicate = new InputBinding
+			{
+				m_positive = source.m_positive,
+				m_negative = source.m_negative,
+				m_deadZone = source.m_deadZone,
+				m_gravity = source.m_gravity,
+				m_sensitivity = source.m_sensitivity,
+				m_snap = source.m_snap,
+				m_invert = source.m_invert,
+				m_type = source.m_type,
+				m_axis = source.m_axis,
+				m_joystick = source.m_joystick
+			};
 
 			return duplicate;
 		}

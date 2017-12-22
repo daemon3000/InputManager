@@ -163,7 +163,7 @@ namespace TeamUtility.IO
 			string name = ReadAttribute(node, "name", "Unnamed Control Scheme");
 			string id = ReadAttribute(node, "id", null);
 			ControlScheme scheme = new ControlScheme(name);
-			scheme.UniqueID = id ?? Guid.NewGuid().ToString("N");
+			scheme.UniqueID = id ?? ControlScheme.GenerateUniqueID();
 
 			var actionNodes = node.SelectNodes("Action");
 			foreach(XmlNode child in actionNodes)

@@ -27,6 +27,7 @@ using System.Linq;
 using System.Collections.Generic;
 using TeamUtility.IO;
 using UnityObject = UnityEngine.Object;
+using UnityInputConverter;
 
 namespace TeamUtilityEditor.IO
 {
@@ -49,7 +50,7 @@ namespace TeamUtilityEditor.IO
 		private Texture2D m_highlightTexture;
 		[SerializeField]
 		private string m_searchString = "";
-
+		
 		private GUIContent m_gravityInfo;
 		private GUIContent m_sensitivityInfo;
 		private GUIContent m_snapInfo;
@@ -58,6 +59,7 @@ namespace TeamUtilityEditor.IO
 		private GUIContent m_minusButtonContent;
 		private InputAction m_copySource;
 		private SearchField m_searchField;
+		private KeyCodeField[] m_keyFields;
 		private GUIStyle m_whiteLabel;
 		private GUIStyle m_whiteFoldout;
 		private GUIStyle m_warningLabel;
@@ -82,6 +84,8 @@ namespace TeamUtilityEditor.IO
 			m_axisOptions = EditorToolbox.GenerateJoystickAxisNames();
 			m_searchField = new SearchField();
 
+			CreateKeyFields();
+
 			EditorToolbox.ShowStartupWarning();
 			IsOpen = true;
 
@@ -90,6 +94,8 @@ namespace TeamUtilityEditor.IO
 				m_inputManager = UnityObject.FindObjectOfType<InputManager>();
 			if(m_searchResults == null)
 				m_searchResults = new List<SearchResult>();
+			if(m_selection == null)
+				m_selection = new Selection();
 			if(m_highlightTexture == null)
 				CreateHighlightTexture();
 
@@ -254,6 +260,64 @@ namespace TeamUtilityEditor.IO
 			}
 		}
 
+		private void CreateControlSchemeContextMenu(Rect position)
+		{
+			GenericMenu contextMenu = new GenericMenu();
+			contextMenu.AddItem(new GUIContent("New Action"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.NewInputAction);
+			contextMenu.AddSeparator("");
+
+			contextMenu.AddItem(new GUIContent("Duplicate"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.Duplicate);
+			contextMenu.AddItem(new GUIContent("Delete"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.Delete);
+			contextMenu.DropDown(position);
+		}
+
+		private void HandleControlSchemeContextMenuOption(object arg)
+		{
+			ControlSchemeContextMenuOptions option = (ControlSchemeContextMenuOptions)arg;
+			switch(option)
+			{
+			case ControlSchemeContextMenuOptions.NewInputAction:
+				CreateNewInputAction();
+				break;
+			case ControlSchemeContextMenuOptions.Duplicate:
+				Duplicate();
+				break;
+			case ControlSchemeContextMenuOptions.Delete:
+				Delete();
+				break;
+			}
+		}
+
+		private void CreateInputActionContextMenu(Rect position)
+		{
+			GenericMenu contextMenu = new GenericMenu();
+			contextMenu.AddItem(new GUIContent("Duplicate"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Duplicate);
+			contextMenu.AddItem(new GUIContent("Delete"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Delete);
+			contextMenu.AddItem(new GUIContent("Copy"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Copy);
+			contextMenu.AddItem(new GUIContent("Paste"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Paste);
+			contextMenu.DropDown(position);
+		}
+
+		private void HandleInputActionContextMenuOption(object arg)
+		{
+			InputActionContextMenuOptions option = (InputActionContextMenuOptions)arg;
+			switch(option)
+			{
+			case InputActionContextMenuOptions.Duplicate:
+				Duplicate();
+				break;
+			case InputActionContextMenuOptions.Delete:
+				Delete();
+				break;
+			case InputActionContextMenuOptions.Copy:
+				CopySelectedAxisConfig();
+				break;
+			case InputActionContextMenuOptions.Paste:
+				PasteAxisConfig();
+				break;
+			}
+		}
+
 		private void CreateNewControlScheme()
 		{
 			m_inputManager.ControlSchemes.Add(new ControlScheme());
@@ -270,6 +334,7 @@ namespace TeamUtilityEditor.IO
 				scheme.CreateNewAction("New Action");
 				scheme.IsExpanded = true;
 				m_selection.Action = scheme.Actions.Count - 1;
+				ResetKeyFields();
 				Repaint();
 			}
 		}
@@ -291,7 +356,7 @@ namespace TeamUtilityEditor.IO
 			ControlScheme scheme = m_inputManager.ControlSchemes[m_selection.ControlScheme];
 			InputAction source = scheme.Actions[m_selection.Action];
 
-			scheme.InsertNewAction(m_selection.Action + 1, "New Action", source);
+			scheme.InsertNewAction(m_selection.Action + 1, source.Name + " Copy", source);
 			m_selection.Action++;
 
 			if(m_searchString.Length > 0)
@@ -305,7 +370,7 @@ namespace TeamUtilityEditor.IO
 		{
 			ControlScheme source = m_inputManager.ControlSchemes[m_selection.ControlScheme];
 
-			m_inputManager.ControlSchemes.Insert(m_selection.ControlScheme + 1, ControlScheme.Duplicate("New Scheme", source));
+			m_inputManager.ControlSchemes.Insert(m_selection.ControlScheme + 1, ControlScheme.Duplicate(source));
 			m_selection.ControlScheme++;
 
 			if(m_searchString.Length > 0)
@@ -604,7 +669,7 @@ namespace TeamUtilityEditor.IO
 			Rect foldoutRect = new Rect(5.0f, 1.0f, 10, position.height - 1.0f);
 			Rect nameRect = new Rect(foldoutRect.xMax + 5.0f, 1.0f, position.width - (foldoutRect.xMax + 5.0f), position.height - 1.0f);
 
-			if(Event.current.type == EventType.MouseDown && Event.current.button == 0)
+			if(Event.current.type == EventType.MouseDown && (Event.current.button == 0 || Event.current.button == 1))
 			{
 				if(position.Contains(Event.current.mousePosition))
 				{
@@ -612,6 +677,11 @@ namespace TeamUtilityEditor.IO
 					m_selection.ControlScheme = index;
 					GUI.FocusControl(null);
 					Repaint();
+
+					if(Event.current.button == 1)
+					{
+						CreateControlSchemeContextMenu(new Rect(Event.current.mousePosition, Vector2.zero));
+					}
 				}
 			}
 
@@ -635,16 +705,22 @@ namespace TeamUtilityEditor.IO
 			InputAction action = m_inputManager.ControlSchemes[controlSchemeIndex].Actions[index];
 			Rect nameRect = new Rect(HIERARCHY_INDENT_SIZE, 1.0f, position.width - HIERARCHY_INDENT_SIZE, position.height - 1.0f);
 
-			if(Event.current.type == EventType.MouseDown && Event.current.button == 0)
+			if(Event.current.type == EventType.MouseDown && (Event.current.button == 0 || Event.current.button == 1))
 			{
 				if(position.Contains(Event.current.mousePosition))
 				{
 					m_selection.Reset();
 					m_selection.ControlScheme = controlSchemeIndex;
 					m_selection.Action = index;
+					ResetKeyFields();
 					Event.current.Use();
 					GUI.FocusControl(null);
 					Repaint();
+
+					if(Event.current.button == 1)
+					{
+						CreateInputActionContextMenu(new Rect(Event.current.mousePosition, Vector2.zero));
+					}
 				}
 			}
 
@@ -737,7 +813,7 @@ namespace TeamUtilityEditor.IO
 					float bindingRectHeight = CalculateInputBindingViewRectHeight(action.Bindings[i]);
 					Rect bindingRect = new Rect(-4.0f, ValuePP(ref itemPosY, bindingRectHeight + INPUT_BINDING_SPACING), contentWidth + 8.0f, bindingRectHeight);
 
-					var res = DrawInputBindingFields(bindingRect, "Binding " + (i + 1).ToString("D2"), action.Bindings[i]);
+					var res = DrawInputBindingFields(bindingRect, "Binding " + (i + 1).ToString("D2"), action, i);
 					if(res == CollectionAction.Add)
 					{
 						action.InsertNewBinding(i + 1);
@@ -745,7 +821,7 @@ namespace TeamUtilityEditor.IO
 					}
 					else if(res == CollectionAction.Remove)
 					{
-						action.Bindings.RemoveAt(i--);
+						action.DeleteBinding(i--);
 						collectionChanged = true;
 					}
 				}
@@ -768,25 +844,27 @@ namespace TeamUtilityEditor.IO
 			}
 		}
 
-		private CollectionAction DrawInputBindingFields(Rect position, string label, InputBinding binding)
+		private CollectionAction DrawInputBindingFields(Rect position, string label, InputAction action, int bindingIndex)
 		{
-			CollectionAction action = CollectionAction.None;
-			KeyCode positive = binding.Positive, negative = binding.Negative;
 			Rect headerRect = new Rect(position.x + 5.0f, position.y, position.width, INPUT_FIELD_HEIGHT);
 			Rect addButtonRect = new Rect(position.width - 45.0f, position.y + 2, 20.0f, 20.0f);
 			Rect removeButtonRect = new Rect(position.width - 25.0f, position.y + 2, 20.0f, 20.0f);
 			Rect layoutArea = new Rect(position.x + 10.0f, position.y + INPUT_FIELD_HEIGHT + FIELD_SPACING + 5.0f, position.width - 12.5f, position.height - (INPUT_FIELD_HEIGHT + FIELD_SPACING + 5.0f));
-			
-			EditorGUI.LabelField(headerRect, label, EditorStyles.boldLabel);
+			InputBinding binding = action.Bindings[bindingIndex];
+			KeyCode positive = binding.Positive, negative = binding.Negative;
+			CollectionAction result = CollectionAction.None;
 
+			//GUI.Box(position, "");
+			EditorGUI.LabelField(headerRect, label, EditorStyles.boldLabel);
+			
 			GUILayout.BeginArea(layoutArea);
 			binding.Type = (InputType)EditorGUILayout.EnumPopup("Type", binding.Type);
 
 			if(binding.Type == InputType.Button || binding.Type == InputType.DigitalAxis)
-				binding.Positive = (KeyCode)EditorGUILayout.EnumPopup("Positive", binding.Positive);
+				DrawKeyCodeField(action, bindingIndex, KeyType.Positive);
 
 			if(binding.Type == InputType.DigitalAxis)
-				binding.Negative = (KeyCode)EditorGUILayout.EnumPopup("Negative", binding.Negative);
+				DrawKeyCodeField(action, bindingIndex, KeyType.Negative);
 
 			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.AnalogButton ||
 				binding.Type == InputType.MouseAxis)
@@ -819,34 +897,67 @@ namespace TeamUtilityEditor.IO
 				binding.Invert = EditorGUILayout.Toggle("Invert", binding.Invert);
 			}
 
-			EditorGUILayout.Space();
-
 			if(binding.Type == InputType.Button && (Event.current == null || Event.current.type != EventType.KeyUp))
 			{
 				if(IsGenericJoystickButton(binding.Positive))
+				{
+					GUILayout.Space(JOYSTICK_WARNING_SPACING);
 					DrawGenericJoystickButtonWarning(binding.Positive, binding.Joystick);
-
-				if(IsGenericJoystickButton(binding.Negative))
-					DrawGenericJoystickButtonWarning(binding.Negative, binding.Joystick);
+				}
 			}
 
 			GUILayout.EndArea();
 
-			if(GUI.Button(addButtonRect, m_plusButtonContent, EditorStyles.label))
+			if(action.Bindings.Count < InputAction.MAX_BINDINGS)
 			{
-				action = CollectionAction.Add;
+				if(GUI.Button(addButtonRect, m_plusButtonContent, EditorStyles.label))
+				{
+					result = CollectionAction.Add;
+				}
 			}
 
 			if(GUI.Button(removeButtonRect, m_minusButtonContent, EditorStyles.label))
 			{
-				action = CollectionAction.Remove;
+				result = CollectionAction.Remove;
 			}
 
-			return action;
+			return result;
+		}
+
+		private void DrawKeyCodeField(InputAction action, int bindingIndex, KeyType keyType)
+		{
+			InputBinding binding = action.Bindings[bindingIndex];
+			int kfIndex = bindingIndex * 2;
+
+			if(keyType == KeyType.Positive)
+			{
+				binding.Positive = m_keyFields[kfIndex].OnGUI("Positive", binding.Positive);
+			}
+			else
+			{
+				binding.Negative = m_keyFields[kfIndex + 1].OnGUI("Negative", binding.Negative);
+			}
 		}
 		#endregion
 
 		#region [Utility]
+		private void CreateKeyFields()
+		{
+			m_keyFields = new KeyCodeField[InputAction.MAX_BINDINGS * 2];
+			for(int i = 0; i < m_keyFields.Length; i++)
+			{
+				m_keyFields[i] = new KeyCodeField();
+			}
+		}
+
+		private void ResetKeyFields()
+		{
+			for(int i = 0; i < m_keyFields.Length; i++)
+			{
+				m_keyFields[i].Reset();
+			}
+		}
+
 		private void CreateHighlightTexture()
 		{
 			m_highlightTexture = new Texture2D(1, 1);
@@ -1049,8 +1160,16 @@ namespace TeamUtilityEditor.IO
 				break;
 			}
 
-			numberOfFields += 2;	//	Header and type
-			return INPUT_FIELD_HEIGHT * numberOfFields + FIELD_SPACING * numberOfFields + 10.0f;
+			numberOfFields += 2;    //	Header and type
+
+			float height = INPUT_FIELD_HEIGHT * numberOfFields + FIELD_SPACING * numberOfFields + 10.0f;
+			if(binding.Type == InputType.Button && (Event.current == null || Event.current.type != EventType.KeyUp))
+			{
+				if(IsGenericJoystickButton(binding.Positive))
+					height += JOYSTICK_WARNING_SPACING + JOYSTICK_WARNING_HEIGHT;
+			}
+
+			return height;
 		}
 
 		private float ValuePP(ref float height, float amount)
@@ -1071,12 +1190,12 @@ namespace TeamUtilityEditor.IO
 			if(joystick < 8)
 			{
 				KeyCode correctButton = (KeyCode)((int)KeyCode.Joystick1Button0 + joystick * 20 + ((int)button - (int)KeyCode.JoystickButton0));
-				string warning = string.Format("'{0}' will receive input from all joysticks. Use '{1}' to receive input only from 'Joystick {2}'.", button, correctButton, joystick + 1);
+				string warning = string.Format("'{0}' will receive input from all joysticks. Use '{1}' to receive input only from 'Joystick {2}'.", KeyCodeConverter.KeyToString(button), KeyCodeConverter.KeyToString(correctButton), joystick + 1);
 				EditorGUILayout.HelpBox(warning, MessageType.Warning);
 			}
 			else
 			{
-				string warning = string.Format("'{0}' will receive input from all joysticks.", button);
+				string warning = string.Format("'{0}' will receive input from all joysticks.", KeyCodeConverter.KeyToString(button));
 				EditorGUILayout.HelpBox(warning, MessageType.Warning);
 			}
 		}

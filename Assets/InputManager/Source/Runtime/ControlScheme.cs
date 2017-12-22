@@ -23,6 +23,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TeamUtility.IO
 {
@@ -38,9 +39,9 @@ namespace TeamUtility.IO
 		[SerializeField]
 		private List<InputAction> m_actions;
 
-		public List<InputAction> Actions
+		public ReadOnlyCollection<InputAction> Actions
 		{
-			get { return m_actions; }
+			get { return m_actions.AsReadOnly(); }
 		}
 
 		public bool IsExpanded
@@ -90,7 +91,7 @@ namespace TeamUtility.IO
 			m_actions = new List<InputAction>();
 			m_name = name;
 			m_isExpanded = false;
-			m_uniqueID = Guid.NewGuid().ToString("N");
+			m_uniqueID = GenerateUniqueID();
 		}
 
 		public void Initialize()
@@ -191,13 +192,14 @@ namespace TeamUtility.IO
 
 		public static ControlScheme Duplicate(ControlScheme source)
 		{
-			return Duplicate(source.Name, source);
+			return Duplicate(source.Name + " Copy", source);
 		}
 
 		public static ControlScheme Duplicate(string name, ControlScheme source)
 		{
 			ControlScheme duplicate = new ControlScheme();
 			duplicate.m_name = name;
+			duplicate.m_uniqueID = GenerateUniqueID(); 
 			duplicate.m_actions = new List<InputAction>();
 			foreach(var action in source.m_actions)
 			{
@@ -205,6 +207,11 @@ namespace TeamUtility.IO
 			}
 			
 			return duplicate;
+		}
+
+		public static string GenerateUniqueID()
+		{
+			return Guid.NewGuid().ToString("N");
 		}
 	}
 }

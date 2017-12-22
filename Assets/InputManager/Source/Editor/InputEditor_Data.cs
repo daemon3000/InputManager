@@ -24,11 +24,30 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+using UnityInputConverter;
 
 namespace TeamUtilityEditor.IO
 {
 	public partial class InputEditor : EditorWindow
 	{
+		private static readonly Color32 HIGHLIGHT_COLOR = new Color32(62, 125, 231, 200);
+		private const float MENU_WIDTH = 100.0f;
+		private const float MIN_HIERARCHY_PANEL_WIDTH = 150.0f;
+		private const float MIN_CURSOR_RECT_WIDTH = 10.0f;
+		private const float MAX_CURSOR_RECT_WIDTH = 50.0f;
+		private const float TOOLBAR_HEIGHT = 18.0f;
+		private const float HIERARCHY_ITEM_HEIGHT = 18.0f;
+		private const float HIERARCHY_INDENT_SIZE = 30.0f;
+		private const float INPUT_FIELD_HEIGHT = 16.0f;
+		private const float FIELD_SPACING = 2.0f;
+		private const float BUTTON_HEIGHT = 24.0f;
+		private const float INPUT_ACTION_SPACING = 20.0f;
+		private const float INPUT_BINDING_SPACING = 10.0f;
+		private const float SCROLL_BAR_WIDTH = 15.0f;
+		private const float MIN_MAIN_PANEL_WIDTH = 300.0f;
+		private const float JOYSTICK_WARNING_SPACING = 10.0f;
+		private const float JOYSTICK_WARNING_HEIGHT = 40.0f;
+
 		private enum FileMenuOptions
 		{
 			OverwriteProjectSettings = 0, CreateSnapshot, LoadSnapshot, Export, Import, CreateDefaultInputProfile
@@ -36,12 +55,27 @@ namespace TeamUtilityEditor.IO
 
 		private enum EditMenuOptions
 		{
-			NewControlScheme = 0, NewInputAction, NewBinding, Duplicate, Delete, DeleteAll, SelectTarget, IgnoreTimescale, Copy, Paste
+			NewControlScheme = 0, NewInputAction, Duplicate, Delete, DeleteAll, SelectTarget, IgnoreTimescale, Copy, Paste
+		}
+
+		private enum ControlSchemeContextMenuOptions
+		{
+			NewInputAction = 0, Duplicate, Delete
+		}
+
+		private enum InputActionContextMenuOptions
+		{
+			Duplicate, Delete, Copy, Paste
 		}
 
 		private enum CollectionAction
 		{
 			None, Remove, Add
+		}
+
+		private enum KeyType
+		{
+			Positive = 0, Negative
 		}
 
 		[Serializable]
@@ -64,7 +98,7 @@ namespace TeamUtilityEditor.IO
 		}
 		
 		[SerializeField]
-		private struct Selection
+		private class Selection
 		{
 			public const int NONE = -1;
 
@@ -86,26 +120,107 @@ namespace TeamUtilityEditor.IO
 				get { return Action != NONE; }
 			}
 
+			public Selection()
+			{
+				ControlScheme = Action = NONE;
+			}
+
 			public void Reset()
 			{
 				ControlScheme = Action = NONE;
 			}
 		}
 
-		private static readonly Color32 HIGHLIGHT_COLOR = new Color32(62, 125, 231, 200);
-		private const float MENU_WIDTH = 100.0f;
-		private const float MIN_HIERARCHY_PANEL_WIDTH = 150.0f;
-		private const float MIN_CURSOR_RECT_WIDTH = 10.0f;
-		private const float MAX_CURSOR_RECT_WIDTH = 50.0f;
-		private const float TOOLBAR_HEIGHT = 18.0f;
-		private const float HIERARCHY_ITEM_HEIGHT = 18.0f;
-		private const float HIERARCHY_INDENT_SIZE = 30.0f;
-		private const float INPUT_FIELD_HEIGHT = 16.0f;
-		private const float FIELD_SPACING = 2.0f;
-		private const float BUTTON_HEIGHT = 24.0f;
-		private const float INPUT_ACTION_SPACING = 20.0f;
-		private const float INPUT_BINDING_SPACING = 10.0f;
-		private const float SCROLL_BAR_WIDTH = 15.0f;
-		private const float MIN_MAIN_PANEL_WIDTH = 300.0f;
+		private class KeyCodeField
+		{
+			private string m_controlName;
+			private string m_keyString;
+			private bool m_isEditing;
+
+			public KeyCodeField()
+			{
+				m_controlName = Guid.NewGuid().ToString("N");
+				m_keyString = "";
+				m_isEditing = false;
+			}
+
+			public KeyCode OnGUI(string label, KeyCode key)
+			{
+				GUI.SetNextControlName(m_controlName);
+				bool hasFocus = (GUI.GetNameOfFocusedControl() == m_controlName);
+				if(!m_isEditing && hasFocus)
+				{
+					m_keyString = key == KeyCode.None ? "" : KeyCodeConverter.KeyToString(key);
+				}
+
+				m_isEditing = hasFocus;
+				if(m_isEditing)
+				{
+					m_keyString = EditorGUILayout.TextField(label, m_keyString);
+				}
+				else
+				{
+					EditorGUILayout.TextField(label, key == KeyCode.None ? "" : KeyCodeConverter.KeyToString(key));
+				}
+
+				if(m_isEditing && Event.current.type == EventType.KeyUp)
+				{
+					key = KeyCodeConverter.StringToKey(m_keyString);
+					if(key == KeyCode.None)
+					{
+						m_keyString = "";
+					}
+					else
+					{
+						m_keyString = KeyCodeConverter.KeyToString(key);
+					}
+					m_isEditing = false;
+				}
+
+				return key;
+			}
+
+			public KeyCode OnGUI(Rect position, string label, KeyCode key)
+			{
+				GUI.SetNextControlName(m_controlName);
+				bool hasFocus = (GUI.GetNameOfFocusedControl() == m_controlName);
+				if(!m_isEditing && hasFocus)
+				{
+					m_keyString = key == KeyCode.None ? "" : KeyCodeConverter.KeyToString(key);
+				}
+
+				m_isEditing = hasFocus;
+				if(m_isEditing)
+				{
+					m_keyString = EditorGUI.TextField(position, label, m_keyString);
+				}
+				else
+				{
+					EditorGUI.TextField(position, label, key == KeyCode.None ? "" : KeyCodeConverter.KeyToString(key));
+				}
+
+				if(m_isEditing && Event.current.type == EventType.KeyUp)
+				{
+					key = KeyCodeConverter.StringToKey(m_keyString);
+					if(key == KeyCode.None)
+					{
+						m_keyString = "";
+					}
+					else
+					{
+						m_keyString = KeyCodeConverter.KeyToString(key);
+					}
+					m_isEditing = false;
+				}
+
+				return key;
+			}
+
+			public void Reset()
+			{
+				m_keyString = "";
+				m_isEditing = false;
+			}
+		}
 	}
 }

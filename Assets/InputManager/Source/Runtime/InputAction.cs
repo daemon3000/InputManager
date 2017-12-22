@@ -23,12 +23,15 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace TeamUtility.IO
 {
 	[Serializable]
 	public class InputAction
 	{
+		public const int MAX_BINDINGS = 16;
+
 		[SerializeField]
 		private string m_name;
 		[SerializeField]
@@ -36,9 +39,9 @@ namespace TeamUtility.IO
 		[SerializeField]
 		private List<InputBinding> m_bindings;
 
-		public List<InputBinding> Bindings
+		public ReadOnlyCollection<InputBinding> Bindings
 		{
-			get { return m_bindings; }
+			get { return m_bindings.AsReadOnly(); }
 		}
 
 		public string Name
@@ -178,34 +181,54 @@ namespace TeamUtility.IO
 
 		public InputBinding CreateNewBinding()
 		{
-			InputBinding binding = new InputBinding();
-			m_bindings.Add(binding);
+			if(m_bindings.Count < MAX_BINDINGS)
+			{
+				InputBinding binding = new InputBinding();
+				m_bindings.Add(binding);
 
-			return binding;
+				return binding;
+			}
+
+			return null;
 		}
 
 		public InputBinding CreateNewBinding(InputBinding source)
 		{
-			InputBinding binding = InputBinding.Duplicate(source);
-			m_bindings.Add(binding);
+			if(m_bindings.Count < MAX_BINDINGS)
+			{
+				InputBinding binding = InputBinding.Duplicate(source);
+				m_bindings.Add(binding);
 
-			return binding;
+				return binding;
+			}
+
+			return null;
 		}
 
 		public InputBinding InsertNewBinding(int index)
 		{
-			InputBinding binding = new InputBinding();
-			m_bindings.Insert(index, binding);
+			if(m_bindings.Count < MAX_BINDINGS)
+			{
+				InputBinding binding = new InputBinding();
+				m_bindings.Insert(index, binding);
 
-			return binding;
+				return binding;
+			}
+
+			return null;
 		}
 
 		public InputBinding InsertNewBinding(int index, InputBinding source)
 		{
-			InputBinding binding = InputBinding.Duplicate(source);
-			m_bindings.Insert(index, binding);
+			if(m_bindings.Count < MAX_BINDINGS)
+			{
+				InputBinding binding = InputBinding.Duplicate(source);
+				m_bindings.Insert(index, binding);
 
-			return binding;
+				return binding;
+			}
+
+			return null;
 		}
 
 		public void DeleteBinding(int index)
@@ -236,7 +259,7 @@ namespace TeamUtility.IO
 
 		public static InputAction Duplicate(InputAction source)
 		{
-			return Duplicate(source.m_name, source);
+			return Duplicate(source.m_name + " Copy", source);
 		}
 
 		public static InputAction Duplicate(string name, InputAction source)
