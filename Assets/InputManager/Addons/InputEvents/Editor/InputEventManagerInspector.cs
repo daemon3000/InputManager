@@ -23,32 +23,34 @@
 using UnityEngine;
 using UnityEditor;
 using System;
-using System.Collections;
 using TeamUtility.IO;
+using TeamUtility.IO.Events;
 
 namespace TeamUtilityEditor.IO
 {
 	[CustomEditor(typeof(InputEventManager))]
-	public class InputEventManagerEditor : UnityEditor.Editor
+	public class InputEventManagerInspector : Editor
 	{
-		private enum Action
+		private enum CollectionAction
 		{
 			None, Remove, Add
 		}
 
-		private SerializedProperty _inputEvents;
-		private GUIStyle _headerStyle;
-		private GUIStyle _footerButtonStyle;
-		private GUIContent _plusButtonContent;
-		private GUIContent _minusButtonContent;
-		private InputEventManager _eventManager;
+		private SerializedProperty m_inputEvents;
+		private KeyCodeField m_keyCodeField;
+		private GUIStyle m_headerStyle;
+		private GUIStyle m_footerButtonStyle;
+		private GUIContent m_plusButtonContent;
+		private GUIContent m_minusButtonContent;
+		private InputEventManager m_eventManager;
 
 		private void OnEnable()
 		{
-			_inputEvents = serializedObject.FindProperty("_inputEvents");
-			_plusButtonContent = new GUIContent(EditorGUIUtility.Load("ol plus.png") as Texture, "Insert a new event after this one.");
-			_minusButtonContent = new GUIContent(EditorGUIUtility.Load("ol minus.png") as Texture, "Delete this event.");
-			_eventManager = (InputEventManager)target;
+			m_inputEvents = serializedObject.FindProperty("m_inputEvents");
+			m_plusButtonContent = new GUIContent(EditorGUIUtility.Load("ol plus.png") as Texture, "Insert a new event after this one.");
+			m_minusButtonContent = new GUIContent(EditorGUIUtility.Load("ol minus.png") as Texture, "Delete this event.");
+			m_eventManager = (InputEventManager)target;
+			m_keyCodeField = new KeyCodeField();
 		}
 
 		public override void OnInspectorGUI()
@@ -58,53 +60,52 @@ namespace TeamUtilityEditor.IO
 			serializedObject.Update();
 
 			EditorGUILayout.Space();
-			if(_inputEvents.arraySize > 0)
+			if(m_inputEvents.arraySize > 0)
 			{
-				for(int i = 0; i < _inputEvents.arraySize; i++)
+				for(int i = 0; i < m_inputEvents.arraySize; i++)
 				{
 					var action = DisplayInputEvent(i);
-					if(action == Action.Add)
+					if(action == CollectionAction.Add)
 					{
-						_inputEvents.InsertArrayElementAtIndex(i);
+						m_inputEvents.InsertArrayElementAtIndex(i);
                         break;
 					}
-					else if(action == Action.Remove)
+					else if(action == CollectionAction.Remove)
 					{
-						_inputEvents.DeleteArrayElementAtIndex(i--);
+						m_inputEvents.DeleteArrayElementAtIndex(i--);
 					}
 				}
 			}
 			else
 			{
 				if(GUILayout.Button("Add Event", GUILayout.Height(24.0f)))
-					_inputEvents.InsertArrayElementAtIndex(0);
+					m_inputEvents.InsertArrayElementAtIndex(0);
 			}
 
 			serializedObject.ApplyModifiedProperties();
 		}
 
-		private Action DisplayInputEvent(int index)
+		private CollectionAction DisplayInputEvent(int index)
 		{
-			SerializedProperty inputEvent = _inputEvents.GetArrayElementAtIndex(index);
-			SerializedProperty eventName = inputEvent.FindPropertyRelative("name");
-			SerializedProperty axisName = inputEvent.FindPropertyRelative("axisName");
-			SerializedProperty buttonName = inputEvent.FindPropertyRelative("buttonName");
-			SerializedProperty keyCode = inputEvent.FindPropertyRelative("keyCode");
-			SerializedProperty eventType = inputEvent.FindPropertyRelative("eventType");
-			SerializedProperty inputState = inputEvent.FindPropertyRelative("inputState");
-            SerializedProperty playerID = inputEvent.FindPropertyRelative("playerID");
-			SerializedProperty actionEvent = inputEvent.FindPropertyRelative("onAction");
-			SerializedProperty axisEvent = inputEvent.FindPropertyRelative("onAxis");
-            InputEvent evt = _eventManager.GetEvent(index);
-            Action evtAction = Action.None;
+			SerializedProperty inputEvent = m_inputEvents.GetArrayElementAtIndex(index);
+			SerializedProperty eventName = inputEvent.FindPropertyRelative("m_name");
+			SerializedProperty actionName = inputEvent.FindPropertyRelative("m_actionName");
+			SerializedProperty keyCode = inputEvent.FindPropertyRelative("m_keyCode");
+			SerializedProperty eventType = inputEvent.FindPropertyRelative("m_eventType");
+			SerializedProperty inputState = inputEvent.FindPropertyRelative("m_inputState");
+            SerializedProperty playerID = inputEvent.FindPropertyRelative("m_playerID");
+			SerializedProperty actionEvent = inputEvent.FindPropertyRelative("m_onAction");
+			SerializedProperty axisEvent = inputEvent.FindPropertyRelative("m_onAxis");
+            InputEvent evt = m_eventManager.GetEvent(index);
+            CollectionAction evtAction = CollectionAction.None;
 
-            string label = string.IsNullOrEmpty(evt.name) ? "Event" : evt.name;
+            string label = string.IsNullOrEmpty(evt.Name) ? "Event" : evt.Name;
             if (inputEvent.isExpanded)
                 label += " (Click to collapse)";
             else
                 label += " (Click to expand)";
 
-            if (GUILayout.Button(label, _headerStyle, GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button(label, m_headerStyle, GUILayout.ExpandWidth(true)))
                 inputEvent.isExpanded = !inputEvent.isExpanded;
 
             if (inputEvent.isExpanded)
@@ -120,22 +121,27 @@ namespace TeamUtilityEditor.IO
 
 				EditorGUILayout.PropertyField(eventName);
 				EditorGUILayout.PropertyField(eventType);
-				if(evt.eventType == InputEventType.Axis)
+				if(evt.EventType == InputEventType.Axis)
 				{
                     EditorGUILayout.PropertyField(playerID);
-                    EditorGUILayout.PropertyField(axisName);
+                    EditorGUILayout.PropertyField(actionName);
 					EditorGUILayout.PropertyField(axisEvent);
 				}
-				else if(evt.eventType == InputEventType.Button)
+				else if(evt.EventType == InputEventType.Button)
 				{
                     EditorGUILayout.PropertyField(playerID);
-                    EditorGUILayout.PropertyField(buttonName);
+                    EditorGUILayout.PropertyField(actionName);
 					EditorGUILayout.PropertyField(inputState);
 					EditorGUILayout.PropertyField(actionEvent);
 				}
 				else
 				{
-					EditorGUILayout.PropertyField(keyCode);
+					var keyName = keyCode.enumNames[keyCode.enumValueIndex];
+					KeyCode key = InputBinding.StringToKey(keyName);
+
+					key = m_keyCodeField.OnGUI("Key", key);
+					keyCode.enumValueIndex = Array.IndexOf<string>(keyCode.enumNames, key.ToString());
+
 					EditorGUILayout.PropertyField(inputState);
 					EditorGUILayout.PropertyField(actionEvent);
 				}
@@ -157,13 +163,13 @@ namespace TeamUtilityEditor.IO
 			GUILayout.Label("", (GUIStyle)"RL Background", GUILayout.Width(60.0f), GUILayout.Height(20));
 
 			Rect lastRect = GUILayoutUtility.GetLastRect();
-			if(GUI.Button(new Rect(lastRect.x, lastRect.y, lastRect.width / 2, lastRect.height), _plusButtonContent, _footerButtonStyle))
+			if(GUI.Button(new Rect(lastRect.x, lastRect.y, lastRect.width / 2, lastRect.height), m_plusButtonContent, m_footerButtonStyle))
 			{
-				evtAction = Action.Add;
+				evtAction = CollectionAction.Add;
 			}
-			if(GUI.Button(new Rect(lastRect.center.x, lastRect.y, lastRect.width / 2, lastRect.height), _minusButtonContent, _footerButtonStyle))
+			if(GUI.Button(new Rect(lastRect.center.x, lastRect.y, lastRect.width / 2, lastRect.height), m_minusButtonContent, m_footerButtonStyle))
 			{
-				evtAction = Action.Remove;
+				evtAction = CollectionAction.Remove;
 			}
 
 			EditorGUILayout.EndHorizontal();
@@ -172,25 +178,27 @@ namespace TeamUtilityEditor.IO
 
 		private void EnsureGUIStyles()
 		{
-			if(_headerStyle == null)
+			if(m_headerStyle == null)
 			{
-				_headerStyle = new GUIStyle(Array.Find<GUIStyle>(GUI.skin.customStyles, obj => obj.name == "RL Header"));
-				_headerStyle.normal.textColor = Color.black;
-				_headerStyle.alignment = TextAnchor.MiddleLeft;
-				_headerStyle.contentOffset = new Vector2(10, 0);
-				_headerStyle.fontSize = 11;
+				m_headerStyle = new GUIStyle(Array.Find<GUIStyle>(GUI.skin.customStyles, obj => obj.name == "RL Header"));
+				m_headerStyle.normal.textColor = Color.black;
+				m_headerStyle.alignment = TextAnchor.MiddleLeft;
+				m_headerStyle.contentOffset = new Vector2(10, 0);
+				m_headerStyle.fontSize = 11;
 			}
-			if(_footerButtonStyle == null)
+			if(m_footerButtonStyle == null)
 			{
-				_footerButtonStyle = new GUIStyle(Array.Find<GUIStyle>(GUI.skin.customStyles, obj => obj.name == "RL FooterButton"));
-				_footerButtonStyle.alignment = TextAnchor.MiddleCenter;
+				m_footerButtonStyle = new GUIStyle(Array.Find<GUIStyle>(GUI.skin.customStyles, obj => obj.name == "RL FooterButton"))
+				{
+					alignment = TextAnchor.MiddleCenter
+				};
 			}
 		}
 
 		private float CalculateBackgroundHeight(InputEvent evt)
 		{
-			int fieldCount = evt.eventType == InputEventType.Button ? 5 : 4;
-			int eventCount = evt.eventType == InputEventType.Axis ? evt.onAxis.GetPersistentEventCount() : evt.onAction.GetPersistentEventCount();
+			int fieldCount = evt.EventType == InputEventType.Button ? 5 : 4;
+			int eventCount = evt.EventType == InputEventType.Axis ? evt.OnAxis.GetPersistentEventCount() : evt.OnAction.GetPersistentEventCount();
 			float fieldHeight = 18.0f;
 			float eventBorderHeight = 95.0f;
 			float eventHeight = 43.0f;

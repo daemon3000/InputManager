@@ -20,54 +20,111 @@
 //	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
-using System.Collections;
 
-namespace TeamUtility.IO
+namespace TeamUtility.IO.Events
 {
 	[Serializable]
 	public class InputEvent
 	{
 		[Serializable]
 		public class AxisEvent : UnityEvent<float> { }
-		
+
 		[Serializable]
 		public class ActionEvent : UnityEvent { }
 
-		/// <summary>
-		/// Do not change the name of an event at runtime because it will invalidate the lookup table.
-		/// </summary>
-		public string name;
-		public string axisName;
-		public string buttonName;
-		public KeyCode keyCode = KeyCode.None;
-		public InputEventType eventType = InputEventType.Button;
-		public InputState inputState = InputState.Pressed;
-        public PlayerID playerID = PlayerID.One;
-		public ActionEvent onAction;
-		public AxisEvent onAxis;
+		[SerializeField]
+		private string m_name;
+		[SerializeField]
+		private string m_actionName;
+		[SerializeField]
+		private KeyCode m_keyCode;
+		[SerializeField]
+		private InputEventType m_eventType;
+		[SerializeField]
+		private InputState m_inputState;
+		[SerializeField]
+		private PlayerID m_playerID;
+		[SerializeField]
+		private ActionEvent m_onAction;
+		[SerializeField]
+		private AxisEvent m_onAxis;
+
+		public string Name
+		{
+			get { return m_name; }
+			set
+			{
+				m_name = value;
+				if(Application.isPlaying)
+				{
+					Debug.LogWarning("You should not change the name of an input action at runtime");
+				}
+			}
+		}
+
+		public string ActionName
+		{
+			get { return m_actionName; }
+			set { m_actionName = value; }
+		}
+
+		public KeyCode KeyCode
+		{
+			get { return m_keyCode; }
+			set { m_keyCode = value; }
+		}
+
+		public InputEventType EventType
+		{
+			get { return m_eventType; }
+			set { m_eventType = value; }
+		}
+
+		public InputState InputState
+		{
+			get { return m_inputState; }
+			set { m_inputState = value; }
+		}
+
+		public PlayerID PlayerID
+		{
+			get { return m_playerID; }
+			set { m_playerID = value; }
+		}
+
+		public ActionEvent OnAction
+		{
+			get { return m_onAction; }
+			//set { m_onAction = value; }
+		}
+
+		public AxisEvent OnAxis
+		{
+			get { return m_onAxis; }
+			//set { m_onAxis = value; }
+		}
 
 		public InputEvent() :
 			this("New Event") { }
 
 		public InputEvent(string name)
 		{
-			this.name = name;
-			axisName = "";
-			buttonName = "";
-			keyCode = KeyCode.None;
-			eventType = InputEventType.Key;
-			inputState = InputState.Pressed;
-            playerID = PlayerID.One;
-			onAxis = new AxisEvent();
-			onAction = new ActionEvent();
+			m_name = name;
+			m_actionName = "";
+			m_keyCode = KeyCode.None;
+			m_eventType = InputEventType.Key;
+			m_inputState = InputState.Pressed;
+            m_playerID = PlayerID.One;
+			m_onAxis = new AxisEvent();
+			m_onAction = new ActionEvent();
 		}
 
-		public void Evaluate()
+		public void Update()
 		{
-			switch(eventType)
+			switch(m_eventType)
 			{
 			case InputEventType.Axis:
 				EvaluateAxis();
@@ -83,43 +140,43 @@ namespace TeamUtility.IO
 
 		private void EvaluateAxis()
 		{
-			onAxis.Invoke(InputManager.GetAxis(axisName, playerID));
+			m_onAxis.Invoke(InputManager.GetAxis(m_actionName, m_playerID));
 		}
 
 		private void EvaluateButton()
 		{
-			switch(inputState) 
+			switch(m_inputState) 
 			{
 			case InputState.Pressed:
-				if(InputManager.GetButtonDown(buttonName, playerID))
-					onAction.Invoke();
+				if(InputManager.GetButtonDown(m_actionName, m_playerID))
+					m_onAction.Invoke();
 				break;
 			case InputState.Released:
-				if(InputManager.GetButtonUp(buttonName, playerID))
-					onAction.Invoke();
+				if(InputManager.GetButtonUp(m_actionName, m_playerID))
+					m_onAction.Invoke();
 				break;
 			case InputState.Held:
-				if(InputManager.GetButton(buttonName, playerID))
-					onAction.Invoke();
+				if(InputManager.GetButton(m_actionName, m_playerID))
+					m_onAction.Invoke();
 				break;
 			}
 		}
 
 		private void EvaluateKey()
 		{
-			switch(inputState) 
+			switch(m_inputState) 
 			{
 			case InputState.Pressed:
-				if(InputManager.GetKeyDown(keyCode))
-					onAction.Invoke();
+				if(InputManager.GetKeyDown(m_keyCode))
+					m_onAction.Invoke();
 				break;
 			case InputState.Released:
-				if(InputManager.GetKeyUp(keyCode))
-					onAction.Invoke();
+				if(InputManager.GetKeyUp(m_keyCode))
+					m_onAction.Invoke();
 				break;
 			case InputState.Held:
-				if(InputManager.GetKey(keyCode))
-					onAction.Invoke();
+				if(InputManager.GetKey(m_keyCode))
+					m_onAction.Invoke();
 				break;
 			}
 		}
