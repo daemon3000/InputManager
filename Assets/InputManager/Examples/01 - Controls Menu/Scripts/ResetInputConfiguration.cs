@@ -1,47 +1,46 @@
 using UnityEngine;
 using System.IO;
-using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
-	//	TODO: ResetInputConfiguration
 	public class ResetInputConfiguration : MonoBehaviour 
 	{
 		[SerializeField]
 		private TextAsset m_defaultInputs;
 		[SerializeField]
-		private string m_inputConfigName;
+		private string m_controlSchemeName;
 		
 		public void ResetInputs()
 		{
-			//InputConfiguration inputConfig = InputManager.GetInputConfiguration(m_inputConfigName);
-			//InputConfiguration defInputConfig = null;
+			ControlScheme controlScheme = InputManager.GetControlScheme(m_controlSchemeName);
+			ControlScheme defControlScheme = null;
 
-			//using(StringReader reader = new StringReader(m_defaultInputs.text))
-			//{
-			//	InputLoaderXML loader = new InputLoaderXML(reader);
-			//	defInputConfig = loader.LoadSelective(m_inputConfigName);
-			//}
+			using(StringReader reader = new StringReader(m_defaultInputs.text))
+			{
+				InputLoaderXML loader = new InputLoaderXML(reader);
+				defControlScheme = loader.Load(m_controlSchemeName);
+			}
 
-			//if(defInputConfig != null)
-			//{
-			//	if(defInputConfig.axes.Count == inputConfig.axes.Count)
-			//	{
-			//		for(int i = 0; i < defInputConfig.axes.Count; i++)
-			//		{
-			//			inputConfig.axes[i].Copy(defInputConfig.axes[i]);
-			//		}
-			//		InputManager.SetConfigurationDirty(m_inputConfigName);
-			//	}
-			//	else
-			//	{
-			//		Debug.LogError("Current and default input configurations don't have the same number of axes");
-			//	}
-			//}
-			//else
-			//{
-			//	Debug.LogError(string.Format(@"Default input profile doesn't contain an input configuration named '{0}'", m_inputConfigName));
-			//}
+			if(defControlScheme != null)
+			{
+				if(defControlScheme.Actions.Count == controlScheme.Actions.Count)
+				{
+					for(int i = 0; i < defControlScheme.Actions.Count; i++)
+					{
+						controlScheme.Actions[i].Copy(defControlScheme.Actions[i]);
+					}
+
+					InputManager.Reinitialize();
+				}
+				else
+				{
+					Debug.LogError("Current and default control scheme don't have the same number of actions");
+				}
+			}
+			else
+			{
+				Debug.LogErrorFormat("Default input profile doesn't contain a control scheme named '{0}'", m_controlSchemeName);
+			}
 		}
 	}
 }

@@ -26,8 +26,8 @@ using UnityEditor.IMGUI.Controls;
 using System.Linq;
 using System.Collections.Generic;
 using TeamUtility.IO;
-using UnityObject = UnityEngine.Object;
 using UnityInputConverter;
+using UnityObject = UnityEngine.Object;
 
 namespace TeamUtilityEditor.IO
 {

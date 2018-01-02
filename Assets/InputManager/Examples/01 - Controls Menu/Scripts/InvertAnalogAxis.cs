@@ -1,57 +1,53 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
-	//	TODO: InvertAnalogAxis
 	public class InvertAnalogAxis : MonoBehaviour 
 	{
 		[SerializeField]
-		[FormerlySerializedAs("m_inputConfigName")]
-		private string _inputConfigName;
+		private string m_controlSchemeName;
 		[SerializeField]
-		[FormerlySerializedAs("m_axisConfigName")]
-		private string _axisConfigName;
+		private string m_actionName;
 		[SerializeField]
-		[FormerlySerializedAs("m_status")]
-		private Text _status;
+		private int m_bindingIndex;
+		[SerializeField]
+		private Text m_status;
 
-		//private AxisConfiguration _axisConfig;
+		private InputAction m_inputAction;
 
 		private void Awake()
 		{
-			//InitAxisConfig();
-			//InputManager.Instance.Loaded += InitAxisConfig;
+			InitializeInputAction();
+			InputManager.Loaded += InitializeInputAction;
 		}
 
-		//private void OnDestroy()
-		//{
-		//	if(InputManager.Instance != null)
-		//		InputManager.Instance.Loaded -= InitAxisConfig;
-		//}
+		private void OnDestroy()
+		{
+			InputManager.Loaded -= InitializeInputAction;
+		}
 
-		//private void InitAxisConfig()
-		//{
-		//	_axisConfig = InputManager.GetAxisConfiguration(_inputConfigName, _axisConfigName);
-		//	if(_axisConfig != null)
-		//	{
-		//		_status.text = _axisConfig.invert ? "On" : "Off";
-		//	}
-		//	else
-		//	{
-		//		_status.text = "Off";
-		//		Debug.LogError(string.Format(@"Input configuration '{0}' does not exist or axis '{1}' does not exist", _inputConfigName, _axisConfigName));
-		//	}
-		//}
+		private void InitializeInputAction()
+		{
+			m_inputAction = InputManager.GetAction(m_controlSchemeName, m_actionName);
+			if(m_inputAction != null)
+			{
+				m_status.text = m_inputAction.Bindings[m_bindingIndex].Invert ? "On" : "Off";
+			}
+			else
+			{
+				m_status.text = "Off";
+				Debug.LogErrorFormat("Input configuration '{0}' does not exist or axis '{1}' does not exist", m_controlSchemeName, m_actionName);
+			}
+		}
 
 		public void OnClick()
 		{
-			//if(_axisConfig != null)
-			//{
-			//	_axisConfig.invert = !_axisConfig.invert;
-			//	_status.text = _axisConfig.invert ? "On" : "Off";
-			//}
+			if(m_inputAction != null)
+			{
+				m_inputAction.Bindings[m_bindingIndex].Invert = !m_inputAction.Bindings[m_bindingIndex].Invert;
+				m_status.text = m_inputAction.Bindings[m_bindingIndex].Invert ? "On" : "Off";
+			}
 		}
 	}
 }

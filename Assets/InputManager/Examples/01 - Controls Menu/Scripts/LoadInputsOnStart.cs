@@ -4,7 +4,8 @@ namespace TeamUtility.IO.Examples
 {
 	public class LoadInputsOnStart : MonoBehaviour 
 	{
-		[SerializeField] private int m_exampleID;
+		[SerializeField]
+		private int m_exampleID;
 
 		private void Awake()
 		{

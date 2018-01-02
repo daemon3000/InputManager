@@ -38,7 +38,7 @@ namespace TeamUtility.IO.Examples
 
 		private void Update()
 		{
-			if(PauseManager.Instance != null && PauseManager.IsPaused)
+			if(PauseManager.Exists && PauseManager.IsPaused)
 				return;
 
 			if (axes == RotationAxes.MouseXAndY)

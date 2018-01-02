@@ -145,7 +145,7 @@ namespace TeamUtility.IO
 				return null;
 
 			ControlScheme scheme = null;
-			var schemeNodes = doc.SelectNodes("ControlScheme");
+			var schemeNodes = doc.DocumentElement.SelectNodes("ControlScheme");
 			foreach(XmlNode node in schemeNodes)
 			{
 				if(ReadAttribute(node, "name") == schemeName)

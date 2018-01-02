@@ -1,73 +1,68 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
 
 namespace TeamUtility.IO.Examples
 {
-	//	TODO: GamepadToggle
 	public class GamepadToggle : MonoBehaviour 
 	{
 		[SerializeField]
-		[FormerlySerializedAs("m_keyboardInputConfig")]
-		private string _keyboardInputConfig;
+		private string m_keyboardScheme;
 		[SerializeField]
-		[FormerlySerializedAs("m_gamepadInputConfig")]
-		private string _gamepadInputConfig;
+		private string m_gamepadScheme;
 		[SerializeField]
-		[FormerlySerializedAs("m_status")]
-		private Text _status;
+		private Text m_status;
 
-		private bool _gamepadOn;
+		private bool m_gamepadOn;
 
 		private void Awake()
 		{
-			//if(InputManager.PlayerOneConfiguration.name == _keyboardInputConfig)
-			//{
-			//	_gamepadOn = false;
-			//	_status.text = "Gamepad: Off";
-			//}
-			//else
-			//{
-			//	_gamepadOn = true;
-			//	_status.text = "Gamepad: On";
-			//}
-			//InputManager.Instance.Loaded += HandleInputLoaded;
+			if(InputManager.PlayerOneControlScheme.Name == m_keyboardScheme)
+			{
+				m_gamepadOn = false;
+				m_status.text = "Gamepad: Off";
+			}
+			else
+			{
+				m_gamepadOn = true;
+				m_status.text = "Gamepad: On";
+			}
+
+			InputManager.Loaded += HandleInputLoaded;
 		}
 
-		//private void OnDestroy()
-		//{
-		//	if(InputManager.Instance != null)
-		//		InputManager.Instance.Loaded -= HandleInputLoaded;
-		//}
+		private void OnDestroy()
+		{
+			InputManager.Loaded -= HandleInputLoaded;
+		}
 
-		//private void HandleInputLoaded()
-		//{
-		//	if(_gamepadOn)
-		//	{
-		//		InputManager.SetInputConfiguration(_gamepadInputConfig, PlayerID.One);
-		//		_status.text = "Gamepad: On";
-		//	}
-		//	else
-		//	{
-		//		InputManager.SetInputConfiguration(_keyboardInputConfig, PlayerID.One);
-		//		_status.text = "Gamepad: Off";
-		//	}
-		//}
+		private void HandleInputLoaded()
+		{
+			if(m_gamepadOn)
+			{
+				InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
+				m_status.text = "Gamepad: On";
+			}
+			else
+			{
+				InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
+				m_status.text = "Gamepad: Off";
+			}
+		}
 
 		public void Toggle()
 		{
-			//if(_gamepadOn)
-			//{
-			//	InputManager.SetInputConfiguration(_keyboardInputConfig, PlayerID.One);
-			//	_status.text = "Gamepad: Off";
-			//	_gamepadOn = false;
-			//}
-			//else
-			//{
-			//	InputManager.SetInputConfiguration(_gamepadInputConfig, PlayerID.One);
-			//	_status.text = "Gamepad: On";
-			//	_gamepadOn = true;
-			//}
+			if(m_gamepadOn)
+			{
+				InputManager.SetControlScheme(m_keyboardScheme, PlayerID.One);
+				m_status.text = "Gamepad: Off";
+				m_gamepadOn = false;
+			}
+			else
+			{
+				InputManager.SetControlScheme(m_gamepadScheme, PlayerID.One);
+				m_status.text = "Gamepad: On";
+				m_gamepadOn = true;
+			}
 		}
 	}
 }

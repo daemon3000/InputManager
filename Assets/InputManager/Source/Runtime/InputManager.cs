@@ -40,12 +40,6 @@ namespace TeamUtility.IO
 
 	public partial class InputManager : MonoBehaviour
 	{
-		public event Action<PlayerID> PlayerControlsChanged;
-		public event Action<string> ControlSchemeChanged;
-		public event Action Loaded;
-		public event Action Saved;
-		public event RemoteUpdateDelegate RemoteUpdate;
-
 		[SerializeField]
 		private List<ControlScheme> m_controlSchemes = new List<ControlScheme>();
 		[SerializeField]
@@ -64,6 +58,11 @@ namespace TeamUtility.IO
 		private ControlScheme m_playerThreeScheme;
 		private ControlScheme m_playerFourScheme;
 		private ScanService m_scanService;
+		private Action<PlayerID> m_playerControlsChangedHandler;
+		private Action m_controlSchemesChangedHandler;
+		private Action m_loadedHandler;
+		private Action m_savedHandler;
+		private RemoteUpdateDelegate m_remoteUpdateHandler;
 		private static InputManager m_instance;
 		
 		private Dictionary<string, ControlScheme> m_schemeLookup;
@@ -119,6 +118,20 @@ namespace TeamUtility.IO
 				Debug.LogWarning("You have multiple InputManager instances in the scene!", gameObject);
 				Destroy(this);
 			}
+		}
+
+		private void OnDestroy()
+		{
+			if(m_instance == this)
+			{
+				m_instance = null;
+			}
+
+			m_playerControlsChangedHandler = null;
+			m_controlSchemesChangedHandler = null;
+			m_loadedHandler = null;
+			m_savedHandler = null;
+			m_remoteUpdateHandler = null;
 		}
 
 		private void Initialize()
@@ -204,8 +217,8 @@ namespace TeamUtility.IO
 				float deltaTime = m_ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
 				scheme.Update(deltaTime);
 
-				if(RemoteUpdate != null)
-					RemoteUpdate(playerID);
+				if(m_remoteUpdateHandler != null)
+					m_remoteUpdateHandler(playerID);
 			}
 		}
 
@@ -291,29 +304,59 @@ namespace TeamUtility.IO
 
 		private void RaisePlayerControlsChangedEvent(PlayerID playerID)
 		{
-			if(PlayerControlsChanged != null)
-				PlayerControlsChanged(playerID);
+			if(m_playerControlsChangedHandler != null)
+				m_playerControlsChangedHandler(playerID);
 		}
 
-		private void RaiseControlSchemeChangedEvent(string schemeName)
+		private void RaiseControlSchemesChangedEvent()
 		{
-			if(ControlSchemeChanged != null)
-				ControlSchemeChanged(schemeName);
+			if(m_controlSchemesChangedHandler != null)
+				m_controlSchemesChangedHandler();
 		}
 
 		private void RaiseLoadedEvent()
 		{
-			if(Loaded != null)
-				Loaded();
+			if(m_loadedHandler != null)
+				m_loadedHandler();
 		}
 
 		private void RaiseSavedEvent()
 		{
-			if(Saved != null)
-				Saved();
+			if(m_savedHandler != null)
+				m_savedHandler();
 		}
 
 		#region [Static Interface]
+		public static event Action<PlayerID> PlayerControlsChanged
+		{
+			add { if(m_instance != null) m_instance.m_playerControlsChangedHandler += value; }
+			remove { if(m_instance != null) m_instance.m_playerControlsChangedHandler -= value; }
+		}
+
+		public static event Action ControlSchemesChanged
+		{
+			add { if(m_instance != null) m_instance.m_controlSchemesChangedHandler += value; }
+			remove { if(m_instance != null) m_instance.m_controlSchemesChangedHandler -= value; }
+		}
+
+		public static event Action Loaded
+		{
+			add { if(m_instance != null) m_instance.m_loadedHandler += value; }
+			remove { if(m_instance != null) m_instance.m_loadedHandler -= value; }
+		}
+
+		public static event Action Saved
+		{
+			add { if(m_instance != null) m_instance.m_savedHandler += value; }
+			remove { if(m_instance != null) m_instance.m_savedHandler -= value; }
+		}
+
+		public static event RemoteUpdateDelegate RemoteUpdate
+		{
+			add { if(m_instance != null) m_instance.m_remoteUpdateHandler += value; }
+			remove { if(m_instance != null) m_instance.m_remoteUpdateHandler -= value; }
+		}
+
 		public static bool Exists
 		{
 			get { return m_instance != null; }
@@ -388,16 +431,8 @@ namespace TeamUtility.IO
 		/// </summary>
 		public static void Reinitialize()
 		{
+			m_instance.RaiseControlSchemesChangedEvent();
 			m_instance.Initialize();
-		}
-
-		public static void ResetControlScheme(PlayerID playerID)
-		{
-			ControlScheme scheme = m_instance.GetControlSchemeByPlayerID(playerID);
-			if(scheme != null)
-			{
-				scheme.Reset();
-			}
 		}
 
 		/// <summary>
@@ -419,8 +454,8 @@ namespace TeamUtility.IO
 			ControlScheme controlScheme = null;
 			if(m_instance.m_schemeLookup.TryGetValue(name, out controlScheme))
 			{
+				controlScheme.Reset();
 				m_instance.SetControlSchemeByPlayerID(playerID, controlScheme);
-				ResetControlScheme(playerID);
 				m_instance.RaisePlayerControlsChangedEvent(playerID);
 			}
 			else
