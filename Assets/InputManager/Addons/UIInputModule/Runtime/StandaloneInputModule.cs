@@ -2,7 +2,7 @@
 //	The MIT License (MIT)
 //	
 //	Copyright (c) 2017, Unity Technologies
-//	Copyright (c) 2017, Cristian Alexandru Geambasu
+//	Copyright (c) 2018, Cristian Alexandru Geambasu
 //
 //	Permission is hereby granted, free of charge, to any person obtaining a copy
 //	of this software and associated documentation files (the "Software"), to deal

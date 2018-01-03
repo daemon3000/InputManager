@@ -18,12 +18,6 @@ Compatible with Windows 7, Windows 8 Desktop, Windows 8 Store, Linux, Mac OSX, W
 For detailed information on how to get started with this plugin visit the [Wiki](https://github.com/daemon3000/InputManager/wiki).
 
 ## Addons
-### Input Adapter
-This addon manages keyboard and XBox controller input and features seamless transition between one and the other during play time.
-
-### Joystick Mapping
-This addon allows you to map joystick buttons to key codes and axes.
-
 ### UI Input Modules
 Custom standalone input module for the new UI system introduced in Unity 4.6.
 
