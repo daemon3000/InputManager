@@ -22,21 +22,49 @@
 #endregion
 using UnityEngine;
 
-namespace TeamUtility.IO.Examples
+namespace TeamUtility.IO
 {
-	public class SaveInputs : MonoBehaviour 
+	[CreateAssetMenu(fileName = "New Input Binding Reference", menuName = "Input Manager/Input Binding Reference")]
+	public class InputBindingRef : ScriptableObject
 	{
 		[SerializeField]
-		private int m_exampleID;
+		private string m_schemeName;
+		[SerializeField]
+		private string m_actionName;
+		[SerializeField]
+		private int m_bindingIndex;
 
-		public void Save()
+		[System.NonSerialized]
+		private InputBinding m_cachedInputBinding = null;
+
+		public InputBinding Get()
 		{
-			string saveFolder = PathUtility.GetInputSaveFolder(m_exampleID);
-			if(!System.IO.Directory.Exists(saveFolder))
-				System.IO.Directory.CreateDirectory(saveFolder);
+			if(m_cachedInputBinding == null && InputManager.Exists)
+			{
+				var action = InputManager.GetAction(m_schemeName, m_actionName);
+				if(action != null)
+				{
+					m_cachedInputBinding = action.GetBinding(m_bindingIndex);
+				}
+			}
 
-			InputSaverXML saver = new InputSaverXML(saveFolder + "/input_config.xml");
-			InputManager.Save(saver);
+			return m_cachedInputBinding;
+		}
+
+		private void OnValidate()
+		{
+			if(InputManager.Exists)
+			{
+				var action = InputManager.GetAction(m_schemeName, m_actionName);
+				if(action != null)
+				{
+					m_cachedInputBinding = action.GetBinding(m_bindingIndex);
+				}
+				else
+				{
+					m_cachedInputBinding = null;
+				}
+			}
 		}
 	}
 }

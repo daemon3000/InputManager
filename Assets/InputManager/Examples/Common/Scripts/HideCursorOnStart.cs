@@ -24,19 +24,11 @@ using UnityEngine;
 
 namespace TeamUtility.IO.Examples
 {
-	public class SaveInputs : MonoBehaviour 
+	public class HideCursorOnStart : MonoBehaviour
 	{
-		[SerializeField]
-		private int m_exampleID;
-
-		public void Save()
+		private void Start()
 		{
-			string saveFolder = PathUtility.GetInputSaveFolder(m_exampleID);
-			if(!System.IO.Directory.Exists(saveFolder))
-				System.IO.Directory.CreateDirectory(saveFolder);
-
-			InputSaverXML saver = new InputSaverXML(saveFolder + "/input_config.xml");
-			InputManager.Save(saver);
+			Cursor.visible = false;
 		}
 	}
 }

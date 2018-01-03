@@ -192,7 +192,7 @@ namespace TeamUtility.IO
 
 		public static ControlScheme Duplicate(ControlScheme source)
 		{
-			return Duplicate(source.Name + " Copy", source);
+			return Duplicate(source.Name, source);
 		}
 
 		public static ControlScheme Duplicate(string name, ControlScheme source)

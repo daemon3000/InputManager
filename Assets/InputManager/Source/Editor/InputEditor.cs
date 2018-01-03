@@ -370,7 +370,7 @@ namespace TeamUtilityEditor.IO
 		{
 			ControlScheme source = m_inputManager.ControlSchemes[m_selection.ControlScheme];
 
-			m_inputManager.ControlSchemes.Insert(m_selection.ControlScheme + 1, ControlScheme.Duplicate(source));
+			m_inputManager.ControlSchemes.Insert(m_selection.ControlScheme + 1, ControlScheme.Duplicate(source.Name + " Copy", source));
 			m_selection.ControlScheme++;
 
 			if(m_searchString.Length > 0)

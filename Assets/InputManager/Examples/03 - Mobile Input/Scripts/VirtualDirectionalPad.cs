@@ -1,10 +1,31 @@
-﻿using UnityEngine;
+﻿#region [Copyright (c) 2015 Cristian Alexandru Geambasu]
+//	Distributed under the terms of an MIT-style license:
+//
+//	The MIT License
+//
+//	Copyright (c) 2015 Cristian Alexandru Geambasu
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
+//	and associated documentation files (the "Software"), to deal in the Software without restriction, 
+//	including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+//	and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+//	subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all copies or substantial 
+//	portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+//	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+//	PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+//	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+//	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#endregion
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace TeamUtility.IO.Examples
 {
-	//	TODO: VirtualDirectionalPad
 	[RequireComponent(typeof(Image))]
 	public class VirtualDirectionalPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
@@ -23,156 +44,164 @@ namespace TeamUtility.IO.Examples
 		}
 
 		[SerializeField]
-		private DPADStates _states;
+		private DPADStates m_states;
 		[SerializeField]
 		[Tooltip("A percentage of the image's size. An X(Y) value 1.0 would make the padding equal to the width(height) of the image.")]
-		private Vector2 _padding;
+		private Vector2 m_padding;
 		[SerializeField]
-		private float _gravity;
+		private float m_gravity;
 		[SerializeField]
-		private float _sensitivity;
+		private float m_sensitivity;
 		[SerializeField]
-		private Vector2 _deadZone;
+		private Vector2 m_deadZone;
 		[SerializeField]
-		private bool _ignoreTimeScale;
+		private InputBindingRef m_horizontalAxisBinding;
 		[SerializeField]
-		private string _inputConfiguration;
-		[SerializeField]
-		private string _horizontalAxis;
-		[SerializeField]
-		private string _verticalAxis;
-
-		private RectTransform _transform;
-		private Image _image;
-		private Vector2 _centerPos;
-		private Vector2 _pointerPos;
-		private float _horizontal;
-		private float _vertical;
-		private int _dirHorizontal;
-		private int _dirVertical;
-		private bool _isPointerDown;
+		private InputBindingRef m_verticalAxisBinding;
+		
+		private RectTransform m_transform;
+		private Image m_image;
+		private Vector2 m_centerPos;
+		private Vector2 m_pointerPos;
+		private float m_horizontal;
+		private float m_vertical;
+		private int m_dirHorizontal;
+		private int m_dirVertical;
+		private bool m_isPointerDown;
 
 		private float DeltaTime
 		{
 			get
 			{
-				return _ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime;
+				return Time.unscaledDeltaTime;
 			}
 		}
 
 		private void Awake()
 		{
-			_transform = GetComponent<RectTransform>();
-			_image = GetComponent<Image>();
-			_centerPos = _transform.rect.center;
-			_pointerPos = Vector3.zero;
-			_horizontal = 0.0f;
-			_vertical = 0.0f;
-			_dirHorizontal = 0;
-			_dirVertical = 0;
-			_isPointerDown = false;
+			m_transform = GetComponent<RectTransform>();
+			m_image = GetComponent<Image>();
+			m_centerPos = m_transform.rect.center;
+			m_pointerPos = Vector3.zero;
+			m_horizontal = 0.0f;
+			m_vertical = 0.0f;
+			m_dirHorizontal = 0;
+			m_dirVertical = 0;
+			m_isPointerDown = false;
 			ResetAxisValues();
+			InputManager.RemoteUpdate += OnRemoteInputUpdate;
+		}
+
+		private void OnDestroy()
+		{
+			InputManager.RemoteUpdate -= OnRemoteInputUpdate;
 		}
 
 		private void OnEnable()
 		{
-			if(_isPointerDown)
+			if(m_isPointerDown)
 			{
 				ResetAxisValues();
-				_isPointerDown = false;
+				m_isPointerDown = false;
 			}
 		}
 
 		private void OnDisable()
 		{
-			if(_isPointerDown)
+			if(m_isPointerDown)
 			{
 				ResetAxisValues();
-				_isPointerDown = false;
+				m_isPointerDown = false;
+			}
+		}
+
+		private void OnRemoteInputUpdate(PlayerID playerID)
+		{
+			if(playerID == PlayerID.One)
+			{
+				SetHorizontalAxis(m_horizontal);
+				SetVerticalAxis(m_vertical);
 			}
 		}
 
 		private void LateUpdate()
 		{
-			if(_dirHorizontal != 0)
-				_horizontal = Mathf.MoveTowards(_horizontal, _dirHorizontal, _sensitivity * DeltaTime);
+			if(m_dirHorizontal != 0)
+				m_horizontal = Mathf.MoveTowards(m_horizontal, m_dirHorizontal, m_sensitivity * DeltaTime);
 			else
-				_horizontal = Mathf.MoveTowards(_horizontal, 0.0f, _gravity * DeltaTime);
+				m_horizontal = Mathf.MoveTowards(m_horizontal, 0.0f, m_gravity * DeltaTime);
 
-			if(_dirVertical != 0)
-				_vertical = Mathf.MoveTowards(_vertical, _dirVertical, _sensitivity * DeltaTime);
+			if(m_dirVertical != 0)
+				m_vertical = Mathf.MoveTowards(m_vertical, m_dirVertical, m_sensitivity * DeltaTime);
 			else
-				_vertical = Mathf.MoveTowards(_vertical, 0.0f, _gravity * DeltaTime);
-
-			SetHorizontalAxis(_horizontal);
-			SetVerticalAxis(_vertical);
+				m_vertical = Mathf.MoveTowards(m_vertical, 0.0f, m_gravity * DeltaTime);
 		}
 
 		public void OnPointerDown(PointerEventData eventData)
 		{
-			RectTransformUtility.ScreenPointToLocalPointInRectangle(_transform, eventData.position,
-																	eventData.pressEventCamera, out _pointerPos);
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(m_transform, eventData.position,
+																	eventData.pressEventCamera, out m_pointerPos);
 			UpdateAxisValues();
-			_isPointerDown = true;
+			m_isPointerDown = true;
 		}
 
 		public void OnPointerUp(PointerEventData eventData)
 		{
 			ResetAxisValues();
-			_isPointerDown = false;
+			m_isPointerDown = false;
 		}
 
 		public void OnDrag(PointerEventData eventData)
 		{
-			if(_isPointerDown)
+			if(m_isPointerDown)
 			{
-				RectTransformUtility.ScreenPointToLocalPointInRectangle(_transform, eventData.position, eventData.pressEventCamera, out _pointerPos);
-				float paddingX = _padding.x * _transform.rect.width;
-				float paddingY = _padding.y * _transform.rect.height;
+				RectTransformUtility.ScreenPointToLocalPointInRectangle(m_transform, eventData.position, eventData.pressEventCamera, out m_pointerPos);
+				float paddingX = m_padding.x * m_transform.rect.width;
+				float paddingY = m_padding.y * m_transform.rect.height;
 
-				if(_pointerPos.x >= _transform.rect.x - paddingX && _pointerPos.x <= _transform.rect.xMax + paddingX &&
-				   _pointerPos.y >= _transform.rect.y - paddingY && _pointerPos.y <= _transform.rect.yMax + paddingY)
+				if(m_pointerPos.x >= m_transform.rect.x - paddingX && m_pointerPos.x <= m_transform.rect.xMax + paddingX &&
+				   m_pointerPos.y >= m_transform.rect.y - paddingY && m_pointerPos.y <= m_transform.rect.yMax + paddingY)
 				{
 					UpdateAxisValues();
 				}
 				else
 				{
 					ResetAxisValues();
-					_isPointerDown = false;
+					m_isPointerDown = false;
 				}
 			}
 		}
 
 		private void UpdateAxisValues()
 		{
-			Vector2 delta = _pointerPos - _centerPos;
-			float horizontal = Mathf.Clamp(delta.x / (_transform.rect.width / 2), -1.0f, 1.0f);
-			float vertical = Mathf.Clamp(delta.y / (_transform.rect.height / 2), -1.0f, 1.0f);
+			Vector2 delta = m_pointerPos - m_centerPos;
+			float horizontal = Mathf.Clamp(delta.x / (m_transform.rect.width / 2), -1.0f, 1.0f);
+			float vertical = Mathf.Clamp(delta.y / (m_transform.rect.height / 2), -1.0f, 1.0f);
 
-			if(horizontal > -_deadZone.x && horizontal < _deadZone.x)
+			if(horizontal > -m_deadZone.x && horizontal < m_deadZone.x)
 				horizontal = 0.0f;
-			if(vertical > -_deadZone.y && vertical < _deadZone.y)
+			if(vertical > -m_deadZone.y && vertical < m_deadZone.y)
 				vertical = 0.0f;
 
 			if(!Mathf.Approximately(horizontal, 0.0f))
-				_dirHorizontal = (int)Mathf.Sign(horizontal);
+				m_dirHorizontal = (int)Mathf.Sign(horizontal);
 			else
-				_dirHorizontal = 0;
+				m_dirHorizontal = 0;
 
 			if(!Mathf.Approximately(vertical, 0.0f))
-				_dirVertical = (int)Mathf.Sign(vertical);
+				m_dirVertical = (int)Mathf.Sign(vertical);
 			else
-				_dirVertical = 0;
+				m_dirVertical = 0;
 
-			UpdateDPADImage(_dirHorizontal, _dirVertical);
+			UpdateDPADImage(m_dirHorizontal, m_dirVertical);
 		}
 
 		private void ResetAxisValues()
 		{
-			_horizontal = 0.0f;
-			_vertical = 0.0f;
-			_dirHorizontal = 0;
-			_dirVertical = 0;
+			m_horizontal = 0.0f;
+			m_vertical = 0.0f;
+			m_dirHorizontal = 0;
+			m_dirVertical = 0;
 			UpdateDPADImage(0, 0);
 		}
 
@@ -186,63 +215,56 @@ namespace TeamUtility.IO.Examples
 				if(dirVertical > 0)
 				{
 					if(dirHorizontal > 0)
-						_image.overrideSprite = _states.upRight;
+						m_image.overrideSprite = m_states.upRight;
 					else
-						_image.overrideSprite = _states.upLeft;
+						m_image.overrideSprite = m_states.upLeft;
 				}
 				else
 				{
 					if(dirHorizontal > 0)
-						_image.overrideSprite = _states.downRight;
+						m_image.overrideSprite = m_states.downRight;
 					else
-						_image.overrideSprite = _states.downLeft;
+						m_image.overrideSprite = m_states.downLeft;
 				}
 			}
 			else if(moveHorizontal)
 			{
 				if(dirHorizontal > 0)
-					_image.overrideSprite = _states.right;
+					m_image.overrideSprite = m_states.right;
 				else
-					_image.overrideSprite = _states.left;
+					m_image.overrideSprite = m_states.left;
 			}
 			else if(moveVertical)
 			{
 				if(dirVertical > 0)
-					_image.overrideSprite = _states.up;
+					m_image.overrideSprite = m_states.up;
 				else
-					_image.overrideSprite = _states.down;
+					m_image.overrideSprite = m_states.down;
 			}
 			else
 			{
-				_image.overrideSprite = _states.center;
+				m_image.overrideSprite = m_states.center;
 			}
 		}
 
 		private void SetHorizontalAxis(float value)
 		{
-			if(!string.IsNullOrEmpty(_inputConfiguration))
-			{
-				//if(!string.IsNullOrEmpty(_horizontalAxis))
-				//	InputManager.SetRemoteAxisValue(_inputConfiguration, _horizontalAxis, value);
-			}
+			var binding = m_horizontalAxisBinding.Get();
+			binding.SetRemoteAxisValue(value);
 		}
 
 		private void SetVerticalAxis(float value)
 		{
-			if(!string.IsNullOrEmpty(_inputConfiguration))
-			{
-				//if(!string.IsNullOrEmpty(_verticalAxis))
-				//	InputManager.SetRemoteAxisValue(_inputConfiguration, _verticalAxis, value);
-			}
+			var binding = m_verticalAxisBinding.Get();
+			binding.SetRemoteAxisValue(value);
 		}
 
 		private void Reset()
 		{
-			_padding = Vector2.zero;
-			_sensitivity = 3.0f;
-			_gravity = 3.0f;
-			_deadZone = Vector2.zero;
-			_ignoreTimeScale = true;
+			m_padding = Vector2.zero;
+			m_sensitivity = 3.0f;
+			m_gravity = 3.0f;
+			m_deadZone = Vector2.zero;
 		}
 	}
 }

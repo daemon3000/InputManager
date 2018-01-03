@@ -259,7 +259,7 @@ namespace TeamUtility.IO
 
 		public static InputAction Duplicate(InputAction source)
 		{
-			return Duplicate(source.m_name + " Copy", source);
+			return Duplicate(source.m_name, source);
 		}
 
 		public static InputAction Duplicate(string name, InputAction source)

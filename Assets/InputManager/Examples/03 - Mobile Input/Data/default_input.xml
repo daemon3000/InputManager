@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Input version="2">
+  <PlayerOneScheme>c8d3c61140ed4b878e887827e1b9445b</PlayerOneScheme>
+  <PlayerTwoScheme />
+  <PlayerThreeScheme />
+  <PlayerFourScheme />
+  <ControlScheme name="Default" id="06cd669440d0422a95f3e89bd3812515">
+    <Action name="Horizontal">
+      <Description />
+      <Binding>
+        <Positive>D</Positive>
+        <Negative>A</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Vertical">
+      <Description />
+      <Binding>
+        <Positive>W</Positive>
+        <Negative>S</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="LookHorizontal">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>0.1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>MouseAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="LookVertical">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>0.1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>MouseAxis</Type>
+        <Axis>1</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Jump">
+      <Description />
+      <Binding>
+        <Positive>Space</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>0.1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>1</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Horizontal">
+      <Description />
+      <Binding>
+        <Positive>RightArrow</Positive>
+        <Negative>LeftArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Vertical">
+      <Description />
+      <Binding>
+        <Positive>UpArrow</Positive>
+        <Negative>DownArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Submit">
+      <Description />
+      <Binding>
+        <Positive>Return</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Cancel">
+      <Description />
+      <Binding>
+        <Positive>Escape</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+  </ControlScheme>
+  <ControlScheme name="Mobile" id="c8d3c61140ed4b878e887827e1b9445b">
+    <Action name="Horizontal">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>RemoteAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Vertical">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>RemoteAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="LookHorizontal">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>RemoteAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="LookVertical">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>RemoteAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="Jump">
+      <Description />
+      <Binding>
+        <Positive>None</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>RemoteButton</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Horizontal">
+      <Description />
+      <Binding>
+        <Positive>RightArrow</Positive>
+        <Negative>LeftArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Vertical">
+      <Description />
+      <Binding>
+        <Positive>UpArrow</Positive>
+        <Negative>DownArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>DigitalAxis</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Submit">
+      <Description />
+      <Binding>
+        <Positive>Return</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Cancel">
+      <Description />
+      <Binding>
+        <Positive>Escape</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+  </ControlScheme>
+</Input>

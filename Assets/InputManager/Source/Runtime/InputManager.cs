@@ -66,6 +66,7 @@ namespace TeamUtility.IO
 		private static InputManager m_instance;
 		
 		private Dictionary<string, ControlScheme> m_schemeLookup;
+		private Dictionary<string, ControlScheme> m_schemeLookupByID;
 		private Dictionary<string, Dictionary<string, InputAction>> m_actionLookup;
 
 		public List<ControlScheme> ControlSchemes
@@ -110,6 +111,7 @@ namespace TeamUtility.IO
 				m_instance = this;
 				m_scanService = new ScanService();
 				m_schemeLookup = new Dictionary<string, ControlScheme>();
+				m_schemeLookupByID = new Dictionary<string, ControlScheme>();
 				m_actionLookup = new Dictionary<string, Dictionary<string, InputAction>>();
 				Initialize();
 			}
@@ -148,9 +150,9 @@ namespace TeamUtility.IO
 
 			PopulateLookupTables();
 
-			if(!string.IsNullOrEmpty(m_playerOneDefault) && m_schemeLookup.ContainsKey(m_playerOneDefault))
+			if(!string.IsNullOrEmpty(m_playerOneDefault) && m_schemeLookupByID.ContainsKey(m_playerOneDefault))
 			{
-				m_playerOneScheme = m_schemeLookup[m_playerOneDefault];
+				m_playerOneScheme = m_schemeLookupByID[m_playerOneDefault];
 			}
 			else
 			{
@@ -158,19 +160,19 @@ namespace TeamUtility.IO
 					m_playerOneScheme = m_controlSchemes[0];
 			}
 
-			if(!string.IsNullOrEmpty(m_playerTwoDefault) && m_schemeLookup.ContainsKey(m_playerTwoDefault))
+			if(!string.IsNullOrEmpty(m_playerTwoDefault) && m_schemeLookupByID.ContainsKey(m_playerTwoDefault))
 			{
-				m_playerTwoScheme = m_schemeLookup[m_playerTwoDefault];
+				m_playerTwoScheme = m_schemeLookupByID[m_playerTwoDefault];
 			}
 
-			if(!string.IsNullOrEmpty(m_playerThreeDefault) && m_schemeLookup.ContainsKey(m_playerThreeDefault))
+			if(!string.IsNullOrEmpty(m_playerThreeDefault) && m_schemeLookupByID.ContainsKey(m_playerThreeDefault))
 			{
-				m_playerThreeScheme = m_schemeLookup[m_playerThreeDefault];
+				m_playerThreeScheme = m_schemeLookupByID[m_playerThreeDefault];
 			}
 
-			if(!string.IsNullOrEmpty(m_playerFourDefault) && m_schemeLookup.ContainsKey(m_playerFourDefault))
+			if(!string.IsNullOrEmpty(m_playerFourDefault) && m_schemeLookupByID.ContainsKey(m_playerFourDefault))
 			{
-				m_playerFourScheme = m_schemeLookup[m_playerFourDefault];
+				m_playerFourScheme = m_schemeLookupByID[m_playerFourDefault];
 			}
 
 			foreach(ControlScheme scheme in m_controlSchemes)
@@ -184,9 +186,11 @@ namespace TeamUtility.IO
 		private void PopulateLookupTables()
 		{
 			m_schemeLookup.Clear();
+			m_schemeLookupByID.Clear();
 			foreach(ControlScheme scheme in m_controlSchemes)
 			{
 				m_schemeLookup[scheme.Name] = scheme;
+				m_schemeLookupByID[scheme.UniqueID] = scheme;
 			}
 
 			m_actionLookup.Clear();
