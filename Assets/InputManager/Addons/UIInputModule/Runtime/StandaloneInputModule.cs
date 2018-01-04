@@ -29,9 +29,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using System;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
-	[AddComponentMenu("Team Utility/Input Manager/Standalone Input Module")]
+	[AddComponentMenu("Luminosity/Input Manager/Standalone Input Module")]
 	public class StandaloneInputModule : PointerInputModule
 	{
 		public const string VERSION = "2017.2";

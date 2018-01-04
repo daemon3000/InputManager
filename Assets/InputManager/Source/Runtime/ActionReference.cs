@@ -22,48 +22,34 @@
 #endregion
 using UnityEngine;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
-	[CreateAssetMenu(fileName = "New Input Binding Reference", menuName = "Input Manager/Input Binding Reference")]
-	public class InputBindingRef : ScriptableObject
+	[CreateAssetMenu(fileName = "New Input Action Reference", menuName = "Luminosity/Input Manager/Input Action Reference")]
+	public class ActionReference : ScriptableObject
 	{
 		[SerializeField]
 		private string m_schemeName;
 		[SerializeField]
 		private string m_actionName;
-		[SerializeField]
-		private int m_bindingIndex;
 
 		[System.NonSerialized]
-		private InputBinding m_cachedInputBinding = null;
+		private InputAction m_cachedInputAction = null;
 
-		public InputBinding Get()
+		public InputAction Get()
 		{
-			if(m_cachedInputBinding == null && InputManager.Exists)
+			if(m_cachedInputAction == null && InputManager.Exists)
 			{
-				var action = InputManager.GetAction(m_schemeName, m_actionName);
-				if(action != null)
-				{
-					m_cachedInputBinding = action.GetBinding(m_bindingIndex);
-				}
+				m_cachedInputAction = InputManager.GetAction(m_schemeName, m_actionName);
 			}
 
-			return m_cachedInputBinding;
+			return m_cachedInputAction;
 		}
 
 		private void OnValidate()
 		{
 			if(InputManager.Exists)
 			{
-				var action = InputManager.GetAction(m_schemeName, m_actionName);
-				if(action != null)
-				{
-					m_cachedInputBinding = action.GetBinding(m_bindingIndex);
-				}
-				else
-				{
-					m_cachedInputBinding = null;
-				}
+				m_cachedInputAction = InputManager.GetAction(m_schemeName, m_actionName);
 			}
 		}
 	}

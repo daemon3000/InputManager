@@ -23,10 +23,10 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using TeamUtility.IO;
+using Luminosity.IO;
 using UnityInputConverter;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	public static partial class EditorToolbox
 	{

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	public class UIInputAdapter : BaseInput
 	{

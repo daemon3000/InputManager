@@ -28,7 +28,7 @@ using UnityEditor.Callbacks;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace TeamUtility.IO.Events
+namespace Luminosity.IO.Events
 {
 	public class InputEventManager : MonoBehaviour
 	{

@@ -23,7 +23,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace TeamUtility.IO.Events
+namespace Luminosity.IO.Events
 {
 	public class InputEventGroup : MonoBehaviour
 	{

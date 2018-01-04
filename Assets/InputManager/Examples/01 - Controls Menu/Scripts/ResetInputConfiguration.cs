@@ -23,7 +23,7 @@
 using UnityEngine;
 using System.IO;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	public class ResetInputConfiguration : MonoBehaviour 
 	{

@@ -22,7 +22,7 @@
 #endregion
 using UnityEngine;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	public struct ScanResult
 	{

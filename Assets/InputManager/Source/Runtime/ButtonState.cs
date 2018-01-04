@@ -21,7 +21,7 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	public enum ButtonState
 	{

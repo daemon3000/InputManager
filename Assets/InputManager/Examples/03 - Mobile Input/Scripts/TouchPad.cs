@@ -24,7 +24,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	[RequireComponent(typeof(Image))]
 	public class TouchPad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
@@ -39,9 +39,9 @@ namespace TeamUtility.IO.Examples
 		[SerializeField]
 		private Vector2 m_sensitivity = Vector2.one;
 		[SerializeField]
-		private InputBindingRef m_horizontalAxisBinding;
+		private BindingReference m_horizontalAxisBinding;
 		[SerializeField]
-		private InputBindingRef m_verticalAxisBinding;
+		private BindingReference m_verticalAxisBinding;
 		
 		private RectTransform m_transform;
 		private Vector2 m_pointerPos;

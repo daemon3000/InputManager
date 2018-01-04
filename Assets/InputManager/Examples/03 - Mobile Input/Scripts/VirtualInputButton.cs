@@ -24,12 +24,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	public class VirtualInputButton : Selectable
 	{
 		[SerializeField]
-		private InputBindingRef m_buttonBinding;
+		private BindingReference m_buttonBinding;
 
 		private ButtonState m_buttonState;
 

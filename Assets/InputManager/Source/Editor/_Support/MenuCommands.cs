@@ -24,15 +24,15 @@ using UnityEngine;
 using UnityEditor;
 using UnityInputConverter;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	public static partial class MenuCommands
 	{
-		[MenuItem("Team Utility/Input Manager/Create Input Manager", false, 2)]
+		[MenuItem("Luminosity/Input Manager/Create Input Manager", false, 2)]
 		private static void CreateInputManager()
 		{
 			GameObject gameObject = new GameObject("Input Manager");
-			gameObject.AddComponent<TeamUtility.IO.InputManager>();
+			gameObject.AddComponent<Luminosity.IO.InputManager>();
 
 			// Register Input Manager for undo, mark scene as dirty.
 			Undo.RegisterCreatedObjectUndo(gameObject, "Create Input Manager");
@@ -40,7 +40,7 @@ namespace TeamUtilityEditor.IO
 			Selection.activeGameObject = gameObject;
 		}
 
-		[MenuItem("Team Utility/Input Manager/Convert Unity Input", false, 5)]
+		[MenuItem("Luminosity/Input Manager/Convert Unity Input", false, 5)]
 		private static void ConvertInput()
 		{
 			string sourcePath = EditorUtility.OpenFilePanel("Select Unity input settings asset", "", "asset");
@@ -67,41 +67,41 @@ namespace TeamUtilityEditor.IO
 			}
 		}
 
-		[MenuItem("Team Utility/Input Manager/Check For Updates", false, 400)]
+		[MenuItem("Luminosity/Input Manager/Check For Updates", false, 400)]
         public static void CheckForUpdates()
         {
             Application.OpenURL("https://github.com/daemon3000/InputManager");
         }
 
-        [MenuItem("Team Utility/Input Manager/Documentation", false, 401)]
+        [MenuItem("Luminosity/Input Manager/Documentation", false, 401)]
 		public static void OpenDocumentationPage()
 		{
 			Application.OpenURL("https://github.com/daemon3000/InputManager/wiki");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Report Bug", false, 402)]
+		[MenuItem("Luminosity/Input Manager/Report Bug", false, 402)]
 		public static void OpenReportBugPage()
 		{
 			Application.OpenURL("https://github.com/daemon3000/InputManager/issues");
 		}
 
-        [MenuItem("Team Utility/Input Manager/Contact", false, 403)]
+        [MenuItem("Luminosity/Input Manager/Contact", false, 403)]
         public static void OpenContactDialog()
         {
             string message = "Email: daemon3000@hotmail.com";
             EditorUtility.DisplayDialog("Contact", message, "Close");
         }
 
-        [MenuItem("Team Utility/Input Manager/Forum", false, 404)]
+        [MenuItem("Luminosity/Input Manager/Forum", false, 404)]
 		public static void OpenForumPage()
 		{
 			Application.OpenURL("http://forum.unity3d.com/threads/223321-Free-Custom-Input-Manager");
 		}
 
-		[MenuItem("Team Utility/Input Manager/About", false, 405)]
+		[MenuItem("Luminosity/Input Manager/About", false, 405)]
 		public static void OpenAboutDialog()
 		{
-			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2017 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
+			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2018 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 	}

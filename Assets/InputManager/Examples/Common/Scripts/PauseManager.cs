@@ -24,7 +24,7 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	public enum PauseManagerState
 	{

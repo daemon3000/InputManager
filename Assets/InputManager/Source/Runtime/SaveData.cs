@@ -22,7 +22,7 @@
 #endregion
 using System.Collections.Generic;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
     public class SaveData
     {

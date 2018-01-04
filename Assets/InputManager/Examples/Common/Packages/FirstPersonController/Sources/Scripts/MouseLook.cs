@@ -12,7 +12,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	public class MouseLook : MonoBehaviour 
 	{

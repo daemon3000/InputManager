@@ -22,7 +22,7 @@
 #endregion
 using UnityEngine;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	public static class PathUtility
 	{

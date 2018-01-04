@@ -25,7 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	[Serializable]
 	public class InputAction

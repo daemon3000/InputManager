@@ -23,10 +23,10 @@
 using UnityEngine;
 using UnityEditor;
 using System;
-using TeamUtility.IO;
-using TeamUtility.IO.Events;
+using Luminosity.IO;
+using Luminosity.IO.Events;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	[CustomEditor(typeof(InputEventManager))]
 	public class InputEventManagerInspector : Editor

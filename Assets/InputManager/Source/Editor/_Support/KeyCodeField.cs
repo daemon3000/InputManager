@@ -25,7 +25,7 @@ using UnityEditor;
 using System;
 using UnityInputConverter;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	public class KeyCodeField
 	{

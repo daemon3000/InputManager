@@ -24,9 +24,9 @@
 #endregion [Copyright (c) 2018 Cristian Alexandru Geambasu]
 using UnityEngine;
 using UnityEditor;
-using TeamUtility.IO;
+using Luminosity.IO;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	[CustomEditor(typeof(InputManager))]
 	public class InputManagerInspector : Editor

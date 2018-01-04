@@ -25,7 +25,7 @@ using System.IO;
 using System.Xml;
 using System.Text;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	public class InputSaverXML : IInputSaver 
 	{

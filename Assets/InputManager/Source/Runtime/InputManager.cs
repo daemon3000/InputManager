@@ -28,7 +28,7 @@ using UnityEditor.Callbacks;
 using System;
 using System.Collections.Generic;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	/// <summary>
 	/// Encapsulates a method that takes one parameter(the scan result) and returns 'true' if

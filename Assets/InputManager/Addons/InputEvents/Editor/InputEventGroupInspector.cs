@@ -23,9 +23,9 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
-using TeamUtility.IO.Events;
+using Luminosity.IO.Events;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	[CustomEditor(typeof(InputEventGroup))]
 	public class InputEventGroupInspector : Editor

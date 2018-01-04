@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	[RequireComponent(typeof(CharacterController))]
 	public class CharacterMotor : MonoBehaviour

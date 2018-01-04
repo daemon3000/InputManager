@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using UnityInputConverter;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	public partial class InputEditor : EditorWindow
 	{

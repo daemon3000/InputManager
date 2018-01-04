@@ -24,7 +24,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace TeamUtility.IO.Events
+namespace Luminosity.IO.Events
 {
 	[Serializable]
 	public class InputEvent

@@ -26,7 +26,7 @@ using System;
 using System.Xml;
 using System.Collections.Generic;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	public class UIInputModuleVersionManager : EditorWindow
 	{
@@ -109,7 +109,7 @@ namespace TeamUtilityEditor.IO
 			Rect versionListPosition = new Rect(0.0f, 20.0f, this.position.width, this.position.height - (importButtonHeight + 30.0f));
 			Rect importButtonPosition = new Rect(this.position.width / 2 - 100.0f, this.position.height - importButtonHeight - 5.0f, 200.0f, importButtonHeight);
 
-			EditorGUILayout.LabelField("Current Version: Unity " + TeamUtility.IO.StandaloneInputModule.VERSION);
+			EditorGUILayout.LabelField("Current Version: Unity " + Luminosity.IO.StandaloneInputModule.VERSION);
 			EditorGUILayout.Space();
 
 			DrawVersionList(versionListPosition);
@@ -198,13 +198,13 @@ namespace TeamUtilityEditor.IO
 			return path;
 		}
 
-		[MenuItem("Team Utility/Input Manager/Set Input Module Version", false, 200)]
+		[MenuItem("Luminosity/Input Manager/Set Input Module Version", false, 200)]
 		public static void Open()
 		{
 			EditorWindow.GetWindow<UIInputModuleVersionManager>("Module Version");
 		}
 
-		[MenuItem("Team Utility/Input Manager/Use Custom Input Module", false, 201)]
+		[MenuItem("Luminosity/Input Manager/Use Custom Input Module", false, 201)]
 		private static void FixEventSystem()
 		{
 			UnityEngine.EventSystems.StandaloneInputModule[] im = UnityEngine.Object.FindObjectsOfType<UnityEngine.EventSystems.StandaloneInputModule>();
@@ -212,7 +212,7 @@ namespace TeamUtilityEditor.IO
 			{
 				for(int i = 0; i < im.Length; i++)
 				{
-					im[i].gameObject.AddComponent<TeamUtility.IO.StandaloneInputModule>();
+					im[i].gameObject.AddComponent<Luminosity.IO.StandaloneInputModule>();
 					UnityEngine.Object.DestroyImmediate(im[i]);
 				}
 				EditorUtility.DisplayDialog("Success", "All built-in standalone input modules have been replaced!", "OK");

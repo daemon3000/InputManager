@@ -25,11 +25,11 @@ using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using System.Linq;
 using System.Collections.Generic;
-using TeamUtility.IO;
+using Luminosity.IO;
 using UnityInputConverter;
 using UnityObject = UnityEngine.Object;
 
-namespace TeamUtilityEditor.IO
+namespace LuminosityEditor.IO
 {
 	public partial class InputEditor : EditorWindow
 	{
@@ -1204,7 +1204,7 @@ namespace TeamUtilityEditor.IO
 		#region [Static Interface]
 		public static bool IsOpen { get; private set; }
 
-		[MenuItem("Team Utility/Input Manager/Open Input Editor", false, 0)]
+		[MenuItem("Luminosity/Input Manager/Open Input Editor", false, 0)]
 		public static void OpenWindow()
 		{
 			if(!IsOpen)

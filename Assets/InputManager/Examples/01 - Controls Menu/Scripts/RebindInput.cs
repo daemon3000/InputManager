@@ -25,7 +25,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	[RequireComponent(typeof(Image))]
 	public class RebindInput : MonoBehaviour, IPointerDownHandler 

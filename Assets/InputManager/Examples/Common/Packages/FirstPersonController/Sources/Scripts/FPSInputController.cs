@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	[RequireComponent(typeof(CharacterMotor))]
 	public class FPSInputController : MonoBehaviour

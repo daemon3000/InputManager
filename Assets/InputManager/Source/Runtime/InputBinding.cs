@@ -23,7 +23,7 @@
 using UnityEngine;
 using System;
 
-namespace TeamUtility.IO
+namespace Luminosity.IO
 {
 	[Serializable]
 	public class InputBinding

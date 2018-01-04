@@ -23,7 +23,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TeamUtility.IO.Examples
+namespace Luminosity.IO.Examples
 {
 	public class InvertAnalogAxis : MonoBehaviour 
 	{
