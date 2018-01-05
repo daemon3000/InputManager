@@ -801,7 +801,9 @@ namespace LuminosityEditor.IO
 			Rect nameRect = new Rect(0.0f, ValuePP(ref itemPosY, INPUT_FIELD_HEIGHT + FIELD_SPACING), contentWidth, INPUT_FIELD_HEIGHT);
 			Rect descriptionRect = new Rect(0.0f, ValuePP(ref itemPosY, INPUT_FIELD_HEIGHT + FIELD_SPACING), contentWidth, INPUT_FIELD_HEIGHT);
 
-			action.Name = EditorGUI.TextField(nameRect, "Name", action.Name);
+			string name = EditorGUI.TextField(nameRect, "Name", action.Name);
+			if(name != action.Name) action.Name = name;		//	This prevents the warning at runtime
+
 			action.Description = EditorGUI.TextField(descriptionRect, "Description", action.Description);
 
 			if(action.Bindings.Count > 0)
@@ -879,7 +881,7 @@ namespace LuminosityEditor.IO
 				binding.Gravity = EditorGUILayout.FloatField(m_gravityInfo, binding.Gravity);
 
 			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
-				binding.Type == InputType.MouseAxis)
+				binding.Type == InputType.MouseAxis || binding.Type == InputType.XInputAxis)
 			{
 				binding.Sensitivity = EditorGUILayout.FloatField(m_sensitivityInfo, binding.Sensitivity);
 			}
@@ -892,9 +894,22 @@ namespace LuminosityEditor.IO
 
 			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
 				binding.Type == InputType.MouseAxis || binding.Type == InputType.RemoteAxis ||
-				binding.Type == InputType.AnalogButton)
+				binding.Type == InputType.AnalogButton || binding.Type == InputType.XInputAnalogButton ||
+				binding.Type == InputType.XInputAxis)
 			{
 				binding.Invert = EditorGUILayout.Toggle("Invert", binding.Invert);
+			}
+
+			if(binding.Type == InputType.XInputButton)
+				binding.XInputButton = (XInputButton)EditorGUILayout.EnumPopup("Button", binding.XInputButton);
+
+			if(binding.Type == InputType.XInputAnalogButton || binding.Type == InputType.XInputAxis)
+				binding.XInputAxis = (XInputAxis)EditorGUILayout.EnumPopup("Axis", binding.XInputAxis);
+
+			if(binding.Type == InputType.XInputButton || binding.Type == InputType.XInputAnalogButton ||
+				binding.Type == InputType.XInputAxis)
+			{
+				binding.XInputPlayer = (XInputPlayer)EditorGUILayout.EnumPopup("Player ID", binding.XInputPlayer);
 			}
 
 			if(binding.Type == InputType.Button && (Event.current == null || Event.current.type != EventType.KeyUp))
@@ -1134,7 +1149,7 @@ namespace LuminosityEditor.IO
 
 		private float CalculateInputBindingViewRectHeight(InputBinding binding)
 		{
-			int numberOfFields = 10;
+			int numberOfFields = 12;
 			switch(binding.Type)
 			{
 			case InputType.Button:
@@ -1157,6 +1172,15 @@ namespace LuminosityEditor.IO
 				break;
 			case InputType.AnalogAxis:
 				numberOfFields = 5;
+				break;
+			case InputType.XInputButton:
+				numberOfFields = 2;
+				break;
+			case InputType.XInputAnalogButton:
+				numberOfFields = 3;
+				break;
+			case InputType.XInputAxis:
+				numberOfFields = 4;
 				break;
 			}
 

@@ -32,5 +32,8 @@ namespace Luminosity.IO
 		RemoteAxis,
 		AnalogButton,
 		AnalogAxis,
+		XInputButton,
+		XInputAnalogButton,
+		XInputAxis
 	}
 }

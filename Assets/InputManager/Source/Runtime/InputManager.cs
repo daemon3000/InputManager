@@ -62,6 +62,8 @@ namespace Luminosity.IO
 		private Action m_controlSchemesChangedHandler;
 		private Action m_loadedHandler;
 		private Action m_savedHandler;
+		private Action m_beforeUpdateHandler;
+		private Action m_afterUpdateHandler;
 		private RemoteUpdateDelegate m_remoteUpdateHandler;
 		private static InputManager m_instance;
 		
@@ -202,6 +204,9 @@ namespace Luminosity.IO
 
 		private void Update()
 		{
+			if(m_beforeUpdateHandler != null)
+				m_beforeUpdateHandler();
+
 			UpdateControlScheme(m_playerOneScheme, PlayerID.One);
 			UpdateControlScheme(m_playerTwoScheme, PlayerID.Two);
 			UpdateControlScheme(m_playerThreeScheme, PlayerID.Three);
@@ -212,6 +217,9 @@ namespace Luminosity.IO
 			{
 				m_scanService.Update();
 			}
+
+			if(m_afterUpdateHandler != null)
+				m_afterUpdateHandler();
 		}
 
 		private void UpdateControlScheme(ControlScheme scheme, PlayerID playerID)
@@ -353,6 +361,18 @@ namespace Luminosity.IO
 		{
 			add { if(m_instance != null) m_instance.m_savedHandler += value; }
 			remove { if(m_instance != null) m_instance.m_savedHandler -= value; }
+		}
+
+		public static event Action BeforeUpdate
+		{
+			add { if(m_instance != null) m_instance.m_beforeUpdateHandler += value; }
+			remove { if(m_instance != null) m_instance.m_beforeUpdateHandler -= value; }
+		}
+
+		public static event Action AfterUpdate
+		{
+			add { if(m_instance != null) m_instance.m_afterUpdateHandler += value; }
+			remove { if(m_instance != null) m_instance.m_afterUpdateHandler -= value; }
 		}
 
 		public static event RemoteUpdateDelegate RemoteUpdate

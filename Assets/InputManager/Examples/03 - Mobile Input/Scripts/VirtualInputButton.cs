@@ -57,21 +57,7 @@ namespace Luminosity.IO.Examples
 			if(playerID == PlayerID.One)
 			{
 				InputBinding inputBinding = m_buttonBinding.Get();
-				switch(m_buttonState)
-				{
-				case ButtonState.Pressed:
-					inputBinding.SetRemoteButtonValue(true, false);
-					break;
-				case ButtonState.JustPressed:
-					inputBinding.SetRemoteButtonValue(true, true);
-					break;
-				case ButtonState.JustReleased:
-					inputBinding.SetRemoteButtonValue(false, true);
-					break;
-				default:
-					inputBinding.SetRemoteButtonValue(false, false);
-					break;
-				}
+				inputBinding.SetRemoteButtonState(m_buttonState);
 			}
 
 			if(m_buttonState == ButtonState.JustPressed)

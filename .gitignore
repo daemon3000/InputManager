@@ -3,6 +3,8 @@ Library/*
 Temp/*
 Assets/Tests/*
 Assets/Tests*
+Assets/Local/*
+Assets/Local*
 JoystickMappings/*
 Build/*
 Assets/UnityVS*
