@@ -3,10 +3,15 @@ Library/*
 Temp/*
 Assets/Tests/*
 Assets/Tests*
+Assets/Local/*
+Assets/Local*
 JoystickMappings/*
 Build/*
 Assets/UnityVS*
+XInputDotNet/
+XInputDotNet.meta
 obj/*
+.vs/
 
 #Junk files
 Assets/Tests.meta
@@ -23,4 +28,6 @@ Assembly-Boo*
 *.pfx
 *.pfx.meta
 *.keystore
+Plan.txt
+Plan.txt.meta
 

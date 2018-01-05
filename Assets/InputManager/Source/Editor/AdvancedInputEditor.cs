@@ -117,7 +117,7 @@ namespace TeamUtilityEditor.IO
 			if(_highlightTexture == null)
 				CreateHighlightTexture();
 
-			EditorApplication.playmodeStateChanged += HandlePlayModeChanged;
+			EditorApplication.playModeStateChanged += HandlePlayModeChanged;
 			_isDisposed = false;
 		}
 
@@ -140,7 +140,7 @@ namespace TeamUtilityEditor.IO
 				_highlightTexture = null;
 				_copySource = null;
 
-				EditorApplication.playmodeStateChanged -= HandlePlayModeChanged;
+				EditorApplication.playModeStateChanged -= HandlePlayModeChanged;
 				_isDisposed = true;
 			}
 		}
@@ -262,7 +262,7 @@ namespace TeamUtilityEditor.IO
 			_tryedToFindInputManagerInScene = true;
 		}
 
-		private void HandlePlayModeChanged()
+		private void HandlePlayModeChanged(PlayModeStateChange state)
 		{
 			if(_inputManager == null)
 				TryToFindInputManagerInScene();
