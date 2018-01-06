@@ -267,7 +267,7 @@ MonoBehaviour:
         m_negative: 0
         m_deadZone: 0.2
         m_gravity: 1
-        m_sensitivity: 1
+        m_sensitivity: 0.3
         m_snap: 0
         m_invert: 0
         m_type: 9
@@ -296,7 +296,7 @@ MonoBehaviour:
         m_negative: 0
         m_deadZone: 0.2
         m_gravity: 1
-        m_sensitivity: 1
+        m_sensitivity: 0.3
         m_snap: 0
         m_invert: 0
         m_type: 9

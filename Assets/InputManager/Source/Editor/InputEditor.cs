@@ -252,10 +252,10 @@ namespace LuminosityEditor.IO
 				m_inputManager.IgnoreTimescale = !m_inputManager.IgnoreTimescale;
 				break;
 			case EditMenuOptions.Copy:
-				CopySelectedAxisConfig();
+				CopyInputAction();
 				break;
 			case EditMenuOptions.Paste:
-				PasteAxisConfig();
+				PasteInputAction();
 				break;
 			}
 		}
@@ -268,6 +268,11 @@ namespace LuminosityEditor.IO
 
 			contextMenu.AddItem(new GUIContent("Duplicate"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.Duplicate);
 			contextMenu.AddItem(new GUIContent("Delete"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.Delete);
+			contextMenu.AddSeparator("");
+
+			contextMenu.AddItem(new GUIContent("Move Up"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.MoveUp);
+			contextMenu.AddItem(new GUIContent("Move Down"), false, HandleControlSchemeContextMenuOption, ControlSchemeContextMenuOptions.MoveDown);
+
 			contextMenu.DropDown(position);
 		}
 
@@ -285,6 +290,12 @@ namespace LuminosityEditor.IO
 			case ControlSchemeContextMenuOptions.Delete:
 				Delete();
 				break;
+			case ControlSchemeContextMenuOptions.MoveUp:
+				ReorderControlScheme(MoveDirection.Up);
+				break;
+			case ControlSchemeContextMenuOptions.MoveDown:
+				ReorderControlScheme(MoveDirection.Down);
+				break;
 			}
 		}
 
@@ -295,6 +306,11 @@ namespace LuminosityEditor.IO
 			contextMenu.AddItem(new GUIContent("Delete"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Delete);
 			contextMenu.AddItem(new GUIContent("Copy"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Copy);
 			contextMenu.AddItem(new GUIContent("Paste"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.Paste);
+			contextMenu.AddSeparator("");
+
+			contextMenu.AddItem(new GUIContent("Move Up"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.MoveUp);
+			contextMenu.AddItem(new GUIContent("Move Down"), false, HandleInputActionContextMenuOption, InputActionContextMenuOptions.MoveDown);
+
 			contextMenu.DropDown(position);
 		}
 
@@ -310,10 +326,16 @@ namespace LuminosityEditor.IO
 				Delete();
 				break;
 			case InputActionContextMenuOptions.Copy:
-				CopySelectedAxisConfig();
+				CopyInputAction();
 				break;
 			case InputActionContextMenuOptions.Paste:
-				PasteAxisConfig();
+				PasteInputAction();
+				break;
+			case InputActionContextMenuOptions.MoveUp:
+				ReorderInputAction(MoveDirection.Up);
+				break;
+			case InputActionContextMenuOptions.MoveDown:
+				ReorderInputAction(MoveDirection.Down);
 				break;
 			}
 		}
@@ -426,17 +448,71 @@ namespace LuminosityEditor.IO
 			Repaint();
 		}
 
-		private void CopySelectedAxisConfig()
+		private void CopyInputAction()
 		{
 			ControlScheme scheme = m_inputManager.ControlSchemes[m_selection.ControlScheme];
 			m_copySource = InputAction.Duplicate(scheme.Actions[m_selection.Action]);
 		}
 
-		private void PasteAxisConfig()
+		private void PasteInputAction()
 		{
 			ControlScheme scheme = m_inputManager.ControlSchemes[m_selection.ControlScheme];
 			InputAction action = scheme.Actions[m_selection.Action];
 			action.Copy(m_copySource);
+		}
+
+		private void ReorderControlScheme(MoveDirection dir)
+		{
+			if(m_selection.IsControlSchemeSelected)
+			{
+				var index = m_selection.ControlScheme;
+
+				if(dir == MoveDirection.Up && index > 0)
+				{
+					var temp = m_inputManager.ControlSchemes[index];
+					m_inputManager.ControlSchemes[index] = m_inputManager.ControlSchemes[index - 1];
+					m_inputManager.ControlSchemes[index - 1] = temp;
+
+					m_selection.Reset();
+					m_selection.ControlScheme = index - 1;
+				}
+				else if(dir == MoveDirection.Down && index < m_inputManager.ControlSchemes.Count - 1)
+				{
+					var temp = m_inputManager.ControlSchemes[index];
+					m_inputManager.ControlSchemes[index] = m_inputManager.ControlSchemes[index + 1];
+					m_inputManager.ControlSchemes[index + 1] = temp;
+
+					m_selection.Reset();
+					m_selection.ControlScheme = index + 1;
+				}
+			}
+		}
+
+		private void ReorderInputAction(MoveDirection dir)
+		{
+			if(m_selection.IsActionSelected)
+			{
+				var scheme = m_inputManager.ControlSchemes[m_selection.ControlScheme];
+				var schemeIndex = m_selection.ControlScheme;
+				var actionIndex = m_selection.Action;
+
+				if(dir == MoveDirection.Up && actionIndex > 0)
+				{
+					scheme.SwapActions(actionIndex, actionIndex - 1);
+					
+					m_selection.Reset();
+					m_selection.ControlScheme = schemeIndex;
+					m_selection.Action = actionIndex - 1;
+				}
+				else if(dir == MoveDirection.Down && actionIndex < scheme.Actions.Count - 1)
+				{
+					scheme.SwapActions(actionIndex, actionIndex + 1);
+
+					m_selection.Reset();
+					m_selection.ControlScheme = schemeIndex;
+					m_selection.Action = actionIndex + 1;
+				}
+			}
 		}
 
 		private void UpdateSearchResults()
@@ -877,29 +953,6 @@ namespace LuminosityEditor.IO
 			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.AnalogButton)
 				binding.Joystick = EditorGUILayout.Popup("Joystick", binding.Joystick, m_joystickOptions);
 
-			if(binding.Type == InputType.DigitalAxis)
-				binding.Gravity = EditorGUILayout.FloatField(m_gravityInfo, binding.Gravity);
-
-			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
-				binding.Type == InputType.MouseAxis || binding.Type == InputType.XInputAxis)
-			{
-				binding.Sensitivity = EditorGUILayout.FloatField(m_sensitivityInfo, binding.Sensitivity);
-			}
-
-			if(binding.Type == InputType.AnalogAxis)
-				binding.DeadZone = EditorGUILayout.FloatField(m_deadZoneInfo, binding.DeadZone);
-
-			if(binding.Type == InputType.DigitalAxis)
-				binding.Snap = EditorGUILayout.Toggle(m_snapInfo, binding.Snap);
-
-			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
-				binding.Type == InputType.MouseAxis || binding.Type == InputType.RemoteAxis ||
-				binding.Type == InputType.AnalogButton || binding.Type == InputType.XInputAnalogButton ||
-				binding.Type == InputType.XInputAxis)
-			{
-				binding.Invert = EditorGUILayout.Toggle("Invert", binding.Invert);
-			}
-
 			if(binding.Type == InputType.XInputButton)
 				binding.XInputButton = (XInputButton)EditorGUILayout.EnumPopup("Button", binding.XInputButton);
 
@@ -910,6 +963,32 @@ namespace LuminosityEditor.IO
 				binding.Type == InputType.XInputAxis)
 			{
 				binding.XInputPlayer = (XInputPlayer)EditorGUILayout.EnumPopup("Player ID", binding.XInputPlayer);
+			}
+
+			if(binding.Type == InputType.DigitalAxis)
+				binding.Gravity = EditorGUILayout.FloatField(m_gravityInfo, binding.Gravity);
+
+			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
+				binding.Type == InputType.MouseAxis || binding.Type == InputType.XInputAxis)
+			{
+				binding.Sensitivity = EditorGUILayout.FloatField(m_sensitivityInfo, binding.Sensitivity);
+			}
+
+			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.XInputAxis ||
+				binding.Type == InputType.AnalogButton || binding.Type == InputType.XInputAnalogButton)
+			{
+				binding.DeadZone = EditorGUILayout.FloatField(m_deadZoneInfo, binding.DeadZone);
+			}
+
+			if(binding.Type == InputType.DigitalAxis)
+				binding.Snap = EditorGUILayout.Toggle(m_snapInfo, binding.Snap);
+
+			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
+				binding.Type == InputType.MouseAxis || binding.Type == InputType.RemoteAxis ||
+				binding.Type == InputType.AnalogButton || binding.Type == InputType.XInputAnalogButton ||
+				binding.Type == InputType.XInputAxis)
+			{
+				binding.Invert = EditorGUILayout.Toggle("Invert", binding.Invert);
 			}
 
 			if(binding.Type == InputType.Button && (Event.current == null || Event.current.type != EventType.KeyUp))
@@ -1045,9 +1124,9 @@ namespace LuminosityEditor.IO
 				var saveData = inputLoader.Load();
 				if(saveData.ControlSchemes != null && saveData.ControlSchemes.Count > 0)
 				{
-					foreach(var config in saveData.ControlSchemes)
+					foreach(var scheme in saveData.ControlSchemes)
 					{
-						m_inputManager.ControlSchemes.Add(config);
+						m_inputManager.ControlSchemes.Add(scheme);
 					}
 				}
 			}
@@ -1168,7 +1247,7 @@ namespace LuminosityEditor.IO
 				numberOfFields = 1;
 				break;
 			case InputType.AnalogButton:
-				numberOfFields = 3;
+				numberOfFields = 4;
 				break;
 			case InputType.AnalogAxis:
 				numberOfFields = 5;
@@ -1177,10 +1256,10 @@ namespace LuminosityEditor.IO
 				numberOfFields = 2;
 				break;
 			case InputType.XInputAnalogButton:
-				numberOfFields = 3;
+				numberOfFields = 4;
 				break;
 			case InputType.XInputAxis:
-				numberOfFields = 4;
+				numberOfFields = 5;
 				break;
 			}
 

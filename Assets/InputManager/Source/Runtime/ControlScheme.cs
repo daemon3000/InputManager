@@ -179,6 +179,13 @@ namespace Luminosity.IO
 			m_actions.RemoveAll(obj => obj.Name == name);
 		}
 
+		public void SwapActions(int fromIndex, int toIndex)
+		{
+			var temp = m_actions[toIndex];
+			m_actions[toIndex] = m_actions[fromIndex];
+			m_actions[fromIndex] = temp;
+		}
+
 		public Dictionary<string, InputAction> GetActionLookupTable()
 		{
 			Dictionary<string, InputAction> table = new Dictionary<string, InputAction>();

@@ -104,7 +104,115 @@
         <Joystick>0</Joystick>
       </Binding>
     </Action>
-    <Action name="Submit">
+    <Action name="UI_Up">
+      <Description />
+      <Binding>
+        <Positive>W</Positive>
+        <Negative>A</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>UpArrow</Positive>
+        <Negative>LeftArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Down">
+      <Description />
+      <Binding>
+        <Positive>S</Positive>
+        <Negative>S</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>DownArrow</Positive>
+        <Negative>DownArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Left">
+      <Description />
+      <Binding>
+        <Positive>A</Positive>
+        <Negative>S</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>LeftArrow</Positive>
+        <Negative>DownArrow</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Right">
+      <Description />
+      <Binding>
+        <Positive>D</Positive>
+        <Negative>S</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>3</Gravity>
+        <Sensitivity>3</Sensitivity>
+        <Snap>true</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+      <Binding>
+        <Positive>RightArrow</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+      </Binding>
+    </Action>
+    <Action name="UI_Submit">
       <Description />
       <Binding>
         <Positive>Space</Positive>
@@ -131,7 +239,7 @@
         <Joystick>0</Joystick>
       </Binding>
     </Action>
-    <Action name="Cancel">
+    <Action name="UI_Cancel">
       <Description />
       <Binding>
         <Positive>Escape</Positive>

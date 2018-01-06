@@ -5,6 +5,14 @@ namespace Luminosity.IO
 {
 	public class UIInputAdapter : BaseInput
 	{
+		public bool IsMouseEnabled { get; set; }
+
+		protected override void Awake()
+		{
+			base.Awake();
+			IsMouseEnabled = true;
+		}
+
 		public override string compositionString
 		{
 			get { return InputManager.compositionString; }
@@ -29,27 +37,27 @@ namespace Luminosity.IO
 
 		public override bool GetMouseButtonDown(int button)
 		{
-			return InputManager.GetMouseButtonDown(button);
+			return IsMouseEnabled && InputManager.GetMouseButtonDown(button);
 		}
 
 		public override bool GetMouseButtonUp(int button)
 		{
-			return InputManager.GetMouseButtonUp(button);
+			return IsMouseEnabled && InputManager.GetMouseButtonUp(button);
 		}
 
 		public override bool GetMouseButton(int button)
 		{
-			return InputManager.GetMouseButton(button);
+			return IsMouseEnabled && InputManager.GetMouseButton(button);
 		}
 
 		public override Vector2 mousePosition
 		{
-			get { return InputManager.mousePosition; }
+			get { return IsMouseEnabled ? InputManager.mousePosition : -Vector2.one; }
 		}
 
 		public override Vector2 mouseScrollDelta
 		{
-			get { return InputManager.mouseScrollDelta; }
+			get { return IsMouseEnabled ? InputManager.mouseScrollDelta : Vector2.zero; }
 		}
 
 		public override bool touchSupported

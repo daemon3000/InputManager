@@ -310,7 +310,7 @@ namespace Luminosity.IO
 
 			axis = axis * (m_invert ? -1 : 1);
 
-			if(axis >= 1.0f)
+			if(axis > m_deadZone)
 			{
 				if(m_analogButtonState == ButtonState.Released || m_analogButtonState == ButtonState.JustReleased)
 					m_analogButtonState = ButtonState.JustPressed;

@@ -48,6 +48,11 @@ namespace LuminosityEditor.IO
 		private const float JOYSTICK_WARNING_SPACING = 10.0f;
 		private const float JOYSTICK_WARNING_HEIGHT = 40.0f;
 
+		private enum MoveDirection
+		{
+			Up, Down
+		}
+
 		private enum FileMenuOptions
 		{
 			OverwriteProjectSettings = 0, CreateSnapshot, LoadSnapshot, Export, Import, CreateDefaultInputProfile
@@ -60,12 +65,12 @@ namespace LuminosityEditor.IO
 
 		private enum ControlSchemeContextMenuOptions
 		{
-			NewInputAction = 0, Duplicate, Delete
+			NewInputAction = 0, Duplicate, Delete, MoveUp, MoveDown
 		}
 
 		private enum InputActionContextMenuOptions
 		{
-			Duplicate, Delete, Copy, Paste
+			Duplicate, Delete, Copy, Paste, MoveUp, MoveDown
 		}
 
 		private enum CollectionAction
