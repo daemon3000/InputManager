@@ -29,7 +29,7 @@ using XPlayerIndex = XInputDotNetPure.PlayerIndex;
 
 namespace Luminosity.IO
 {
-	public partial class XInputGamepadState : MonoBehaviour
+	public class XInputDotNetAdapter : MonoBehaviour, IGamepadStateAdapter
 	{
 		[SerializeField]
 		private float m_dpadGravity = 3.0f;
@@ -41,11 +41,7 @@ namespace Luminosity.IO
 		private bool m_ignoreTimescale = true;
 
 #if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && INPUT_MANAGER_X_INPUT
-		private struct DPAD
-		{
-			public float X;
-			public float Y;
-		}
+		private struct DPADState { public float X; public float Y; }
 
 		[System.NonSerialized]
 		private GamePadState[] m_currentState;
@@ -54,19 +50,32 @@ namespace Luminosity.IO
 		private GamePadState[] m_previousState;
 
 		[System.NonSerialized]
-		private DPAD[] m_dpadState;
-		
-		private void OnInitialize()
+		private DPADState[] m_dpadState;
+
+		private void Awake()
 		{
 			m_previousState = new GamePadState[4];
 			m_currentState = new GamePadState[4];
-			m_dpadState = new DPAD[4];
+			m_dpadState = new DPADState[4];
 			InputManager.BeforeUpdate += OnUpdate;
+
+			if(GamepadState.Adapter == null)
+			{
+				GamepadState.Adapter = this;
+			}
+			else
+			{
+				Debug.LogWarning("You shouldn't have more than one XInput adapters in the scene");
+			}
 		}
 
-		private void OnCleanup()
+		private void OnDestroy()
 		{
 			InputManager.BeforeUpdate -= OnUpdate;
+			if(GamepadState.Adapter == (IGamepadStateAdapter)this)
+			{
+				GamepadState.Adapter = null;
+			}
 		}
 
 		private void OnUpdate()
@@ -192,10 +201,8 @@ namespace Luminosity.IO
 			}
 		}
 
-		public static float GetAxis(XInputAxis axis, XInputPlayer player)
+		public float GetAxis(XInputAxis axis, XInputPlayer player)
 		{
-			if(m_instance == null) return 0.0f;
-
 			GamePadState state = GetCurrentState(player);
 			float value = 0.0f;
 
@@ -233,61 +240,55 @@ namespace Luminosity.IO
 			return value;
 		}
 
-		public static float GetAxisRaw(XInputAxis axis, XInputPlayer player)
+		public float GetAxisRaw(XInputAxis axis, XInputPlayer player)
 		{
 			float value = GetAxis(axis, player);
 			return Mathf.Approximately(value, 0) ? 0.0f : Mathf.Sign(value);
 		}
 
-		public static bool GetButton(XInputButton button, XInputPlayer player)
+		public bool GetButton(XInputButton button, XInputPlayer player)
 		{
-			if(m_instance == null) return false;
-
 			GamePadState state = GetCurrentState(player);
 			return GetButton(button, state);
 		}
 
-		public static bool GetButtonDown(XInputButton button, XInputPlayer player)
+		public bool GetButtonDown(XInputButton button, XInputPlayer player)
 		{
-			if(m_instance == null) return false;
-
 			GamePadState state = GetCurrentState(player);
 			GamePadState oldState = GetPreviousState(player);
 
 			return GetButton(button, state) && !GetButton(button, oldState);
 		}
 
-		public static bool GetButtonUp(XInputButton button, XInputPlayer player)
+		public bool GetButtonUp(XInputButton button, XInputPlayer player)
 		{
-			if(m_instance == null) return false;
-
 			GamePadState state = GetCurrentState(player);
 			GamePadState oldState = GetPreviousState(player);
 
 			return !GetButton(button, state) && GetButton(button, oldState);
 		}
 
-		public static void SetVibration(XInputPlayer player, float leftMotor, float rightMotor)
+		public void SetVibration(XInputPlayer player, float leftMotor, float rightMotor)
 		{
 			GamePad.SetVibration(ToPlayerIndex(player), leftMotor, rightMotor);
 		}
 
-		private static GamePadState GetCurrentState(XInputPlayer player)
+		private GamePadState GetCurrentState(XInputPlayer player)
 		{
-			return m_instance.m_currentState[(int)player];
+			return m_currentState[(int)player];
 		}
 
-		private static GamePadState GetPreviousState(XInputPlayer player)
+		private GamePadState GetPreviousState(XInputPlayer player)
 		{
-			return m_instance.m_previousState[(int)player];
+			return m_previousState[(int)player];
 		}
 
-		private static DPAD GetDPADState(XInputPlayer player)
+		private DPADState GetDPADState(XInputPlayer player)
 		{
-			return m_instance.m_dpadState[(int)player];
+			return m_dpadState[(int)player];
 		}
 
-		private static bool GetButton(XInputButton button, GamePadState state)
+		private bool GetButton(XInputButton button, GamePadState state)
 		{
 			bool value = false;
 
@@ -346,7 +347,7 @@ namespace Luminosity.IO
 			return value;
 		}
 
-		private static XPlayerIndex ToPlayerIndex(XInputPlayer player)
+		private XPlayerIndex ToPlayerIndex(XInputPlayer player)
 		{
 			switch(player)
 			{
@@ -361,6 +362,46 @@ namespace Luminosity.IO
 			default:
 				return XPlayerIndex.One;
 			}
+		}
+#else
+		private void Awake()
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
+		}
+
+		public float GetAxis(XInputAxis axis, XInputPlayer player)
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
+			return 0;
+		}
+
+		public float GetAxisRaw(XInputAxis axis, XInputPlayer player)
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
+			return 0;
+		}
+
+		public bool GetButton(XInputButton button, XInputPlayer player)
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
+			return false;
+		}
+
+		public bool GetButtonDown(XInputButton button, XInputPlayer player)
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
+			return false;
+		}
+
+		public bool GetButtonUp(XInputButton button, XInputPlayer player)
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
+			return false;
+		}
+
+		public void SetVibration(XInputPlayer player, float leftMotor, float rightMotor)
+		{
+			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'INPUT_MANAGER_X_INPUT' scripting symbol is defined.", gameObject);
 		}
 #endif
 	}

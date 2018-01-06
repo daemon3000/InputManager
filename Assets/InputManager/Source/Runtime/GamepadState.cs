@@ -24,79 +24,44 @@ using UnityEngine;
 
 namespace Luminosity.IO
 {
-	public partial class XInputGamepadState : MonoBehaviour
+	public static class GamepadState
 	{
-		private static XInputGamepadState m_instance;
-
-		private void Awake()
-		{
-			if(m_instance == null)
-			{
-				m_instance = this;
-				OnInitialize();
-			}
-			else
-			{
-				Debug.LogWarning("You have multiple XInputGamepadState instances in the scene!", gameObject);
-				Destroy(this);
-			}
-		}
-
-		private void OnDestroy()
-		{
-			if(m_instance == this)
-			{
-				m_instance = null;
-			}
-
-			OnCleanup();
-		}
-
-#if !((UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && INPUT_MANAGER_X_INPUT)
-		private void OnInitialize()
-		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-		}
-
-		private void OnCleanup()
-		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-		}
+		public static IGamepadStateAdapter Adapter { get; set; }
 
 		public static float GetAxis(XInputAxis axis, XInputPlayer player)
 		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-			return 0;
+			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			return Adapter != null ? Adapter.GetAxis(axis, player) : 0;
 		}
 
 		public static float GetAxisRaw(XInputAxis axis, XInputPlayer player)
 		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-			return 0;
+			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			return Adapter != null ? Adapter.GetAxisRaw(axis, player) : 0;
 		}
 
 		public static bool GetButton(XInputButton button, XInputPlayer player)
 		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-			return false;
+			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			return Adapter != null ? Adapter.GetButton(button, player) : false;
 		}
 
 		public static bool GetButtonDown(XInputButton button, XInputPlayer player)
 		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-			return false;
+			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			return Adapter != null ? Adapter.GetButtonDown(button, player) : false;
 		}
 
 		public static bool GetButtonUp(XInputButton button, XInputPlayer player)
 		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
-			return false;
+			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			return Adapter != null ? Adapter.GetButtonUp(button, player) : false;
 		}
 
 		public static void SetVibration(XInputPlayer player, float leftMotor, float rightMotor)
 		{
-			Debug.LogWarning("XInput works only on Windows if the 'INPUT_MANAGER_X_INPUT' scripting symbol is present.");
+			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			Adapter.SetVibration(player, leftMotor, rightMotor);
 		}
-#endif
 	}
 }

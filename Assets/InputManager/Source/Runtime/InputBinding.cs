@@ -172,9 +172,9 @@ namespace Luminosity.IO
 				case InputType.RemoteButton:
 					return m_remoteButtonState == ButtonState.Pressed || m_remoteButtonState == ButtonState.JustPressed;
 				case InputType.XInputButton:
-					return XInputGamepadState.GetButton(m_xInputButton, m_xInputPlayer);
+					return GamepadState.GetButton(m_xInputButton, m_xInputPlayer);
 				case InputType.XInputAxis:
-					return Mathf.Abs(XInputGamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer)) >= 1.0f;
+					return Mathf.Abs(GamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer)) >= 1.0f;
 				case InputType.DigitalAxis:
 				case InputType.RemoteAxis:
 					return Mathf.Abs(m_value) >= 1.0f;
@@ -306,7 +306,7 @@ namespace Luminosity.IO
 		{
 			float axis = m_type == InputType.AnalogButton ?
 									Input.GetAxisRaw(m_rawAxisName) :
-									XInputGamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer);
+									GamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer);
 
 			axis = axis * (m_invert ? -1 : 1);
 
@@ -358,7 +358,7 @@ namespace Luminosity.IO
 			}
 			else if(m_type == InputType.XInputAxis)
 			{
-				axis = XInputGamepadState.GetAxis(m_xInputAxis, m_xInputPlayer);
+				axis = GamepadState.GetAxis(m_xInputAxis, m_xInputPlayer);
 				if(Mathf.Abs(axis.Value) < m_deadZone)
 				{
 					axis = AXIS_NEUTRAL;
@@ -402,7 +402,7 @@ namespace Luminosity.IO
 			}
 			else if(m_type == InputType.XInputAxis)
 			{
-				axis = XInputGamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer);
+				axis = GamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer);
 				axis = m_invert ? -axis : axis;
 			}
 
@@ -422,7 +422,7 @@ namespace Luminosity.IO
 			}
 			else if(m_type == InputType.XInputButton)
 			{
-				value = XInputGamepadState.GetButton(m_xInputButton, m_xInputPlayer);
+				value = GamepadState.GetButton(m_xInputButton, m_xInputPlayer);
 			}
 			else if(m_type == InputType.RemoteButton)
 			{
@@ -449,7 +449,7 @@ namespace Luminosity.IO
 			}
 			else if(m_type == InputType.XInputButton)
 			{
-				value = XInputGamepadState.GetButtonDown(m_xInputButton, m_xInputPlayer);
+				value = GamepadState.GetButtonDown(m_xInputButton, m_xInputPlayer);
 			}
 			else if(m_type == InputType.RemoteButton)
 			{
@@ -476,7 +476,7 @@ namespace Luminosity.IO
 			}
 			else if(m_type == InputType.XInputButton)
 			{
-				value = XInputGamepadState.GetButtonUp(m_xInputButton, m_xInputPlayer);
+				value = GamepadState.GetButtonUp(m_xInputButton, m_xInputPlayer);
 			}
 			else if(m_type == InputType.RemoteButton)
 			{
