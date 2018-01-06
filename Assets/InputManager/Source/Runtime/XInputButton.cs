@@ -9,14 +9,13 @@ namespace Luminosity.IO
 		Y,
 		Back,
 		Start,
-		Guide,
 		LeftBumper,
 		RightBumper,
 		LeftStick,
 		RightStick,
-		DPAD_Up,
-		DPAD_Down,
-		DPAD_Left,
-		DPAD_Right,
+		DPadUp,
+		DPadDown,
+		DPadLeft,
+		DPadRight,
 	}
 }

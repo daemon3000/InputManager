@@ -593,7 +593,7 @@ namespace Luminosity.IO
 
 		public static XInputAxis StringToXInputAxis(string value)
 		{
-			return StringToEnum(value, XInputAxis.LeftStick_X);
+			return StringToEnum(value, XInputAxis.LeftThumbstickX);
 		}
 
 		public static XInputPlayer StringToXInputPlayer(string value)

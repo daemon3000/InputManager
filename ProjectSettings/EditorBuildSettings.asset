@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/InputManager/Examples/05 - X Input/Scenes/example_5.unity
+    path: Assets/InputManager/Examples/05 - X Input/Scenes/example_5_02.unity
+    guid: a5e57b38db59e7c44af5004427eca2e0
+  - enabled: 1
+    path: Assets/InputManager/Examples/05 - X Input/Scenes/example_5_01.unity
     guid: 5e96b4a67c2f7cf4abceb3485afbee46

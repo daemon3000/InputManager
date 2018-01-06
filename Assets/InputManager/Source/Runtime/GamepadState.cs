@@ -58,10 +58,16 @@ namespace Luminosity.IO
 			return Adapter != null ? Adapter.GetButtonUp(button, player) : false;
 		}
 
-		public static void SetVibration(XInputPlayer player, float leftMotor, float rightMotor)
+		public static void SetVibration(GamepadVibration vibration, XInputPlayer player)
+		{
+			if(Adapter != null) Adapter.SetVibration(vibration, player);
+			else Debug.LogWarning("No XInput adapter has been assigned.");
+		}
+
+		public static GamepadVibration GetVibration(XInputPlayer player)
 		{
 			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
-			Adapter.SetVibration(player, leftMotor, rightMotor);
+			return Adapter != null ? Adapter.GetVibration(player) : new GamepadVibration();
 		}
 	}
 }

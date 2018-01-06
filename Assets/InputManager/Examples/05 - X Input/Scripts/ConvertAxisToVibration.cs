@@ -20,33 +20,18 @@
 //	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+using UnityEngine;
 
-namespace Luminosity.IO
+namespace Luminosity.IO.Examples
 {
-	public struct GamepadVibration
+	public class ConvertAxisToVibration : MonoBehaviour
 	{
-		public float LeftMotor;
-		public float RightMotor;
-		public float LeftTrigger;
-		public float RightTrigger;
-
-		public GamepadVibration(float leftMotor, float rightMotor, float leftTrigger, float rightTrigger)
+		private void Update()
 		{
-			LeftMotor = leftMotor;
-			RightMotor = rightMotor;
-			LeftTrigger = leftTrigger;
-			RightTrigger = rightTrigger;
-		}
-	}
+			float l = InputManager.GetAxis("LeftVibration");
+			float r = InputManager.GetAxis("RightVibration");
 
-	public interface IGamepadStateAdapter
-	{
-		float GetAxis(XInputAxis axis, XInputPlayer player);
-		float GetAxisRaw(XInputAxis axis, XInputPlayer player);
-		bool GetButton(XInputButton button, XInputPlayer player);
-		bool GetButtonDown(XInputButton button, XInputPlayer player);
-		bool GetButtonUp(XInputButton button, XInputPlayer player);
-		void SetVibration(GamepadVibration vibration, XInputPlayer player);
-		GamepadVibration GetVibration(XInputPlayer player);
+			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), XInputPlayer.PlayerOne);
+		}
 	}
 }
