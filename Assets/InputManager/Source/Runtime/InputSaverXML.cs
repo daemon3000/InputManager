@@ -160,6 +160,9 @@ namespace Luminosity.IO
 			writer.WriteElementString("Type", binding.Type.ToString());
 			writer.WriteElementString("Axis", binding.Axis.ToString());
 			writer.WriteElementString("Joystick", binding.Joystick.ToString());
+			writer.WriteElementString("XInputButton", binding.XInputButton.ToString());
+			writer.WriteElementString("XInputAxis", binding.XInputAxis.ToString());
+			writer.WriteElementString("XInputPlayer", binding.XInputPlayer.ToString());
 
 			writer.WriteEndElement();
 		}

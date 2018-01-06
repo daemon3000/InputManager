@@ -21,7 +21,7 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
-#if(UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && INPUT_MANAGER_X_INPUT
+#if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && INPUT_MANAGER_X_INPUT
 using XInputDotNetPure;
 using XButtonState = XInputDotNetPure.ButtonState;
 using XPlayerIndex = XInputDotNetPure.PlayerIndex;
@@ -40,7 +40,7 @@ namespace Luminosity.IO
 		[SerializeField]
 		private bool m_ignoreTimescale = true;
 
-#if(UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && INPUT_MANAGER_X_INPUT
+#if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && INPUT_MANAGER_X_INPUT
 		private struct DPAD
 		{
 			public float X;

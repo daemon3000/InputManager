@@ -18,6 +18,9 @@
         <Type>DigitalAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="Vertical">
@@ -33,6 +36,9 @@
         <Type>DigitalAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="LookHorizontal">
@@ -48,6 +54,9 @@
         <Type>MouseAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="LookVertical">
@@ -63,60 +72,9 @@
         <Type>MouseAxis</Type>
         <Axis>1</Axis>
         <Joystick>0</Joystick>
-      </Binding>
-    </Action>
-    <Action name="UI_Horizontal">
-      <Description />
-      <Binding>
-        <Positive>D</Positive>
-        <Negative>A</Negative>
-        <DeadZone>0</DeadZone>
-        <Gravity>3</Gravity>
-        <Sensitivity>3</Sensitivity>
-        <Snap>true</Snap>
-        <Invert>false</Invert>
-        <Type>DigitalAxis</Type>
-        <Axis>0</Axis>
-        <Joystick>0</Joystick>
-      </Binding>
-      <Binding>
-        <Positive>RightArrow</Positive>
-        <Negative>LeftArrow</Negative>
-        <DeadZone>0</DeadZone>
-        <Gravity>3</Gravity>
-        <Sensitivity>3</Sensitivity>
-        <Snap>true</Snap>
-        <Invert>false</Invert>
-        <Type>DigitalAxis</Type>
-        <Axis>0</Axis>
-        <Joystick>0</Joystick>
-      </Binding>
-    </Action>
-    <Action name="UI_Vertical">
-      <Description />
-      <Binding>
-        <Positive>W</Positive>
-        <Negative>S</Negative>
-        <DeadZone>0</DeadZone>
-        <Gravity>3</Gravity>
-        <Sensitivity>3</Sensitivity>
-        <Snap>true</Snap>
-        <Invert>false</Invert>
-        <Type>DigitalAxis</Type>
-        <Axis>0</Axis>
-        <Joystick>0</Joystick>
-      </Binding>
-      <Binding>
-        <Positive>UpArrow</Positive>
-        <Negative>DownArrow</Negative>
-        <DeadZone>0</DeadZone>
-        <Gravity>3</Gravity>
-        <Sensitivity>3</Sensitivity>
-        <Snap>true</Snap>
-        <Invert>false</Invert>
-        <Type>DigitalAxis</Type>
-        <Axis>0</Axis>
-        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="Jump">
@@ -132,6 +90,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="Pause">
@@ -147,6 +108,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="PauseMenu">
@@ -162,6 +126,141 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Up">
+      <Description />
+      <Binding>
+        <Positive>W</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+      <Binding>
+        <Positive>UpArrow</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Down">
+      <Description />
+      <Binding>
+        <Positive>S</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+      <Binding>
+        <Positive>DownArrow</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Left">
+      <Description />
+      <Binding>
+        <Positive>A</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+      <Binding>
+        <Positive>LeftArrow</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Right">
+      <Description />
+      <Binding>
+        <Positive>D</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+      <Binding>
+        <Positive>RightArrow</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0</DeadZone>
+        <Gravity>1</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>Button</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="UI_Submit">
@@ -177,6 +276,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
       <Binding>
         <Positive>Return</Positive>
@@ -189,6 +291,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="UI_Cancel">
@@ -204,6 +309,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
   </ControlScheme>
@@ -221,6 +329,9 @@
         <Type>AnalogAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="Vertical">
@@ -236,6 +347,9 @@
         <Type>AnalogAxis</Type>
         <Axis>1</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="LookHorizontal">
@@ -245,12 +359,15 @@
         <Negative>None</Negative>
         <DeadZone>0.2</DeadZone>
         <Gravity>0</Gravity>
-        <Sensitivity>1</Sensitivity>
+        <Sensitivity>0.3</Sensitivity>
         <Snap>false</Snap>
         <Invert>false</Invert>
         <Type>AnalogAxis</Type>
         <Axis>3</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="LookVertical">
@@ -260,42 +377,15 @@
         <Negative>None</Negative>
         <DeadZone>0.2</DeadZone>
         <Gravity>0</Gravity>
-        <Sensitivity>1</Sensitivity>
+        <Sensitivity>0.3</Sensitivity>
         <Snap>false</Snap>
         <Invert>true</Invert>
         <Type>AnalogAxis</Type>
         <Axis>4</Axis>
         <Joystick>0</Joystick>
-      </Binding>
-    </Action>
-    <Action name="UI_Horizontal">
-      <Description />
-      <Binding>
-        <Positive>None</Positive>
-        <Negative>None</Negative>
-        <DeadZone>0.2</DeadZone>
-        <Gravity>0</Gravity>
-        <Sensitivity>1</Sensitivity>
-        <Snap>false</Snap>
-        <Invert>false</Invert>
-        <Type>AnalogAxis</Type>
-        <Axis>0</Axis>
-        <Joystick>0</Joystick>
-      </Binding>
-    </Action>
-    <Action name="UI_Vertical">
-      <Description />
-      <Binding>
-        <Positive>None</Positive>
-        <Negative>None</Negative>
-        <DeadZone>0.2</DeadZone>
-        <Gravity>0</Gravity>
-        <Sensitivity>1</Sensitivity>
-        <Snap>false</Snap>
-        <Invert>true</Invert>
-        <Type>AnalogAxis</Type>
-        <Axis>1</Axis>
-        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="Jump">
@@ -311,6 +401,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="Pause">
@@ -326,6 +419,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="PauseMenu">
@@ -341,6 +437,81 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Up">
+      <Description />
+      <Binding>
+        <Positive>Joystick1Button7</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0.5</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>true</Invert>
+        <Type>AnalogButton</Type>
+        <Axis>1</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Down">
+      <Description />
+      <Binding>
+        <Positive>Joystick1Button7</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0.5</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>1</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>AnalogButton</Type>
+        <Axis>1</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Left">
+      <Description />
+      <Binding>
+        <Positive>Joystick1Button7</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0.5</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>false</Invert>
+        <Type>AnalogButton</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
+      </Binding>
+    </Action>
+    <Action name="UI_Right">
+      <Description />
+      <Binding>
+        <Positive>Joystick1Button7</Positive>
+        <Negative>None</Negative>
+        <DeadZone>0.5</DeadZone>
+        <Gravity>0</Gravity>
+        <Sensitivity>0</Sensitivity>
+        <Snap>false</Snap>
+        <Invert>true</Invert>
+        <Type>AnalogButton</Type>
+        <Axis>0</Axis>
+        <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="UI_Submit">
@@ -356,6 +527,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
     <Action name="UI_Cancel">
@@ -371,6 +545,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
+        <XInputButton>A</XInputButton>
+        <XInputAxis>LeftStick_X</XInputAxis>
+        <XInputPlayer>PlayerOne</XInputPlayer>
       </Binding>
     </Action>
   </ControlScheme>

@@ -1,4 +1,4 @@
-	#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -24,6 +24,8 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Luminosity.IO
 {
@@ -67,7 +69,7 @@ namespace Luminosity.IO
 		{
 			if(m_filename != null)
 			{
-				using(StreamReader reader = new StreamReader(m_filename, true))
+				using(StreamReader reader = File.OpenText(m_filename))
 				{
 					XmlDocument doc = new XmlDocument();
 					doc.Load(reader);
@@ -125,12 +127,12 @@ namespace Luminosity.IO
 			SaveData saveData = new SaveData();
 			var root = doc.DocumentElement;
 
-			saveData.PlayerOneScheme = ReadNode(root.SelectSingleNode("PlayerOneScheme"));
-			saveData.PlayerTwoScheme = ReadNode(root.SelectSingleNode("PlayerTwoScheme"));
-			saveData.PlayerThreeScheme = ReadNode(root.SelectSingleNode("PlayerThreeScheme"));
-			saveData.PlayerFourScheme = ReadNode(root.SelectSingleNode("PlayerFourScheme"));
+			saveData.PlayerOneScheme = ReadNode(SelectSingleNode(root, "PlayerOneScheme"));
+			saveData.PlayerTwoScheme = ReadNode(SelectSingleNode(root, "PlayerTwoScheme"));
+			saveData.PlayerThreeScheme = ReadNode(SelectSingleNode(root, "PlayerThreeScheme"));
+			saveData.PlayerFourScheme = ReadNode(SelectSingleNode(root, "PlayerFourScheme"));
 
-			var schemeNodes = doc.DocumentElement.SelectNodes("ControlScheme");
+			var schemeNodes = SelectNodes(root, "ControlScheme");
 			foreach(XmlNode node in schemeNodes)
 			{
 				saveData.ControlSchemes.Add(ReadControlScheme_V2(node));
@@ -145,7 +147,7 @@ namespace Luminosity.IO
 				return null;
 
 			ControlScheme scheme = null;
-			var schemeNodes = doc.DocumentElement.SelectNodes("ControlScheme");
+			var schemeNodes = SelectNodes(doc.DocumentElement, "ControlScheme");
 			foreach(XmlNode node in schemeNodes)
 			{
 				if(ReadAttribute(node, "name") == schemeName)
@@ -165,7 +167,7 @@ namespace Luminosity.IO
 			ControlScheme scheme = new ControlScheme(name);
 			scheme.UniqueID = id ?? ControlScheme.GenerateUniqueID();
 
-			var actionNodes = node.SelectNodes("Action");
+			var actionNodes = SelectNodes(node, "Action");
 			foreach(XmlNode child in actionNodes)
 			{
 				ReadInputAction_V2(scheme, child);
@@ -178,9 +180,9 @@ namespace Luminosity.IO
 		{
 			string name = ReadAttribute(node, "name", "Unnamed Action");
 			InputAction action = scheme.CreateNewAction(name);
-			action.Description = ReadNode(node.SelectSingleNode("Description"));
+			action.Description = ReadNode(SelectSingleNode(node, "Description"));
 
-			var bindingNodes = node.SelectNodes("Binding");
+			var bindingNodes = SelectNodes(node, "Binding");
 			foreach(XmlNode child in bindingNodes)
 			{
 				ReadInputBinding_V2(action, child);
@@ -224,6 +226,15 @@ namespace Luminosity.IO
 				case "Joystick":
 					binding.Joystick = ReadAsInt(child);
 					break;
+				case "XInputButton":
+					binding.XInputButton = InputBinding.StringToXInputButton(child.InnerText);
+					break;
+				case "XInputAxis":
+					binding.XInputAxis = InputBinding.StringToXInputAxis(child.InnerText);
+					break;
+				case "XInputPlayer":
+					binding.XInputPlayer = InputBinding.StringToXInputPlayer(child.InnerText);
+					break;
 				}
 			}
 		}
@@ -238,7 +249,7 @@ namespace Luminosity.IO
 			saveData.PlayerThreeScheme = ReadAttribute(doc.DocumentElement, "playerThreeDefault");
 			saveData.PlayerFourScheme = ReadAttribute(doc.DocumentElement, "playerFourDefault");
 
-			var schemeNodes = doc.DocumentElement.SelectNodes("InputConfiguration");
+			var schemeNodes = SelectNodes(doc.DocumentElement, "InputConfiguration");
 			foreach(XmlNode node in schemeNodes)
 			{
 				saveData.ControlSchemes.Add(ReadControlScheme_V1(node));
@@ -253,7 +264,7 @@ namespace Luminosity.IO
 				return null;
 
 			ControlScheme scheme = null;
-			var schemeNodes = doc.SelectNodes("InputConfiguration");
+			var schemeNodes = SelectNodes(doc.DocumentElement, "InputConfiguration");
 			foreach(XmlNode node in schemeNodes)
 			{
 				if(ReadAttribute(node, "name") == schemeName)
@@ -271,7 +282,7 @@ namespace Luminosity.IO
 			string name = ReadAttribute(node, "name", "Unnamed Configuration");
 			ControlScheme scheme = new ControlScheme(name);
 
-			var actionNodes = node.SelectNodes("AxisConfiguration");
+			var actionNodes = SelectNodes(node, "AxisConfiguration");
 			foreach(XmlNode child in actionNodes)
 			{
 				ReadInputAction_V1(scheme, child);
@@ -328,8 +339,8 @@ namespace Luminosity.IO
 
 			if(binding.Type == InputType.Button || binding.Type == InputType.DigitalAxis)
 			{
-				XmlNode altPositiveNode = node.SelectSingleNode("altPositive");
-				XmlNode altNegativeNode = node.SelectSingleNode("altNegative");
+				XmlNode altPositiveNode = SelectSingleNode(node, "altPositive");
+				XmlNode altNegativeNode = SelectSingleNode(node, "altNegative");
 				InputBinding secondary = action.CreateNewBinding(binding);
 				secondary.Positive = InputBinding.StringToKey(altPositiveNode.InnerText);
 				secondary.Negative = InputBinding.StringToKey(altNegativeNode.InnerText);
@@ -338,6 +349,24 @@ namespace Luminosity.IO
 		#endregion
 
 		#region [Helper]
+		private XmlNode SelectSingleNode(XmlNode parent, string name)
+		{
+#if UNITY_WSA && !UNITY_EDITOR
+			return parent.ChildNodes.Cast<XmlNode>().First(nd => nd.LocalName == name);
+#else
+			return parent.SelectSingleNode(name);
+#endif
+		}
+
+		private IEnumerable<XmlNode> SelectNodes(XmlNode parent, string name)
+		{
+#if UNITY_WSA && !UNITY_EDITOR
+			return parent.ChildNodes.Cast<XmlNode>().Where(nd => nd.LocalName == name);
+#else
+			return parent.SelectNodes(name).Cast<XmlNode>();
+#endif
+		}
+
 		private string ReadAttribute(XmlNode node, string attribute, string defValue = null)
 		{
 			if(node.Attributes[attribute] != null)
@@ -410,6 +439,6 @@ namespace Luminosity.IO
 
 			return defValue;
 		}
-		#endregion
+#endregion
 	}
 }

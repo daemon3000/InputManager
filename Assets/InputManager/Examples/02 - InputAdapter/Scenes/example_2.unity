@@ -201,6 +201,9 @@ MonoBehaviour:
         m_type: 2
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.2
@@ -211,6 +214,9 @@ MonoBehaviour:
         m_type: 6
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: Vertical
       m_description: 
       m_bindings:
@@ -224,6 +230,9 @@ MonoBehaviour:
         m_type: 2
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.2
@@ -234,6 +243,9 @@ MonoBehaviour:
         m_type: 6
         m_axis: 1
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: LookHorizontal
       m_description: 
       m_bindings:
@@ -247,16 +259,22 @@ MonoBehaviour:
         m_type: 1
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.2
         m_gravity: 1
-        m_sensitivity: 1
+        m_sensitivity: 0.3
         m_snap: 0
         m_invert: 0
         m_type: 6
         m_axis: 3
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: LookVertical
       m_description: 
       m_bindings:
@@ -270,82 +288,22 @@ MonoBehaviour:
         m_type: 1
         m_axis: 1
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.2
         m_gravity: 1
-        m_sensitivity: 1
+        m_sensitivity: 0.3
         m_snap: 0
         m_invert: 1
         m_type: 6
         m_axis: 4
         m_joystick: 0
-    - m_name: UI_Horizontal
-      m_description: 
-      m_bindings:
-      - m_positive: 100
-        m_negative: 97
-        m_deadZone: 0
-        m_gravity: 3
-        m_sensitivity: 3
-        m_snap: 1
-        m_invert: 0
-        m_type: 2
-        m_axis: 0
-        m_joystick: 0
-      - m_positive: 275
-        m_negative: 276
-        m_deadZone: 0
-        m_gravity: 3
-        m_sensitivity: 3
-        m_snap: 1
-        m_invert: 0
-        m_type: 2
-        m_axis: 0
-        m_joystick: 0
-      - m_positive: 0
-        m_negative: 0
-        m_deadZone: 0.2
-        m_gravity: 1
-        m_sensitivity: 1
-        m_snap: 0
-        m_invert: 0
-        m_type: 6
-        m_axis: 0
-        m_joystick: 0
-    - m_name: UI_Vertical
-      m_description: 
-      m_bindings:
-      - m_positive: 119
-        m_negative: 115
-        m_deadZone: 0
-        m_gravity: 3
-        m_sensitivity: 3
-        m_snap: 1
-        m_invert: 0
-        m_type: 2
-        m_axis: 0
-        m_joystick: 0
-      - m_positive: 273
-        m_negative: 274
-        m_deadZone: 0
-        m_gravity: 3
-        m_sensitivity: 3
-        m_snap: 1
-        m_invert: 0
-        m_type: 2
-        m_axis: 0
-        m_joystick: 0
-      - m_positive: 0
-        m_negative: 0
-        m_deadZone: 0.2
-        m_gravity: 1
-        m_sensitivity: 1
-        m_snap: 0
-        m_invert: 1
-        m_type: 6
-        m_axis: 1
-        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: Jump
       m_description: 
       m_bindings:
@@ -359,6 +317,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 350
         m_negative: 0
         m_deadZone: 0
@@ -369,6 +330,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: Pause
       m_description: 
       m_bindings:
@@ -382,6 +346,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: PauseMenu
       m_description: 
       m_bindings:
@@ -395,6 +362,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 357
         m_negative: 0
         m_deadZone: 0
@@ -405,6 +375,177 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+    - m_name: UI_Up
+      m_description: 
+      m_bindings:
+      - m_positive: 119
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 0
+        m_sensitivity: 0
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 273
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 350
+        m_negative: 0
+        m_deadZone: 0.5
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 1
+        m_type: 5
+        m_axis: 1
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+    - m_name: UI_Down
+      m_description: 
+      m_bindings:
+      - m_positive: 115
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 0
+        m_sensitivity: 0
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 274
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 350
+        m_negative: 0
+        m_deadZone: 0.5
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 5
+        m_axis: 1
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+    - m_name: UI_Left
+      m_description: 
+      m_bindings:
+      - m_positive: 97
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 0
+        m_sensitivity: 0
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 276
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 350
+        m_negative: 0
+        m_deadZone: 0.5
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 5
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+    - m_name: UI_Right
+      m_description: 
+      m_bindings:
+      - m_positive: 100
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 0
+        m_sensitivity: 0
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 275
+        m_negative: 0
+        m_deadZone: 0
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 0
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
+      - m_positive: 350
+        m_negative: 0
+        m_deadZone: 0.5
+        m_gravity: 1
+        m_sensitivity: 1
+        m_snap: 0
+        m_invert: 0
+        m_type: 5
+        m_axis: 0
+        m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: UI_Submit
       m_description: 
       m_bindings:
@@ -418,6 +559,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 13
         m_negative: 0
         m_deadZone: 0
@@ -428,6 +572,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 350
         m_negative: 0
         m_deadZone: 0
@@ -438,6 +585,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
     - m_name: UI_Cancel
       m_description: 
       m_bindings:
@@ -451,6 +601,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
       - m_positive: 351
         m_negative: 0
         m_deadZone: 0
@@ -461,6 +614,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
+        m_xInputButton: 0
+        m_xInputAxis: 0
+        m_xInputPlayer: 0
   m_playerOneDefault: 06cd669440d0422a95f3e89bd3812515
   m_playerTwoDefault: 
   m_playerThreeDefault: 

@@ -6,6 +6,9 @@ namespace Luminosity.IO.Examples
 	[RequireComponent(typeof(CharacterMotor))]
 	public class FPSInputController : MonoBehaviour
 	{
+		[SerializeField]
+		private bool m_quitWithEscape;
+
 		private CharacterMotor motor;
 
 		private void Awake()
@@ -39,6 +42,20 @@ namespace Luminosity.IO.Examples
 			// Apply the direction to the CharacterMotor
 			motor.inputMoveDirection = transform.rotation * directionVector;
 			motor.inputJump = InputManager.GetButton("Jump");
+
+			if(m_quitWithEscape && InputManager.GetKeyDown(KeyCode.Escape))
+			{
+				Quit();
+			}
+		}
+
+		private void Quit()
+		{
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
 		}
 	}
 }

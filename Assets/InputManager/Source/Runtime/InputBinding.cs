@@ -578,33 +578,42 @@ namespace Luminosity.IO
 
 		public static KeyCode StringToKey(string value)
 		{
-			if(string.IsNullOrEmpty(value))
-			{
-				return KeyCode.None;
-			}
-			try
-			{
-				return (KeyCode)Enum.Parse(typeof(KeyCode), value, true);
-			}
-			catch
-			{
-				return KeyCode.None;
-			}
+			return StringToEnum(value, KeyCode.None);
 		}
 
 		public static InputType StringToInputType(string value)
 		{
+			return StringToEnum(value, InputType.Button);
+		}
+
+		public static XInputButton StringToXInputButton(string value)
+		{
+			return StringToEnum(value, XInputButton.A);
+		}
+
+		public static XInputAxis StringToXInputAxis(string value)
+		{
+			return StringToEnum(value, XInputAxis.LeftStick_X);
+		}
+
+		public static XInputPlayer StringToXInputPlayer(string value)
+		{
+			return StringToEnum(value, XInputPlayer.PlayerOne);
+		}
+
+		private static T StringToEnum<T>(string value, T defValue)
+		{
 			if(string.IsNullOrEmpty(value))
 			{
-				return InputType.Button;
+				return defValue;
 			}
 			try
 			{
-				return (InputType)Enum.Parse(typeof(InputType), value, true);
+				return (T)Enum.Parse(typeof(T), value, true);
 			}
 			catch
 			{
-				return InputType.Button;
+				return defValue;
 			}
 		}
 
