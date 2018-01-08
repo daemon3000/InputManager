@@ -25,10 +25,10 @@ using System.IO;
 
 namespace Luminosity.IO.Examples
 {
-	public class ResetInputConfiguration : MonoBehaviour 
+	public class ResetControlScheme : MonoBehaviour 
 	{
 		[SerializeField]
-		private TextAsset m_defaultInputs;
+		private TextAsset m_defaultInputProfile;
 		[SerializeField]
 		private string m_controlSchemeName;
 		
@@ -37,7 +37,7 @@ namespace Luminosity.IO.Examples
 			ControlScheme controlScheme = InputManager.GetControlScheme(m_controlSchemeName);
 			ControlScheme defControlScheme = null;
 
-			using(StringReader reader = new StringReader(m_defaultInputs.text))
+			using(StringReader reader = new StringReader(m_defaultInputProfile.text))
 			{
 				InputLoaderXML loader = new InputLoaderXML(reader);
 				defControlScheme = loader.Load(m_controlSchemeName);

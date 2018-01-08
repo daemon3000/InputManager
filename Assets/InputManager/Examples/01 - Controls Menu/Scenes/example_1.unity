@@ -5338,7 +5338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b10d4af0b50e8647844d1f5aa69e3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_defaultInputs: {fileID: 4900000, guid: fae568f18bc79f740958e084bdf1c92b, type: 3}
+  m_defaultInputProfile: {fileID: 4900000, guid: fae568f18bc79f740958e084bdf1c92b,
+    type: 3}
   m_controlSchemeName: KeyboardAndMouse
 --- !u!1 &1374754561
 GameObject:
@@ -6525,7 +6526,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b10d4af0b50e8647844d1f5aa69e3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_defaultInputs: {fileID: 4900000, guid: fae568f18bc79f740958e084bdf1c92b, type: 3}
+  m_defaultInputProfile: {fileID: 4900000, guid: fae568f18bc79f740958e084bdf1c92b,
+    type: 3}
   m_controlSchemeName: Gamepad
 --- !u!1 &1602445143
 GameObject:
