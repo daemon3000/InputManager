@@ -181,9 +181,12 @@ namespace Luminosity.IO
 
 		public void SwapActions(int fromIndex, int toIndex)
 		{
-			var temp = m_actions[toIndex];
-			m_actions[toIndex] = m_actions[fromIndex];
-			m_actions[fromIndex] = temp;
+			if(fromIndex >= 0 && fromIndex < m_actions.Count && toIndex >= 0 && toIndex < m_actions.Count)
+			{
+				var temp = m_actions[toIndex];
+				m_actions[toIndex] = m_actions[fromIndex];
+				m_actions[fromIndex] = temp;
+			}
 		}
 
 		public Dictionary<string, InputAction> GetActionLookupTable()

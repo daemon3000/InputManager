@@ -237,6 +237,16 @@ namespace Luminosity.IO
 				m_bindings.RemoveAt(index);
 		}
 
+		public void SwapBindings(int fromIndex, int toIndex)
+		{
+			if(fromIndex >= 0 && fromIndex < m_bindings.Count && toIndex >= 0 && toIndex < m_bindings.Count)
+			{
+				var temp = m_bindings[toIndex];
+				m_bindings[toIndex] = m_bindings[fromIndex];
+				m_bindings[fromIndex] = temp;
+			}
+		}
+
 		public void Copy(InputAction source)
 		{
 			m_name = source.m_name;

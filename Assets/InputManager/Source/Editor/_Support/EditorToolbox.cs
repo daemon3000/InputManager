@@ -213,5 +213,10 @@ namespace LuminosityEditor.IO
 		{
 			return EditorGUIUtility.Load(name + ".png") as Texture2D;
 		}
+
+		public static Texture2D GetCustomIcon(string name)
+		{
+			return Resources.Load<Texture2D>(name) as Texture2D;
+		}
 	}
 }

@@ -57,6 +57,8 @@ namespace LuminosityEditor.IO
 		private GUIContent m_deadZoneInfo;
 		private GUIContent m_plusButtonContent;
 		private GUIContent m_minusButtonContent;
+		private GUIContent m_upButtonContent;
+		private GUIContent m_downButtonContent;
 		private InputAction m_copySource;
 		private SearchField m_searchField;
 		private KeyCodeField[] m_keyFields;
@@ -79,6 +81,8 @@ namespace LuminosityEditor.IO
 			m_deadZoneInfo = new GUIContent("Dead Zone", "Size of analog dead zone. Values within this range map to neutral.");
 			m_plusButtonContent = new GUIContent(EditorToolbox.GetUnityIcon("ol plus"));
 			m_minusButtonContent = new GUIContent(EditorToolbox.GetUnityIcon("ol minus"));
+			m_upButtonContent = new GUIContent(EditorToolbox.GetCustomIcon("input_editor_arrow_up"));
+			m_downButtonContent = new GUIContent(EditorToolbox.GetCustomIcon("input_editor_arrow_down"));
 
 			m_joystickOptions = EditorToolbox.GenerateJoystickNames();
 			m_axisOptions = EditorToolbox.GenerateJoystickAxisNames();
@@ -902,6 +906,16 @@ namespace LuminosityEditor.IO
 						action.DeleteBinding(i--);
 						collectionChanged = true;
 					}
+					else if(res == CollectionAction.MoveUp)
+					{
+						action.SwapBindings(i, i - 1);
+						collectionChanged = true;
+					}
+					else if(res == CollectionAction.MoveDown)
+					{
+						action.SwapBindings(i, i + 1);
+						collectionChanged = true;
+					}
 				}
 			}
 			else
@@ -925,8 +939,10 @@ namespace LuminosityEditor.IO
 		private CollectionAction DrawInputBindingFields(Rect position, string label, InputAction action, int bindingIndex)
 		{
 			Rect headerRect = new Rect(position.x + 5.0f, position.y, position.width, INPUT_FIELD_HEIGHT);
-			Rect addButtonRect = new Rect(position.width - 45.0f, position.y + 2, 20.0f, 20.0f);
 			Rect removeButtonRect = new Rect(position.width - 25.0f, position.y + 2, 20.0f, 20.0f);
+			Rect addButtonRect = new Rect(removeButtonRect.x - 20.0f, position.y + 2, 20.0f, 20.0f);
+			Rect downButtonRect = new Rect(addButtonRect.x - 20.0f, position.y + 2, 20.0f, 20.0f);
+			Rect upButtonRect = new Rect(downButtonRect.x - 20.0f, position.y + 2, 20.0f, 20.0f);
 			Rect layoutArea = new Rect(position.x + 10.0f, position.y + INPUT_FIELD_HEIGHT + FIELD_SPACING + 5.0f, position.width - 12.5f, position.height - (INPUT_FIELD_HEIGHT + FIELD_SPACING + 5.0f));
 			InputBinding binding = action.Bindings[bindingIndex];
 			KeyCode positive = binding.Positive, negative = binding.Negative;
@@ -1013,6 +1029,16 @@ namespace LuminosityEditor.IO
 			if(GUI.Button(removeButtonRect, m_minusButtonContent, EditorStyles.label))
 			{
 				result = CollectionAction.Remove;
+			}
+
+			if(GUI.Button(upButtonRect, m_upButtonContent, EditorStyles.label))
+			{
+				result = CollectionAction.MoveUp;
+			}
+
+			if(GUI.Button(downButtonRect, m_downButtonContent, EditorStyles.label))
+			{
+				result = CollectionAction.MoveDown;
 			}
 
 			return result;

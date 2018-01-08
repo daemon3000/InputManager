@@ -75,7 +75,7 @@ namespace LuminosityEditor.IO
 
 		private enum CollectionAction
 		{
-			None, Remove, Add
+			None, Remove, Add, MoveUp, MoveDown
 		}
 
 		private enum KeyType
