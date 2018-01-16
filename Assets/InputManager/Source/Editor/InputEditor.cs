@@ -691,7 +691,7 @@ namespace LuminosityEditor.IO
 			float itemPosY = 0.0f;
 
 			GUI.Box(screenRect, "");
-			GUI.BeginScrollView(scrollView, m_hierarchyScrollPos, viewRect);
+			m_hierarchyScrollPos = GUI.BeginScrollView(scrollView, m_hierarchyScrollPos, viewRect);
 			for(int i = 0; i < m_searchResults.Count; i++)
 			{
 				Rect csRect = new Rect(1.0f, itemPosY, viewRect.width - 2.0f, HIERARCHY_ITEM_HEIGHT);
@@ -723,7 +723,7 @@ namespace LuminosityEditor.IO
 			float itemPosY = 0.0f;
 
 			GUI.Box(screenRect, "");
-			GUI.BeginScrollView(scrollView, m_hierarchyScrollPos, viewRect);
+			m_hierarchyScrollPos = GUI.BeginScrollView(scrollView, m_hierarchyScrollPos, viewRect);
 			for(int i = 0; i < m_inputManager.ControlSchemes.Count; i++)
 			{
 				Rect csRect = new Rect(1.0f, itemPosY, viewRect.width - 2.0f, HIERARCHY_ITEM_HEIGHT);
