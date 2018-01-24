@@ -33,6 +33,8 @@ namespace Luminosity.IO
 		[SerializeField]
 		private string m_name;
 		[SerializeField]
+		private string m_description;
+		[SerializeField]
 		private bool m_isExpanded;
 		[SerializeField]
 		private string m_uniqueID;
@@ -69,6 +71,12 @@ namespace Luminosity.IO
 			}
 		}
 
+		public string Description
+		{
+			get { return m_description; }
+			set { m_description = value; }
+		}
+
 		public bool AnyInput
 		{
 			get
@@ -90,6 +98,7 @@ namespace Luminosity.IO
 		{
 			m_actions = new List<InputAction>();
 			m_name = name;
+			m_description = "";
 			m_isExpanded = false;
 			m_uniqueID = GenerateUniqueID();
 		}
@@ -209,6 +218,7 @@ namespace Luminosity.IO
 		{
 			ControlScheme duplicate = new ControlScheme();
 			duplicate.m_name = name;
+			duplicate.m_description = source.m_description;
 			duplicate.m_uniqueID = GenerateUniqueID(); 
 			duplicate.m_actions = new List<InputAction>();
 			foreach(var action in source.m_actions)

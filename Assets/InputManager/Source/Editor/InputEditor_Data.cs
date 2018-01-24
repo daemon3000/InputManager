@@ -31,6 +31,8 @@ namespace LuminosityEditor.IO
 	public partial class InputEditor : EditorWindow
 	{
 		private static readonly Color32 HIGHLIGHT_COLOR = new Color32(62, 125, 231, 200);
+		private const float MIN_WINDOW_WIDTH = 600.0f;
+		private const float MIN_WINDOW_HEIGHT = 200.0f;
 		private const float MENU_WIDTH = 100.0f;
 		private const float MIN_HIERARCHY_PANEL_WIDTH = 150.0f;
 		private const float MIN_CURSOR_RECT_WIDTH = 10.0f;

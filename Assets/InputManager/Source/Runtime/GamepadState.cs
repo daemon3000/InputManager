@@ -26,48 +26,77 @@ namespace Luminosity.IO
 {
 	public static class GamepadState
 	{
+		private static bool m_hasWarningBeenDisplayed = false;
+
 		public static IGamepadStateAdapter Adapter { get; set; }
+
+		public static bool IsGamepadSupported
+		{
+			get
+			{
+#if ENABLE_X_INPUT
+				return true;
+#else
+				return false;
+#endif
+			}
+		}
+
+		public static bool IsConnected(XInputPlayer player)
+		{
+			PrintMissingAdapterWarningIfNecessary();
+			return Adapter != null ? Adapter.IsConnected(player) : false;
+		}
 
 		public static float GetAxis(XInputAxis axis, XInputPlayer player)
 		{
-			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			PrintMissingAdapterWarningIfNecessary();
 			return Adapter != null ? Adapter.GetAxis(axis, player) : 0;
 		}
 
 		public static float GetAxisRaw(XInputAxis axis, XInputPlayer player)
 		{
-			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			PrintMissingAdapterWarningIfNecessary();
 			return Adapter != null ? Adapter.GetAxisRaw(axis, player) : 0;
 		}
 
 		public static bool GetButton(XInputButton button, XInputPlayer player)
 		{
-			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			PrintMissingAdapterWarningIfNecessary();
 			return Adapter != null ? Adapter.GetButton(button, player) : false;
 		}
 
 		public static bool GetButtonDown(XInputButton button, XInputPlayer player)
 		{
-			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			PrintMissingAdapterWarningIfNecessary();
 			return Adapter != null ? Adapter.GetButtonDown(button, player) : false;
 		}
 
 		public static bool GetButtonUp(XInputButton button, XInputPlayer player)
 		{
-			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			PrintMissingAdapterWarningIfNecessary();
 			return Adapter != null ? Adapter.GetButtonUp(button, player) : false;
 		}
 
 		public static void SetVibration(GamepadVibration vibration, XInputPlayer player)
 		{
+			PrintMissingAdapterWarningIfNecessary();
 			if(Adapter != null) Adapter.SetVibration(vibration, player);
-			else Debug.LogWarning("No XInput adapter has been assigned.");
 		}
 
 		public static GamepadVibration GetVibration(XInputPlayer player)
 		{
-			if(Adapter == null) Debug.LogWarning("No XInput adapter has been assigned.");
+			PrintMissingAdapterWarningIfNecessary();
 			return Adapter != null ? Adapter.GetVibration(player) : new GamepadVibration();
+		}
+
+		private static void PrintMissingAdapterWarningIfNecessary()
+		{
+			if(Adapter == null && !m_hasWarningBeenDisplayed)
+			{
+				Debug.LogWarning("No XInput adapter has been assigned.");
+				m_hasWarningBeenDisplayed = true;
+			}
 		}
 	}
 }

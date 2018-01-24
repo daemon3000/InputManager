@@ -41,6 +41,7 @@ namespace Luminosity.IO
 
 	public interface IGamepadStateAdapter
 	{
+		bool IsConnected(XInputPlayer player);
 		float GetAxis(XInputAxis axis, XInputPlayer player);
 		float GetAxisRaw(XInputAxis axis, XInputPlayer player);
 		bool GetButton(XInputButton button, XInputPlayer player);

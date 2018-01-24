@@ -853,6 +853,8 @@ namespace LuminosityEditor.IO
 
 			GUILayout.BeginArea(position);
 			controlScheme.Name = EditorGUILayout.TextField("Name", controlScheme.Name);
+			EditorGUILayout.LabelField("Description");
+			controlScheme.Description = EditorGUILayout.TextArea(controlScheme.Description, GUILayout.MinHeight(100.0f));
 
 			GUILayout.EndArea();
 		}
@@ -1351,7 +1353,8 @@ namespace LuminosityEditor.IO
 						return;
 					}
 				}
-				EditorWindow.GetWindow<InputEditor>("Input Editor");
+				var window = EditorWindow.GetWindow<InputEditor>("Input Editor");
+				window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
 			}
 		}
 
@@ -1361,6 +1364,7 @@ namespace LuminosityEditor.IO
 			{
 				var window = EditorWindow.GetWindow<InputEditor>("Input Editor");
 				window.m_inputManager = target;
+				window.minSize = new Vector2(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
 			}
 		}
 

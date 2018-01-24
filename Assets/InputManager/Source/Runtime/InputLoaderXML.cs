@@ -167,6 +167,9 @@ namespace Luminosity.IO
 			ControlScheme scheme = new ControlScheme(name);
 			scheme.UniqueID = id ?? ControlScheme.GenerateUniqueID();
 
+			var descriptionNode = SelectSingleNode(node, "Description");
+			scheme.Description = descriptionNode.InnerText;
+
 			var actionNodes = SelectNodes(node, "Action");
 			foreach(XmlNode child in actionNodes)
 			{

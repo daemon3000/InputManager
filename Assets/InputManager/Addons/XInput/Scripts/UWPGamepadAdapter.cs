@@ -287,6 +287,11 @@ namespace Luminosity.IO
 			UpdateGamepadList();
 		}
 
+		public bool IsConnected(XInputPlayer player)
+		{
+			return m_gamepads[(int)player] != null;
+		}
+
 		public float GetAxis(XInputAxis axis, XInputPlayer player)
 		{
 			GamepadReading? state = GetCurrentState(player);
@@ -444,44 +449,42 @@ namespace Luminosity.IO
 			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 		}
 
+		public bool IsConnected(XInputPlayer player)
+		{
+			return false;
+		}
+
 		public float GetAxis(XInputAxis axis, XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 			return 0;
 		}
 
 		public float GetAxisRaw(XInputAxis axis, XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 			return 0;
 		}
 
 		public bool GetButton(XInputButton button, XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 			return false;
 		}
 
 		public bool GetButtonDown(XInputButton button, XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 			return false;
 		}
 
 		public bool GetButtonUp(XInputButton button, XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 			return false;
 		}
 
 		public void SetVibration(GamepadVibration vibration, XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 		}
 
 		public GamepadVibration GetVibration(XInputPlayer player)
 		{
-			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 			return new GamepadVibration();
 		}
 #endif

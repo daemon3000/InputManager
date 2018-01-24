@@ -126,6 +126,7 @@ namespace Luminosity.IO
 			writer.WriteStartElement("ControlScheme");
 			writer.WriteAttributeString("name", scheme.Name);
 			writer.WriteAttributeString("id", scheme.UniqueID);
+			writer.WriteElementString("Description", scheme.Description);
 			foreach(var action in scheme.Actions)
 			{
 				WriteInputAction(action, writer);
