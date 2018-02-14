@@ -93,7 +93,7 @@ namespace Luminosity.IO
 			}
 			else
 			{
-				Debug.LogWarning("You shouldn't have more than one XInput adapters in the scene");
+				Debug.LogWarning("You shouldn't have more than one XInputDotNetAdapter in the scene");
 			}
 		}
 
@@ -229,44 +229,44 @@ namespace Luminosity.IO
 			}
 		}
 
-		public bool IsConnected(XInputPlayer player)
+		public bool IsConnected(GamepadIndex gamepad)
 		{
-			GamePadState state = GetCurrentState(player);
+			GamePadState state = GetCurrentState(gamepad);
 			return state.IsConnected;
 		}
 
-		public float GetAxis(XInputAxis axis, XInputPlayer player)
+		public float GetAxis(GamepadAxis axis, GamepadIndex gamepad)
 		{
-			GamePadState state = GetCurrentState(player);
+			GamePadState state = GetCurrentState(gamepad);
 			float value = 0.0f;
 
 			if(state.IsConnected)
 			{
 				switch(axis)
 				{
-				case XInputAxis.LeftThumbstickX:
+				case GamepadAxis.LeftThumbstickX:
 					value = state.ThumbSticks.Left.X;
 					break;
-				case XInputAxis.LeftThumbstickY:
+				case GamepadAxis.LeftThumbstickY:
 					value = state.ThumbSticks.Left.Y;
 					break;
-				case XInputAxis.RightThumbstickX:
+				case GamepadAxis.RightThumbstickX:
 					value = state.ThumbSticks.Right.X;
 					break;
-				case XInputAxis.RightThumbstickY:
+				case GamepadAxis.RightThumbstickY:
 					value = state.ThumbSticks.Right.Y;
 					break;
-				case XInputAxis.LeftTrigger:
+				case GamepadAxis.LeftTrigger:
 					value = state.Triggers.Left;
 					break;
-				case XInputAxis.RightTrigger:
+				case GamepadAxis.RightTrigger:
 					value = state.Triggers.Right;
 					break;
-				case XInputAxis.DPadX:
-					value = GetDPADState(player).X;
+				case GamepadAxis.DPadX:
+					value = GetDPADState(gamepad).X;
 					break;
-				case XInputAxis.DPadY:
-					value = GetDPADState(player).Y;
+				case GamepadAxis.DPadY:
+					value = GetDPADState(gamepad).Y;
 					break;
 				}
 			}
@@ -274,61 +274,61 @@ namespace Luminosity.IO
 			return value;
 		}
 
-		public float GetAxisRaw(XInputAxis axis, XInputPlayer player)
+		public float GetAxisRaw(GamepadAxis axis, GamepadIndex gamepad)
 		{
-			float value = GetAxis(axis, player);
+			float value = GetAxis(axis, gamepad);
 			return Mathf.Approximately(value, 0) ? 0.0f : Mathf.Sign(value);
 		}
 
-		public bool GetButton(XInputButton button, XInputPlayer player)
+		public bool GetButton(GamepadButton button, GamepadIndex gamepad)
 		{
-			GamePadState state = GetCurrentState(player);
+			GamePadState state = GetCurrentState(gamepad);
 			return GetButton(button, state);
 		}
 
-		public bool GetButtonDown(XInputButton button, XInputPlayer player)
+		public bool GetButtonDown(GamepadButton button, GamepadIndex gamepad)
 		{
-			GamePadState state = GetCurrentState(player);
-			GamePadState oldState = GetPreviousState(player);
+			GamePadState state = GetCurrentState(gamepad);
+			GamePadState oldState = GetPreviousState(gamepad);
 
 			return GetButton(button, state) && !GetButton(button, oldState);
 		}
 
-		public bool GetButtonUp(XInputButton button, XInputPlayer player)
+		public bool GetButtonUp(GamepadButton button, GamepadIndex gamepad)
 		{
-			GamePadState state = GetCurrentState(player);
-			GamePadState oldState = GetPreviousState(player);
+			GamePadState state = GetCurrentState(gamepad);
+			GamePadState oldState = GetPreviousState(gamepad);
 
 			return !GetButton(button, state) && GetButton(button, oldState);
 		}
 
-		public void SetVibration(GamepadVibration vibration, XInputPlayer player)
+		public void SetVibration(GamepadVibration vibration, GamepadIndex gamepad)
 		{
-			m_vibration[(int)player] = vibration;
-			GamePad.SetVibration(ToPlayerIndex(player), vibration.LeftMotor, vibration.RightMotor);
+			m_vibration[(int)gamepad] = vibration;
+			GamePad.SetVibration(ToPlayerIndex(gamepad), vibration.LeftMotor, vibration.RightMotor);
 		}
 
-		public GamepadVibration GetVibration(XInputPlayer player)
+		public GamepadVibration GetVibration(GamepadIndex gamepad)
 		{
-			return m_vibration[(int)player];
+			return m_vibration[(int)gamepad];
 		}
 
-		private GamePadState GetCurrentState(XInputPlayer player)
+		private GamePadState GetCurrentState(GamepadIndex gamepad)
 		{
-			return m_currentState[(int)player];
+			return m_currentState[(int)gamepad];
 		}
 
-		private GamePadState GetPreviousState(XInputPlayer player)
+		private GamePadState GetPreviousState(GamepadIndex gamepad)
 		{
-			return m_previousState[(int)player];
+			return m_previousState[(int)gamepad];
 		}
 
-		private DPADState GetDPADState(XInputPlayer player)
+		private DPADState GetDPADState(GamepadIndex gamepad)
 		{
-			return m_dpadState[(int)player];
+			return m_dpadState[(int)gamepad];
 		}
 
-		private bool GetButton(XInputButton button, GamePadState state)
+		private bool GetButton(GamepadButton button, GamePadState state)
 		{
 			bool value = false;
 
@@ -336,46 +336,46 @@ namespace Luminosity.IO
 			{
 				switch(button)
 				{
-				case XInputButton.A:
+				case GamepadButton.Action1:
 					value = state.Buttons.A == XButtonState.Pressed;
 					break;
-				case XInputButton.B:
+				case GamepadButton.Action2:
 					value = state.Buttons.B == XButtonState.Pressed;
 					break;
-				case XInputButton.X:
+				case GamepadButton.Action3:
 					value = state.Buttons.X == XButtonState.Pressed;
 					break;
-				case XInputButton.Y:
+				case GamepadButton.Action4:
 					value = state.Buttons.Y == XButtonState.Pressed;
 					break;
-				case XInputButton.LeftBumper:
+				case GamepadButton.LeftBumper:
 					value = state.Buttons.LeftShoulder == XButtonState.Pressed;
 					break;
-				case XInputButton.RightBumper:
+				case GamepadButton.RightBumper:
 					value = state.Buttons.RightShoulder == XButtonState.Pressed;
 					break;
-				case XInputButton.LeftStick:
+				case GamepadButton.LeftStick:
 					value = state.Buttons.LeftStick == XButtonState.Pressed;
 					break;
-				case XInputButton.RightStick:
+				case GamepadButton.RightStick:
 					value = state.Buttons.RightStick == XButtonState.Pressed;
 					break;
-				case XInputButton.Back:
+				case GamepadButton.Back:
 					value = state.Buttons.Back == XButtonState.Pressed;
 					break;
-				case XInputButton.Start:
+				case GamepadButton.Start:
 					value = state.Buttons.Start == XButtonState.Pressed;
 					break;
-				case XInputButton.DPadUp:
+				case GamepadButton.DPadUp:
 					value = state.DPad.Up == XButtonState.Pressed;
 					break;
-				case XInputButton.DPadDown:
+				case GamepadButton.DPadDown:
 					value = state.DPad.Down == XButtonState.Pressed;
 					break;
-				case XInputButton.DPadLeft:
+				case GamepadButton.DPadLeft:
 					value = state.DPad.Left == XButtonState.Pressed;
 					break;
-				case XInputButton.DPadRight:
+				case GamepadButton.DPadRight:
 					value = state.DPad.Right == XButtonState.Pressed;
 					break;
 				}
@@ -384,17 +384,17 @@ namespace Luminosity.IO
 			return value;
 		}
 
-		private XPlayerIndex ToPlayerIndex(XInputPlayer player)
+		private XPlayerIndex ToPlayerIndex(GamepadIndex gamepad)
 		{
-			switch(player)
+			switch(gamepad)
 			{
-			case XInputPlayer.PlayerOne:
+			case GamepadIndex.GamepadOne:
 				return XPlayerIndex.One;
-			case XInputPlayer.PlayerTwo:
+			case GamepadIndex.GamepadTwo:
 				return XPlayerIndex.Two;
-			case XInputPlayer.PlayerThree:
+			case GamepadIndex.GamepadThree:
 				return XPlayerIndex.Three;
-			case XInputPlayer.PlayerFour:
+			case GamepadIndex.GamepadFour:
 				return XPlayerIndex.Four;
 			default:
 				return XPlayerIndex.One;
@@ -406,41 +406,41 @@ namespace Luminosity.IO
 			Debug.LogWarning("XInputDotNet works only on Windows Desktop if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 		}
 
-		public bool IsConnected(XInputPlayer player)
+		public bool IsConnected(GamepadIndex gamepad)
 		{
 			return false;
 		}
 
-		public float GetAxis(XInputAxis axis, XInputPlayer player)
+		public float GetAxis(GamepadAxis axis, GamepadIndex gamepad)
 		{
 			return 0;
 		}
 
-		public float GetAxisRaw(XInputAxis axis, XInputPlayer player)
+		public float GetAxisRaw(GamepadAxis axis, GamepadIndex gamepad)
 		{
 			return 0;
 		}
 
-		public bool GetButton(XInputButton button, XInputPlayer player)
+		public bool GetButton(GamepadButton button, GamepadIndex gamepad)
 		{
 			return false;
 		}
 
-		public bool GetButtonDown(XInputButton button, XInputPlayer player)
+		public bool GetButtonDown(GamepadButton button, GamepadIndex gamepad)
 		{
 			return false;
 		}
 
-		public bool GetButtonUp(XInputButton button, XInputPlayer player)
+		public bool GetButtonUp(GamepadButton button, GamepadIndex gamepad)
 		{
 			return false;
 		}
 
-		public void SetVibration(GamepadVibration vibration, XInputPlayer player)
+		public void SetVibration(GamepadVibration vibration, GamepadIndex gamepad)
 		{
 		}
 
-		public GamepadVibration GetVibration(XInputPlayer player)
+		public GamepadVibration GetVibration(GamepadIndex gamepad)
 		{
 			return new GamepadVibration();
 		}

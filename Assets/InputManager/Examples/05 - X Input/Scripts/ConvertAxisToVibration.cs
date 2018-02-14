@@ -31,7 +31,7 @@ namespace Luminosity.IO.Examples
 			float l = InputManager.GetAxis("LeftVibration");
 			float r = InputManager.GetAxis("RightVibration");
 
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), XInputPlayer.PlayerOne);
+			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
 		}
 	}
 }

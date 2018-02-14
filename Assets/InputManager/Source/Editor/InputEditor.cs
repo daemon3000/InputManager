@@ -971,29 +971,29 @@ namespace LuminosityEditor.IO
 			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.AnalogButton)
 				binding.Joystick = EditorGUILayout.Popup("Joystick", binding.Joystick, m_joystickOptions);
 
-			if(binding.Type == InputType.XInputButton)
-				binding.XInputButton = (XInputButton)EditorGUILayout.EnumPopup("Button", binding.XInputButton);
+			if(binding.Type == InputType.GamepadButton)
+				binding.GamepadButton = (GamepadButton)EditorGUILayout.EnumPopup("Button", binding.GamepadButton);
 
-			if(binding.Type == InputType.XInputAnalogButton || binding.Type == InputType.XInputAxis)
-				binding.XInputAxis = (XInputAxis)EditorGUILayout.EnumPopup("Axis", binding.XInputAxis);
+			if(binding.Type == InputType.GamepadAnalogButton || binding.Type == InputType.GamepadAxis)
+				binding.GamepadAxis = (GamepadAxis)EditorGUILayout.EnumPopup("Axis", binding.GamepadAxis);
 
-			if(binding.Type == InputType.XInputButton || binding.Type == InputType.XInputAnalogButton ||
-				binding.Type == InputType.XInputAxis)
+			if(binding.Type == InputType.GamepadButton || binding.Type == InputType.GamepadAnalogButton ||
+				binding.Type == InputType.GamepadAxis)
 			{
-				binding.XInputPlayer = (XInputPlayer)EditorGUILayout.EnumPopup("Player ID", binding.XInputPlayer);
+				binding.GamepadIndex = (GamepadIndex)EditorGUILayout.EnumPopup("Gamepad", binding.GamepadIndex);
 			}
 
 			if(binding.Type == InputType.DigitalAxis)
 				binding.Gravity = EditorGUILayout.FloatField(m_gravityInfo, binding.Gravity);
 
 			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
-				binding.Type == InputType.MouseAxis || binding.Type == InputType.XInputAxis)
+				binding.Type == InputType.MouseAxis || binding.Type == InputType.GamepadAxis)
 			{
 				binding.Sensitivity = EditorGUILayout.FloatField(m_sensitivityInfo, binding.Sensitivity);
 			}
 
-			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.XInputAxis ||
-				binding.Type == InputType.AnalogButton || binding.Type == InputType.XInputAnalogButton)
+			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.GamepadAxis ||
+				binding.Type == InputType.AnalogButton || binding.Type == InputType.GamepadAnalogButton)
 			{
 				binding.DeadZone = EditorGUILayout.FloatField(m_deadZoneInfo, binding.DeadZone);
 			}
@@ -1003,8 +1003,8 @@ namespace LuminosityEditor.IO
 
 			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
 				binding.Type == InputType.MouseAxis || binding.Type == InputType.RemoteAxis ||
-				binding.Type == InputType.AnalogButton || binding.Type == InputType.XInputAnalogButton ||
-				binding.Type == InputType.XInputAxis)
+				binding.Type == InputType.AnalogButton || binding.Type == InputType.GamepadAnalogButton ||
+				binding.Type == InputType.GamepadAxis)
 			{
 				binding.Invert = EditorGUILayout.Toggle("Invert", binding.Invert);
 			}
@@ -1280,13 +1280,13 @@ namespace LuminosityEditor.IO
 			case InputType.AnalogAxis:
 				numberOfFields = 5;
 				break;
-			case InputType.XInputButton:
+			case InputType.GamepadButton:
 				numberOfFields = 2;
 				break;
-			case InputType.XInputAnalogButton:
+			case InputType.GamepadAnalogButton:
 				numberOfFields = 4;
 				break;
-			case InputType.XInputAxis:
+			case InputType.GamepadAxis:
 				numberOfFields = 5;
 				break;
 			}

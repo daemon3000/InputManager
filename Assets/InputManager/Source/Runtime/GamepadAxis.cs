@@ -1,7 +1,7 @@
 ﻿
 namespace Luminosity.IO
 {
-	public enum XInputAxis
+	public enum GamepadAxis
 	{
 		LeftThumbstickX,
 		LeftThumbstickY,

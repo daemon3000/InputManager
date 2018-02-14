@@ -41,13 +41,13 @@ namespace Luminosity.IO
 
 	public interface IGamepadStateAdapter
 	{
-		bool IsConnected(XInputPlayer player);
-		float GetAxis(XInputAxis axis, XInputPlayer player);
-		float GetAxisRaw(XInputAxis axis, XInputPlayer player);
-		bool GetButton(XInputButton button, XInputPlayer player);
-		bool GetButtonDown(XInputButton button, XInputPlayer player);
-		bool GetButtonUp(XInputButton button, XInputPlayer player);
-		void SetVibration(GamepadVibration vibration, XInputPlayer player);
-		GamepadVibration GetVibration(XInputPlayer player);
+		bool IsConnected(GamepadIndex gamepad);
+		float GetAxis(GamepadAxis axis, GamepadIndex gamepad);
+		float GetAxisRaw(GamepadAxis axis, GamepadIndex gamepad);
+		bool GetButton(GamepadButton button, GamepadIndex gamepad);
+		bool GetButtonDown(GamepadButton button, GamepadIndex gamepad);
+		bool GetButtonUp(GamepadButton button, GamepadIndex gamepad);
+		void SetVibration(GamepadVibration vibration, GamepadIndex gamepad);
+		GamepadVibration GetVibration(GamepadIndex gamepad);
 	}
 }

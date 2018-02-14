@@ -56,11 +56,11 @@ namespace Luminosity.IO
 		[SerializeField]
 		private int m_joystick;
 		[SerializeField]
-		private XInputButton m_xInputButton;
+		private GamepadButton m_gamepadButton;
 		[SerializeField]
-		private XInputAxis m_xInputAxis;
+		private GamepadAxis m_gamepadAxis;
 		[SerializeField]
-		private XInputPlayer m_xInputPlayer;
+		private GamepadIndex m_gamepadIndex;
 
 		private string m_rawAxisName;
 		private float m_value;
@@ -141,22 +141,22 @@ namespace Luminosity.IO
 			}
 		}
 
-		public XInputButton XInputButton
+		public GamepadButton GamepadButton
 		{
-			get { return m_xInputButton; }
-			set { m_xInputButton = value; }
+			get { return m_gamepadButton; }
+			set { m_gamepadButton = value; }
 		}
 
-		public XInputAxis XInputAxis
+		public GamepadAxis GamepadAxis
 		{
-			get { return m_xInputAxis; }
-			set { m_xInputAxis = value; }
+			get { return m_gamepadAxis; }
+			set { m_gamepadAxis = value; }
 		}
 
-		public XInputPlayer XInputPlayer
+		public GamepadIndex GamepadIndex
 		{
-			get { return m_xInputPlayer; }
-			set { m_xInputPlayer = value; }
+			get { return m_gamepadIndex; }
+			set { m_gamepadIndex = value; }
 		}
 
 		public bool AnyInput
@@ -168,13 +168,14 @@ namespace Luminosity.IO
 				case InputType.Button:
 					return Input.GetKey(m_positive);
 				case InputType.AnalogButton:
+				case InputType.GamepadAnalogButton:
 					return m_analogButtonState == ButtonState.Pressed || m_analogButtonState == ButtonState.JustPressed;
 				case InputType.RemoteButton:
 					return m_remoteButtonState == ButtonState.Pressed || m_remoteButtonState == ButtonState.JustPressed;
-				case InputType.XInputButton:
-					return GamepadState.GetButton(m_xInputButton, m_xInputPlayer);
-				case InputType.XInputAxis:
-					return Mathf.Abs(GamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer)) >= 1.0f;
+				case InputType.GamepadButton:
+					return GamepadState.GetButton(m_gamepadButton, m_gamepadIndex);
+				case InputType.GamepadAxis:
+					return Mathf.Abs(GamepadState.GetAxisRaw(m_gamepadAxis, m_gamepadIndex)) >= 1.0f;
 				case InputType.DigitalAxis:
 				case InputType.RemoteAxis:
 					return Mathf.Abs(m_value) >= 1.0f;
@@ -247,7 +248,7 @@ namespace Luminosity.IO
 			{
 				UpdateDigitalAxisValue(deltaTime);
 			}
-			if(m_type == InputType.AnalogButton || m_type == InputType.XInputAnalogButton)
+			if(m_type == InputType.AnalogButton || m_type == InputType.GamepadAnalogButton)
 			{
 				UpdateAnalogButtonValue();
 			}
@@ -306,7 +307,7 @@ namespace Luminosity.IO
 		{
 			float axis = m_type == InputType.AnalogButton ?
 									Input.GetAxisRaw(m_rawAxisName) :
-									GamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer);
+									GamepadState.GetAxisRaw(m_gamepadAxis, m_gamepadIndex);
 
 			axis = axis * (m_invert ? -1 : 1);
 
@@ -356,9 +357,9 @@ namespace Luminosity.IO
 					axis = m_invert ? -axis : axis;
 				}
 			}
-			else if(m_type == InputType.XInputAxis)
+			else if(m_type == InputType.GamepadAxis)
 			{
-				axis = GamepadState.GetAxis(m_xInputAxis, m_xInputPlayer);
+				axis = GamepadState.GetAxis(m_gamepadAxis, m_gamepadIndex);
 				if(Mathf.Abs(axis.Value) < m_deadZone)
 				{
 					axis = AXIS_NEUTRAL;
@@ -400,9 +401,9 @@ namespace Luminosity.IO
 					axis = m_invert ? -axis : axis;
 				}
 			}
-			else if(m_type == InputType.XInputAxis)
+			else if(m_type == InputType.GamepadAxis)
 			{
-				axis = GamepadState.GetAxisRaw(m_xInputAxis, m_xInputPlayer);
+				axis = GamepadState.GetAxisRaw(m_gamepadAxis, m_gamepadIndex);
 				axis = m_invert ? -axis : axis;
 			}
 
@@ -420,15 +421,15 @@ namespace Luminosity.IO
 			{
 				value = Input.GetKey(m_positive);
 			}
-			else if(m_type == InputType.XInputButton)
+			else if(m_type == InputType.GamepadButton)
 			{
-				value = GamepadState.GetButton(m_xInputButton, m_xInputPlayer);
+				value = GamepadState.GetButton(m_gamepadButton, m_gamepadIndex);
 			}
 			else if(m_type == InputType.RemoteButton)
 			{
 				value = m_remoteButtonState == ButtonState.Pressed || m_remoteButtonState == ButtonState.JustPressed;
 			}
-			else if(m_type == InputType.AnalogButton || m_type == InputType.XInputAnalogButton)
+			else if(m_type == InputType.AnalogButton || m_type == InputType.GamepadAnalogButton)
 			{
 				value = m_analogButtonState == ButtonState.Pressed || m_analogButtonState == ButtonState.JustPressed;
 			}
@@ -447,15 +448,15 @@ namespace Luminosity.IO
 			{
 				value = Input.GetKeyDown(m_positive);
 			}
-			else if(m_type == InputType.XInputButton)
+			else if(m_type == InputType.GamepadButton)
 			{
-				value = GamepadState.GetButtonDown(m_xInputButton, m_xInputPlayer);
+				value = GamepadState.GetButtonDown(m_gamepadButton, m_gamepadIndex);
 			}
 			else if(m_type == InputType.RemoteButton)
 			{
 				value = m_remoteButtonState == ButtonState.JustPressed;
 			}
-			else if(m_type == InputType.AnalogButton || m_type == InputType.XInputAnalogButton)
+			else if(m_type == InputType.AnalogButton || m_type == InputType.GamepadAnalogButton)
 			{
 				value = m_analogButtonState == ButtonState.JustPressed;
 			}
@@ -474,15 +475,15 @@ namespace Luminosity.IO
 			{
 				value = Input.GetKeyUp(m_positive);
 			}
-			else if(m_type == InputType.XInputButton)
+			else if(m_type == InputType.GamepadButton)
 			{
-				value = GamepadState.GetButtonUp(m_xInputButton, m_xInputPlayer);
+				value = GamepadState.GetButtonUp(m_gamepadButton, m_gamepadIndex);
 			}
 			else if(m_type == InputType.RemoteButton)
 			{
 				value = m_remoteButtonState == ButtonState.JustReleased;
 			}
-			else if(m_type == InputType.AnalogButton || m_type == InputType.XInputAnalogButton)
+			else if(m_type == InputType.AnalogButton || m_type == InputType.GamepadAnalogButton)
 			{
 				value = m_analogButtonState == ButtonState.JustReleased;
 			}
@@ -527,9 +528,9 @@ namespace Luminosity.IO
 			m_type = source.m_type;
 			m_axis = source.m_axis;
 			m_joystick = source.m_joystick;
-			m_xInputAxis = source.m_xInputAxis;
-			m_xInputButton = source.m_xInputButton;
-			m_xInputPlayer = source.m_xInputPlayer;
+			m_gamepadAxis = source.m_gamepadAxis;
+			m_gamepadButton = source.m_gamepadButton;
+			m_gamepadIndex = source.m_gamepadIndex;
 		}
 
 		public void Reset()
@@ -586,19 +587,19 @@ namespace Luminosity.IO
 			return StringToEnum(value, InputType.Button);
 		}
 
-		public static XInputButton StringToXInputButton(string value)
+		public static GamepadButton StringToGamepadButton(string value)
 		{
-			return StringToEnum(value, XInputButton.A);
+			return StringToEnum(value, GamepadButton.Action1);
 		}
 
-		public static XInputAxis StringToXInputAxis(string value)
+		public static GamepadAxis StringToGamepadAxis(string value)
 		{
-			return StringToEnum(value, XInputAxis.LeftThumbstickX);
+			return StringToEnum(value, GamepadAxis.LeftThumbstickX);
 		}
 
-		public static XInputPlayer StringToXInputPlayer(string value)
+		public static GamepadIndex StringToGamepadIndex(string value)
 		{
-			return StringToEnum(value, XInputPlayer.PlayerOne);
+			return StringToEnum(value, GamepadIndex.GamepadOne);
 		}
 
 		private static T StringToEnum<T>(string value, T defValue)
@@ -631,9 +632,9 @@ namespace Luminosity.IO
 				m_type = source.m_type,
 				m_axis = source.m_axis,
 				m_joystick = source.m_joystick,
-				m_xInputAxis = source.m_xInputAxis,
-				m_xInputButton = source.m_xInputButton,
-				m_xInputPlayer = source.m_xInputPlayer
+				m_gamepadAxis = source.m_gamepadAxis,
+				m_gamepadButton = source.m_gamepadButton,
+				m_gamepadIndex = source.m_gamepadIndex,
 			};
 
 			return duplicate;

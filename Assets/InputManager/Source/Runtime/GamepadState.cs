@@ -42,59 +42,59 @@ namespace Luminosity.IO
 			}
 		}
 
-		public static bool IsConnected(XInputPlayer player)
+		public static bool IsConnected(GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.IsConnected(player) : false;
+			return Adapter != null ? Adapter.IsConnected(gamepad) : false;
 		}
 
-		public static float GetAxis(XInputAxis axis, XInputPlayer player)
+		public static float GetAxis(GamepadAxis axis, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.GetAxis(axis, player) : 0;
+			return Adapter != null ? Adapter.GetAxis(axis, gamepad) : 0;
 		}
 
-		public static float GetAxisRaw(XInputAxis axis, XInputPlayer player)
+		public static float GetAxisRaw(GamepadAxis axis, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.GetAxisRaw(axis, player) : 0;
+			return Adapter != null ? Adapter.GetAxisRaw(axis, gamepad) : 0;
 		}
 
-		public static bool GetButton(XInputButton button, XInputPlayer player)
+		public static bool GetButton(GamepadButton button, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.GetButton(button, player) : false;
+			return Adapter != null ? Adapter.GetButton(button, gamepad) : false;
 		}
 
-		public static bool GetButtonDown(XInputButton button, XInputPlayer player)
+		public static bool GetButtonDown(GamepadButton button, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.GetButtonDown(button, player) : false;
+			return Adapter != null ? Adapter.GetButtonDown(button, gamepad) : false;
 		}
 
-		public static bool GetButtonUp(XInputButton button, XInputPlayer player)
+		public static bool GetButtonUp(GamepadButton button, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.GetButtonUp(button, player) : false;
+			return Adapter != null ? Adapter.GetButtonUp(button, gamepad) : false;
 		}
 
-		public static void SetVibration(GamepadVibration vibration, XInputPlayer player)
+		public static void SetVibration(GamepadVibration vibration, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			if(Adapter != null) Adapter.SetVibration(vibration, player);
+			if(Adapter != null) Adapter.SetVibration(vibration, gamepad);
 		}
 
-		public static GamepadVibration GetVibration(XInputPlayer player)
+		public static GamepadVibration GetVibration(GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter != null ? Adapter.GetVibration(player) : new GamepadVibration();
+			return Adapter != null ? Adapter.GetVibration(gamepad) : new GamepadVibration();
 		}
 
 		private static void PrintMissingAdapterWarningIfNecessary()
 		{
 			if(Adapter == null && !m_hasWarningBeenDisplayed)
 			{
-				Debug.LogWarning("No XInput adapter has been assigned.");
+				Debug.LogWarning("No gamepad adapter has been assigned.");
 				m_hasWarningBeenDisplayed = true;
 			}
 		}

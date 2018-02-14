@@ -637,6 +637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_controlSchemes:
   - m_name: Default
+    m_description: 
     m_isExpanded: 1
     m_uniqueID: 85c52da314c14ce8bc1999635dc6e642
     m_actions:
@@ -653,9 +654,9 @@ MonoBehaviour:
         m_type: 2
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 275
         m_negative: 276
         m_deadZone: 0
@@ -666,9 +667,9 @@ MonoBehaviour:
         m_type: 2
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: Vertical
       m_description: 
       m_bindings:
@@ -682,9 +683,9 @@ MonoBehaviour:
         m_type: 2
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 273
         m_negative: 274
         m_deadZone: 0
@@ -695,9 +696,9 @@ MonoBehaviour:
         m_type: 2
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: LookHorizontal
       m_description: 
       m_bindings:
@@ -711,9 +712,9 @@ MonoBehaviour:
         m_type: 1
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: LookVertical
       m_description: 
       m_bindings:
@@ -727,9 +728,9 @@ MonoBehaviour:
         m_type: 1
         m_axis: 1
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: Jump
       m_description: 
       m_bindings:
@@ -743,9 +744,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: UI_Up
       m_description: 
       m_bindings:
@@ -759,9 +760,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 273
         m_negative: 276
         m_deadZone: 0
@@ -772,9 +773,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0
@@ -785,9 +786,9 @@ MonoBehaviour:
         m_type: 7
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 11
-        m_xInputAxis: 1
-        m_xInputPlayer: 0
+        m_gamepadButton: 4
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.5
@@ -798,9 +799,9 @@ MonoBehaviour:
         m_type: 8
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 1
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 1
+        m_gamepadIndex: 0
     - m_name: UI_Down
       m_description: 
       m_bindings:
@@ -814,9 +815,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 274
         m_negative: 274
         m_deadZone: 0
@@ -827,9 +828,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0
@@ -840,9 +841,9 @@ MonoBehaviour:
         m_type: 7
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 12
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 5
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.5
@@ -853,9 +854,9 @@ MonoBehaviour:
         m_type: 8
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 1
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 1
+        m_gamepadIndex: 0
     - m_name: UI_Left
       m_description: 
       m_bindings:
@@ -869,9 +870,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 276
         m_negative: 274
         m_deadZone: 0
@@ -882,9 +883,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0
@@ -895,9 +896,9 @@ MonoBehaviour:
         m_type: 7
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 13
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 6
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.5
@@ -908,9 +909,9 @@ MonoBehaviour:
         m_type: 8
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: UI_Right
       m_description: 
       m_bindings:
@@ -924,9 +925,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 275
         m_negative: 0
         m_deadZone: 0
@@ -937,9 +938,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0
@@ -950,9 +951,9 @@ MonoBehaviour:
         m_type: 7
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 14
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 7
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0.5
@@ -963,9 +964,9 @@ MonoBehaviour:
         m_type: 8
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: UI_Submit
       m_description: 
       m_bindings:
@@ -979,9 +980,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 13
         m_negative: 0
         m_deadZone: 0
@@ -992,9 +993,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0
@@ -1005,9 +1006,9 @@ MonoBehaviour:
         m_type: 7
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 10
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
     - m_name: UI_Cancel
       m_description: 
       m_bindings:
@@ -1021,9 +1022,9 @@ MonoBehaviour:
         m_type: 0
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 0
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 0
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
       - m_positive: 0
         m_negative: 0
         m_deadZone: 0
@@ -1034,9 +1035,9 @@ MonoBehaviour:
         m_type: 7
         m_axis: 0
         m_joystick: 0
-        m_xInputButton: 1
-        m_xInputAxis: 0
-        m_xInputPlayer: 0
+        m_gamepadButton: 11
+        m_gamepadAxis: 0
+        m_gamepadIndex: 0
   m_playerOneDefault: 85c52da314c14ce8bc1999635dc6e642
   m_playerTwoDefault: 
   m_playerThreeDefault: 
@@ -3440,6 +3441,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10

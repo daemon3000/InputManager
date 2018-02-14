@@ -168,7 +168,10 @@ namespace Luminosity.IO
 			scheme.UniqueID = id ?? ControlScheme.GenerateUniqueID();
 
 			var descriptionNode = SelectSingleNode(node, "Description");
-			scheme.Description = descriptionNode.InnerText;
+			if(descriptionNode != null)
+			{
+				scheme.Description = descriptionNode.InnerText;
+			}
 
 			var actionNodes = SelectNodes(node, "Action");
 			foreach(XmlNode child in actionNodes)
@@ -229,14 +232,14 @@ namespace Luminosity.IO
 				case "Joystick":
 					binding.Joystick = ReadAsInt(child);
 					break;
-				case "XInputButton":
-					binding.XInputButton = InputBinding.StringToXInputButton(child.InnerText);
+				case "GamepadButton":
+					binding.GamepadButton = InputBinding.StringToGamepadButton(child.InnerText);
 					break;
-				case "XInputAxis":
-					binding.XInputAxis = InputBinding.StringToXInputAxis(child.InnerText);
+				case "GamepadAxis":
+					binding.GamepadAxis = InputBinding.StringToGamepadAxis(child.InnerText);
 					break;
-				case "XInputPlayer":
-					binding.XInputPlayer = InputBinding.StringToXInputPlayer(child.InnerText);
+				case "GamepadPlayer":
+					binding.GamepadIndex = InputBinding.StringToGamepadIndex(child.InnerText);
 					break;
 				}
 			}

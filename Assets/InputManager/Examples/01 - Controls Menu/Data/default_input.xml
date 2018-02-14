@@ -5,6 +5,7 @@
   <PlayerThreeScheme />
   <PlayerFourScheme />
   <ControlScheme name="KeyboardAndMouse" id="06cd669440d0422a95f3e89bd3812515">
+    <Description />
     <Action name="Horizontal">
       <Description />
       <Binding>
@@ -18,9 +19,9 @@
         <Type>DigitalAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="Vertical">
@@ -36,9 +37,9 @@
         <Type>DigitalAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="LookHorizontal">
@@ -54,9 +55,9 @@
         <Type>MouseAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="LookVertical">
@@ -72,9 +73,9 @@
         <Type>MouseAxis</Type>
         <Axis>1</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="Jump">
@@ -90,9 +91,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="Pause">
@@ -108,9 +109,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="PauseMenu">
@@ -126,9 +127,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Up">
@@ -144,9 +145,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
       <Binding>
         <Positive>UpArrow</Positive>
@@ -159,9 +160,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Down">
@@ -177,9 +178,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
       <Binding>
         <Positive>DownArrow</Positive>
@@ -192,9 +193,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Left">
@@ -210,9 +211,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
       <Binding>
         <Positive>LeftArrow</Positive>
@@ -225,9 +226,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Right">
@@ -243,9 +244,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
       <Binding>
         <Positive>RightArrow</Positive>
@@ -258,9 +259,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Submit">
@@ -276,9 +277,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
       <Binding>
         <Positive>Return</Positive>
@@ -291,9 +292,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Cancel">
@@ -309,13 +310,14 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
   </ControlScheme>
   <ControlScheme name="Gamepad" id="410c68e0bb7d4b4a9ce7068e7e283889">
+    <Description />
     <Action name="Horizontal">
       <Description />
       <Binding>
@@ -329,9 +331,9 @@
         <Type>AnalogAxis</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="Vertical">
@@ -347,9 +349,9 @@
         <Type>AnalogAxis</Type>
         <Axis>1</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="LookHorizontal">
@@ -365,9 +367,9 @@
         <Type>AnalogAxis</Type>
         <Axis>3</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="LookVertical">
@@ -383,9 +385,9 @@
         <Type>AnalogAxis</Type>
         <Axis>4</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="Jump">
@@ -401,9 +403,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="Pause">
@@ -419,9 +421,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="PauseMenu">
@@ -437,9 +439,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Up">
@@ -455,9 +457,9 @@
         <Type>AnalogButton</Type>
         <Axis>1</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Down">
@@ -473,9 +475,9 @@
         <Type>AnalogButton</Type>
         <Axis>1</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Left">
@@ -491,9 +493,9 @@
         <Type>AnalogButton</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Right">
@@ -509,9 +511,9 @@
         <Type>AnalogButton</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Submit">
@@ -527,9 +529,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
     <Action name="UI_Cancel">
@@ -545,9 +547,9 @@
         <Type>Button</Type>
         <Axis>0</Axis>
         <Joystick>0</Joystick>
-        <XInputButton>A</XInputButton>
-        <XInputAxis>LeftStick_X</XInputAxis>
-        <XInputPlayer>PlayerOne</XInputPlayer>
+        <GamepadButton>LeftStick</GamepadButton>
+        <GamepadAxis>LeftThumbstickX</GamepadAxis>
+        <GamepadIndex>GamepadOne</GamepadIndex>
       </Binding>
     </Action>
   </ControlScheme>
