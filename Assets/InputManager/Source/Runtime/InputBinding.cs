@@ -589,7 +589,7 @@ namespace Luminosity.IO
 
 		public static GamepadButton StringToGamepadButton(string value)
 		{
-			return StringToEnum(value, GamepadButton.Action1);
+			return StringToEnum(value, GamepadButton.ActionBottom);
 		}
 
 		public static GamepadAxis StringToGamepadAxis(string value)

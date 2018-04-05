@@ -336,16 +336,16 @@ namespace Luminosity.IO
 			{
 				switch(button)
 				{
-				case GamepadButton.Action1:
+				case GamepadButton.ActionBottom:
 					value = state.Buttons.A == XButtonState.Pressed;
 					break;
-				case GamepadButton.Action2:
+				case GamepadButton.ActionRight:
 					value = state.Buttons.B == XButtonState.Pressed;
 					break;
-				case GamepadButton.Action3:
+				case GamepadButton.ActionLeft:
 					value = state.Buttons.X == XButtonState.Pressed;
 					break;
-				case GamepadButton.Action4:
+				case GamepadButton.ActionTop:
 					value = state.Buttons.Y == XButtonState.Pressed;
 					break;
 				case GamepadButton.LeftBumper:

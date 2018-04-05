@@ -13,9 +13,9 @@ namespace Luminosity.IO
 		DPadRight,
 		Back,
 		Start,
-		Action1,
-		Action2,
-		Action3,
-		Action4,
+		ActionBottom,
+		ActionRight,
+		ActionLeft,
+		ActionTop,
 	}
 }
