@@ -23,6 +23,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityInputConverter;
+using Luminosity.IO;
 
 namespace LuminosityEditor.IO
 {
@@ -101,7 +102,7 @@ namespace LuminosityEditor.IO
 		[MenuItem("Luminosity/Input Manager/About", false, 405)]
 		public static void OpenAboutDialog()
 		{
-			string message = "Input Manager, MIT licensed\nCopyright \u00A9 2018 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
+			string message = string.Format("Input Manager v{0}, MIT Licensed\nCopyright \u00A9 2018 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", InputManager.VERSION);
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 	}
