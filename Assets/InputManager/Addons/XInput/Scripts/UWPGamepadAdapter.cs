@@ -257,7 +257,7 @@ namespace Luminosity.IO
 
 		private GamepadReading? GetPreviousState(GamepadIndex gamepad)
 		{
-			return m_currentState[(int)gamepad];
+			return m_previousState[(int)gamepad];
 		}
 
 		private void UpdateGamepadList()
@@ -398,16 +398,16 @@ namespace Luminosity.IO
 			{
 				switch(button)
 				{
-				case GamepadButton.Action1:
+				case GamepadButton.ActionBottom:
 					value = state.Value.Buttons.HasFlag(GamepadButtons.A);
 					break;
-				case GamepadButton.Action2:
+				case GamepadButton.ActionRight:
 					value = state.Value.Buttons.HasFlag(GamepadButtons.B);
 					break;
-				case GamepadButton.Action3:
+				case GamepadButton.ActionLeft:
 					value = state.Value.Buttons.HasFlag(GamepadButtons.X);
 					break;
-				case GamepadButton.Action4:
+				case GamepadButton.ActionTop:
 					value = state.Value.Buttons.HasFlag(GamepadButtons.Y);
 					break;
 				case GamepadButton.LeftBumper:

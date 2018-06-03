@@ -306,10 +306,10 @@ namespace Luminosity.IO
 		private void UpdateAnalogButtonValue()
 		{
 			float axis = m_type == InputType.AnalogButton ?
-									Input.GetAxisRaw(m_rawAxisName) :
-									GamepadState.GetAxisRaw(m_gamepadAxis, m_gamepadIndex);
+									Input.GetAxis(m_rawAxisName) :
+									GamepadState.GetAxis(m_gamepadAxis, m_gamepadIndex);
 
-			axis = axis * (m_invert ? -1 : 1);
+			axis = m_invert ? -axis : axis;
 
 			if(axis > m_deadZone)
 			{
