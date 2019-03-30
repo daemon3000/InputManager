@@ -33,8 +33,23 @@ namespace LuminosityEditor.IO
 		public const string DEFAULT_INPUT_PROFILE = "input_manager_default_scheme";
 
 		private static string m_snapshotFile;
+        private static string[] m_buttonNames;
 		private static string[] m_axisNames;
 		private static string[] m_joystickNames;
+
+        public static string[] GenerateJoystickButtonNames()
+        {
+            if(m_buttonNames == null || m_buttonNames.Length != InputBinding.MAX_JOYSTICK_BUTTONS)
+            {
+                m_buttonNames = new string[InputBinding.MAX_JOYSTICK_BUTTONS];
+                for(int i = 0; i < InputBinding.MAX_JOYSTICK_BUTTONS; i++)
+                {
+                    m_buttonNames[i] = "Joystick Button " + i;
+                }
+            }
+
+            return m_buttonNames;
+        }
 
 		public static string[] GenerateJoystickAxisNames()
 		{

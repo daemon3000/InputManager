@@ -30,6 +30,8 @@ namespace Luminosity.IO
 		public float LeftTrigger;
 		public float RightTrigger;
 
+        public static GamepadVibration None => new GamepadVibration(0.0f, 0.0f, 0.0f, 0.0f);
+
 		public GamepadVibration(float leftMotor, float rightMotor, float leftTrigger, float rightTrigger)
 		{
 			LeftMotor = leftMotor;

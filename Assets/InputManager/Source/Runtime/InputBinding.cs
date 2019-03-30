@@ -33,7 +33,8 @@ namespace Luminosity.IO
 		public const float AXIS_NEGATIVE = -1.0f;
 		public const int MAX_MOUSE_AXES = 3;
 		public const int MAX_JOYSTICK_AXES = 28;
-		public const int MAX_JOYSTICKS = 11;
+        public const int MAX_JOYSTICK_BUTTONS = 20;
+        public const int MAX_JOYSTICKS = 11;
 
 		[SerializeField]
 		private KeyCode m_positive;

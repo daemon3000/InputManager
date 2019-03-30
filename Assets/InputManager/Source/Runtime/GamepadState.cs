@@ -1,4 +1,5 @@
-﻿#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
+﻿
+#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -30,17 +31,7 @@ namespace Luminosity.IO
 
 		public static IGamepadStateAdapter Adapter { get; set; }
 
-		public static bool IsGamepadSupported
-		{
-			get
-			{
-#if ENABLE_X_INPUT
-				return true;
-#else
-				return false;
-#endif
-			}
-		}
+        public static bool IsGamepadSupported => Adapter != null;
 
 		public static bool IsConnected(GamepadIndex gamepad)
 		{
