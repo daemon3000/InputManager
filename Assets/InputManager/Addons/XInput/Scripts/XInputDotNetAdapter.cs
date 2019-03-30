@@ -93,7 +93,7 @@ namespace Luminosity.IO
 			}
 			else
 			{
-				Debug.LogWarning("You shouldn't have more than one XInputDotNetAdapter in the scene");
+				Debug.LogWarning("You shouldn't have more than one gamepad adapter in the scene");
 			}
 		}
 

@@ -98,7 +98,7 @@ namespace Luminosity.IO
 			}
 			else
 			{
-				Debug.LogWarning("You shouldn't have more than one UWPGamepadAdapter in the scene");
+				Debug.LogWarning("You shouldn't have more than one gamepad adapter in the scene");
 			}
 		}
 
@@ -446,7 +446,7 @@ namespace Luminosity.IO
 			return value;
 		}
 #else
-		private void Awake()
+        private void Awake()
 		{
 			Debug.LogWarning("UWPGamepadAdapter works only on Universal Windows Platform if the 'ENABLE_X_INPUT' scripting symbol is defined.", gameObject);
 		}
