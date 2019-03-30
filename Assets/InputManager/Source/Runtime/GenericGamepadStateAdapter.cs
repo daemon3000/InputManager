@@ -146,14 +146,17 @@ namespace Luminosity.IO
 
         private void OnUpdate()
         {
-            if(m_gamepadProfile.TriggerType == GamepadTriggerType.Button)
+            if(m_gamepadProfile != null)
             {
-                UpdateTriggers(DeltaTime);
-            }
-            if(m_gamepadProfile.DPadType == GamepadDPadType.Button)
-            {
-                UpdateDPadHorizontal(DeltaTime);
-                UpdateDPadVertical(DeltaTime);
+                if(m_gamepadProfile.TriggerType == GamepadTriggerType.Button)
+                {
+                    UpdateTriggers(DeltaTime);
+                }
+                if(m_gamepadProfile.DPadType == GamepadDPadType.Button)
+                {
+                    UpdateDPadHorizontal(DeltaTime);
+                    UpdateDPadVertical(DeltaTime);
+                }
             }
         }
 
@@ -331,6 +334,9 @@ namespace Luminosity.IO
 
         public float GetAxis(GamepadAxis axis, GamepadIndex gamepad)
         {
+            if(m_gamepadProfile == null)
+                return 0.0f;
+
             int joyID = (int)gamepad, axisID = -1;
 
             switch(axis)
@@ -372,6 +378,9 @@ namespace Luminosity.IO
 
         public bool GetButton(GamepadButton button, GamepadIndex gamepad)
         {
+            if(m_gamepadProfile == null)
+                return false;
+
             switch(button)
             {
             case GamepadButton.LeftStick:
@@ -409,6 +418,9 @@ namespace Luminosity.IO
 
         public bool GetButtonDown(GamepadButton button, GamepadIndex gamepad)
         {
+            if(m_gamepadProfile == null)
+                return false;
+
             switch(button)
             {
             case GamepadButton.LeftStick:
@@ -446,6 +458,9 @@ namespace Luminosity.IO
 
         public bool GetButtonUp(GamepadButton button, GamepadIndex gamepad)
         {
+            if(m_gamepadProfile == null)
+                return false;
+
             switch(button)
             {
             case GamepadButton.LeftStick:
