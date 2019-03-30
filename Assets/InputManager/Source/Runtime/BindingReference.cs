@@ -28,11 +28,11 @@ namespace Luminosity.IO
 	public class BindingReference : ScriptableObject
 	{
 		[SerializeField]
-		private string m_schemeName;
+		private string m_schemeName = null;
 		[SerializeField]
-		private string m_actionName;
+		private string m_actionName = null;
 		[SerializeField]
-		private int m_bindingIndex;
+		private int m_bindingIndex = 0;
 
 		[System.NonSerialized]
 		private InputBinding m_cachedInputBinding = null;

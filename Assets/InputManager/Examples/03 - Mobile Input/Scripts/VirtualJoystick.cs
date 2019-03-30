@@ -30,19 +30,19 @@ namespace Luminosity.IO.Examples
 	public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
 		[SerializeField]
-		private RectTransform m_knob;
+		private RectTransform m_knob = null;
 		[SerializeField]
 		[Tooltip("A percentage of the image's size. An X(Y) value 1.0 would make the padding equal to the width(height) of the image.")]
-		private Vector2 m_padding;
+		private Vector2 m_padding = Vector2.zero;
 		[SerializeField]
-		private Vector2 m_deadZone;
+		private Vector2 m_deadZone = Vector2.zero;
 		[SerializeField]
 		[Tooltip("If enabled, the joystick will not reset until you lift your finger of the screen.")]
-		private bool m_stickyEdges;
+		private bool m_stickyEdges = false;
 		[SerializeField]
-		private BindingReference m_horizontalAxisBinding;
+		private BindingReference m_horizontalAxisBinding = null;
 		[SerializeField]
-		private BindingReference m_verticalAxisBinding;
+		private BindingReference m_verticalAxisBinding = null;
 
 		private RectTransform m_transform;
 		private Vector2 m_centerPos;

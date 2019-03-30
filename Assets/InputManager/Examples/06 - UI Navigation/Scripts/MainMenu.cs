@@ -6,9 +6,9 @@ namespace Luminosity.IO.Examples
 	public class MainMenu : MonoBehaviour 
 	{
 		[SerializeField]
-		private MenuPage m_startPage;
+		private MenuPage m_startPage = null;
 		[SerializeField]
-		private MenuPage[] m_pages;
+		private MenuPage[] m_pages = null;
 
 		private MenuPage m_currentPage;
 

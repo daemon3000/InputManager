@@ -29,7 +29,7 @@ namespace Luminosity.IO.Examples
 	public class VirtualInputButton : Selectable
 	{
 		[SerializeField]
-		private BindingReference m_buttonBinding;
+		private BindingReference m_buttonBinding = null;
 
 		private ButtonState m_buttonState;
 

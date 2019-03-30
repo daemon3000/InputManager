@@ -39,9 +39,9 @@ namespace Luminosity.IO.Examples
 		[SerializeField]
 		private Vector2 m_sensitivity = Vector2.one;
 		[SerializeField]
-		private BindingReference m_horizontalAxisBinding;
+		private BindingReference m_horizontalAxisBinding = null;
 		[SerializeField]
-		private BindingReference m_verticalAxisBinding;
+		private BindingReference m_verticalAxisBinding = null;
 		
 		private RectTransform m_transform;
 		private Vector2 m_pointerPos;

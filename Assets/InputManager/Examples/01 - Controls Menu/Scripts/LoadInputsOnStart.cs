@@ -27,7 +27,7 @@ namespace Luminosity.IO.Examples
 	public class LoadInputsOnStart : MonoBehaviour 
 	{
 		[SerializeField]
-		private int m_exampleID;
+		private int m_exampleID = 0;
 
 		private void Awake()
 		{

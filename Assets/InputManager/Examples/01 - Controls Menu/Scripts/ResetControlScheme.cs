@@ -28,9 +28,9 @@ namespace Luminosity.IO.Examples
 	public class ResetControlScheme : MonoBehaviour 
 	{
 		[SerializeField]
-		private TextAsset m_defaultInputProfile;
+		private TextAsset m_defaultInputProfile = null;
 		[SerializeField]
-		private string m_controlSchemeName;
+		private string m_controlSchemeName = null;
 		
 		public void ResetInputs()
 		{

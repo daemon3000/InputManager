@@ -27,9 +27,9 @@ namespace Luminosity.IO.Examples
     public class TPSInputController : MonoBehaviour
     {
         [SerializeField]
-        private PlayerID m_playerID;
+        private PlayerID m_playerID = PlayerID.One;
         [SerializeField]
-        private float m_speed;
+        private float m_speed = 0.0f;
 
         private void Update()
         {

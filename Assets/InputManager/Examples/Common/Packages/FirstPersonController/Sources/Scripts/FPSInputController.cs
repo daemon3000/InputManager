@@ -7,7 +7,7 @@ namespace Luminosity.IO.Examples
 	public class FPSInputController : MonoBehaviour
 	{
 		[SerializeField]
-		private bool m_quitWithEscape;
+		private bool m_quitWithEscape = false;
 
 		private CharacterMotor motor;
 

@@ -27,17 +27,17 @@ namespace Luminosity.IO.Examples
 	public class PauseMenu : MonoBehaviour 
 	{
 		[SerializeField]
-		private Canvas m_canvas;
+		private Canvas m_canvas = null;
 		[SerializeField]
-		private GameObject m_mainPage;
+		private GameObject m_mainPage = null;
 		[SerializeField]
-		private GameObject m_controlsPage;
+		private GameObject m_controlsPage = null;
 		[SerializeField]
-		private GameObject m_editKeyboardPage;
+		private GameObject m_editKeyboardPage = null;
 		[SerializeField]
-		private GameObject m_editGamepadPage;
+		private GameObject m_editGamepadPage = null;
 		[SerializeField]
-		private bool m_openOnStart;
+		private bool m_openOnStart = false;
 
 		private bool m_isOpen;
 

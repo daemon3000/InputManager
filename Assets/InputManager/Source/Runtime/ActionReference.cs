@@ -28,9 +28,9 @@ namespace Luminosity.IO
 	public class ActionReference : ScriptableObject
 	{
 		[SerializeField]
-		private string m_schemeName;
+		private string m_schemeName = null;
 		[SerializeField]
-		private string m_actionName;
+		private string m_actionName = null;
 
 		[System.NonSerialized]
 		private InputAction m_cachedInputAction = null;

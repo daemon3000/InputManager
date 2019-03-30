@@ -44,20 +44,20 @@ namespace Luminosity.IO.Examples
 		}
 
 		[SerializeField]
-		private DPADStates m_states;
+		private DPADStates m_states = null;
 		[SerializeField]
 		[Tooltip("A percentage of the image's size. An X(Y) value 1.0 would make the padding equal to the width(height) of the image.")]
-		private Vector2 m_padding;
+		private Vector2 m_padding = Vector2.zero;
 		[SerializeField]
-		private float m_gravity;
+		private float m_gravity = 0.0f;
 		[SerializeField]
-		private float m_sensitivity;
+		private float m_sensitivity = 0.0f;
 		[SerializeField]
-		private Vector2 m_deadZone;
+		private Vector2 m_deadZone = Vector2.zero;
 		[SerializeField]
-		private BindingReference m_horizontalAxisBinding;
+		private BindingReference m_horizontalAxisBinding = null;
 		[SerializeField]
-		private BindingReference m_verticalAxisBinding;
+		private BindingReference m_verticalAxisBinding = null;
 		
 		private RectTransform m_transform;
 		private Image m_image;

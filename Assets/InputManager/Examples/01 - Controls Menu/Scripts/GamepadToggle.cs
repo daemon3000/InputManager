@@ -28,11 +28,11 @@ namespace Luminosity.IO.Examples
 	public class GamepadToggle : MonoBehaviour 
 	{
 		[SerializeField]
-		private string m_keyboardScheme;
+		private string m_keyboardScheme = null;
 		[SerializeField]
-		private string m_gamepadScheme;
+		private string m_gamepadScheme = null;
 		[SerializeField]
-		private Text m_status;
+		private Text m_status = null;
 
 		private bool m_gamepadOn;
 

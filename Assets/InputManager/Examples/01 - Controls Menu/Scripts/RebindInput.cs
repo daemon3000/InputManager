@@ -36,30 +36,30 @@ namespace Luminosity.IO.Examples
 		}
 
 		[SerializeField]
-		private Sprite m_normalState;
+		private Sprite m_normalState = null;
 		[SerializeField]
-		private Sprite m_scanningState;
+		private Sprite m_scanningState = null;
 		[SerializeField]
-		private Text m_keyDescription;
+		private Text m_keyDescription = null;
 		[SerializeField]
-		private string m_controlSchemeName;
+		private string m_controlSchemeName = null;
 		[SerializeField]
-		private string m_inputActionName;
+		private string m_inputActionName = null;
 		[SerializeField]
-		private int m_bindingIndex;
+		private int m_bindingIndex = 0;
 		[SerializeField]
-		private KeyCode m_cancelKey;
+		private KeyCode m_cancelKey = KeyCode.None;
 		[SerializeField]
-		private float m_timeout;
+		private float m_timeout = 0.0f;
 		[SerializeField]
-		private bool m_changePositiveKey;
+		private bool m_changePositiveKey = false;
 		[SerializeField]
-		private bool m_allowAnalogButton;
+		private bool m_allowAnalogButton = false;
 		[SerializeField]
 		[Range(0, InputBinding.MAX_JOYSTICKS)]
 		private int m_joystick = 0;
 		[SerializeField]
-		private RebindType m_rebindType;
+		private RebindType m_rebindType = RebindType.Keyboard;
 
 		private InputAction m_inputAction;
 		private InputBinding m_inputBinding;

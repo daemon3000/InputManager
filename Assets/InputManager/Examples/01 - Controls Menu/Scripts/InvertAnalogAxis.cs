@@ -28,13 +28,13 @@ namespace Luminosity.IO.Examples
 	public class InvertAnalogAxis : MonoBehaviour 
 	{
 		[SerializeField]
-		private string m_controlSchemeName;
+		private string m_controlSchemeName = null;
 		[SerializeField]
-		private string m_actionName;
+		private string m_actionName = null;
 		[SerializeField]
-		private int m_bindingIndex;
+		private int m_bindingIndex = 0;
 		[SerializeField]
-		private Text m_status;
+		private Text m_status = null;
 
 		private InputAction m_inputAction;
 

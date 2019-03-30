@@ -37,7 +37,7 @@ namespace Luminosity.IO.Examples
 	public class PauseManager : MonoBehaviour 
 	{
 		[SerializeField]
-		private bool m_dontDestroyOnLoad;
+		private bool m_dontDestroyOnLoad = false;
 
 		private PauseManagerState m_state;
 		private Action m_pausedHandler;

@@ -33,7 +33,7 @@ namespace Luminosity.IO.Events
 	public class InputEventManager : MonoBehaviour
 	{
 		[SerializeField]
-        private List<InputEvent> m_inputEvents;
+        private List<InputEvent> m_inputEvents = null;
 
         private Dictionary<string, InputEvent> m_eventLookup;
 
