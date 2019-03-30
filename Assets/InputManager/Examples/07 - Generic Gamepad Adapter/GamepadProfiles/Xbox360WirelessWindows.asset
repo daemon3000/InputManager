@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 901f14cd00a161d4bae53ff526e1069a, type: 3}
+  m_Name: Xbox360WirelessWindows
+  m_EditorClassIdentifier: 
+  m_dpadType: 0
+  m_triggerType: 0
+  m_leftStickButton: 8
+  m_rightStickButton: 9
+  m_leftBumperButton: 4
+  m_rightBumperButton: 5
+  m_leftTriggerButton: 0
+  m_rightTriggerButton: 0
+  m_dpadUpButton: 0
+  m_dpadDownButton: 0
+  m_dpadLeftButton: 0
+  m_dpadRightButton: 0
+  m_backButton: 6
+  m_startButton: 7
+  m_actionTopButton: 3
+  m_actionBottomButton: 0
+  m_actionLeftButton: 2
+  m_actionRightButton: 1
+  m_leftStickXAxis: 0
+  m_leftStickYAxis: 1
+  m_rightStickXAxis: 3
+  m_rightStickYAxis: 4
+  m_dpadXAxis: 5
+  m_dpadYAxis: 6
+  m_leftTriggerAxis: 8
+  m_rightTriggerAxis: 9
