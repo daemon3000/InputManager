@@ -28,6 +28,13 @@ namespace Luminosity.IO
     public class GenericGamepadProfile : ScriptableObject
     {
         [SerializeField]
+        private string m_name = null;
+
+        [SerializeField]
+        [Multiline]
+        private string m_comment = null;
+
+        [SerializeField]
         private GamepadDPadType m_dpadType = GamepadDPadType.Axis;
 
         [SerializeField]
@@ -129,6 +136,8 @@ namespace Luminosity.IO
         [Range(0, InputBinding.MAX_JOYSTICK_AXES - 1)]
         private int m_rightTriggerAxis = 0;
 
+        public string Name => m_name;
+        public string Comment => m_comment;
         public GamepadDPadType DPadType => m_dpadType;
         public GamepadTriggerType TriggerType => m_triggerType;
         public int LeftStickButton => m_leftStickButton;

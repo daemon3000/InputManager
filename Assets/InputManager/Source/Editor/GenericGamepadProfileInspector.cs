@@ -31,6 +31,8 @@ namespace LuminosityEditor.IO
     [CustomEditor(typeof(GenericGamepadProfile))]
     public class GenericGamepadProfileInspector : Editor
     {
+        private SerializedProperty m_name;
+        private SerializedProperty m_comment;
         private SerializedProperty m_dpadType;
         private SerializedProperty m_triggerType;
         private SerializedProperty m_leftStickButton;
@@ -62,6 +64,8 @@ namespace LuminosityEditor.IO
 
         private void OnEnable()
         {
+            m_name = serializedObject.FindProperty("m_name");
+            m_comment = serializedObject.FindProperty("m_comment");
             m_dpadType = serializedObject.FindProperty("m_dpadType");
             m_triggerType = serializedObject.FindProperty("m_triggerType");
             m_leftStickButton = serializedObject.FindProperty("m_leftStickButton");
@@ -97,6 +101,10 @@ namespace LuminosityEditor.IO
         {
             serializedObject.Update();
             EditorGUILayout.Space();
+
+            DrawHeader("Description");
+            EditorGUILayout.PropertyField(m_name);
+            EditorGUILayout.PropertyField(m_comment);
 
             //  SETTINGS
             DrawHeader("Settings");
