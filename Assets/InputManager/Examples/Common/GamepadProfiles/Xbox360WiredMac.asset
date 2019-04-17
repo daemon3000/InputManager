@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 901f14cd00a161d4bae53ff526e1069a, type: 3}
   m_Name: Xbox360WiredMac
   m_EditorClassIdentifier: 
+  m_name: Xbox 360 Wired Mac
+  m_comment: 
   m_dpadType: 1
   m_triggerType: 0
   m_leftStickButton: 11

@@ -10,31 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 901f14cd00a161d4bae53ff526e1069a, type: 3}
-  m_Name: Xbox360WirelessMac
+  m_Name: Xbox360WiredLinux
   m_EditorClassIdentifier: 
-  m_dpadType: 1
+  m_name: Xbox 360 Wired Linux
+  m_comment: 
+  m_dpadType: 0
   m_triggerType: 0
-  m_leftStickButton: 11
-  m_rightStickButton: 12
-  m_leftBumperButton: 13
-  m_rightBumperButton: 14
+  m_leftStickButton: 9
+  m_rightStickButton: 10
+  m_leftBumperButton: 4
+  m_rightBumperButton: 5
   m_leftTriggerButton: 0
   m_rightTriggerButton: 0
-  m_dpadUpButton: 5
-  m_dpadDownButton: 6
-  m_dpadLeftButton: 7
-  m_dpadRightButton: 8
-  m_backButton: 10
-  m_startButton: 9
-  m_actionTopButton: 19
-  m_actionBottomButton: 16
-  m_actionLeftButton: 18
-  m_actionRightButton: 17
+  m_dpadUpButton: 13
+  m_dpadDownButton: 14
+  m_dpadLeftButton: 11
+  m_dpadRightButton: 12
+  m_backButton: 6
+  m_startButton: 7
+  m_actionTopButton: 3
+  m_actionBottomButton: 0
+  m_actionLeftButton: 2
+  m_actionRightButton: 1
   m_leftStickXAxis: 0
   m_leftStickYAxis: 1
-  m_rightStickXAxis: 2
-  m_rightStickYAxis: 3
-  m_dpadXAxis: 0
-  m_dpadYAxis: 0
-  m_leftTriggerAxis: 4
+  m_rightStickXAxis: 3
+  m_rightStickYAxis: 4
+  m_dpadXAxis: 6
+  m_dpadYAxis: 7
+  m_leftTriggerAxis: 2
   m_rightTriggerAxis: 5
