@@ -35,15 +35,48 @@ namespace Luminosity.IO
 		[System.NonSerialized]
 		private InputAction m_cachedInputAction = null;
 
+        private InputAction CachedInputAction
+        {
+            get
+            {
+                if(m_cachedInputAction == null && InputManager.Exists)
+                {
+                    m_cachedInputAction = InputManager.GetAction(m_schemeName, m_actionName);
+                }
+
+                return m_cachedInputAction;
+            }
+        }
+
 		public InputAction Get()
 		{
-			if(m_cachedInputAction == null && InputManager.Exists)
-			{
-				m_cachedInputAction = InputManager.GetAction(m_schemeName, m_actionName);
-			}
-
-			return m_cachedInputAction;
+            return CachedInputAction;
 		}
+
+        public float GetAxis()
+        {
+            return CachedInputAction != null ? CachedInputAction.GetAxis() : 0.0f;
+        }
+
+        public float GetAxisRaw()
+        {
+            return CachedInputAction != null ? CachedInputAction.GetAxisRaw() : 0.0f;
+        }
+
+        public bool GetButton()
+        {
+            return CachedInputAction != null ? CachedInputAction.GetButton() : false;
+        }
+
+        public bool GetButtonDown()
+        {
+            return CachedInputAction != null ? CachedInputAction.GetButtonDown() : false;
+        }
+
+        public bool GetButtonUp()
+        {
+            return CachedInputAction != null ? CachedInputAction.GetButtonUp() : false;
+        }
 
 		private void OnValidate()
 		{
