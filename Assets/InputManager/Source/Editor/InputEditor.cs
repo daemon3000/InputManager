@@ -992,13 +992,18 @@ namespace LuminosityEditor.IO
 				binding.Sensitivity = EditorGUILayout.FloatField(m_sensitivityInfo, binding.Sensitivity);
 			}
 
-			if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.GamepadAxis ||
+            if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.GamepadAxis ||
 				binding.Type == InputType.AnalogButton || binding.Type == InputType.GamepadAnalogButton)
 			{
 				binding.DeadZone = EditorGUILayout.FloatField(m_deadZoneInfo, binding.DeadZone);
 			}
 
-			if(binding.Type == InputType.DigitalAxis)
+            if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.GamepadAxis)
+            {
+                binding.DeadZoneType = (DeadZoneType)EditorGUILayout.EnumPopup("Dead Zone Mode", binding.DeadZoneType);
+            }
+
+            if(binding.Type == InputType.DigitalAxis)
 				binding.Snap = EditorGUILayout.Toggle(m_snapInfo, binding.Snap);
 
 			if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
@@ -1278,7 +1283,7 @@ namespace LuminosityEditor.IO
 				numberOfFields = 4;
 				break;
 			case InputType.AnalogAxis:
-				numberOfFields = 5;
+				numberOfFields = 6;
 				break;
 			case InputType.GamepadButton:
 				numberOfFields = 2;
@@ -1287,7 +1292,7 @@ namespace LuminosityEditor.IO
 				numberOfFields = 4;
 				break;
 			case InputType.GamepadAxis:
-				numberOfFields = 5;
+				numberOfFields = 6;
 				break;
 			}
 

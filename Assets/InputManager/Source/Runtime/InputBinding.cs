@@ -40,6 +40,8 @@ namespace Luminosity.IO
 		private KeyCode m_positive;
 		[SerializeField]
 		private KeyCode m_negative;
+        [SerializeField]
+        private DeadZoneType m_deadZoneType;
 		[SerializeField]
 		private float m_deadZone;
 		[SerializeField]
@@ -81,6 +83,12 @@ namespace Luminosity.IO
 			get { return m_negative; }
 			set { m_negative = value; }
 		}
+
+        public DeadZoneType DeadZoneType
+        {
+            get { return m_deadZoneType; }
+            set { m_deadZoneType = value; }
+        }
 
 		public float DeadZone
 		{
@@ -214,6 +222,7 @@ namespace Luminosity.IO
 		{
 			m_positive = KeyCode.None;
 			m_negative = KeyCode.None;
+            m_deadZoneType = DeadZoneType.CutOff;
 			m_type = InputType.Button;
 			m_gravity = 1.0f;
 			m_sensitivity = 1.0f;
@@ -349,11 +358,7 @@ namespace Luminosity.IO
 				if(m_rawAxisName != null)
 				{
 					axis = Input.GetAxis(m_rawAxisName);
-					if(Mathf.Abs(axis.Value) < m_deadZone)
-					{
-						axis = AXIS_NEUTRAL;
-					}
-
+                    axis = ApplyDeadZone(axis.Value);
 					axis = Mathf.Clamp(axis.Value * m_sensitivity, -1, 1);
 					axis = m_invert ? -axis : axis;
 				}
@@ -361,12 +366,8 @@ namespace Luminosity.IO
 			else if(m_type == InputType.GamepadAxis)
 			{
 				axis = GamepadState.GetAxis(m_gamepadAxis, m_gamepadIndex);
-				if(Mathf.Abs(axis.Value) < m_deadZone)
-				{
-					axis = AXIS_NEUTRAL;
-				}
-
-				axis = Mathf.Clamp(axis.Value * m_sensitivity, -1, 1);
+                axis = ApplyDeadZone(axis.Value);
+                axis = Mathf.Clamp(axis.Value * m_sensitivity, -1, 1);
 				axis = m_invert ? -axis : axis;
 			}
 
@@ -521,6 +522,7 @@ namespace Luminosity.IO
 		{
 			m_positive = source.m_positive;
 			m_negative = source.m_negative;
+            m_deadZoneType = source.m_deadZoneType;
 			m_deadZone = source.m_deadZone;
 			m_gravity = source.m_gravity;
 			m_sensitivity = source.m_sensitivity;
@@ -540,6 +542,20 @@ namespace Luminosity.IO
 			m_remoteButtonState = ButtonState.Released;
 			m_analogButtonState = ButtonState.Released;
 		}
+
+        private float ApplyDeadZone(float axis)
+        {
+            if(Mathf.Abs(axis) <= m_deadZone)
+            {
+                axis = AXIS_NEUTRAL;
+            }
+            else if(m_deadZoneType == DeadZoneType.Remap)
+            {
+                axis = (axis - Mathf.Sign(axis) * m_deadZone) / (1.0f - m_deadZone);
+            }
+
+            return axis;
+        }
 
 		private void UpdateRawAxisName()
 		{
@@ -621,10 +637,11 @@ namespace Luminosity.IO
 
 		public static InputBinding Duplicate(InputBinding source)
 		{
-			InputBinding duplicate = new InputBinding
-			{
-				m_positive = source.m_positive,
-				m_negative = source.m_negative,
+            InputBinding duplicate = new InputBinding
+            {
+                m_positive = source.m_positive,
+                m_negative = source.m_negative,
+                m_deadZoneType = source.m_deadZoneType,
 				m_deadZone = source.m_deadZone,
 				m_gravity = source.m_gravity,
 				m_sensitivity = source.m_sensitivity,

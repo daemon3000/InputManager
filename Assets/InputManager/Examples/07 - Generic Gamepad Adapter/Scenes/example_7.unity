@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 10
+    serializedVersion: 12
     m_Resolution: 2
     m_BakeResolution: 40
     m_AtlasSize: 1024
@@ -62,6 +62,7 @@ LightmapSettings:
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
     m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
     m_Padding: 2
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
@@ -76,10 +77,16 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 500
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 2
+    m_PVRDenoiserTypeDirect: 0
+    m_PVRDenoiserTypeIndirect: 0
+    m_PVRDenoiserTypeAO: 0
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
-    m_PVRFilteringMode: 1
+    m_PVREnvironmentMIS: 0
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -88,6 +95,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
+    m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -273,6 +281,8 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!1 &69565242
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,6 +490,8 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!114 &230462605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +573,8 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!1 &570126797
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +969,8 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!114 &890378815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,9 +1261,10 @@ Camera:
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -1431,6 +1448,7 @@ MonoBehaviour:
       m_bindings:
       - m_positive: 119
         m_negative: 97
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1444,6 +1462,7 @@ MonoBehaviour:
         m_gamepadIndex: 0
       - m_positive: 273
         m_negative: 276
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1460,6 +1479,7 @@ MonoBehaviour:
       m_bindings:
       - m_positive: 115
         m_negative: 115
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1473,6 +1493,7 @@ MonoBehaviour:
         m_gamepadIndex: 0
       - m_positive: 274
         m_negative: 274
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1489,6 +1510,7 @@ MonoBehaviour:
       m_bindings:
       - m_positive: 97
         m_negative: 115
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1502,6 +1524,7 @@ MonoBehaviour:
         m_gamepadIndex: 0
       - m_positive: 276
         m_negative: 274
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1518,6 +1541,7 @@ MonoBehaviour:
       m_bindings:
       - m_positive: 100
         m_negative: 115
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
@@ -1531,6 +1555,7 @@ MonoBehaviour:
         m_gamepadIndex: 0
       - m_positive: 275
         m_negative: 0
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 1
         m_sensitivity: 1
@@ -1547,6 +1572,7 @@ MonoBehaviour:
       m_bindings:
       - m_positive: 32
         m_negative: 0
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 0
         m_sensitivity: 0
@@ -1560,6 +1586,7 @@ MonoBehaviour:
         m_gamepadIndex: 0
       - m_positive: 13
         m_negative: 0
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 0
         m_sensitivity: 0
@@ -1576,6 +1603,7 @@ MonoBehaviour:
       m_bindings:
       - m_positive: 27
         m_negative: 0
+        m_deadZoneType: 0
         m_deadZone: 0
         m_gravity: 0
         m_sensitivity: 0
@@ -1821,6 +1849,8 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!114 &1758633541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,3 +1931,5 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
