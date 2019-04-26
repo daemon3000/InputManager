@@ -4,4 +4,6 @@
   <Item name="Unity 5.6 Classic" path="ui_input_modules/unity_5_6_classic" />
   <Item name="Unity 2017.2" path="ui_input_modules/unity_2017_2" />
   <Item name="Unity 2017.2 Classic" path="ui_input_modules/unity_2017_2_classic" />
+  <Item name="Unity 2018.3" path="ui_input_modules/unity_2018_3" />
+  <Item name="Unity 2018.3 Classic" path="ui_input_modules/unity_2018_3_classic" />
 </InputModules>
