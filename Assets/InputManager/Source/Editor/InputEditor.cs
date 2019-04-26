@@ -990,7 +990,13 @@ namespace LuminosityEditor.IO
 				binding.Type == InputType.MouseAxis || binding.Type == InputType.GamepadAxis)
 			{
 				binding.Sensitivity = EditorGUILayout.FloatField(m_sensitivityInfo, binding.Sensitivity);
-			}
+            }
+
+            if(binding.Type == InputType.DigitalAxis || binding.Type == InputType.AnalogAxis ||
+                binding.Type == InputType.GamepadAxis)
+            {
+                binding.Scale = EditorGUILayout.FloatField("Scale", binding.Scale);
+            }
 
             if(binding.Type == InputType.AnalogAxis || binding.Type == InputType.GamepadAxis ||
 				binding.Type == InputType.AnalogButton || binding.Type == InputType.GamepadAnalogButton)
@@ -1271,7 +1277,7 @@ namespace LuminosityEditor.IO
 				numberOfFields = 3;
 				break;
 			case InputType.DigitalAxis:
-				numberOfFields = 6;
+				numberOfFields = 7;
 				break;
 			case InputType.RemoteButton:
 				numberOfFields = 0;
@@ -1283,7 +1289,7 @@ namespace LuminosityEditor.IO
 				numberOfFields = 4;
 				break;
 			case InputType.AnalogAxis:
-				numberOfFields = 6;
+				numberOfFields = 7;
 				break;
 			case InputType.GamepadButton:
 				numberOfFields = 2;
@@ -1292,7 +1298,7 @@ namespace LuminosityEditor.IO
 				numberOfFields = 4;
 				break;
 			case InputType.GamepadAxis:
-				numberOfFields = 6;
+				numberOfFields = 7;
 				break;
 			}
 
