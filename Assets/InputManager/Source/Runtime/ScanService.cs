@@ -87,6 +87,8 @@ namespace Luminosity.IO
 		{
 			if(IsScanning)
 			{
+                IsScanning = false;
+
 				m_scanResult.ScanFlags = ScanFlags.None;
 				m_scanResult.Key = KeyCode.None;
 				m_scanResult.Joystick = -1;
@@ -94,14 +96,13 @@ namespace Luminosity.IO
 				m_scanResult.JoystickAxisValue = 0.0f;
 				m_scanResult.MouseAxis = -1;
 				m_scanResult.UserData = m_scanUserData;
-
-				m_scanHandler(m_scanResult);
+                
+				m_scanHandler?.Invoke(m_scanResult);
 
 				m_scanJoystick = null;
 				m_scanHandler = null;
 				m_scanResult.UserData = null;
 				m_scanFlags = ScanFlags.None;
-				IsScanning = false;
 			}
 		}
 
@@ -115,24 +116,24 @@ namespace Luminosity.IO
 			}
 
 			bool success = false;
-			if(HasFlag(ScanFlags.Key))
+			if(IsScanning && HasFlag(ScanFlags.Key))
 			{
 				success = ScanKey();
 			}
-			if(!success && HasFlag(ScanFlags.JoystickButton))
+			if(IsScanning && !success && HasFlag(ScanFlags.JoystickButton))
 			{
 				success = ScanJoystickButton();
 			}
-			if(!success && HasFlag(ScanFlags.JoystickAxis))
+			if(IsScanning && !success && HasFlag(ScanFlags.JoystickAxis))
 			{
 				success = ScanJoystickAxis();
 			}
-			if(!success && HasFlag(ScanFlags.MouseAxis))
+			if(IsScanning && !success && HasFlag(ScanFlags.MouseAxis))
 			{
 				success = ScanMouseAxis();
 			}
 
-			IsScanning = !success;
+			IsScanning = IsScanning && !success;
 		}
 
 		private bool ScanKey()
