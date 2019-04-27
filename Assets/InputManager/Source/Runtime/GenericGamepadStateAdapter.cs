@@ -23,6 +23,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Profiling;
 
 namespace Luminosity.IO
 {
@@ -163,6 +164,7 @@ namespace Luminosity.IO
 
         private void OnUpdate()
         {
+            Profiler.BeginSample("GenericGamepadStateAdapter.OnUpdate", this);
             if(m_gamepadProfile != null)
             {
                 if(m_gamepadProfile.TriggerType == GamepadTriggerType.Button)
@@ -179,6 +181,7 @@ namespace Luminosity.IO
                     UpdateDPadButton();
                 }
             }
+            Profiler.EndSample();
         }
 
         private IEnumerator UpdateJoystickState()

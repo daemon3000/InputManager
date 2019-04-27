@@ -22,6 +22,7 @@
 #endregion
 using UnityEngine;
 #if !UNITY_EDITOR && UNITY_WSA && ENABLE_X_INPUT
+using UnityEngine.Profiling;
 using Windows.Gaming.Input;
 using WinVibration = Windows.Gaming.Input.GamepadVibration;
 using LumiVibration = Luminosity.IO.GamepadVibration;
@@ -116,6 +117,7 @@ namespace Luminosity.IO
 
 		private void OnUpdate()
 		{
+            Profiler.BeginSample("UWPGamepadAdapter.OnUpdate", this);
 			for(int i = 0; i < MAX_GAMEPADS; i++)
 			{
 				m_previousState[i] = m_currentState[i];
@@ -125,6 +127,7 @@ namespace Luminosity.IO
 			float deltaTime = m_ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
 			UpdateDPADHorizontal(deltaTime);
 			UpdateDPADVertical(deltaTime);
+            Profiler.EndSample();
 		}
 
 		private void UpdateDPADHorizontal(float deltaTime)

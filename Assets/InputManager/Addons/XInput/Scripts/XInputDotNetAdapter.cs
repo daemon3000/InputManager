@@ -20,7 +20,9 @@
 //	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+using System;
 using UnityEngine;
+using UnityEngine.Profiling;
 #if(UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && ENABLE_X_INPUT
 using XInputDotNetPure;
 using XButtonState = XInputDotNetPure.ButtonState;
@@ -108,15 +110,19 @@ namespace Luminosity.IO
 
 		private void OnUpdate()
 		{
+            float deltaTime = m_ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
+
+            Profiler.BeginSample("XInputDotNetAdapter.OnUpdate", this);
 			for(int i = 0; i < m_currentState.Length; i++)
 			{
 				m_previousState[i] = m_currentState[i];
+                //  TODO: Figure out how to optimize this call. Takes up to 2ms on my laptop.
 				m_currentState[i] = GamePad.GetState((XPlayerIndex)i);
 			}
 
-			float deltaTime = m_ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
 			UpdateDPADHorizontal(deltaTime);
 			UpdateDPADVertical(deltaTime);
+            Profiler.EndSample();
 		}
 
 		private void UpdateDPADHorizontal(float deltaTime)

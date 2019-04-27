@@ -27,6 +27,7 @@ using UnityEditor.Callbacks;
 #endif
 using System;
 using System.Collections.Generic;
+using UnityEngine.Profiling;
 
 namespace Luminosity.IO
 {
@@ -68,7 +69,8 @@ namespace Luminosity.IO
 		private Action m_afterUpdateHandler;
 		private RemoteUpdateDelegate m_remoteUpdateHandler;
 		private static InputManager m_instance;
-		
+
+        private Dictionary<Type, IInputService> m_services;
 		private Dictionary<string, ControlScheme> m_schemeLookup;
 		private Dictionary<string, ControlScheme> m_schemeLookupByID;
 		private Dictionary<string, Dictionary<string, InputAction>> m_actionLookup;
@@ -114,9 +116,11 @@ namespace Luminosity.IO
 			{
 				m_instance = this;
 				m_scanService = new ScanService();
+                m_services = new Dictionary<Type, IInputService>();
 				m_schemeLookup = new Dictionary<string, ControlScheme>();
 				m_schemeLookupByID = new Dictionary<string, ControlScheme>();
 				m_actionLookup = new Dictionary<string, Dictionary<string, InputAction>>();
+                AddDefaultServices();
 				Initialize();
 			}
 			else
@@ -126,7 +130,7 @@ namespace Luminosity.IO
 			}
 		}
 
-		private void OnDestroy()
+        private void OnDestroy()
 		{
 			if(m_instance == this)
 			{
@@ -138,7 +142,18 @@ namespace Luminosity.IO
 			m_loadedHandler = null;
 			m_savedHandler = null;
 			m_remoteUpdateHandler = null;
+
+            foreach(var entry in m_services)
+                entry.Value.Shutdown();
+
+            m_services.Clear();
 		}
+
+        private void AddDefaultServices()
+        {
+            AddServiceInternal<KeyboardStateService>();
+            AddServiceInternal<GamepadStateService>();
+        }
 
 		private void Initialize()
 		{
@@ -206,10 +221,16 @@ namespace Luminosity.IO
 
 		private void Update()
 		{
-			if(m_beforeUpdateHandler != null)
-				m_beforeUpdateHandler();
+            Profiler.BeginSample("OnBeforeUpdate", this);
+            m_beforeUpdateHandler?.Invoke();
 
-			UpdateControlScheme(m_playerOneScheme, PlayerID.One);
+            foreach(var item in m_services.Values)
+                item.OnBeforeUpdate();
+
+            Profiler.EndSample();
+
+            Profiler.BeginSample("Update", this);
+            UpdateControlScheme(m_playerOneScheme, PlayerID.One);
 			UpdateControlScheme(m_playerTwoScheme, PlayerID.Two);
 			UpdateControlScheme(m_playerThreeScheme, PlayerID.Three);
 			UpdateControlScheme(m_playerFourScheme, PlayerID.Four);
@@ -220,9 +241,16 @@ namespace Luminosity.IO
 				m_scanService.Update();
 			}
 
-			if(m_afterUpdateHandler != null)
-				m_afterUpdateHandler();
-		}
+            Profiler.EndSample();
+
+            Profiler.BeginSample("OnAfterUpdate", this);
+            m_afterUpdateHandler?.Invoke();
+
+            foreach(var item in m_services.Values)
+                item.OnAfterUpdate();
+
+            Profiler.EndSample();
+        }
 
 		private void UpdateControlScheme(ControlScheme scheme, PlayerID playerID)
 		{
@@ -275,6 +303,45 @@ namespace Luminosity.IO
 
 			return null;
 		}
+
+        private T AddServiceInternal<T>() where T : class, IInputService, new()
+        {
+            if(!m_services.ContainsKey(typeof(T)))
+            {
+                T service = new T();
+                service.Startup();
+
+                m_services[typeof(T)] = service;
+            }
+
+            return m_services[typeof(T)] as T;
+        }
+
+        private void RemoveServiceInternal<T>() where T : IInputService
+        {
+            if(IsDefaultService<T>())
+                return;
+
+            if(m_services.TryGetValue(typeof(T), out IInputService service))
+            {
+                service.Shutdown();
+                m_services.Remove(typeof(T));
+            }
+        }
+
+        private bool IsDefaultService<T>() where T : IInputService
+        {
+            return typeof(T) == typeof(KeyboardStateService) ||
+                typeof(T) == typeof(GamepadStateService);
+        }
+
+        private T GetServiceInternal<T>() where T : class, IInputService
+        {
+            if(m_services.TryGetValue(typeof(T), out IInputService service))
+                return (T)service;
+
+            return null;
+        }
 
 		public void SetSaveData(SaveData saveData)
 		{
@@ -845,6 +912,21 @@ namespace Luminosity.IO
 		{
 			m_instance.m_scanService.Stop();
 		}
+
+        public static T AddService<T>() where T : class, IInputService, new()
+        {
+            return m_instance?.AddServiceInternal<T>() ?? null;
+        }
+
+        public static void RemoveService<T>() where T : IInputService
+        {
+            m_instance?.RemoveServiceInternal<T>();
+        }
+
+        public static T GetService<T>() where T : class, IInputService
+        {
+            return m_instance?.GetServiceInternal<T>();
+        }
 
 		/// <summary>
 		/// Saves the control schemes in an XML file, in Application.persistentDataPath.
