@@ -41,8 +41,6 @@ namespace Luminosity.IO
 
 	public partial class InputManager : MonoBehaviour
 	{
-		public const string VERSION = "2019.3.30";
-
 		[SerializeField]
 		private List<ControlScheme> m_controlSchemes = new List<ControlScheme>();
 		[SerializeField]

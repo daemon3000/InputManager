@@ -102,7 +102,7 @@ namespace LuminosityEditor.IO
 		[MenuItem("Luminosity/Input Manager/About", false, 405)]
 		public static void OpenAboutDialog()
 		{
-			string message = string.Format("Input Manager v{0}, MIT Licensed\nCopyright \u00A9 2018 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager", InputManager.VERSION);
+			string message = "Input Manager, MIT Licensed\nCopyright \u00A9 2019 Cristian Alexandru Geambasu\nhttps://github.com/daemon3000/InputManager";
 			EditorUtility.DisplayDialog("About", message, "OK");
 		}
 	}
