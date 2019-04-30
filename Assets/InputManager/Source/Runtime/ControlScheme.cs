@@ -198,6 +198,35 @@ namespace Luminosity.IO
 			}
 		}
 
+        public void ChangeJoystick(int joystick)
+        {
+            if(joystick >= 0 && joystick < InputBinding.MAX_JOYSTICKS)
+            {
+                foreach(var action in m_actions)
+                {
+                    foreach(var binding in action.Bindings)
+                    {
+                        binding.Joystick = joystick;
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogFormat("Cannnot replace control scheme joystick. Joystick {0} is out of range.", joystick);
+            }
+        }
+
+        public void ChangeGamepad(GamepadIndex gamepad)
+        {
+            foreach(var action in m_actions)
+            {
+                foreach(var binding in action.Bindings)
+                {
+                    binding.GamepadIndex = gamepad;
+                }
+            }
+        }
+
 		public Dictionary<string, InputAction> GetActionLookupTable()
 		{
 			Dictionary<string, InputAction> table = new Dictionary<string, InputAction>();
