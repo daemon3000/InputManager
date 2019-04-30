@@ -47,7 +47,9 @@ namespace Luminosity.IO.Examples
                 m_gamepadAxisText[i].text = GamepadState.GetAxis((GamepadAxis)i, m_selectedGamepad).ToString();
 
             GenericGamepadStateAdapter adapter = GamepadState.Adapter as GenericGamepadStateAdapter;
-            if(adapter.GamepadProfile.DPadType == GamepadDPadType.Axis)
+            GenericGamepadProfile profile = adapter[m_selectedGamepad].Profile;
+
+            if(profile != null && profile.DPadType == GamepadDPadType.Axis)
             {
                 if(GamepadState.GetButtonDown(GamepadButton.DPadUp, m_selectedGamepad))
                     Debug.Log("DPadUp was pressed!");

@@ -1417,7 +1417,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c7d115cd3b4a0448f5866f4a4fc5aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gamepadProfile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadOne:
+    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadTwo:
+    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadThree:
+    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadFour:
+    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
   m_joystickCheckFrequency: 1
   m_triggerGravity: 3
   m_triggerSensitivity: 3
@@ -1425,6 +1432,7 @@ MonoBehaviour:
   m_dpadSensitivity: 3
   m_dpadSnap: 1
   m_ignoreTimescale: 1
+  m_useSharedProfile: 1
 --- !u!114 &1522727943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1452,6 +1460,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1466,6 +1475,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1483,6 +1493,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1497,6 +1508,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1514,6 +1526,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1528,6 +1541,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1545,6 +1559,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 3
         m_sensitivity: 3
+        m_scale: 1
         m_snap: 1
         m_invert: 0
         m_type: 0
@@ -1559,6 +1574,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 1
         m_sensitivity: 1
+        m_scale: 1
         m_snap: 0
         m_invert: 0
         m_type: 0
@@ -1576,6 +1592,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 0
         m_sensitivity: 0
+        m_scale: 1
         m_snap: 0
         m_invert: 0
         m_type: 0
@@ -1590,6 +1607,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 0
         m_sensitivity: 0
+        m_scale: 1
         m_snap: 0
         m_invert: 0
         m_type: 0
@@ -1607,6 +1625,7 @@ MonoBehaviour:
         m_deadZone: 0
         m_gravity: 0
         m_sensitivity: 0
+        m_scale: 1
         m_snap: 0
         m_invert: 0
         m_type: 0
