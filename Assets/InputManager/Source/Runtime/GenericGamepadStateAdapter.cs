@@ -49,13 +49,13 @@ namespace Luminosity.IO
         private struct TriggerState { public float Left; public float Right; }
 
         [SerializeField]
-        private GenericGamepad m_gamepadOne = null;
+        private GenericGamepadProfile m_gamepadOne = null;
         [SerializeField]
-        private GenericGamepad m_gamepadTwo = null;
+        private GenericGamepadProfile m_gamepadTwo = null;
         [SerializeField]
-        private GenericGamepad m_gamepadThree = null;
+        private GenericGamepadProfile m_gamepadThree = null;
         [SerializeField]
-        private GenericGamepad m_gamepadFour = null;
+        private GenericGamepadProfile m_gamepadFour = null;
         [SerializeField]
         [Tooltip("At what interval(in sec) to check how many joysticks are connected.")]
         private float m_joystickCheckFrequency = 1.0f;
@@ -85,7 +85,7 @@ namespace Luminosity.IO
         [System.NonSerialized]
         private Dictionary<int, string> m_axisNameLookupTable;
         
-        public GenericGamepad this[GamepadIndex gamepad] => GetGamepad(gamepad);
+        public GenericGamepadProfile this[GamepadIndex gamepad] => GetGamepadProfile(gamepad);
 
         public float TriggerGravity
         {
@@ -623,36 +623,19 @@ namespace Luminosity.IO
             switch(gamepad)
             {
             case 0:
-                return m_gamepadOne.Profile;
+                return m_gamepadOne;
             case 1:
-                return m_gamepadTwo.Profile;
+                return m_gamepadTwo;
             case 2:
-                return m_gamepadThree.Profile;
+                return m_gamepadThree;
             case 3:
-                return m_gamepadFour.Profile;
+                return m_gamepadFour;
             default:
                 throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
             }
         }
 
         private GenericGamepadProfile GetGamepadProfile(GamepadIndex gamepad)
-        {
-            switch(gamepad)
-            {
-            case GamepadIndex.GamepadOne:
-                return m_gamepadOne.Profile;
-            case GamepadIndex.GamepadTwo:
-                return m_gamepadTwo.Profile;
-            case GamepadIndex.GamepadThree:
-                return m_gamepadThree.Profile;
-            case GamepadIndex.GamepadFour:
-                return m_gamepadFour.Profile;
-            default:
-                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
-            }
-        }
-
-        private GenericGamepad GetGamepad(GamepadIndex gamepad)
         {
             switch(gamepad)
             {

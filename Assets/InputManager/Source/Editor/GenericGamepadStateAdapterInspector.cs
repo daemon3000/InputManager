@@ -20,10 +20,8 @@
 //	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
-using UnityEngine;
 using UnityEditor;
 using Luminosity.IO;
-using System;
 
 namespace LuminosityEditor.IO
 {
@@ -73,10 +71,10 @@ namespace LuminosityEditor.IO
             }
             else
             {
-                DrawGamepadField(m_gamepadOne);
-                DrawGamepadField(m_gamepadTwo);
-                DrawGamepadField(m_gamepadThree);
-                DrawGamepadField(m_gamepadFour);
+                EditorGUILayout.PropertyField(m_gamepadOne);
+                EditorGUILayout.PropertyField(m_gamepadTwo);
+                EditorGUILayout.PropertyField(m_gamepadThree);
+                EditorGUILayout.PropertyField(m_gamepadFour);
             }
 
             EditorGUILayout.Space();
@@ -94,27 +92,16 @@ namespace LuminosityEditor.IO
 
         private void DrawSharedGamepadField()
         {
-            SerializedProperty profileOne = m_gamepadOne.FindPropertyRelative("m_profile");
-            SerializedProperty profileTwo = m_gamepadTwo.FindPropertyRelative("m_profile");
-            SerializedProperty profileThree = m_gamepadThree.FindPropertyRelative("m_profile");
-            SerializedProperty profileFour = m_gamepadFour.FindPropertyRelative("m_profile");
-
-            EditorGUILayout.PropertyField(profileOne, new GUIContent(profileOne.displayName));
-            CopyProfile(profileOne, profileTwo);
-            CopyProfile(profileOne, profileThree);
-            CopyProfile(profileOne, profileFour);
+            EditorGUILayout.PropertyField(m_gamepadOne);
+            CopyProfile(m_gamepadOne, m_gamepadTwo);
+            CopyProfile(m_gamepadOne, m_gamepadThree);
+            CopyProfile(m_gamepadOne, m_gamepadFour);
         }
 
         private void CopyProfile(SerializedProperty source, SerializedProperty destination)
         {
             destination.objectReferenceValue = source.objectReferenceValue;
             destination.objectReferenceInstanceIDValue = source.objectReferenceInstanceIDValue;
-        }
-
-        private void DrawGamepadField(SerializedProperty gamepad)
-        {
-            SerializedProperty profile = gamepad.FindPropertyRelative("m_profile");
-            EditorGUILayout.PropertyField(profile, new GUIContent(gamepad.displayName));
         }
     }
 }

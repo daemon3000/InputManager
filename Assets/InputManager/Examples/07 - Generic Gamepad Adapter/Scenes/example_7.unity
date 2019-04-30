@@ -1417,14 +1417,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c7d115cd3b4a0448f5866f4a4fc5aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_gamepadOne:
-    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
-  m_gamepadTwo:
-    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
-  m_gamepadThree:
-    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
-  m_gamepadFour:
-    m_profile: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadOne: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadTwo: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadThree: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
+  m_gamepadFour: {fileID: 11400000, guid: 1431ac906af056d43873696848c13cdf, type: 2}
   m_joystickCheckFrequency: 1
   m_triggerGravity: 3
   m_triggerSensitivity: 3

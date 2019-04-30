@@ -47,7 +47,7 @@ namespace Luminosity.IO.Examples
                 m_gamepadAxisText[i].text = GamepadState.GetAxis((GamepadAxis)i, m_selectedGamepad).ToString();
 
             GenericGamepadStateAdapter adapter = GamepadState.Adapter as GenericGamepadStateAdapter;
-            GenericGamepadProfile profile = adapter[m_selectedGamepad].Profile;
+            GenericGamepadProfile profile = adapter[m_selectedGamepad];
 
             if(profile != null && profile.DPadType == GamepadDPadType.Axis)
             {
