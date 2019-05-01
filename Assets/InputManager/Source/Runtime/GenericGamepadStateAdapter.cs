@@ -24,11 +24,29 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Profiling;
+using UnityEngine.Events;
 
 namespace Luminosity.IO
 {
     public class GenericGamepadStateAdapter : MonoBehaviour, IGamepadStateAdapter
     {
+        private struct GamepadStatus
+        {
+            public string Name;
+            public bool IsConnected;
+
+            public GamepadStatus(string name, bool connected)
+            {
+                Name = name;
+                IsConnected = connected;
+            }
+
+            public static GamepadStatus NotConnected => new GamepadStatus() {
+                Name = null,
+                IsConnected = false
+            };
+        }
+
         private struct DPadState
         {
             public float X;
@@ -81,11 +99,17 @@ namespace Luminosity.IO
         [System.NonSerialized]
         private DPadState[] m_dpadState;
         [System.NonSerialized]
-        private bool[] m_joystickState;
+        private GamepadStatus[] m_gamepadStatus;
         [System.NonSerialized]
         private Dictionary<int, string> m_axisNameLookupTable;
-        
-        public GenericGamepadProfile this[GamepadIndex gamepad] => GetGamepadProfile(gamepad);
+
+        public event UnityAction<GamepadIndex> GamepadConnected;
+        public event UnityAction<GamepadIndex> GamepadDisconnected;
+
+        public GenericGamepadProfile this[GamepadIndex gamepad]
+        {
+            get => GetProfile(gamepad);
+        }
 
         public float TriggerGravity
         {
@@ -129,7 +153,7 @@ namespace Luminosity.IO
         {
             m_axisNameLookupTable = new Dictionary<int, string>();
             m_triggerState = new TriggerState[4];
-            m_joystickState = new bool[4];
+            m_gamepadStatus = new GamepadStatus[4] { GamepadStatus.NotConnected, GamepadStatus.NotConnected, GamepadStatus.NotConnected, GamepadStatus.NotConnected };
             m_dpadState = new DPadState[4] { DPadState.Empty, DPadState.Empty, DPadState.Empty, DPadState.Empty };
 
             GenerateAxisNameLookupTable();
@@ -183,9 +207,25 @@ namespace Luminosity.IO
             while(true)
             {
                 string[] names = InputManager.GetJoystickNames();
-                for(int i = 0; i < m_joystickState.Length; i++)
+                for(int i = 0; i < m_gamepadStatus.Length; i++)
                 {
-                    m_joystickState[i] = names.Length > i && !string.IsNullOrEmpty(names[i]);
+                    GamepadStatus oldStatus = m_gamepadStatus[i];
+                    if(names.Length > i && !string.IsNullOrEmpty(names[i]))
+                        m_gamepadStatus[i] = new GamepadStatus(names[i], true);
+                    else
+                        m_gamepadStatus[i] = GamepadStatus.NotConnected;
+
+                    if(oldStatus.IsConnected && !m_gamepadStatus[i].IsConnected)
+                    {
+                        GamepadDisconnected?.Invoke((GamepadIndex)i);
+                        Debug.Log($"Gamepad Disconnected: {oldStatus.Name}");
+                    }
+
+                    if(!oldStatus.IsConnected && m_gamepadStatus[i].IsConnected)
+                    {
+                        GamepadConnected?.Invoke((GamepadIndex)i);
+                        Debug.Log($"Gamepad Connected: {m_gamepadStatus[i].Name}");
+                    }
                 }
 
                 yield return new WaitForSeconds(m_joystickCheckFrequency);
@@ -196,7 +236,7 @@ namespace Luminosity.IO
         {
             for(int i = 0; i < m_triggerState.Length; i++)
             {
-                GenericGamepadProfile profile = GetGamepadProfile(i);
+                GenericGamepadProfile profile = GetProfile(i);
                 bool rightPressed = false, leftPressed = false;
 
                 if(profile != null && profile.TriggerType == GamepadTriggerType.Button)
@@ -245,7 +285,7 @@ namespace Luminosity.IO
         {
             for(int i = 0; i < m_dpadState.Length; i++)
             {
-                GenericGamepadProfile profile = GetGamepadProfile(i);
+                GenericGamepadProfile profile = GetProfile(i);
                 bool rightPressed = false, leftPressed = false;
 
                 if(profile != null && profile.DPadType == GamepadDPadType.Button)
@@ -306,7 +346,7 @@ namespace Luminosity.IO
         {
             for(int i = 0; i < m_dpadState.Length; i++)
             {
-                GenericGamepadProfile profile = GetGamepadProfile(i);
+                GenericGamepadProfile profile = GetProfile(i);
                 bool upPressed = false, downPressed = false;
 
                 if(profile != null && profile.DPadType == GamepadDPadType.Button)
@@ -367,7 +407,7 @@ namespace Luminosity.IO
         {
             for(int i = 0; i < m_dpadState.Length; i++)
             {
-                GenericGamepadProfile profile = GetGamepadProfile(i);
+                GenericGamepadProfile profile = GetProfile(i);
                 float x = 0.0f, y = 0.0f;
 
                 if(profile != null && profile.DPadType == GamepadDPadType.Axis)
@@ -394,14 +434,57 @@ namespace Luminosity.IO
             return newState;
         }
 
+        public GenericGamepadProfile GetProfile(GamepadIndex gamepad)
+        {
+            switch(gamepad)
+            {
+            case GamepadIndex.GamepadOne:
+                return m_gamepadOne;
+            case GamepadIndex.GamepadTwo:
+                return m_gamepadTwo;
+            case GamepadIndex.GamepadThree:
+                return m_gamepadThree;
+            case GamepadIndex.GamepadFour:
+                return m_gamepadFour;
+            default:
+                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
+            }
+        }
+
+        public void SetProfile(GamepadIndex gamepad, GenericGamepadProfile profile)
+        {
+            switch(gamepad)
+            {
+            case GamepadIndex.GamepadOne:
+                m_gamepadOne = profile;
+                break;
+            case GamepadIndex.GamepadTwo:
+                m_gamepadTwo = profile;
+                break;
+            case GamepadIndex.GamepadThree:
+                m_gamepadThree = profile;
+                break;
+            case GamepadIndex.GamepadFour:
+                m_gamepadFour = profile;
+                break;
+            default:
+                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
+            }
+        }
+
+        public string GetName(GamepadIndex gamepad)
+        {
+            return m_gamepadStatus[(int)gamepad].Name;
+        }
+
         public bool IsConnected(GamepadIndex gamepad)
         {
-            return m_joystickState[(int)gamepad];
+            return m_gamepadStatus[(int)gamepad].IsConnected;
         }
 
         public float GetAxis(GamepadAxis axis, GamepadIndex gamepad)
         {
-            GenericGamepadProfile profile = GetGamepadProfile(gamepad);
+            GenericGamepadProfile profile = GetProfile(gamepad);
             if(profile == null)
                 return 0.0f;
 
@@ -446,7 +529,7 @@ namespace Luminosity.IO
 
         public bool GetButton(GamepadButton button, GamepadIndex gamepad)
         {
-            GenericGamepadProfile profile = GetGamepadProfile(gamepad);
+            GenericGamepadProfile profile = GetProfile(gamepad);
             if(profile == null)
                 return false;
 
@@ -495,7 +578,7 @@ namespace Luminosity.IO
 
         public bool GetButtonDown(GamepadButton button, GamepadIndex gamepad)
         {
-            GenericGamepadProfile profile = GetGamepadProfile(gamepad);
+            GenericGamepadProfile profile = GetProfile(gamepad);
             if(profile == null)
                 return false;
 
@@ -544,7 +627,7 @@ namespace Luminosity.IO
 
         public bool GetButtonUp(GamepadButton button, GamepadIndex gamepad)
         {
-            GenericGamepadProfile profile = GetGamepadProfile(gamepad);
+            GenericGamepadProfile profile = GetProfile(gamepad);
             if(profile == null)
                 return false;
 
@@ -618,7 +701,7 @@ namespace Luminosity.IO
             return GamepadVibration.None;
         }
 
-        private GenericGamepadProfile GetGamepadProfile(int gamepad)
+        private GenericGamepadProfile GetProfile(int gamepad)
         {
             switch(gamepad)
             {
@@ -629,23 +712,6 @@ namespace Luminosity.IO
             case 2:
                 return m_gamepadThree;
             case 3:
-                return m_gamepadFour;
-            default:
-                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
-            }
-        }
-
-        private GenericGamepadProfile GetGamepadProfile(GamepadIndex gamepad)
-        {
-            switch(gamepad)
-            {
-            case GamepadIndex.GamepadOne:
-                return m_gamepadOne;
-            case GamepadIndex.GamepadTwo:
-                return m_gamepadTwo;
-            case GamepadIndex.GamepadThree:
-                return m_gamepadThree;
-            case GamepadIndex.GamepadFour:
                 return m_gamepadFour;
             default:
                 throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");

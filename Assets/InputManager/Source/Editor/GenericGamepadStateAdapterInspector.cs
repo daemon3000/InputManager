@@ -20,6 +20,7 @@
 //	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
+using UnityEngine;
 using UnityEditor;
 using Luminosity.IO;
 
@@ -62,19 +63,22 @@ namespace LuminosityEditor.IO
         {
             serializedObject.Update();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("PROFILES", EditorStyles.boldLabel);
-            m_useSharedProfile.boolValue = EditorGUILayout.Popup("Asignment", m_useSharedProfile.boolValue ? 0 : 1, m_profileModeOptions) == 0;
-            if(m_useSharedProfile.boolValue)
+            if(!HasCustomSelector())
             {
-                DrawSharedGamepadField();
-            }
-            else
-            {
-                EditorGUILayout.PropertyField(m_gamepadOne);
-                EditorGUILayout.PropertyField(m_gamepadTwo);
-                EditorGUILayout.PropertyField(m_gamepadThree);
-                EditorGUILayout.PropertyField(m_gamepadFour);
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("PROFILES", EditorStyles.boldLabel);
+                m_useSharedProfile.boolValue = EditorGUILayout.Popup("Asignment", m_useSharedProfile.boolValue ? 0 : 1, m_profileModeOptions) == 0;
+                if(m_useSharedProfile.boolValue)
+                {
+                    DrawSharedGamepadField();
+                }
+                else
+                {
+                    EditorGUILayout.PropertyField(m_gamepadOne);
+                    EditorGUILayout.PropertyField(m_gamepadTwo);
+                    EditorGUILayout.PropertyField(m_gamepadThree);
+                    EditorGUILayout.PropertyField(m_gamepadFour);
+                }
             }
 
             EditorGUILayout.Space();
@@ -102,6 +106,11 @@ namespace LuminosityEditor.IO
         {
             destination.objectReferenceValue = source.objectReferenceValue;
             destination.objectReferenceInstanceIDValue = source.objectReferenceInstanceIDValue;
+        }
+
+        private bool HasCustomSelector()
+        {
+            return ((Component)target).gameObject.GetComponent<GenericGamepadProfileSelector>() != null;
         }
     }
 }
