@@ -29,81 +29,91 @@ namespace Luminosity.IO
 		private static bool m_hasWarningBeenDisplayed = false;
         private static IGamepadStateAdapter m_adapter = null;
 
-        private static GamepadStateService Service => InputManager.GetService<GamepadStateService>();
-
 		public static IGamepadStateAdapter Adapter
         {
-            get => m_adapter;
+            get { return m_adapter; }
             set
             {
                 if(value != m_adapter)
                 {
                     m_adapter = value;
-                    Service?.SetAdapter(value);
+
+                    GamepadStateService service = InputManager.GetService<GamepadStateService>();
+                    if(service != null)
+                    {
+                        service.SetAdapter(m_adapter);
+                    }
                 }
             }
         }
 
-        public static bool IsGamepadSupported => Adapter != null;
+        public static bool IsGamepadSupported
+        {
+            get { return Adapter != null; }
+        }
 
         public static bool AnyInput()
         {
             PrintMissingAdapterWarningIfNecessary();
-            return Service?.AnyInput(GamepadIndex.GamepadOne) ?? false;
+            
+            GamepadStateService service = InputManager.GetService<GamepadStateService>();
+            return service != null ? service.AnyInput(GamepadIndex.GamepadOne) : false;
         }
 
         public static bool AnyInput(GamepadIndex gamepad)
         {
             PrintMissingAdapterWarningIfNecessary();
-            return Service?.AnyInput(gamepad) ?? false;
+            
+            GamepadStateService service = InputManager.GetService<GamepadStateService>();
+            return service != null ? service.AnyInput(gamepad) : false;
         }
 
         public static bool IsConnected(GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.IsConnected(gamepad) ?? false;
+			return Adapter != null ? Adapter.IsConnected(gamepad) : false;
 		}
 
 		public static float GetAxis(GamepadAxis axis, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.GetAxis(axis, gamepad) ?? 0;
+			return Adapter != null ? Adapter.GetAxis(axis, gamepad) : 0;
 		}
 
 		public static float GetAxisRaw(GamepadAxis axis, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.GetAxisRaw(axis, gamepad) ?? 0;
+			return Adapter != null ? Adapter.GetAxisRaw(axis, gamepad) : 0;
 		}
 
 		public static bool GetButton(GamepadButton button, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.GetButton(button, gamepad) ?? false;
+			return Adapter != null ? Adapter.GetButton(button, gamepad) : false;
 		}
 
 		public static bool GetButtonDown(GamepadButton button, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.GetButtonDown(button, gamepad) ?? false;
+			return Adapter != null ? Adapter.GetButtonDown(button, gamepad) : false;
 		}
 
 		public static bool GetButtonUp(GamepadButton button, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.GetButtonUp(button, gamepad) ?? false;
+			return Adapter != null ? Adapter.GetButtonUp(button, gamepad) : false;
 		}
 
 		public static void SetVibration(GamepadVibration vibration, GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			Adapter?.SetVibration(vibration, gamepad);
+			Adapter.SetVibration(vibration, gamepad);
 		}
 
 		public static GamepadVibration GetVibration(GamepadIndex gamepad)
 		{
 			PrintMissingAdapterWarningIfNecessary();
-			return Adapter?.GetVibration(gamepad) ?? new GamepadVibration();
+			return Adapter != null ? Adapter.GetVibration(gamepad) : GamepadVibration.None;
 		}
 
 		private static void PrintMissingAdapterWarningIfNecessary()

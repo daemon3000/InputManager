@@ -31,8 +31,8 @@ namespace Luminosity.IO
 
         public event UnityAction<InputDevice> DeviceChanged
         {
-            add => m_deviceChangedHandler += value;
-            remove => m_deviceChangedHandler -= value;
+            add { m_deviceChangedHandler += value; }
+            remove { m_deviceChangedHandler -= value; }
         }
 
         public InputDevice CurrentDevice { get; private set; }
@@ -57,12 +57,14 @@ namespace Luminosity.IO
             if(CurrentDevice == InputDevice.KeyboardAndMouse && GamepadState.AnyInput())
             {
                 CurrentDevice = InputDevice.Gamepad;
-                m_deviceChangedHandler?.Invoke(CurrentDevice);
+                if(m_deviceChangedHandler != null)
+                    m_deviceChangedHandler(CurrentDevice);
             }
             else if(CurrentDevice == InputDevice.Gamepad && KeyboardState.AnyInput())
             {
                 CurrentDevice = InputDevice.KeyboardAndMouse;
-                m_deviceChangedHandler?.Invoke(CurrentDevice);
+                if(m_deviceChangedHandler != null)
+                    m_deviceChangedHandler(CurrentDevice);
             }
             Profiler.EndSample();
         }

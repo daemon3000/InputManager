@@ -87,7 +87,7 @@ namespace Luminosity.IO
                 if(IsMatch(m_profiles[i], gamepadName))
                 {
                     m_adapter.SetProfile(gamepad, m_profiles[i].GamepadProfile);
-                    Debug.Log($"Profile '{m_profiles[i].GamepadProfile.Name}' assigned to '{gamepadName}'.");
+                    Debug.LogFormat("Profile '{0}' assigned to '{1}'.", m_profiles[i].GamepadProfile.Name, gamepadName);
                     return;
                 }
             }
@@ -95,11 +95,11 @@ namespace Luminosity.IO
             if(m_defaultProfile != null)
             {
                 m_adapter.SetProfile(gamepad, m_defaultProfile);
-                Debug.Log($"No profile found for '{gamepadName}'. Assigning default profile '{m_defaultProfile.Name}'.");
+                Debug.LogFormat("No profile found for '{0}'. Assigning default profile '{1}'.", gamepadName, m_defaultProfile.Name);
             }
             else
             {
-                Debug.Log($"No profile found for '{gamepadName}'.");
+                Debug.LogFormat("No profile found for '{0}'.", gamepadName);
             }
         }
 

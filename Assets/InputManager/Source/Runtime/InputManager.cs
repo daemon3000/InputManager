@@ -220,7 +220,8 @@ namespace Luminosity.IO
 		private void Update()
 		{
             Profiler.BeginSample("OnBeforeUpdate", this);
-            m_beforeUpdateHandler?.Invoke();
+            if(m_beforeUpdateHandler != null)
+                m_beforeUpdateHandler();
 
             foreach(var item in m_services.Values)
                 item.OnBeforeUpdate();
@@ -242,7 +243,8 @@ namespace Luminosity.IO
             Profiler.EndSample();
 
             Profiler.BeginSample("OnAfterUpdate", this);
-            m_afterUpdateHandler?.Invoke();
+            if(m_afterUpdateHandler != null)
+                m_afterUpdateHandler();
 
             foreach(var item in m_services.Values)
                 item.OnAfterUpdate();
@@ -320,7 +322,8 @@ namespace Luminosity.IO
             if(IsDefaultService<T>())
                 return;
 
-            if(m_services.TryGetValue(typeof(T), out IInputService service))
+            IInputService service = null;
+            if(m_services.TryGetValue(typeof(T), out service))
             {
                 service.Shutdown();
                 m_services.Remove(typeof(T));
@@ -335,7 +338,8 @@ namespace Luminosity.IO
 
         private T GetServiceInternal<T>() where T : class, IInputService
         {
-            if(m_services.TryGetValue(typeof(T), out IInputService service))
+            IInputService service = null;
+            if(m_services.TryGetValue(typeof(T), out service))
                 return (T)service;
 
             return null;
@@ -913,17 +917,24 @@ namespace Luminosity.IO
 
         public static T AddService<T>() where T : class, IInputService, new()
         {
-            return m_instance?.AddServiceInternal<T>() ?? null;
+            if(m_instance != null)
+                return m_instance.AddServiceInternal<T>();
+
+            return null;
         }
 
         public static void RemoveService<T>() where T : IInputService
         {
-            m_instance?.RemoveServiceInternal<T>();
+            if(m_instance != null)
+                m_instance.RemoveServiceInternal<T>();
         }
 
         public static T GetService<T>() where T : class, IInputService
         {
-            return m_instance?.GetServiceInternal<T>();
+            if(m_instance != null)
+                return m_instance.GetServiceInternal<T>();
+
+            return null;
         }
 
 		/// <summary>

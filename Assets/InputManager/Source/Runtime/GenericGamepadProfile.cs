@@ -136,33 +136,33 @@ namespace Luminosity.IO
         [Range(0, InputBinding.MAX_JOYSTICK_AXES - 1)]
         private int m_rightTriggerAxis = 0;
 
-        public string Name => m_name;
-        public string Comment => m_comment;
-        public GamepadDPadType DPadType => m_dpadType;
-        public GamepadTriggerType TriggerType => m_triggerType;
-        public int LeftStickButton => m_leftStickButton;
-        public int RightStickButton => m_rightStickButton;
-        public int LeftBumperButton => m_leftBumperButton;
-        public int RightBumperButton => m_rightBumperButton;
-        public int LeftTriggerButton => m_leftTriggerButton;
-        public int RightTriggerButton => m_rightTriggerButton;
-        public int DPadUpButton => m_dpadUpButton;
-        public int DPadDownButton => m_dpadDownButton;
-        public int DPadLeftButton => m_dpadLeftButton;
-        public int DPadRightButton => m_dpadRightButton;
-        public int BackButton => m_backButton;
-        public int StartButton => m_startButton;
-        public int ActionTopButton => m_actionTopButton;
-        public int ActionBottomButton => m_actionBottomButton;
-        public int ActionLeftButton => m_actionLeftButton;
-        public int ActionRightButton => m_actionRightButton;
-        public int LeftStickXAxis => m_leftStickXAxis;
-        public int LeftStickYAxis => m_leftStickYAxis;
-        public int RightStickXAxis => m_rightStickXAxis;
-        public int RightStickYAxis => m_rightStickYAxis;
-        public int DPadXAxis => m_dpadXAxis;
-        public int DPadYAxis => m_dpadYAxis;
-        public int LeftTriggerAxis => m_leftTriggerAxis;
-        public int RightTriggerAxis => m_rightTriggerAxis;
+        public string Name { get { return m_name; } }
+        public string Comment { get { return m_comment; } }
+        public GamepadDPadType DPadType { get { return m_dpadType; } }
+        public GamepadTriggerType TriggerType { get { return m_triggerType; } }
+        public int LeftStickButton { get { return m_leftStickButton; } }
+        public int RightStickButton { get { return m_rightStickButton; } }
+        public int LeftBumperButton { get { return m_leftBumperButton; } }
+        public int RightBumperButton { get { return m_rightBumperButton; } }
+        public int LeftTriggerButton { get { return m_leftTriggerButton; } }
+        public int RightTriggerButton { get { return m_rightTriggerButton; } }
+        public int DPadUpButton { get { return m_dpadUpButton; } }
+        public int DPadDownButton { get { return m_dpadDownButton; } }
+        public int DPadLeftButton { get { return m_dpadLeftButton; } }
+        public int DPadRightButton { get { return m_dpadRightButton; } }
+        public int BackButton { get { return m_backButton; } }
+        public int StartButton { get { return m_startButton; } }
+        public int ActionTopButton { get { return m_actionTopButton; } }
+        public int ActionBottomButton { get { return m_actionBottomButton; } }
+        public int ActionLeftButton { get { return m_actionLeftButton; } }
+        public int ActionRightButton { get { return m_actionRightButton; } }
+        public int LeftStickXAxis { get { return m_leftStickXAxis; } }
+        public int LeftStickYAxis { get { return m_leftStickYAxis; } }
+        public int RightStickXAxis { get { return m_rightStickXAxis; } }
+        public int RightStickYAxis { get { return m_rightStickYAxis; } }
+        public int DPadXAxis { get { return m_dpadXAxis; } }
+        public int DPadYAxis { get { return m_dpadYAxis; } }
+        public int LeftTriggerAxis { get { return m_leftTriggerAxis; } }
+        public int RightTriggerAxis { get { return m_rightTriggerAxis; } }
     }
 }

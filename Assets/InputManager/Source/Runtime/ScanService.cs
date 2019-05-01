@@ -96,8 +96,9 @@ namespace Luminosity.IO
 				m_scanResult.JoystickAxisValue = 0.0f;
 				m_scanResult.MouseAxis = -1;
 				m_scanResult.UserData = m_scanUserData;
-                
-				m_scanHandler?.Invoke(m_scanResult);
+
+                if(m_scanHandler != null)
+                    m_scanHandler(m_scanResult);
 
 				m_scanJoystick = null;
 				m_scanHandler = null;

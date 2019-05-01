@@ -102,7 +102,7 @@ namespace LuminosityEditor.IO
 			SerializedProperty constraints = profileSP.FindPropertyRelative("Constraints");
             CollectionAction entryAction = CollectionAction.None;
 
-            string label = $"Profile {index + 1}";
+            string label = "Profile " + (index + 1);
             if(isExpanded.boolValue)
                 label += " (Click to collapse)";
             else

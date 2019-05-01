@@ -41,10 +41,17 @@ namespace Luminosity.IO
                 IsConnected = connected;
             }
 
-            public static GamepadStatus NotConnected => new GamepadStatus() {
-                Name = null,
-                IsConnected = false
-            };
+            public static GamepadStatus NotConnected
+            {
+                get
+                {
+                    return new GamepadStatus()
+                    {
+                        Name = null,
+                        IsConnected = false
+                    };
+                }
+            }
         }
 
         private struct DPadState
@@ -56,12 +63,18 @@ namespace Luminosity.IO
             public ButtonState Left;
             public ButtonState Right;
 
-            public static DPadState Empty => new DPadState() {
-                Up = ButtonState.Released,
-                Down = ButtonState.Released,
-                Right = ButtonState.Released,
-                Left = ButtonState.Released
-            };
+            public static DPadState Empty
+            {
+                get
+                {
+                    return new DPadState() {
+                        Up = ButtonState.Released,
+                        Down = ButtonState.Released,
+                        Right = ButtonState.Released,
+                        Left = ButtonState.Released
+                    };
+                }
+            }
         }
 
         private struct TriggerState { public float Left; public float Right; }
@@ -108,7 +121,7 @@ namespace Luminosity.IO
 
         public GenericGamepadProfile this[GamepadIndex gamepad]
         {
-            get => GetProfile(gamepad);
+            get { return GetProfile(gamepad); }
         }
 
         public float TriggerGravity
@@ -147,7 +160,10 @@ namespace Luminosity.IO
             set { m_ignoreTimescale = value; }
         }
 
-        private float DeltaTime => m_ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
+        private float DeltaTime
+        {
+            get { return m_ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime; }
+        }
 
         private void Awake()
         {
@@ -217,14 +233,18 @@ namespace Luminosity.IO
 
                     if(oldStatus.IsConnected && !m_gamepadStatus[i].IsConnected)
                     {
-                        GamepadDisconnected?.Invoke((GamepadIndex)i);
-                        Debug.Log($"Gamepad Disconnected: {oldStatus.Name}");
+                        if(GamepadDisconnected != null)
+                            GamepadDisconnected((GamepadIndex)i);
+
+                        Debug.LogFormat("Gamepad Disconnected: {0}", oldStatus.Name);
                     }
 
                     if(!oldStatus.IsConnected && m_gamepadStatus[i].IsConnected)
                     {
-                        GamepadConnected?.Invoke((GamepadIndex)i);
-                        Debug.Log($"Gamepad Connected: {m_gamepadStatus[i].Name}");
+                        if(GamepadConnected != null)
+                            GamepadConnected((GamepadIndex)i);
+
+                        Debug.LogFormat("Gamepad Connected: {0}", m_gamepadStatus[i].Name);
                     }
                 }
 
@@ -447,7 +467,7 @@ namespace Luminosity.IO
             case GamepadIndex.GamepadFour:
                 return m_gamepadFour;
             default:
-                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
+                throw new System.ArgumentException(string.Format("Gamepad '{0}' is not valid.", gamepad), "gamepad");
             }
         }
 
@@ -468,7 +488,7 @@ namespace Luminosity.IO
                 m_gamepadFour = profile;
                 break;
             default:
-                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
+                throw new System.ArgumentException(string.Format("Gamepad '{0}' is not valid.", gamepad), "gamepad");
             }
         }
 
@@ -714,7 +734,7 @@ namespace Luminosity.IO
             case 3:
                 return m_gamepadFour;
             default:
-                throw new System.ArgumentException($"Gamepad '{gamepad}' is not valid.", "gamepad");
+                throw new System.ArgumentException(string.Format("Gamepad '{0}' is not valid.", gamepad), "gamepad");
             }
         }
     }

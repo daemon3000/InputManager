@@ -26,11 +26,10 @@ namespace Luminosity.IO
 {
     public static class KeyboardState
     {
-        private static KeyboardStateService Service => InputManager.GetService<KeyboardStateService>();
-
         public static bool AnyInput()
         {
-            return Service?.AnyInput ?? false;
+            KeyboardStateService service = InputManager.GetService<KeyboardStateService>();
+            return service != null ? service.AnyInput : false;
         }
 
         public static bool GetKey(KeyCode key)
