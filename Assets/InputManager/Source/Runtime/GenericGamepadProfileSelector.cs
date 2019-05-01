@@ -29,32 +29,42 @@ namespace Luminosity.IO
     [RequireComponent(typeof(GenericGamepadStateAdapter))]
     public class GenericGamepadProfileSelector : MonoBehaviour
     {
-        private enum QueryType
+        public enum QueryType
         {
             ExactMatch, StartsWith, EndsWith, Contains
         }
 
         [Serializable]
-        private class Query
+        public class Query
         {
             public QueryType Type = QueryType.Contains;
             public string Content = "";
         }
 
         [Serializable]
-        private class ProfileEntry
+        public class Profile
         {
-            public GenericGamepadProfile Profile = null;
+            public GenericGamepadProfile GamepadProfile = null;
             public List<Query> Constraints = null;
+            public bool IsExpanded = true;
         }
 
         [SerializeField]
         private GenericGamepadProfile m_defaultProfile = null;
         [SerializeField]
-        private List<ProfileEntry> m_entries = null;
+        private List<Profile> m_profiles = null;
 
         private GenericGamepadStateAdapter m_adapter;
 
+#if UNITY_EDITOR
+        public Profile GetProfile(int index)
+        {
+            if(index >= 0 && index < m_profiles.Count)
+                return m_profiles[index];
+
+            return null;
+        }
+#endif
         private void Start()
         {
             m_adapter = GetComponent<GenericGamepadStateAdapter>();
@@ -72,12 +82,12 @@ namespace Luminosity.IO
                 return;
 
             string gamepadName = m_adapter.GetName(gamepad);
-            for(int i = 0; i < m_entries.Count; i++)
+            for(int i = 0; i < m_profiles.Count; i++)
             {
-                if(IsMatch(m_entries[i], gamepadName))
+                if(IsMatch(m_profiles[i], gamepadName))
                 {
-                    m_adapter.SetProfile(gamepad, m_entries[i].Profile);
-                    Debug.Log($"Profile '{m_entries[i].Profile.Name}' assigned to '{gamepadName}'.");
+                    m_adapter.SetProfile(gamepad, m_profiles[i].GamepadProfile);
+                    Debug.Log($"Profile '{m_profiles[i].GamepadProfile.Name}' assigned to '{gamepadName}'.");
                     return;
                 }
             }
@@ -93,7 +103,7 @@ namespace Luminosity.IO
             }
         }
 
-        private bool IsMatch(ProfileEntry entry, string gamepadName)
+        private bool IsMatch(Profile entry, string gamepadName)
         {
             for(int i = 0; i < entry.Constraints.Count; i++)
             {
