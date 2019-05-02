@@ -110,7 +110,7 @@ namespace LuminosityEditor.IO
 
         private bool HasCustomSelector()
         {
-            return ((Component)target).gameObject.GetComponent<GenericGamepadProfileSelector>() != null;
+            return ((Component)target).gameObject.GetComponent<GamepadProfileSelector>() != null;
         }
     }
 }

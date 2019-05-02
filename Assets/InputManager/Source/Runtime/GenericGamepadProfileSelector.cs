@@ -27,7 +27,7 @@ using System.Collections.Generic;
 namespace Luminosity.IO
 {
     [RequireComponent(typeof(GenericGamepadStateAdapter))]
-    public class GenericGamepadProfileSelector : MonoBehaviour
+    public class GenericGamepadProfileSelector : GamepadProfileSelector
     {
         public enum QueryType
         {
@@ -54,8 +54,6 @@ namespace Luminosity.IO
         [SerializeField]
         private List<Profile> m_profiles = null;
 
-        private GenericGamepadStateAdapter m_adapter;
-
 #if UNITY_EDITOR
         public Profile GetProfile(int index)
         {
@@ -65,28 +63,17 @@ namespace Luminosity.IO
             return null;
         }
 #endif
-        private void Start()
+        protected override void OnAssignGamepadProfile(GamepadIndex gamepad)
         {
-            m_adapter = GetComponent<GenericGamepadStateAdapter>();
-            m_adapter.GamepadConnected += AssignGamepadProfile;
-
-            AssignGamepadProfile(GamepadIndex.GamepadOne);
-            AssignGamepadProfile(GamepadIndex.GamepadTwo);
-            AssignGamepadProfile(GamepadIndex.GamepadThree);
-            AssignGamepadProfile(GamepadIndex.GamepadFour);
-        }
-
-        private void AssignGamepadProfile(GamepadIndex gamepad)
-        {
-            if(!m_adapter.IsConnected(gamepad))
+            if(!Adapter.IsConnected(gamepad))
                 return;
 
-            string gamepadName = m_adapter.GetName(gamepad);
+            string gamepadName = Adapter.GetName(gamepad);
             for(int i = 0; i < m_profiles.Count; i++)
             {
                 if(IsMatch(m_profiles[i], gamepadName))
                 {
-                    m_adapter.SetProfile(gamepad, m_profiles[i].GamepadProfile);
+                    Adapter.SetProfile(gamepad, m_profiles[i].GamepadProfile);
                     Debug.LogFormat("Profile '{0}' assigned to '{1}'.", m_profiles[i].GamepadProfile.Name, gamepadName);
                     return;
                 }
@@ -94,7 +81,7 @@ namespace Luminosity.IO
 
             if(m_defaultProfile != null)
             {
-                m_adapter.SetProfile(gamepad, m_defaultProfile);
+                Adapter.SetProfile(gamepad, m_defaultProfile);
                 Debug.LogFormat("No profile found for '{0}'. Assigning default profile '{1}'.", gamepadName, m_defaultProfile.Name);
             }
             else
