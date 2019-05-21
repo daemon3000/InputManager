@@ -39,8 +39,10 @@ namespace LuminosityEditor.IO
 		private SerializedProperty m_playerThreeDefault;
 		private SerializedProperty m_playerFourDefault;
 		private SerializedProperty m_ignoreTimescale;
-		private GUIContent m_createSnapshotInfo;
+        private SerializedProperty m_runScanningInLateUpdate;
+        private GUIContent m_createSnapshotInfo;
 		private string[] m_controlSchemeNames;
+        private static string[] m_scanningOptions = new string[] { "Update", "Late Update" };
 
 		private void OnEnable()
 		{
@@ -50,7 +52,8 @@ namespace LuminosityEditor.IO
 			m_playerThreeDefault = serializedObject.FindProperty("m_playerThreeDefault");
 			m_playerFourDefault = serializedObject.FindProperty("m_playerFourDefault");
 			m_ignoreTimescale = serializedObject.FindProperty("m_ignoreTimescale");
-			m_createSnapshotInfo = new GUIContent("Create\nSnapshot", "Creates a snapshot of your input configurations which can be restored at a later time(when you exit play-mode for example)");
+            m_runScanningInLateUpdate = serializedObject.FindProperty("m_runScanningInLateUpdate");
+            m_createSnapshotInfo = new GUIContent("Create\nSnapshot", "Creates a snapshot of your input configurations which can be restored at a later time(when you exit play-mode for example)");
 		}
 
 		public override void OnInspectorGUI()
@@ -63,9 +66,10 @@ namespace LuminosityEditor.IO
 			DrawControlSchemeDropdown(m_playerTwoDefault);
 			DrawControlSchemeDropdown(m_playerThreeDefault);
 			DrawControlSchemeDropdown(m_playerFourDefault);
-			EditorGUILayout.PropertyField(m_ignoreTimescale);
+            m_runScanningInLateUpdate.boolValue = EditorGUILayout.Popup("Scanning Mode", m_runScanningInLateUpdate.boolValue ? 1 : 0, m_scanningOptions) == 1;
+            EditorGUILayout.PropertyField(m_ignoreTimescale);
 
-			EditorGUILayout.Space();
+            EditorGUILayout.Space();
 			GUILayout.BeginHorizontal();
 			GUI.enabled = !InputEditor.IsOpen;
 			if(GUILayout.Button("Input\nEditor", GUILayout.Height(BUTTON_HEIGHT)))

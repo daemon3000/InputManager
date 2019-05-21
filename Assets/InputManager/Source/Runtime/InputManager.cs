@@ -53,8 +53,10 @@ namespace Luminosity.IO
 		private string m_playerFourDefault;
 		[SerializeField]
 		private bool m_ignoreTimescale = true;
+        [SerializeField]
+        private bool m_runScanningInLateUpdate = false;
 
-		private ControlScheme m_playerOneScheme;
+        private ControlScheme m_playerOneScheme;
 		private ControlScheme m_playerTwoScheme;
 		private ControlScheme m_playerThreeScheme;
 		private ControlScheme m_playerFourScheme;
@@ -233,8 +235,11 @@ namespace Luminosity.IO
 			UpdateControlScheme(m_playerTwoScheme, PlayerID.Two);
 			UpdateControlScheme(m_playerThreeScheme, PlayerID.Three);
 			UpdateControlScheme(m_playerFourScheme, PlayerID.Four);
-
-			Profiler.EndSample();
+            if(!m_runScanningInLateUpdate)
+            {
+                UpdateScanService();
+            }
+            Profiler.EndSample();
 
             Profiler.BeginSample("OnAfterUpdate", this);
             if(m_afterUpdateHandler != null)
@@ -248,15 +253,12 @@ namespace Luminosity.IO
 
         private void LateUpdate()
         {
-            Profiler.BeginSample("LateUpdate", this);
-
-            m_scanService.GameTime = m_ignoreTimescale ? Time.unscaledTime : Time.time;
-			if(m_scanService.IsScanning)
-			{
-				m_scanService.Update();
-			}
-
-            Profiler.EndSample();
+            if(m_runScanningInLateUpdate)
+            {
+                Profiler.BeginSample("LateUpdate", this);
+                UpdateScanService();
+                Profiler.EndSample();
+            }
         }
 
         private void UpdateControlScheme(ControlScheme scheme, PlayerID playerID)
@@ -271,7 +273,16 @@ namespace Luminosity.IO
 			}
 		}
 
-		private void SetControlSchemeByPlayerID(PlayerID playerID, ControlScheme scheme)
+        private void UpdateScanService()
+        {
+            m_scanService.GameTime = m_ignoreTimescale ? Time.unscaledTime : Time.time;
+            if(m_scanService.IsScanning)
+            {
+                m_scanService.Update();
+            }
+        }
+
+        private void SetControlSchemeByPlayerID(PlayerID playerID, ControlScheme scheme)
 		{
 			if(playerID == PlayerID.One)
 				m_playerOneScheme = scheme;
