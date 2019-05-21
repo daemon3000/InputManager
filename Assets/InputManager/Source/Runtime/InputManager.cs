@@ -234,13 +234,7 @@ namespace Luminosity.IO
 			UpdateControlScheme(m_playerThreeScheme, PlayerID.Three);
 			UpdateControlScheme(m_playerFourScheme, PlayerID.Four);
 
-			m_scanService.GameTime = m_ignoreTimescale ? Time.unscaledTime : Time.time;
-			if(m_scanService.IsScanning)
-			{
-				m_scanService.Update();
-			}
-
-            Profiler.EndSample();
+			Profiler.EndSample();
 
             Profiler.BeginSample("OnAfterUpdate", this);
             if(m_afterUpdateHandler != null)
@@ -252,7 +246,20 @@ namespace Luminosity.IO
             Profiler.EndSample();
         }
 
-		private void UpdateControlScheme(ControlScheme scheme, PlayerID playerID)
+        private void LateUpdate()
+        {
+            Profiler.BeginSample("LateUpdate", this);
+
+            m_scanService.GameTime = m_ignoreTimescale ? Time.unscaledTime : Time.time;
+			if(m_scanService.IsScanning)
+			{
+				m_scanService.Update();
+			}
+
+            Profiler.EndSample();
+        }
+
+        private void UpdateControlScheme(ControlScheme scheme, PlayerID playerID)
 		{
 			if(scheme != null)
 			{
