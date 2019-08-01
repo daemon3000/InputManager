@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Text;
+using System.Globalization;
 
 namespace TeamUtility.IO
 {
@@ -139,9 +140,9 @@ namespace TeamUtility.IO
 			writer.WriteElementString("altPositive", axisConfig.altPositive.ToString());
 			writer.WriteElementString("negative", axisConfig.negative.ToString());
 			writer.WriteElementString("altNegative", axisConfig.altNegative.ToString());
-			writer.WriteElementString("deadZone", axisConfig.deadZone.ToString());
-			writer.WriteElementString("gravity", axisConfig.gravity.ToString());
-			writer.WriteElementString("sensitivity", axisConfig.sensitivity.ToString());
+			writer.WriteElementString("deadZone", axisConfig.deadZone.ToString(CultureInfo.InvariantCulture));
+			writer.WriteElementString("gravity", axisConfig.gravity.ToString(CultureInfo.InvariantCulture));
+			writer.WriteElementString("sensitivity", axisConfig.sensitivity.ToString(CultureInfo.InvariantCulture));
 			writer.WriteElementString("snap", axisConfig.snap.ToString().ToLower());
 			writer.WriteElementString("invert", axisConfig.invert.ToString().ToLower());
 			writer.WriteElementString("type", axisConfig.type.ToString());
