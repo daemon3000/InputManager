@@ -154,9 +154,11 @@ namespace Luminosity.IO
 			writer.WriteStartElement("Binding");
 			writer.WriteElementString("Positive", binding.Positive.ToString());
 			writer.WriteElementString("Negative", binding.Negative.ToString());
+            writer.WriteElementString("DeadZoneType", binding.DeadZoneType.ToString());
 			writer.WriteElementString("DeadZone", binding.DeadZone.ToString(CultureInfo.InvariantCulture));
 			writer.WriteElementString("Gravity", binding.Gravity.ToString(CultureInfo.InvariantCulture));
 			writer.WriteElementString("Sensitivity", binding.Sensitivity.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("Scale", binding.Scale.ToString(CultureInfo.InvariantCulture));
 			writer.WriteElementString("Snap", binding.Snap.ToString().ToLower());
 			writer.WriteElementString("Invert", binding.Invert.ToString().ToLower());
 			writer.WriteElementString("Type", binding.Type.ToString());

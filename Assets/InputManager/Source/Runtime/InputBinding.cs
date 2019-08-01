@@ -612,6 +612,11 @@ namespace Luminosity.IO
 			return StringToEnum(value, KeyCode.None);
 		}
 
+        public static DeadZoneType StringToDeadZoneType(string value)
+		{
+			return StringToEnum(value, DeadZoneType.CutOff);
+		}
+
 		public static InputType StringToInputType(string value)
 		{
 			return StringToEnum(value, InputType.Button);

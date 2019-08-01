@@ -26,6 +26,7 @@ using System.Xml;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Luminosity.IO
 {
@@ -101,8 +102,14 @@ namespace Luminosity.IO
 			if(doc != null)
 			{
 				int version = ReadAttributeAsInt(doc.DocumentElement, "version", 1);
-				if(version == 2) return Load_V2(doc);
-				else return Load_V1(doc);
+                if(version == 2)
+                {
+                    return Load(doc);
+                }
+                else
+                {
+                    Debug.LogError($"Unsupported input file version: {version}");
+                }
 			}
 
 			return new SaveData();
@@ -114,15 +121,20 @@ namespace Luminosity.IO
 			if(doc != null)
 			{
 				int version = ReadAttributeAsInt(doc.DocumentElement, "version", 1);
-				if(version == 2) return Load_V2(doc, schemeName);
-				else return Load_V1(doc, schemeName);
+                if(version == 2)
+                {
+                    return Load(doc, schemeName);
+                }
+                else
+                {
+                    Debug.LogError($"Unsupported input file version: {version}");
+                }
 			}
 
 			return null;
 		}
 
-		#region [V2]
-		private SaveData Load_V2(XmlDocument doc)
+		private SaveData Load(XmlDocument doc)
 		{
 			SaveData saveData = new SaveData();
 			var root = doc.DocumentElement;
@@ -135,13 +147,13 @@ namespace Luminosity.IO
 			var schemeNodes = SelectNodes(root, "ControlScheme");
 			foreach(XmlNode node in schemeNodes)
 			{
-				saveData.ControlSchemes.Add(ReadControlScheme_V2(node));
+				saveData.ControlSchemes.Add(ReadControlScheme(node));
 			}
 
 			return saveData;
 		}
 
-		private ControlScheme Load_V2(XmlDocument doc, string schemeName)
+		private ControlScheme Load(XmlDocument doc, string schemeName)
 		{
 			if(string.IsNullOrEmpty(schemeName))
 				return null;
@@ -152,7 +164,7 @@ namespace Luminosity.IO
 			{
 				if(ReadAttribute(node, "name") == schemeName)
 				{
-					scheme = ReadControlScheme_V2(node);
+					scheme = ReadControlScheme(node);
 					break;
 				}
 			}
@@ -160,7 +172,7 @@ namespace Luminosity.IO
 			return scheme;
 		}
 
-		private ControlScheme ReadControlScheme_V2(XmlNode node)
+		private ControlScheme ReadControlScheme(XmlNode node)
 		{
 			string name = ReadAttribute(node, "name", "Unnamed Control Scheme");
 			string id = ReadAttribute(node, "id", null);
@@ -176,13 +188,13 @@ namespace Luminosity.IO
 			var actionNodes = SelectNodes(node, "Action");
 			foreach(XmlNode child in actionNodes)
 			{
-				ReadInputAction_V2(scheme, child);
+				ReadInputAction(scheme, child);
 			}
 
 			return scheme;
 		}
 
-		private void ReadInputAction_V2(ControlScheme scheme, XmlNode node)
+		private void ReadInputAction(ControlScheme scheme, XmlNode node)
 		{
 			string name = ReadAttribute(node, "name", "Unnamed Action");
 			InputAction action = scheme.CreateNewAction(name);
@@ -191,11 +203,11 @@ namespace Luminosity.IO
 			var bindingNodes = SelectNodes(node, "Binding");
 			foreach(XmlNode child in bindingNodes)
 			{
-				ReadInputBinding_V2(action, child);
+				ReadInputBinding(action, child);
 			}
 		}
 
-		private void ReadInputBinding_V2(InputAction action, XmlNode node)
+		private void ReadInputBinding(InputAction action, XmlNode node)
 		{
 			InputBinding binding = action.CreateNewBinding();
 			foreach(XmlNode child in node.ChildNodes)
@@ -208,6 +220,9 @@ namespace Luminosity.IO
 				case "Negative":
 					binding.Negative = InputBinding.StringToKey(child.InnerText);
 					break;
+                case "DeadZoneType":
+					binding.DeadZoneType = InputBinding.StringToDeadZoneType(child.InnerText);
+					break;
 				case "DeadZone":
 					binding.DeadZone = ReadAsFloat(child);
 					break;
@@ -216,6 +231,9 @@ namespace Luminosity.IO
 					break;
 				case "Sensitivity":
 					binding.Sensitivity = ReadAsFloat(child, 1.0f);
+					break;
+                case "Scale":
+					binding.Scale = ReadAsFloat(child, 1.0f);
 					break;
 				case "Snap":
 					binding.Snap = ReadAsBool(child);
@@ -244,115 +262,6 @@ namespace Luminosity.IO
 				}
 			}
 		}
-		#endregion
-
-		#region [V1]
-		private SaveData Load_V1(XmlDocument doc)
-		{
-			SaveData saveData = new SaveData();
-			saveData.PlayerOneScheme = ReadAttribute(doc.DocumentElement, "playerOneDefault");
-			saveData.PlayerTwoScheme = ReadAttribute(doc.DocumentElement, "playerTwoDefault");
-			saveData.PlayerThreeScheme = ReadAttribute(doc.DocumentElement, "playerThreeDefault");
-			saveData.PlayerFourScheme = ReadAttribute(doc.DocumentElement, "playerFourDefault");
-
-			var schemeNodes = SelectNodes(doc.DocumentElement, "InputConfiguration");
-			foreach(XmlNode node in schemeNodes)
-			{
-				saveData.ControlSchemes.Add(ReadControlScheme_V1(node));
-			}
-
-			return saveData;
-		}
-
-		private ControlScheme Load_V1(XmlDocument doc, string schemeName)
-		{
-			if(string.IsNullOrEmpty(schemeName))
-				return null;
-
-			ControlScheme scheme = null;
-			var schemeNodes = SelectNodes(doc.DocumentElement, "InputConfiguration");
-			foreach(XmlNode node in schemeNodes)
-			{
-				if(ReadAttribute(node, "name") == schemeName)
-				{
-					scheme = ReadControlScheme_V1(node);
-					break;
-				}
-			}
-
-			return scheme;
-		}
-
-		private ControlScheme ReadControlScheme_V1(XmlNode node)
-		{
-			string name = ReadAttribute(node, "name", "Unnamed Configuration");
-			ControlScheme scheme = new ControlScheme(name);
-
-			var actionNodes = SelectNodes(node, "AxisConfiguration");
-			foreach(XmlNode child in actionNodes)
-			{
-				ReadInputAction_V1(scheme, child);
-			}
-
-			return scheme;
-		}
-
-		private void ReadInputAction_V1(ControlScheme scheme, XmlNode node)
-		{
-			string name = ReadAttribute(node, "name", "Unnamed Axis");
-			InputAction action = scheme.CreateNewAction(name);
-			InputBinding binding = action.CreateNewBinding();
-
-			foreach(XmlNode child in node.ChildNodes)
-			{
-				switch(child.LocalName)
-				{
-				case "description":
-					action.Description = child.InnerText;
-					break;
-				case "positive":
-					binding.Positive = InputBinding.StringToKey(child.InnerText);
-					break;
-				case "negative":
-					binding.Negative = InputBinding.StringToKey(child.InnerText);
-					break;
-				case "deadZone":
-					binding.DeadZone = ReadAsFloat(child);
-					break;
-				case "gravity":
-					binding.Gravity = ReadAsFloat(child, 1.0f);
-					break;
-				case "sensitivity":
-					binding.Sensitivity = ReadAsFloat(child, 1.0f);
-					break;
-				case "snap":
-					binding.Snap = ReadAsBool(child);
-					break;
-				case "invert":
-					binding.Invert = ReadAsBool(child);
-					break;
-				case "type":
-					binding.Type = InputBinding.StringToInputType(child.InnerText);
-					break;
-				case "axis":
-					binding.Axis = ReadAsInt(child);
-					break;
-				case "joystick":
-					binding.Joystick = ReadAsInt(child);
-					break;
-				}
-			}
-
-			if(binding.Type == InputType.Button || binding.Type == InputType.DigitalAxis)
-			{
-				XmlNode altPositiveNode = SelectSingleNode(node, "altPositive");
-				XmlNode altNegativeNode = SelectSingleNode(node, "altNegative");
-				InputBinding secondary = action.CreateNewBinding(binding);
-				secondary.Positive = InputBinding.StringToKey(altPositiveNode.InnerText);
-				secondary.Negative = InputBinding.StringToKey(altNegativeNode.InnerText);
-			}
-		}
-		#endregion
 
 		#region [Helper]
 		private XmlNode SelectSingleNode(XmlNode parent, string name)
