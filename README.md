@@ -16,7 +16,9 @@
 Compatible with Windows Desktop, Windows Store, Linux, Mac OSX and Android(not tested on iOS but it probably works). Requires the latest version of Unity.
 
 ## Getting Started
-For detailed information on how to get started with this plugin visit the [Wiki](https://github.com/daemon3000/InputManager/wiki).
+For detailed information on how to get started with this plugin visit the [Wiki](https://github.com/daemon3000/InputManager/wiki) or watch the Youtube video linked below.
+
+[![Unity - Custom Input Manager Setup Tutorial](https://img.youtube.com/vi/F_ZIxBPU3Vs/0.jpg)](https://www.youtube.com/watch?v=F_ZIxBPU3Vs)
 
 ## Addons
 ### XInputDotNet
@@ -39,3 +41,4 @@ This software is released under the [MIT license](http://opensource.org/licenses
 - [reberzon](https://github.com/reberzon)
 - [Ikillnukes](https://github.com/Ikillnukes)
 - Felipe Mioto
+- Zhialus
