@@ -182,7 +182,7 @@ namespace Luminosity.IO.Examples
 		private void UpdateFunction() 
 		{
 			// We copy the actual velocity into a temporary variable that we can manipulate.
-			var velocity = movement.velocity;
+			Vector3 velocity = movement.velocity;
 			
 			// Update velocity based on input
 			velocity = ApplyInputVelocityChange(velocity);
@@ -191,10 +191,10 @@ namespace Luminosity.IO.Examples
 			velocity = ApplyGravityAndJumping (velocity);
 			
 			// Moving platform support
-			var moveDistance = Vector3.zero;
+			Vector3 moveDistance = Vector3.zero;
 			if(MoveWithPlatform()) 
 			{
-				var newGlobalPoint = movingPlatform.activePlatform.TransformPoint(movingPlatform.activeLocalPoint);
+				Vector3 newGlobalPoint = movingPlatform.activePlatform.TransformPoint(movingPlatform.activeLocalPoint);
 				moveDistance = (newGlobalPoint - movingPlatform.activeGlobalPoint);
 				if (moveDistance != Vector3.zero)
 					controller.Move(moveDistance);
@@ -203,7 +203,7 @@ namespace Luminosity.IO.Examples
 		        var newGlobalRotation = movingPlatform.activePlatform.rotation * movingPlatform.activeLocalRotation;
 		        var rotationDiff = newGlobalRotation * Quaternion.Inverse(movingPlatform.activeGlobalRotation);
 		        
-		        var yRotation = rotationDiff.eulerAngles.y;
+		        float yRotation = rotationDiff.eulerAngles.y;
 		        if (yRotation != 0) 
 				{
 			        // Prevent rotation of the local up vector
@@ -212,14 +212,14 @@ namespace Luminosity.IO.Examples
 			}
 			
 			// Save lastPosition for velocity calculation.
-			var lastPosition = tr.position;
+			Vector3 lastPosition = tr.position;
 			
 			// We always want the movement to be framerate independent.  Multiplying by Time.deltaTime does this.
-			var currentMovementOffset = velocity * Time.deltaTime;
+			Vector3 currentMovementOffset = velocity * Time.deltaTime;
 			
 			// Find out how much we need to push towards the ground to avoid loosing grouning
 			// when walking down a step or over a sharp change in slope.
-			var pushDownOffset = Mathf.Max(controller.stepOffset, new Vector3(currentMovementOffset.x, 0, currentMovementOffset.z).magnitude);
+			float pushDownOffset = Mathf.Max(controller.stepOffset, new Vector3(currentMovementOffset.x, 0, currentMovementOffset.z).magnitude);
 			if (grounded)
 				currentMovementOffset -= pushDownOffset * Vector3.up;
 			
@@ -243,9 +243,9 @@ namespace Luminosity.IO.Examples
 			
 			// Calculate the velocity based on the current and previous position.  
 			// This means our velocity will only be the amount the character actually moved as a result of collisions.
-			var oldHVelocity = new Vector3(velocity.x, 0, velocity.z);
+			Vector3 oldHVelocity = new Vector3(velocity.x, 0, velocity.z);
 			movement.velocity = (tr.position - lastPosition) / Time.deltaTime;
-			var newHVelocity = new Vector3(movement.velocity.x, 0, movement.velocity.z);
+			Vector3 newHVelocity = new Vector3(movement.velocity.x, 0, movement.velocity.z);
 			
 			// The CharacterController can be moved in unwanted directions when colliding with things.
 			// We want to prevent this from influencing the recorded velocity.
@@ -255,7 +255,7 @@ namespace Luminosity.IO.Examples
 			}
 			else 
 			{
-				var projectedNewVelocity = Vector3.Dot(newHVelocity, oldHVelocity) / oldHVelocity.sqrMagnitude;
+				float projectedNewVelocity = Vector3.Dot(newHVelocity, oldHVelocity) / oldHVelocity.sqrMagnitude;
 				movement.velocity = oldHVelocity * Mathf.Clamp01(projectedNewVelocity) + movement.velocity.y * Vector3.up;
 			}
 			
@@ -354,13 +354,13 @@ namespace Luminosity.IO.Examples
 				inputMoveDirection = Vector3.zero;
 			
 			// Find desired velocity
-			var desiredVelocity = Vector3.zero;
+			Vector3 desiredVelocity = Vector3.zero;
 			if (grounded && TooSteep()) 
 			{
 				// The direction we're sliding in
 				desiredVelocity = new Vector3(groundNormal.x, 0, groundNormal.z).normalized;
 				// Find the input movement direction projected onto the sliding direction
-				var projectedMoveDir = Vector3.Project(inputMoveDirection, desiredVelocity);
+				Vector3 projectedMoveDir = Vector3.Project(inputMoveDirection, desiredVelocity);
 				// Add the sliding direction, the spped control, and the sideways control vectors
 				desiredVelocity = desiredVelocity + projectedMoveDir * sliding.speedControl + (inputMoveDirection - projectedMoveDir) * sliding.sidewaysControl;
 				// Multiply with the sliding speed
@@ -381,8 +381,8 @@ namespace Luminosity.IO.Examples
 				velocity.y = 0;
 			
 			// Enforce max velocity change
-			var maxVelocityChange = GetMaxAcceleration(grounded) * Time.deltaTime;
-			var velocityChangeVector = (desiredVelocity - velocity);
+			float maxVelocityChange = GetMaxAcceleration(grounded) * Time.deltaTime;
+			Vector3 velocityChangeVector = (desiredVelocity - velocity);
 			if (velocityChangeVector.sqrMagnitude > maxVelocityChange * maxVelocityChange) 
 			{
 				velocityChangeVector = velocityChangeVector.normalized * maxVelocityChange;
@@ -509,7 +509,7 @@ namespace Luminosity.IO.Examples
 				// before we know the velocity of the platform under the character
 				if (movingPlatform.newPlatform) 
 				{
-					var platform = movingPlatform.activePlatform;
+					Transform platform = movingPlatform.activePlatform;
 					yield return new WaitForFixedUpdate();
 					yield return new WaitForFixedUpdate();
 					if (grounded && platform == movingPlatform.activePlatform)
@@ -530,12 +530,12 @@ namespace Luminosity.IO.Examples
 
 		private Vector3 GetDesiredHorizontalVelocity () {
 			// Find desired velocity
-			var desiredLocalDirection = tr.InverseTransformDirection(inputMoveDirection);
-			var maxSpeed = MaxSpeedInDirection(desiredLocalDirection);
+			Vector3 desiredLocalDirection = tr.InverseTransformDirection(inputMoveDirection);
+			float maxSpeed = MaxSpeedInDirection(desiredLocalDirection);
 			if (grounded) 
 			{
 				// Modify max speed on slopes based on slope speed multiplier curve
-				var movementSlopeAngle = Mathf.Asin(movement.velocity.normalized.y)  * Mathf.Rad2Deg;
+				float movementSlopeAngle = Mathf.Asin(movement.velocity.normalized.y)  * Mathf.Rad2Deg;
 				maxSpeed *= movement.slopeSpeedMultiplier.Evaluate(movementSlopeAngle);
 			}
 			return tr.TransformDirection(desiredLocalDirection * maxSpeed);
@@ -543,7 +543,7 @@ namespace Luminosity.IO.Examples
 
 		private Vector3 AdjustGroundVelocityToNormal(Vector3 hVelocity, Vector3 groundNormal) 
 		{
-			var sideways = Vector3.Cross(Vector3.up, hVelocity);
+			Vector3 sideways = Vector3.Cross(Vector3.up, hVelocity);
 			return Vector3.Cross(sideways, groundNormal).normalized * hVelocity.magnitude;
 		}
 
@@ -610,9 +610,9 @@ namespace Luminosity.IO.Examples
 			if (desiredMovementDirection == Vector3.zero)
 				return 0;
 			else {
-				var zAxisEllipseMultiplier = (desiredMovementDirection.z > 0 ? movement.maxForwardSpeed : movement.maxBackwardsSpeed) / movement.maxSidewaysSpeed;
-				var temp = new Vector3(desiredMovementDirection.x, 0, desiredMovementDirection.z / zAxisEllipseMultiplier).normalized;
-				var length = new Vector3(temp.x, 0, temp.z * zAxisEllipseMultiplier).magnitude * movement.maxSidewaysSpeed;
+				float zAxisEllipseMultiplier = (desiredMovementDirection.z > 0 ? movement.maxForwardSpeed : movement.maxBackwardsSpeed) / movement.maxSidewaysSpeed;
+				Vector3 temp = new Vector3(desiredMovementDirection.x, 0, desiredMovementDirection.z / zAxisEllipseMultiplier).normalized;
+				float length = new Vector3(temp.x, 0, temp.z * zAxisEllipseMultiplier).magnitude * movement.maxSidewaysSpeed;
 				return length;
 			}
 		}
