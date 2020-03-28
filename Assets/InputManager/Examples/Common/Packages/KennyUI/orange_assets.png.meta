@@ -1,43 +1,96 @@
 fileFormatVersion: 2
 guid: d5170e837b391d245b93774d4d5676e8
-timeCreated: 1425572069
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: orange_assets_0
-    21300002: orange_assets_1
-    21300004: orange_assets_2
-    21300006: orange_assets_3
-    21300008: orange_assets_4
-    21300010: orange_assets_5
-    21300012: orange_assets_6
-    21300014: orange_assets_7
-    21300016: orange_assets_8
-    21300018: orange_assets_9
-    21300020: orange_assets_10
-    21300022: orange_assets_11
-    21300024: orange_assets_12
-    21300026: orange_assets_13
-    21300028: orange_assets_14
-    21300030: orange_assets_15
-    21300032: orange_assets_16
-    21300034: orange_assets_17
-    21300036: orange_assets_18
-    21300038: orange_assets_19
-    21300040: orange_panel
-    21300042: orange_assets_21
-    21300044: orange_assets_22
-    21300046: orange_assets_23
-    21300048: orange_assets_24
-    21300050: orange_assets_25
-  serializedVersion: 2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: orange_assets_0
+  - first:
+      213: 21300002
+    second: orange_assets_1
+  - first:
+      213: 21300004
+    second: orange_assets_2
+  - first:
+      213: 21300006
+    second: orange_assets_3
+  - first:
+      213: 21300008
+    second: orange_assets_4
+  - first:
+      213: 21300010
+    second: orange_assets_5
+  - first:
+      213: 21300012
+    second: orange_assets_6
+  - first:
+      213: 21300014
+    second: orange_assets_7
+  - first:
+      213: 21300016
+    second: orange_assets_8
+  - first:
+      213: 21300018
+    second: orange_assets_9
+  - first:
+      213: 21300020
+    second: orange_assets_10
+  - first:
+      213: 21300022
+    second: orange_assets_11
+  - first:
+      213: 21300024
+    second: orange_assets_12
+  - first:
+      213: 21300026
+    second: orange_assets_13
+  - first:
+      213: 21300028
+    second: orange_assets_14
+  - first:
+      213: 21300030
+    second: orange_assets_15
+  - first:
+      213: 21300032
+    second: orange_assets_16
+  - first:
+      213: 21300034
+    second: orange_assets_17
+  - first:
+      213: 21300036
+    second: orange_assets_18
+  - first:
+      213: 21300038
+    second: orange_assets_19
+  - first:
+      213: 21300040
+    second: orange_panel
+  - first:
+      213: 21300042
+    second: orange_assets_21
+  - first:
+      213: 21300044
+    second: orange_assets_22
+  - first:
+      213: 21300046
+    second: orange_assets_23
+  - first:
+      213: 21300048
+    second: orange_assets_24
+  - first:
+      213: 21300050
+    second: orange_assets_25
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -46,37 +99,61 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 8
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
   maxTextureSize: 1024
   textureSettings:
+    serializedVersion: 2
     filterMode: -1
     aniso: 16
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: orange_assets_0
+    - serializedVersion: 2
+      name: orange_assets_0
       rect:
         serializedVersion: 2
         x: 5
@@ -86,12 +163,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -19, y: 18}
-        - {x: -19, y: -18}
-        - {x: 19, y: -18}
-        - {x: 19, y: 18}
-    - name: orange_assets_1
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_1
       rect:
         serializedVersion: 2
         x: 48
@@ -101,12 +184,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -19, y: 18}
-        - {x: -19, y: -18}
-        - {x: 19, y: -18}
-        - {x: 19, y: 18}
-    - name: orange_assets_2
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_2
       rect:
         serializedVersion: 2
         x: 91
@@ -116,16 +205,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -14, y: 18}
-        - {x: -18, y: 17}
-        - {x: -18, y: -17}
-        - {x: -15, y: -18}
-        - {x: 17, y: -18}
-        - {x: 18, y: -17}
-        - {x: 18, y: 17}
-        - {x: 16, y: 18}
-    - name: orange_assets_3
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_3
       rect:
         serializedVersion: 2
         x: 132
@@ -135,12 +226,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 22.5}
-        - {x: -95, y: -22.5}
-        - {x: 95, y: -22.5}
-        - {x: 95, y: 22.5}
-    - name: orange_assets_4
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_4
       rect:
         serializedVersion: 2
         x: 5
@@ -150,12 +247,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 24.5}
-        - {x: -95, y: -24.5}
-        - {x: 95, y: -24.5}
-        - {x: 95, y: 24.5}
-    - name: orange_assets_5
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_5
       rect:
         serializedVersion: 2
         x: 200
@@ -165,12 +268,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 22.5}
-        - {x: -95, y: -22.5}
-        - {x: 95, y: -22.5}
-        - {x: 95, y: 22.5}
-    - name: orange_assets_6
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_6
       rect:
         serializedVersion: 2
         x: 395
@@ -180,12 +289,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -24.5, y: 24.5}
-        - {x: -24.5, y: -24.5}
-        - {x: 24.5, y: -24.5}
-        - {x: 24.5, y: 24.5}
-    - name: orange_assets_7
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_7
       rect:
         serializedVersion: 2
         x: 449
@@ -195,12 +310,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -24.5, y: 24.5}
-        - {x: -24.5, y: -24.5}
-        - {x: 24.5, y: -24.5}
-        - {x: 24.5, y: 24.5}
-    - name: orange_assets_8
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_8
       rect:
         serializedVersion: 2
         x: 5
@@ -210,12 +331,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -24.5, y: 22.5}
-        - {x: -24.5, y: -22.5}
-        - {x: 24.5, y: -22.5}
-        - {x: 24.5, y: 22.5}
-    - name: orange_assets_9
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_9
       rect:
         serializedVersion: 2
         x: 59
@@ -225,12 +352,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 12, y: 15, z: 12, w: 11}
-      outline:
-      - - {x: -24.5, y: 24.5}
-        - {x: -24.5, y: -24.5}
-        - {x: 24.5, y: -24.5}
-        - {x: 24.5, y: 24.5}
-    - name: orange_assets_10
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_10
       rect:
         serializedVersion: 2
         x: 113
@@ -240,12 +373,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 12, y: 11, z: 13, w: 11}
-      outline:
-      - - {x: -24.5, y: 22.5}
-        - {x: -24.5, y: -22.5}
-        - {x: 24.5, y: -22.5}
-        - {x: 24.5, y: 22.5}
-    - name: orange_assets_11
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_11
       rect:
         serializedVersion: 2
         x: 167
@@ -255,12 +394,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -24.5, y: 24.5}
-        - {x: -24.5, y: -24.5}
-        - {x: 24.5, y: -24.5}
-        - {x: 24.5, y: 24.5}
-    - name: orange_assets_12
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_12
       rect:
         serializedVersion: 2
         x: 221
@@ -270,12 +415,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -24.5, y: 22.5}
-        - {x: -24.5, y: -22.5}
-        - {x: 24.5, y: -22.5}
-        - {x: 24.5, y: 22.5}
-    - name: orange_assets_13
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_13
       rect:
         serializedVersion: 2
         x: 275
@@ -285,12 +436,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 24.5}
-        - {x: -95, y: -24.5}
-        - {x: 95, y: -24.5}
-        - {x: 95, y: 24.5}
-    - name: orange_assets_14
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_14
       rect:
         serializedVersion: 2
         x: 5
@@ -300,12 +457,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 24.5}
-        - {x: -95, y: -24.5}
-        - {x: 95, y: -24.5}
-        - {x: 95, y: 24.5}
-    - name: orange_assets_15
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_15
       rect:
         serializedVersion: 2
         x: 200
@@ -315,12 +478,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 22.5}
-        - {x: -95, y: -22.5}
-        - {x: 95, y: -22.5}
-        - {x: 95, y: 22.5}
-    - name: orange_assets_16
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_16
       rect:
         serializedVersion: 2
         x: 5
@@ -330,12 +499,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -95, y: 24.5}
-        - {x: -95, y: -24.5}
-        - {x: 95, y: -24.5}
-        - {x: 95, y: 24.5}
-    - name: orange_assets_17
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_17
       rect:
         serializedVersion: 2
         x: 200
@@ -346,7 +521,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: orange_assets_18
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_18
       rect:
         serializedVersion: 2
         x: 226
@@ -356,16 +541,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -14, y: 18}
-        - {x: -18, y: 17}
-        - {x: -18, y: -17}
-        - {x: -15, y: -18}
-        - {x: 17, y: -18}
-        - {x: 18, y: -17}
-        - {x: 18, y: 17}
-        - {x: 16, y: 18}
-    - name: orange_assets_19
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_19
       rect:
         serializedVersion: 2
         x: 267
@@ -376,7 +563,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: orange_panel
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_panel
       rect:
         serializedVersion: 2
         x: 290
@@ -386,12 +583,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 12, y: 12, z: 12, w: 12}
-      outline:
-      - - {x: -50, y: 50}
-        - {x: -50, y: -50}
-        - {x: 50, y: -50}
-        - {x: 50, y: 50}
-    - name: orange_assets_21
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84305410000000000800000000000000
+      internalID: 21300040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_21
       rect:
         serializedVersion: 2
         x: 395
@@ -402,7 +605,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: orange_assets_22
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4305410000000000800000000000000
+      internalID: 21300042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_22
       rect:
         serializedVersion: 2
         x: 428
@@ -413,7 +626,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: orange_assets_23
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4305410000000000800000000000000
+      internalID: 21300044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_23
       rect:
         serializedVersion: 2
         x: 5
@@ -424,7 +647,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: orange_assets_24
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4305410000000000800000000000000
+      internalID: 21300046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_24
       rect:
         serializedVersion: 2
         x: 49
@@ -435,7 +668,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: orange_assets_25
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05305410000000000800000000000000
+      internalID: 21300048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange_assets_25
       rect:
         serializedVersion: 2
         x: 82
@@ -446,8 +689,28 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25305410000000000800000000000000
+      internalID: 21300050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

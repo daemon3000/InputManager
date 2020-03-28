@@ -1,29 +1,54 @@
 fileFormatVersion: 2
 guid: a5659e2da325e92439c9742fab2f1d50
-timeCreated: 1470136066
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: dpad_center
-    21300002: dpad_down
-    21300004: dpad_down_left
-    21300006: dpad_down_right
-    21300008: dpad_left
-    21300010: dpad_right
-    21300012: dpad_up
-    21300014: dpad_up_left
-    21300016: dpad_up_right
-    21300018: joystick_base
-    21300020: joystick_knob
-    21300022: jump
-  serializedVersion: 2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: dpad_center
+  - first:
+      213: 21300002
+    second: dpad_down
+  - first:
+      213: 21300004
+    second: dpad_down_left
+  - first:
+      213: 21300006
+    second: dpad_down_right
+  - first:
+      213: 21300008
+    second: dpad_left
+  - first:
+      213: 21300010
+    second: dpad_right
+  - first:
+      213: 21300012
+    second: dpad_up
+  - first:
+      213: 21300014
+    second: dpad_up_left
+  - first:
+      213: 21300016
+    second: dpad_up_right
+  - first:
+      213: 21300018
+    second: joystick_base
+  - first:
+      213: 21300020
+    second: joystick_knob
+  - first:
+      213: 21300022
+    second: jump
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -32,37 +57,61 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: -1
     aniso: -1
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: dpad_center
+    - serializedVersion: 2
+      name: dpad_center
       rect:
         serializedVersion: 2
         x: 5
@@ -72,18 +121,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_down
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_down
       rect:
         serializedVersion: 2
         x: 170
@@ -93,18 +142,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_down_left
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_down_left
       rect:
         serializedVersion: 2
         x: 335
@@ -114,18 +163,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_down_right
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_down_right
       rect:
         serializedVersion: 2
         x: 500
@@ -135,18 +184,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_left
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_left
       rect:
         serializedVersion: 2
         x: 665
@@ -156,18 +205,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_right
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_right
       rect:
         serializedVersion: 2
         x: 830
@@ -177,18 +226,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_up
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_up
       rect:
         serializedVersion: 2
         x: 5
@@ -198,18 +247,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_up_left
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_up_left
       rect:
         serializedVersion: 2
         x: 170
@@ -219,18 +268,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: dpad_up_right
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_up_right
       rect:
         serializedVersion: 2
         x: 335
@@ -240,18 +289,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 56, y: 80}
-        - {x: -41, y: 80}
-        - {x: -80, y: 65}
-        - {x: -80, y: -49}
-        - {x: -49, y: -80}
-        - {x: 46, y: -80}
-        - {x: 53, y: -78}
-        - {x: 80, y: -50}
-        - {x: 80, y: 59}
-        - {x: 79, y: 64}
-    - name: joystick_base
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03305410000000000800000000000000
+      internalID: 21300016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: joystick_base
       rect:
         serializedVersion: 2
         x: 500
@@ -261,17 +310,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -29, y: 80}
-        - {x: -47, y: 77}
-        - {x: -80, y: 47}
-        - {x: -80, y: -74}
-        - {x: -56, y: -80}
-        - {x: 72, y: -80}
-        - {x: 80, y: -72}
-        - {x: 80, y: 53}
-        - {x: 72, y: 80}
-    - name: joystick_knob
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23305410000000000800000000000000
+      internalID: 21300018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: joystick_knob
       rect:
         serializedVersion: 2
         x: 665
@@ -281,15 +331,18 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 18, y: 50}
-        - {x: -48, y: 50}
-        - {x: -48, y: -50}
-        - {x: 28, y: -50}
-        - {x: 48, y: -43}
-        - {x: 48, y: 29}
-        - {x: 33, y: 44}
-    - name: jump
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43305410000000000800000000000000
+      internalID: 21300020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jump
       rect:
         serializedVersion: 2
         x: 766
@@ -299,17 +352,29 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -31, y: 40}
-        - {x: -40, y: 31}
-        - {x: -40, y: -21}
-        - {x: -32, y: -40}
-        - {x: 23, y: -40}
-        - {x: 40, y: -31}
-        - {x: 40, y: 34}
-        - {x: 22, y: 40}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63305410000000000800000000000000
+      internalID: 21300022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
