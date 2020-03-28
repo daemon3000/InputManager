@@ -923,6 +923,44 @@ namespace Luminosity.IO
 			return false;
 		}
 
+        public static bool IsKeyUsedInAnyControlScheme(KeyCode key, out KeyUsageResult usage)
+        {
+            usage = KeyUsageResult.None;
+
+            foreach(var scheme in m_instance.m_controlSchemes)
+            {
+                if(scheme.IsKeyUsedInAnyAction(key, out usage))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsKeyUsedInAnyControlScheme(KeyCode key)
+        {
+            foreach(var scheme in m_instance.m_controlSchemes)
+            {
+                if(scheme.IsKeyUsedInAnyAction(key))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsKeyUsedInControlScheme(string controlSchemeName, KeyCode key, out KeyUsageResult usage)
+        {
+            ControlScheme scheme = GetControlScheme(controlSchemeName);
+            usage = KeyUsageResult.None;
+
+            return scheme != null ? scheme.IsKeyUsedInAnyAction(key, out usage) : false;
+        }
+
+        public static bool IsKeyUsedInControlScheme(string controlSchemeName, KeyCode key)
+        {
+            ControlScheme scheme = GetControlScheme(controlSchemeName);
+            return scheme.IsKeyUsedInAnyAction(key);
+        }
+
 		public static void StartInputScan(ScanSettings settings, ScanHandler scanHandler)
 		{
 			m_instance.m_scanService.Start(settings, scanHandler);

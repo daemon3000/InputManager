@@ -285,5 +285,5 @@ namespace Luminosity.IO
 
 			return duplicate;
 		}
-	}
+    }
 }

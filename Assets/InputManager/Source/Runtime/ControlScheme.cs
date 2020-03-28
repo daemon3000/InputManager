@@ -238,6 +238,53 @@ namespace Luminosity.IO
 			return table;
 		}
 
+        public bool IsKeyUsedInAnyAction(KeyCode key, out KeyUsageResult usage)
+        {
+            usage = new KeyUsageResult();
+
+            for(int ai = 0; ai < m_actions.Count; ai++)
+            {
+                for(int bi = 0; bi < m_actions[ai].Bindings.Count; bi++)
+                {
+                    InputBinding binding = m_actions[ai].Bindings[bi];
+                    bool isTheRightType = binding.Type == InputType.Button || binding.Type == InputType.DigitalAxis;
+                    bool isUsingTheKey = binding.Positive == key || binding.Negative == key;
+
+                    if(isTheRightType && isUsingTheKey)
+                    {
+                        usage = new KeyUsageResult
+                        {
+                            ControlSchemeName = m_name,
+                            ActionIndex = ai,
+                            BindingIndex = bi
+                        };
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsKeyUsedInAnyAction(KeyCode key)
+        {
+            for(int ai = 0; ai < m_actions.Count; ai++)
+            {
+                for(int bi = 0; bi < m_actions[ai].Bindings.Count; bi++)
+                {
+                    InputBinding binding = m_actions[ai].Bindings[bi];
+                    bool isTheRightType = binding.Type == InputType.Button || binding.Type == InputType.DigitalAxis;
+                    bool isUsingTheKey = binding.Positive == key || binding.Negative == key;
+
+                    if(isTheRightType && isUsingTheKey)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
 		public static ControlScheme Duplicate(ControlScheme source)
 		{
 			return Duplicate(source.Name, source);
@@ -262,5 +309,5 @@ namespace Luminosity.IO
 		{
 			return Guid.NewGuid().ToString("N");
 		}
-	}
+    }
 }
