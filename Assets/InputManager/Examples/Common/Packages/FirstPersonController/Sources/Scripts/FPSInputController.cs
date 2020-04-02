@@ -19,13 +19,13 @@ namespace Luminosity.IO.Examples
 		private	void Update() 
 		{
 			// Get the input vector from keyboard or analog stick
-			var directionVector = new Vector3(InputManager.GetAxis("Horizontal"), 0, InputManager.GetAxis("Vertical"));
+			Vector3 directionVector = new Vector3(InputManager.GetAxis("Horizontal"), 0, InputManager.GetAxis("Vertical"));
 			
 			if (directionVector != Vector3.zero) 
 			{
 				// Get the length of the directon vector and then normalize it
 				// Dividing by the length is cheaper than normalizing when we already have the length anyway
-				var directionLength = directionVector.magnitude;
+				float directionLength = directionVector.magnitude;
 				directionVector = directionVector / directionLength;
 				
 				// Make sure the length is no bigger than 1
