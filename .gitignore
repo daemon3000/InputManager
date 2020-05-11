@@ -10,6 +10,8 @@ Build/*
 Assets/UnityVS*
 obj/*
 .vs/*
+.vscode/*
+.idea/*
 
 #Junk files
 Assets/Tests.meta

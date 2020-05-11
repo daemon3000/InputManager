@@ -65,9 +65,9 @@ namespace LuminosityEditor.IO
 		private GUIStyle m_whiteLabel;
 		private GUIStyle m_whiteFoldout;
 		private GUIStyle m_warningLabel;
-		private bool m_isResizingHierarchy = false;
-		private bool m_tryedToFindInputManagerInScene = false;
-		private bool m_isDisposed = false;
+		private bool m_isResizingHierarchy;
+		private bool m_triedToFindInputManagerInScene;
+		private bool m_isDisposed;
 		private string[] m_axisOptions;
 		private string[] m_joystickOptions;
 		#endregion
@@ -93,7 +93,7 @@ namespace LuminosityEditor.IO
 			EditorToolbox.ShowStartupWarning();
 			IsOpen = true;
 
-			m_tryedToFindInputManagerInScene = false;
+			m_triedToFindInputManagerInScene = false;
 			if(m_inputManager == null)
 				m_inputManager = UnityObject.FindObjectOfType<InputManager>();
 			if(m_searchResults == null)
@@ -545,7 +545,7 @@ namespace LuminosityEditor.IO
 		{
 			EnsureGUIStyles();
 
-			if(m_inputManager == null && !m_tryedToFindInputManagerInScene)
+			if(m_inputManager == null && !m_triedToFindInputManagerInScene)
 				TryToFindInputManagerInScene();
 
 			if(m_inputManager == null)
@@ -1204,7 +1204,7 @@ namespace LuminosityEditor.IO
 		private void TryToFindInputManagerInScene()
 		{
 			m_inputManager = UnityObject.FindObjectOfType<InputManager>();
-			m_tryedToFindInputManagerInScene = true;
+			m_triedToFindInputManagerInScene = true;
 		}
 
 		private void HandlePlayModeChanged(PlayModeStateChange state)

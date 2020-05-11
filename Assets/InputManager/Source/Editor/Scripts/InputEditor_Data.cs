@@ -37,10 +37,10 @@ namespace LuminosityEditor.IO
 		private const float MIN_HIERARCHY_PANEL_WIDTH = 150.0f;
 		private const float MIN_CURSOR_RECT_WIDTH = 10.0f;
 		private const float MAX_CURSOR_RECT_WIDTH = 50.0f;
-		private const float TOOLBAR_HEIGHT = 18.0f;
+		private const float TOOLBAR_HEIGHT = 26.0f;
 		private const float HIERARCHY_ITEM_HEIGHT = 18.0f;
 		private const float HIERARCHY_INDENT_SIZE = 30.0f;
-		private const float INPUT_FIELD_HEIGHT = 16.0f;
+		private const float INPUT_FIELD_HEIGHT = 18.0f;
 		private const float FIELD_SPACING = 2.0f;
 		private const float BUTTON_HEIGHT = 24.0f;
 		private const float INPUT_ACTION_SPACING = 20.0f;
