@@ -244,7 +244,7 @@ namespace Luminosity.IO
 				case "GamepadAxis":
 					binding.GamepadAxis = InputBinding.StringToGamepadAxis(child.InnerText);
 					break;
-				case "GamepadPlayer":
+				case "GamepadIndex":
 					binding.GamepadIndex = InputBinding.StringToGamepadIndex(child.InnerText);
 					break;
 				}
