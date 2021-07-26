@@ -30,3 +30,4 @@ Assembly-Boo*
 *.keystore
 Plan.txt
 Plan.txt.meta
+*.log
